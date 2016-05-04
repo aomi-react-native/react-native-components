@@ -8,9 +8,11 @@ import React, {
 
 import Header from './components/Header';
 import Home from './components/Home';
+import IconExamples from './components/IconExamples';
 
 const routes = {
-    Home
+    Home,
+    IconExamples
 };
 
 const styles = StyleSheet.create({
