@@ -1,4 +1,4 @@
-package com.reactnativecomponents;
+package com.examples;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "ReactNativeComponents";
+        return "Examples";
     }
 
     /**
