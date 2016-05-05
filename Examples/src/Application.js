@@ -1,5 +1,5 @@
-import React, {
-    Component,
+import React, {Component} from 'react';
+import {
     StyleSheet,
     StatusBar,
     Navigator,
@@ -9,10 +9,17 @@ import React, {
 import Header from './components/Header';
 import Home from './components/Home';
 import IconExamples from './components/IconExamples';
+import BootstrapButtonExamples from './components/BootstrapButtonExamples';
+import FormExamples from './components/FormExamples';
+import InputExamples from './components/InputExamples';
+
 
 const routes = {
     Home,
-    IconExamples
+    IconExamples,
+    BootstrapButtonExamples,
+    FormExamples,
+    InputExamples
 };
 
 const styles = StyleSheet.create({

@@ -3,13 +3,10 @@
  * @date 2015/12/14
  */
 
-import React, {
-    Component,
+import React, {Component, PropTypes} from 'react';
+import {
     View,
-    Text,
-    PropTypes,
-    TouchableOpacity,
-    Platform
+    Text
 } from 'react-native';
 
 const height = 40;
@@ -20,16 +17,16 @@ let styles = {
         backgroundColor: '#5E001B',
         paddingLeft: 5,
         paddingRight: 5,
-        paddingTop: 25
+        paddingTop: 20
     },
     cell: {
         flex: 1,
-        height: height,
+        height,
         justifyContent: 'center'
     },
     cellFixed: {
         width: 80,
-        height: height,
+        height,
         justifyContent: 'center'
     },
     title: {

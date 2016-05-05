@@ -1,15 +1,20 @@
-import React, {
-    Component,
-    PropTypes,
+import React, {Component, PropTypes} from 'react';
+
+import {
     StyleSheet,
     ListView,
     TouchableOpacity,
     Text
 } from 'react-native';
 
-
 let ComponentExamples:Array = [{
     key: 'IconExamples'
+}, {
+    key: 'BootstrapButtonExamples'
+}, {
+    key: 'FormExamples'
+}, {
+    key: 'InputExamples'
 }];
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -17,6 +22,14 @@ let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    item: {
+        height: 40,
+        justifyContent: 'center',
+        backgroundColor: '#CCC'
+    },
+    itemText: {
+        fontSize: 18
     }
 });
 
@@ -38,13 +51,14 @@ class Home extends Component {
     goExamples(route) {
         return () => {
             this.props.navigator.push({name: route, title: route});
-        }
+        };
     }
 
     renderRow(item) {
         return (
-            <TouchableOpacity onPress={this.goExamples(item.key)}>
-                <Text>&lt;{item.key}&gt;</Text>
+            <TouchableOpacity onPress={this.goExamples(item.key)}
+                              style={styles.item}>
+                <Text style={styles.itemText}>&lt;{item.key}&gt;</Text>
             </TouchableOpacity>
         );
     }
