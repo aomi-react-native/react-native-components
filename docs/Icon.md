@@ -3,6 +3,9 @@ the icon use [react-native-vector-icons](https://github.com/oblador/react-native
 
 ![Icon](icon.png)
 
+## Examples
+[Icon Examples](../Examples/src/components/IconExamples.js)
+
 ## Use
 
     <Icon name="cog"
