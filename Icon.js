@@ -1,8 +1,4 @@
-import React, {
-    Component,
-    PropTypes,
-    Text
-} from 'react-native';
+import React, {Component, PropTypes} from 'react';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
