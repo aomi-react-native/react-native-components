@@ -57,7 +57,7 @@ class Button extends Component {
         /**
          * bootstrap 风格
          */
-        bsStyle: PropTypes.string,
+        bsStyle: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link', 'default']),
         children: PropTypes.any,
         color: PropTypes.string,
         disabled: PropTypes.bool,
