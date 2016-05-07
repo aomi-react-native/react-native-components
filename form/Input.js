@@ -63,8 +63,8 @@ const INPUT_PROPS_KEYS = [
 class Input extends Component {
 
     static propTypes = {
-        afterIcon: PropTypes.string,
-        beforeIcon: PropTypes.string,
+        after: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+        before: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
         iconProps: PropTypes.object,
         iconStyle: View.propTypes.style,
         inputStyle: TextInput.propTypes.style,
@@ -77,25 +77,30 @@ class Input extends Component {
         underlineColorAndroid: 'transparent'
     };
 
-    getIcon(name) {
+    getComp(name) {
         let {iconProps, iconStyle} = this.props;
         if (name) {
-            return (
-                <View style={[styles.icon,iconStyle]}>
-                    <Icon {...iconProps}
-                        name={name}
-                    />
-                </View>
-            );
+            if (typeof name === 'string') {
+                return (
+                    <View style={[styles.icon,iconStyle]}>
+                        <Icon {...iconProps}
+                            name={name}
+                        />
+                    </View>
+                );
+            }
+
+            return name;
         }
         return null;
     }
 
     render() {
-        let {beforeIcon, afterIcon, style, inputStyle, ...other} = this.props;
+        let {before, after, style, inputStyle, ...other} = this.props;
 
         let newInputProps = {},
             newProps = Object.assign({}, other);
+
         INPUT_PROPS_KEYS.forEach(key => {
             newInputProps[key] = this.props[key];
             newProps[key] && delete newProps[key];
@@ -105,11 +110,11 @@ class Input extends Component {
         return (
             <View {...newProps}
                 style={[styles.container, style]}>
-                {this.getIcon(beforeIcon)}
+                {this.getComp(before)}
                 <TextInput {...newInputProps}
                     style={[styles.input, style, inputStyle]}
                 />
-                {this.getIcon(afterIcon)}
+                {this.getComp(after)}
             </View>
         );
     }

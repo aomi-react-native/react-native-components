@@ -1,32 +1,58 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View
 } from 'react-native';
+import AbstractComponent from './AbstractComponent';
+
 import Input from 'react-native-components/form/Input';
+import Button from 'react-native-components/bootstrap/Button';
+
+let dataSource = [{
+    placeholder: 'Default Input'
+}, {
+    placeholder: 'Custom Style',
+    style: {
+        height: 30,
+        borderRadius: 5
+    }
+}, {
+    placeholder: 'Icon Input',
+    before: 'user',
+    after: 'plus',
+    style: {
+        height: 30,
+        borderRadius: 5
+    }
+}, {
+    placeholder: 'Input with Button',
+    after: (
+        <Button beforeIcon="search"
+                bsStyle="link"
+                style={{justifyContent: 'center', alignItems: 'center', width: 30}}
+        />
+    )
+}, {
+    placeholder: 'secureTextEntry',
+    secureTextEntry: true
+}];
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/5
  */
+class InputExamples extends AbstractComponent {
 
+    constructor(props) {
+        super(props, dataSource);
+    }
 
-class InputExamples extends Component {
-
-    render() {
+    renderRow(input) {
         return (
-            <View style={{flex: 1,paddingTop: 15}}>
-                <Input />
-                <View style={{height: 10}}/>
-                <Input style={{height: 30,borderRadius: 5}}/>
-
-                <Input afterIcon="plus"
-                       beforeIcon="user"
-                       style={{height: 30,borderRadius: 5}}
-                />
+            <View style={{marginTop: 10}}>
+                <Input {...input} />
             </View>
         );
     }
-
 }
 
 export default InputExamples;
