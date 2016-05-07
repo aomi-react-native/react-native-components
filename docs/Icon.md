@@ -40,3 +40,11 @@ the icon use [react-native-vector-icons](https://github.com/oblador/react-native
     <Icon name="github"
           size={48}
     />
+
+## Properties
+
+| Name           | Type     | Default  | Description   |
+|----------------|----------|----------|---------------|
+| provider | Enum['Entypo', 'EvilIcons', 'FontAwesome', 'Foundation', 'Ionicons', 'MaterialIcons', 'Octicons', 'Zocial'] | FontAwesome | 图标提供者 |
+| name | String | question | Icon Name Eg: 'user' 'plus' |
+
