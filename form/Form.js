@@ -3,28 +3,7 @@ import {
     View
 } from 'react-native';
 
-const allowedFieldTypes = {
-    'TextInput': {
-        defaultValueProp: 'defaultValue',
-        cb: 'onChangeText'
-    },
-    'Switch': {
-        defaultValueProp: 'value',
-        cb: 'onValueChange'
-    },
-    'SliderIOS': {
-        defaultValueProp: 'value',
-        cb: 'onSlidingComplete'
-    },
-    'PickerIOS': {
-        defaultValueProp: 'selectedValue',
-        cb: 'onValueChange'
-    },
-    'DatePickerIOS': {
-        defaultValueProp: 'date',
-        cb: 'onDateChange'
-    }
-};
+import AbstractFormComponent from './AbstractFormComponent';
 
 /**
  * Form 表单组件
@@ -32,21 +11,22 @@ const allowedFieldTypes = {
  * @date 16/5/5
  */
 class Form extends Component {
+
     static propTypes = {
         children: PropTypes.node
     };
 
     /**
-     * 全部表单字段
-     * @type {Array}
+     * 错误字段
+     * @type {{}}
      */
-    fields = [];
+    errorFields = {};
 
     /**
-     * 错误表单字段
-     * @type {Array}
+     * 缺失字段
+     * @type {{}}
      */
-    errorFields = [];
+    missFields = {};
 
     /**
      * 表单数据
@@ -54,61 +34,44 @@ class Form extends Component {
      */
     formData = {};
 
-    isValid() {
-        this.errorFields = [];
-        this.fields.forEach(field => {
-            let {required, name, pattern} = field.props;
+    putFormValue(name, value) {
+        this.formData[name] = value;
+    }
 
-            let value = this.formData[name];
-            if (required) {
-                if (!value || value.trim() === '') {
-                    this.errorFields.push({
-                        name,
-                        valueMissing: true
-                    });
-                }
-            }
+    putErrorField(name) {
+        this.errorFields[name] = null;
+    }
 
-            if (pattern) {
-                let reg = new RegExp(pattern);
-                if (!reg.test(value)) {
-                    this.errorFields.push({
-                        name,
-                        patternMismatch: true
-                    });
-                }
-            }
+    putMissField(name) {
+        this.missFields[name] = null;
+    }
 
-        });
+    deleteErrOrMissField(name) {
+        this.errorFields[name] && delete this.errorFields[name];
+        this.missFields[name] && delete this.missFields[name];
     }
 
     getFormData() {
         return this.formData;
     }
 
+    isValid() {
+        return false;
+    }
+
+
     renderChildren(children) {
         return Children.map(children, (child, index) => {
             if (!isValidElement(child)) {
                 return child;
             }
-            let fieldType = child.type.displayName;
             let fieldName = child.props.name;
-            let allowedField = allowedFieldTypes[fieldType];
-            let isFormField = fieldName && allowedField;
 
             let newProps = {
                 key: index
             };
-
-            if (isFormField) {
-                this.fields.push(child);
-                //记录字段默认值
-                this.formData[fieldName] = child.props[allowedField.defaultValueProp] || child.props.value || '';
-                //设置回调函数当字段更改时设置新的表单值
-                newProps[allowedField.cb] = value => {
-                    this.formData[fieldName] = value;
-                    child.props[allowedField.cb] && child.props[allowedField.cb](value);
-                };
+            if (fieldName && child.type.__proto__ === AbstractFormComponent) {
+                newProps.form = this;
             }
 
             newProps.children = this.renderChildren(child.props.children);

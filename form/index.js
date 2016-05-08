@@ -5,9 +5,15 @@
 
 import Form from './Form';
 import Input from './Input';
+import Picker from './Picker';
+import Slider from './Slider';
+import Switch from './Switch';
 
 export {
     Form as default,
-    Input
+    Input,
+    Picker,
+    Slider,
+    Switch
 };
 

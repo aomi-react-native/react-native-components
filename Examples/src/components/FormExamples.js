@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
 
 import {
-    TextInput,
-    Switch,
-    SliderIOS,
-    PickerIOS,
-    DatePickerIOS,
     Text
 } from 'react-native';
 
-import Form from 'react-native-components/form';
+import Form, {Input, Switch, Slider, Picker} from 'react-native-components/form';
 import Button from 'react-native-components/bootstrap/Button';
 
 /**
@@ -34,10 +29,19 @@ class FormExamples extends Component {
 
     render() {
         return (
-            <Form ref="form">
-                <TextInput name="name"/>
+            <Form ref="form"
+                  style={{flex: 1,padding: 15}}>
+                <Input name="name"/>
                 <Switch name="switch"/>
-
+                <Slider name="slider"/>
+                <Picker name="picker">
+                    <Picker.Item label="Java"
+                                 value="java"
+                    />
+                    <Picker.Item label="JavaScript"
+                                 value="js"
+                    />
+                </Picker>
                 <Button bsStyle="primary"
                         onPress={this.getFormData}>
                     Get Form Data

@@ -39,4 +39,4 @@ Bootstrap Button for React Native Component.
 | color | String | undefined | font and icon color |
 | fontSize | Number | 16 | font and icon size |
 | iconProps | Object | {} | icon props |
-| style | Object | Override the inline-styles of the root element. |
+| style | Object | {} |Override the inline-styles of the root element. |
