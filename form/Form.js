@@ -34,6 +34,8 @@ class Form extends Component {
      */
     formData = {};
 
+    formFields = {};
+
     putFormValue(name, value) {
         this.formData[name] = value;
     }
@@ -46,17 +48,33 @@ class Form extends Component {
         this.missFields[name] = null;
     }
 
+    /**
+     * 删除表单错误字段
+     * @param name 字段名字
+     */
     deleteErrOrMissField(name) {
         this.errorFields[name] && delete this.errorFields[name];
         this.missFields[name] && delete this.missFields[name];
     }
 
+    /**
+     * 获取表单数据
+     * @returns {{}}
+     */
     getFormData() {
         return this.formData;
     }
 
+    /**
+     * 校验表单是否正确
+     * @returns {boolean}
+     */
     isValid() {
-        return false;
+        Object.keys(this.formFields).forEach(field => {
+            this.formFields[field].valid && this.formFields[field].valid();
+        });
+
+        return Object.keys(this.missFields).length === 0 && Object.keys(this.errorFields).length === 0;
     }
 
 
@@ -72,6 +90,7 @@ class Form extends Component {
             };
             if (fieldName && child.type.__proto__ === AbstractFormComponent) {
                 newProps.form = this;
+                this.formFields[fieldName] = child;
             }
 
             newProps.children = this.renderChildren(child.props.children);
