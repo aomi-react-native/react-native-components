@@ -66,6 +66,17 @@ class Form extends Component {
     }
 
     /**
+     * 获取表单错误字段信息
+     * @returns {{miss: Array, error: Array}}
+     */
+    getErrorFields() {
+        return {
+            miss: Object.keys(this.missFields),
+            error: Object.keys(this.errorFields)
+        };
+    }
+
+    /**
      * 校验表单是否正确
      * @returns {boolean}
      */

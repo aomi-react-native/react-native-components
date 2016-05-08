@@ -91,8 +91,6 @@ class Input extends AbstractFormComponent {
         value: ''
     };
 
-    static displayName = 'TextInput';
-
     constructor(props) {
         super(props);
         ['onChangeText'].forEach(f => this[f] = this[f].bind(this));
