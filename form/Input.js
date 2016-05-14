@@ -65,21 +65,69 @@ const INPUT_PROPS_KEYS = [
 class Input extends AbstractFormComponent {
 
     static propTypes = {
+        /**
+         * Input 之后,如果为String  则显示Icon
+         */
         after: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+        /**
+         * Input 之前,如果为String 则显示Icon
+         */
         before: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+        /**
+         * 自定义value验证
+         */
         customValid: PropTypes.func,
+        /**
+         * input 默认值
+         */
         defaultValue: PropTypes.string,
+        /**
+         * Input 所属表单
+         */
         form: PropTypes.object,
+        /**
+         * 图标属性
+         */
         iconProps: PropTypes.object,
+        /**
+         * 图标样式
+         */
         iconStyle: View.propTypes.style,
+        /**
+         * 输入框样式
+         */
         inputStyle: TextInput.propTypes.style,
+        /**
+         * 字段名字,用于提交表单获取值
+         */
         name: PropTypes.string,
+        /**
+         * input 值更改回调函数
+         */
         onChangeText: PropTypes.func,
+        /**
+         * input value 验证正则表达式
+         */
         pattern: PropTypes.string,
+        /**
+         * 表明表单的值是必须的
+         */
         required: PropTypes.bool,
+        /**
+         * container 样式
+         */
         style: View.propTypes.style,
+        /**
+         * Android input 下划线
+         */
         underlineColorAndroid: PropTypes.string,
+        /**
+         * 是否验证input的值
+         */
         validate: PropTypes.bool,
+        /**
+         * input 值
+         */
         value: PropTypes.string
     };
 
@@ -101,6 +149,12 @@ class Input extends AbstractFormComponent {
     state = {
         value: this.props.value || this.props.defaultValue
     };
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.value !== this.props.value) {
+            this.onChangeText(nextProps.value);
+        }
+    }
 
     getComp(name) {
         let {iconProps, iconStyle} = this.props;
