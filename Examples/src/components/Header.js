@@ -17,7 +17,7 @@ let styles = {
         backgroundColor: '#5E001B',
         paddingLeft: 5,
         paddingRight: 5,
-        paddingTop: 20
+        paddingTop: 25
     },
     cell: {
         flex: 1,
@@ -30,7 +30,7 @@ let styles = {
         justifyContent: 'center'
     },
     title: {
-        color: color,
+        color,
         fontSize: 16,
         textAlign: 'center',
         fontWeight: '700'
