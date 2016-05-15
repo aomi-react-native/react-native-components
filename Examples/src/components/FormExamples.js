@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 
 import {
-    Text
+    ScrollView,
+    Text,
+    View
 } from 'react-native';
 
-import Form, {Input, Switch, Slider, Picker} from 'react-native-components/form';
+import Form, {Input, Switch, Slider, Picker, DatePicker} from 'react-native-components/form';
 import Button from 'react-native-components/bootstrap/Button';
 
 /**
@@ -28,27 +30,32 @@ class FormExamples extends Component {
     }
 
     render() {
-        return (
-            <Form ref="form"
-                  style={{flex: 1,padding: 15}}>
-                <Input name="name"/>
-                <Switch name="switch"/>
-                <Slider name="slider"/>
-                <Picker name="picker">
-                    <Picker.Item label="Java"
-                                 value="java"
-                    />
-                    <Picker.Item label="JavaScript"
-                                 value="js"
-                    />
-                </Picker>
-                <Button bsStyle="primary"
-                        onPress={this.getFormData}>
-                    Get Form Data
-                </Button>
 
-                <Text>{this.state.formData}</Text>
-            </Form>
+        return (
+            <ScrollView style={{flex: 1}}>
+                <Form ref="form"
+                      style={{flex: 1,padding: 15}}>
+                    <Input name="name"/>
+                    <Switch name="switch"/>
+                    <Slider name="slider"/>
+                    <Picker name="picker">
+                        <Picker.Item label="Java"
+                                     value="java"
+                        />
+                        <Picker.Item label="JavaScript"
+                                     value="js"
+                        />
+                    </Picker>
+                    <DatePicker name="datePicker"/>
+
+                    <Button bsStyle="primary"
+                            onPress={this.getFormData}
+                            style={{marginTop: 20}}>
+                        Get Form Data
+                    </Button>
+                    <Text>{this.state.formData}</Text>
+                </Form>
+            </ScrollView>
         );
     }
 }
