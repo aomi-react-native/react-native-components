@@ -1,0 +1,8 @@
+docs
+Examples
+node_modules
+.idea
+.editorconfig
+.gitignore
+.flowconfig
+.watchmanconfig

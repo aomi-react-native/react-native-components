@@ -1,4 +1,7 @@
-import React, {Component, PropTypes} from 'react';
+import React, {
+    Component,
+    PropTypes
+} from 'react';
 
 import {
     StyleSheet,
@@ -58,7 +61,9 @@ class Home extends Component {
         return (
             <TouchableOpacity onPress={this.goExamples(item.key)}
                               style={styles.item}>
-                <Text style={styles.itemText}>&lt;{item.key}&gt;</Text>
+                <Text style={styles.itemText}>
+                    {`<${item.key}>`}
+                </Text>
             </TouchableOpacity>
         );
     }

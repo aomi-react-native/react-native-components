@@ -1,12 +1,14 @@
 import React, {
-    PropTypes
+  PropTypes
 } from 'react';
 
-import AbstractFormComponent from './AbstractFormComponent';
-
 import {
-    Picker as RNPicker
+  Picker as RNPicker,
+  Text
 } from 'react-native';
+
+import AbstractFormComponent from './AbstractFormComponent';
+import PickerContainer from './PickerContainer';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -14,49 +16,51 @@ import {
  */
 class Picker extends AbstractFormComponent {
 
-    static propTypes = {
-        children: PropTypes.node,
-        selectedValue: PropTypes.string
-    };
+  static propTypes = {
+    children: PropTypes.node,
+    selectedValue: PropTypes.string
+  };
 
-    static defaultProps = {
-        selectedValue: ''
-    };
+  static defaultProps = {
+    selectedValue: ''
+  };
 
-    constructor(props) {
-        super(props);
-        let {form, name} = props;
-        name && form && form.putFormValue(name, props.selectedValue);
-        ['onValueChange'].forEach(f => this[f] = this[f].bind(this));
-    }
+  constructor(props) {
+    super(props);
+    let {form, name} = props;
+    name && form && form.putFormValue(name, props.selectedValue);
+    ['onValueChange'].forEach(f => this[f] = this[f].bind(this));
+  }
 
-    state = {
-        selectedValue: this.props.selectedValue
-    };
+  state = {
+    selectedValue: this.props.selectedValue
+  };
 
-    onValueChange(selectedValue) {
-        this.setState({selectedValue});
-        let {form, name} = this.props;
-        name && form && form.putFormValue(name, selectedValue);
-    }
+  onValueChange(selectedValue) {
+    this.setState({selectedValue});
+    let {form, name} = this.props;
+    name && form && form.putFormValue(name, selectedValue);
+  }
 
-    getValue() {
-        return this.state.selectedValue;
-    }
+  getValue() {
+    return this.state.selectedValue;
+  }
 
-    valid() {
-        return false;
-    }
+  valid() {
+    return false;
+  }
 
-    render() {
-        let {children} = this.props;
-        return (
-            <RNPicker onValueChange={this.onValueChange}
-                      selectedValue={this.state.selectedValue}>
-                {children}
-            </RNPicker>
-        );
-    }
+  render() {
+    let {children} = this.props;
+    return (
+      <PickerContainer>
+        <RNPicker onValueChange={this.onValueChange}
+                  selectedValue={this.state.selectedValue}>
+          {children}
+        </RNPicker>
+      </PickerContainer>
+    );
+  }
 
 
 }
