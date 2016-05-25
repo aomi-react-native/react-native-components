@@ -14,7 +14,6 @@ class Container extends Component {
     let propertyNames = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
     propertyNames.forEach(func => {
       if (this.excludeFunc.indexOf(func) === -1 && typeof this[func] === 'function') {
-        console.log(func);
         this[func] = this[func].bind(this);
       }
     });
