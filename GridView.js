@@ -64,7 +64,7 @@ class GridView extends AbstractComponent {
     if (autoWidth) {
       const {width} = Dimensions.get('window');
       this.rowStyle = {
-        width: width / props.cols - (verticalSpacing ? verticalSpacing * cols : 0),
+        width: width / props.cols - (verticalSpacing ? verticalSpacing * (cols - 2) : 0),
         marginBottom: horizontalSpacing ? horizontalSpacing : 0,
         marginRight: verticalSpacing ? verticalSpacing : 0
       };
