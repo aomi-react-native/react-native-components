@@ -22,7 +22,6 @@ class Button extends Component {
   };
 
   static defaultProps = {
-    activeOpacity: .6,
     disabled: false
   };
 
