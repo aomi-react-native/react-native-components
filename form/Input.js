@@ -1,15 +1,11 @@
-import React, {
-  PropTypes
-} from 'react';
-
+import React, { PropTypes } from 'react';
 import AbstractFormComponent from './AbstractFormComponent';
-
 import {
   TextInput,
   View,
+  Text,
   StyleSheet
 } from 'react-native';
-
 import Icon from '../Icon';
 
 const styles = StyleSheet.create({
@@ -27,6 +23,9 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 35,
     padding: 4
+  },
+  label: {
+    justifyContent: 'center'
   }
 });
 const INPUT_PROPS_KEYS = [
@@ -98,6 +97,14 @@ class Input extends AbstractFormComponent {
      */
     inputStyle: TextInput.propTypes.style,
     /**
+     * input label
+     */
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    /**
+     * label props
+     */
+    labelProps: PropTypes.object,
+    /**
      * 字段名字,用于提交表单获取值
      */
     name: PropTypes.string,
@@ -156,8 +163,8 @@ class Input extends AbstractFormComponent {
     }
   }
 
-  getComp(name) {
-    let {iconProps, iconStyle} = this.props;
+  getComp(name, isLabel) {
+    let {iconProps, iconStyle, label, labelProps} = this.props;
     if (name) {
       if (typeof name === 'string') {
         return (
@@ -168,8 +175,18 @@ class Input extends AbstractFormComponent {
           </View>
         );
       }
-
       return name;
+    } else if (label && isLabel) {
+      if (typeof label === 'string') {
+        return (
+          <View style={styles.label}>
+            <Text {...labelProps}>
+              {label}
+            </Text>
+          </View>
+        )
+      }
+      return label;
     }
     return null;
   }
@@ -239,10 +256,10 @@ class Input extends AbstractFormComponent {
     return (
       <View {...newProps}
         style={[styles.container, style]}>
-        {this.getComp(before)}
+        {this.getComp(before, true)}
         <TextInput {...newInputProps}
           onChangeText={this.onChangeText}
-          style={[styles.input, style, inputStyle]}
+          style={[styles.input, inputStyle]}
           value={this.state.value}
         />
         {this.getComp(after)}
