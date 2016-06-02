@@ -41,6 +41,8 @@ class GridView extends AbstractComponent {
      */
     cells: PropTypes.array.isRequired,
 
+    enableEmptySections: PropTypes.bool,
+
     /**
      * 水平间距
      */
@@ -54,7 +56,8 @@ class GridView extends AbstractComponent {
 
   static defaultProps = {
     autoWidth: true,
-    cols: 1
+    cols: 1,
+    enableEmptySections: true
   };
 
   constructor(props) {
