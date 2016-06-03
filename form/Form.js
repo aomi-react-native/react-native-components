@@ -111,7 +111,7 @@ class Form extends Component {
         newProps.form = this;
         newProps.ref = field => {
           this.formFields[fieldName] = field;
-          child.props.ref && child.props.ref(field);
+          child.ref && child.ref(field);
         };
       }
 
