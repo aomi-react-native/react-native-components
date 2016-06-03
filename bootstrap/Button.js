@@ -19,6 +19,8 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: 12,
+    paddingRight: 12,
     overflow: 'hidden'
   },
   link: {
@@ -163,7 +165,6 @@ class Button extends Component {
     } else {
       temp.push(styles.button);
       temp.push({backgroundColor: Colors[bsStyle]});
-      temp.push(styles[bsStyle] || {});
     }
     temp.push(style);
     return (
