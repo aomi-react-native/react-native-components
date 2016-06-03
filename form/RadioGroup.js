@@ -35,10 +35,10 @@ class RadioGroup extends AbstractFormComponent {
 
   constructor(props) {
     super(props);
-    const {name, form} = props;
-    name && form && form.putFormValue(name, value);
+    const {name, form, selectedOption} = props;
+    name && form && form.putFormValue(name, selectedOption);
     this.state = {
-      selectedOption: props.selectedOption
+      selectedOption
     };
   }
 
