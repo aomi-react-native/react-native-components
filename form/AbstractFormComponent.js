@@ -1,6 +1,5 @@
-import {
-    Component
-} from 'react';
+
+import Component from '../AbstractComponent';
 
 /**
  * Form 组件接口定义
@@ -9,11 +8,11 @@ import {
  */
 class AbstractFormComponent extends Component {
 
-    getValue() {
-    }
+  getValue() {
+  }
 
-    valid() {
-    }
+  valid() {
+  }
 }
 
 export default AbstractFormComponent;
