@@ -7,15 +7,17 @@ import DatePicker from './DatePicker';
 import Form from './Form';
 import Input from './Input';
 import Picker from './Picker';
+import RadioGroup from './RadioGroup';
 import Slider from './Slider';
 import Switch from './Switch';
 
 export {
-    DatePicker,
-    Form as default,
-    Input,
-    Picker,
-    Slider,
-    Switch
+  DatePicker,
+  Form as default,
+  Input,
+  Picker,
+  RadioGroup,
+  Slider,
+  Switch
 };
 
