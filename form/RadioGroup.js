@@ -47,7 +47,7 @@ class RadioGroup extends AbstractFormComponent {
   onOptionSelected(selectedOption) {
     return () => {
       const {onOptionSelected, name, form} = this.props;
-      name && form && form.putFormValue(name, value);
+      name && form && form.putFormValue(name, selectedOption);
       this.setState({selectedOption});
       onOptionSelected && onOptionSelected(selectedOption);
     };
