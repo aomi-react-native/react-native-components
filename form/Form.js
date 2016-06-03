@@ -109,7 +109,10 @@ class Form extends Component {
       };
       if (fieldName && child.type.__proto__ === AbstractFormComponent) {
         newProps.form = this;
-        newProps.ref = field => this.formFields[fieldName] = field;
+        newProps.ref = field => {
+          this.formFields[fieldName] = field;
+          child.props.ref && child.props.ref(field);
+        };
       }
 
       newProps.children = this.renderChildren(child.props.children);
