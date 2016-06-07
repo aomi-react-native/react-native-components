@@ -5,10 +5,7 @@ import React, {
   isValidElement,
   cloneElement
 } from 'react';
-import {
-  View
-} from 'react-native';
-
+import { View } from 'react-native';
 import AbstractFormComponent from './AbstractFormComponent';
 
 /**
@@ -26,32 +23,32 @@ class Form extends Component {
    * 错误字段
    * @type {Array}
    */
-  errorFields = [];
+  errorFields = {};
 
   /**
    * 缺失字段
    * @type {Array}
    */
-  missFields = [];
+  missFields = {};
 
   /**
    * 表单数据
    * @type {{}}
    */
-  formData = {};
+  formValue = {};
 
   formFields = {};
 
   putFormValue(name, value) {
-    this.formData[name] = value;
+    this.formValue[name] = value;
   }
 
   putErrorField(name) {
-    this.errorFields.push(name);
+    this.errorFields[name] = null;
   }
 
   putMissField(name) {
-    this.missFields.push(name);
+    this.missFields[name] = null;
   }
 
   /**
@@ -59,10 +56,8 @@ class Form extends Component {
    * @param name 字段名字
    */
   deleteErrOrMissField(name) {
-    let miss = this.missFields.indexOf(name);
-    miss !== -1 && this.missFields.splice(miss, 1);
-    let error = this.errorFields.indexOf(name);
-    error !== -1 && this.errorFields.splice(error, 1);
+    this.errorFields[name] && delete this.errorFields[name];
+    this.missFields[name] && delete this.missFields[name];
   }
 
   /**
