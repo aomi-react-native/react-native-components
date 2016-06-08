@@ -44,11 +44,11 @@ class Form extends Component {
   }
 
   putErrorField(name) {
-    this.errorFields[name] = null;
+    this.errorFields[name] = name;
   }
 
   putMissField(name) {
-    this.missFields[name] = null;
+    this.missFields[name] = name;
   }
 
   /**
@@ -56,16 +56,16 @@ class Form extends Component {
    * @param name 字段名字
    */
   deleteErrOrMissField(name) {
-    this.errorFields[name] && delete this.errorFields[name];
-    this.missFields[name] && delete this.missFields[name];
+    this.errorFields[name] = null;
+    this.missFields[name] = null;
   }
 
   /**
    * 获取表单数据
    * @returns {{}}
    */
-  getFormData() {
-    return this.formData;
+  getFormValue() {
+    return this.formValue;
   }
 
   /**
@@ -74,8 +74,8 @@ class Form extends Component {
    */
   getErrorFields() {
     return {
-      miss: Object.keys(this.missFields),
-      error: Object.keys(this.errorFields)
+      miss: Object.keys(this.missFields).filter(key => this.missFields[key] !== null),
+      error: Object.keys(this.errorFields).filter(key => this.errorFields[key] !== null)
     };
   }
 
@@ -88,7 +88,10 @@ class Form extends Component {
       this.formFields[field].valid && this.formFields[field].valid();
     });
 
-    return Object.keys(this.missFields).length === 0 && Object.keys(this.errorFields).length === 0;
+    let miss = Object.keys(this.missFields).filter(key => this.missFields[key] !== null);
+    let error = Object.keys(this.errorFields).filter(key => this.errorFields[key] !== null);
+
+    return miss.length === 0 && error.length === 0;
   }
 
 
