@@ -1,6 +1,7 @@
 import React, {
   Component,
-  PropTypes
+  PropTypes,
+  cloneElement
 } from 'react';
 import {
   View,
@@ -96,7 +97,8 @@ class Button extends Component {
       fontSize,
       children,
       bsStyle,
-      color
+      color,
+      style
     } = this.props;
 
     let newChild = [],
@@ -154,11 +156,6 @@ class Button extends Component {
       }
     }
 
-    return newChild;
-  }
-
-  render() {
-    let {style, bsStyle, ...other} = this.props;
     let temp = [];
     if (bsStyle === 'link') {
       temp.push(styles.link);
@@ -167,10 +164,17 @@ class Button extends Component {
       temp.push({backgroundColor: Colors[bsStyle]});
     }
     temp.push(style);
+
+    return cloneElement(<View />, {
+      children: newChild,
+      style: temp
+    });
+  }
+
+  render() {
     return (
-      <BaseButton {...other}
+      <BaseButton {...this.props}
         renderContent={this.renderContent}
-        style={temp}
       />
     );
 
