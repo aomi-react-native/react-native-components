@@ -4,8 +4,10 @@ import React, {
 } from 'react';
 import {
   TouchableOpacity,
+  TouchableNativeFeedback,
   View,
-  Text
+  Text,
+  Platform
 } from 'react-native';
 
 /**
@@ -45,13 +47,13 @@ class Button extends Component {
       disabled,
       children,
       renderContent,
-      ...other
+      onPress
     } = this.props;
 
-    let Comp = disabled ? View : TouchableOpacity;
+    let Comp = disabled ? View : Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
-      <Comp {...other}>
+      <Comp onPress={onPress}>
         {this.renderContent(children, renderContent)}
       </Comp>
     );
