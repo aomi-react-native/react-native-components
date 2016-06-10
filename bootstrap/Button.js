@@ -29,15 +29,6 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center'
   },
-  default: {
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: '#ccc'
-  },
-  buttonText: {
-    margin: 5,
-    textAlign: 'center'
-  },
   textDefault: {
     color: '#333'
   },
@@ -121,7 +112,7 @@ class Button extends Component {
             key="beforeIcon"
             name={beforeIcon}
             size={fontSize}
-            style={[iconStyle,textStyle,iconProps.style]}
+            style={[iconStyle, textStyle, iconProps.style]}
           />
         );
       } else {
