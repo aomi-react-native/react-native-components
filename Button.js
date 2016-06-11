@@ -19,6 +19,7 @@ class Button extends Component {
   static propTypes = {
     activeOpacity: PropTypes.number,
     children: PropTypes.any,
+    Comp: PropTypes.any,
     disabled: PropTypes.bool,
     renderContent: PropTypes.func
   };
@@ -50,7 +51,12 @@ class Button extends Component {
       onPress
     } = this.props;
 
-    let Comp = disabled ? View : Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+    let Comp;
+    if (this.props.Comp) {
+      Comp = this.props.Comp;
+    } else {
+      Comp = disabled ? View : Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+    }
 
     return (
       <Comp onPress={onPress}>
