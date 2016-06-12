@@ -62,13 +62,7 @@ class ActionSheet extends Component {
     open: PropTypes.bool,
 
     //（字符串数组） - 一组按钮的标题（必选）
-    options: PropTypes.arrayOf(PropTypes.string),
-
-    // （整型） - 选项中取消按钮所在的位置（索引）
-    cancelButtonIndex: PropTypes.number,
-
-    // （整型） - 选项中删除按钮所在的位置（索引）
-    destructiveButtonIndex: PropTypes.number,
+    options: PropTypes.arrayOf(PropTypes.object).isRequired,
 
     // （字符串） - 弹出框顶部的标题
     title: PropTypes.string,
@@ -94,8 +88,8 @@ class ActionSheet extends Component {
   state = {};
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.open !== nextProps.open && nextProps.open) {
-      this.setState({open: true});
+    if (nextProps.open && !this.state.open) {
+      this.switchOpen();
     }
   }
 
@@ -118,21 +112,30 @@ class ActionSheet extends Component {
     duration: 500
   };
 
+  cancelPress() {
+    this.switchOpen();
+    const {cancelPress} = this.props;
+    cancelPress && cancelPress();
+  }
+
+
+  switchOpen() {
+    this.setState({open: !this.state.open});
+  }
+
   render() {
 
     let props = this.state.open ? this.contentShowAnimation : this.contentHideAnimation;
 
     const {
       options,
-      cancelButtonIndex,
-      destructiveButtonIndex,
       title,
-      cancel,
-      cancelPress
+      cancel
     } = this.props;
 
     return (
       <Dialog hideAnimation={this.hideAnimation}
+              onPress={this.switchOpen}
               showAnimation={this.showAnimation}
               statusBarAutoHidden={false}
               style={styles.container}
@@ -145,29 +148,32 @@ class ActionSheet extends Component {
             <View style={styles.title}>
               <Text style={styles.titleText}>{title}</Text>
             </View>
-            <ScrollView>
+            <ScrollView alwaysBounceVertical={false}>
               {
                 options.map((option, index)=> {
                   let tmp = null;
                   if (options.length - 1 === index) {
                     tmp = {
-                      borderBottomLeftRadius: 5,
-                      borderBottomRightRadius: 5
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10
                     };
                   }
                   return (
                     <Button color="#0977FF"
                             key={index}
+                            onPress={option.onPress}
                             style={[styles.button, tmp]}
                     >
-                      {option}
+                      {option.label}
                     </Button>
                   );
                 })
               }
             </ScrollView>
           </View>
-          <Button style={[styles.content, styles.cancel]}>
+          <Button onPress={this.cancelPress}
+                  style={[styles.content, styles.cancel]}
+          >
             <Text style={styles.cancelText}>
               {cancel}
             </Text>
