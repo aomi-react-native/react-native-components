@@ -5,7 +5,9 @@ import React, {
 import {
   View,
   Text,
-  StyleSheet
+  TouchableHighlight,
+  StyleSheet,
+  Platform
 } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import Icon from './Icon';
@@ -15,8 +17,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     height: 40,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
     alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10
@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
   },
   center: {
     flex: 1
+  },
+  rightContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 40,
+    alignItems: 'center'
   },
   right: {},
   text: {
@@ -121,20 +127,24 @@ class List extends AbstractComponent {
 
   renderRow(row:Item, index) {
     let {renderLeft, renderCenter, renderRight, disablePress, onPress} = row;
-    let lastStyle = {};
-    if (index === this.props.items.length - 1) {
-      lastStyle.borderBottomWidth = 0;
+    const rightStyle = {};
+    if (this.props.items.length - 1 !== index) {
+      rightStyle.borderBottomWidth = 0.5;
+      rightStyle.borderBottomColor = '#c8c8c8';
     }
     let Comp = disablePress ? View : Button;
     return (
       <Comp bsStyle="link"
+            Comp={Platform.OS === 'ios' ? TouchableHighlight : null}
             key={index}
             onPress={onPress}
-            style={[styles.row, lastStyle]}
+            style={styles.row}
       >
         {renderLeft ? renderLeft(row) : this.renderLeft(row)}
-        {renderCenter ? renderCenter(row) : this.renderCenter(row)}
-        {renderRight ? renderRight(row) : this.renderRight(row)}
+        <View style={[styles.rightContainer, rightStyle]}>
+          {renderCenter ? renderCenter(row) : this.renderCenter(row)}
+          {renderRight ? renderRight(row) : this.renderRight(row)}
+        </View>
       </Comp>
     );
   }
