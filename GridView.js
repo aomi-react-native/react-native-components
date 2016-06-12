@@ -8,7 +8,7 @@ import {
 import AbstractComponent from './AbstractComponent';
 
 
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   grid: {
@@ -31,10 +31,18 @@ const styles = StyleSheet.create({
 class GridView extends AbstractComponent {
   static propTypes = {
     /**
+     * 自动设置高度为宽度
+     */
+    autoHeightEqWidth: PropTypes.bool,
+
+    /**
      * 自动设置宽度
      */
     autoWidth: PropTypes.bool,
 
+    /**
+     * 列数
+     */
     cols: PropTypes.number,
     /**
      * grid cell 列表数组
@@ -51,47 +59,69 @@ class GridView extends AbstractComponent {
      * 渲染Grid Cell
      */
     renderCell: PropTypes.func.isRequired,
+    rowHasChanged: PropTypes.func,
     verticalSpacing: PropTypes.number
   };
 
   static defaultProps = {
     autoWidth: true,
     cols: 1,
-    enableEmptySections: true
+    enableEmptySections: true,
+    rowHasChanged: (r1, r2) => r1 !== r2
   };
 
   constructor(props) {
     super(props);
-
-    let {autoWidth, verticalSpacing, horizontalSpacing, cols} = this.props;
+    let {autoWidth, autoHeightEqWidth, verticalSpacing, horizontalSpacing, cols, cells, rowHasChanged} = this.props;
     if (autoWidth) {
-      const {width} = Dimensions.get('window');
+      const spacingWidth = verticalSpacing ? verticalSpacing * cols : 0;
+      const rowWidth = (width - spacingWidth) / cols;
       this.rowStyle = {
-        width: width / props.cols - (verticalSpacing ? verticalSpacing * (cols - 2) : 0),
+        width: rowWidth,
         marginBottom: horizontalSpacing ? horizontalSpacing : 0,
         marginRight: verticalSpacing ? verticalSpacing : 0
       };
+      if (autoHeightEqWidth) {
+        //noinspection JSSuspiciousNameCombination
+        this.rowStyle.height = rowWidth;
+      }
     }
+    const ds = new ListView.DataSource({rowHasChanged});
+    
+    this.state = {
+      dataSource: ds.cloneWithRows(cells)
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.cells)});
   }
 
   rowStyle;
+
+  getCellSize() {
+    return {
+      width: this.rowStyle.width,
+      height: this.rowStyle.height
+    };
+  }
 
   renderRow(rowData, sectionID:Number, rowID:Number) {
     let {renderCell} = this.props;
     return (
       <View style={this.rowStyle}>
-        {renderCell(rowData, sectionID, rowID)}
+        {renderCell(rowData, sectionID, rowID, this.getCellSize())}
       </View>
     );
   }
 
   render() {
-    let {cells, ...other} = this.props;
+    let {...other} = this.props;
 
     return (
       <ListView {...other}
         contentContainerStyle={styles.grid}
-        dataSource={ds.cloneWithRows(cells)}
+        dataSource={this.state.dataSource}
         renderRow={this.renderRow}
       />
     );
