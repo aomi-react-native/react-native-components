@@ -48,7 +48,8 @@ class Button extends Component {
       disabled,
       children,
       renderContent,
-      onPress
+      onPress,
+      activeOpacity
     } = this.props;
 
     let Comp;
@@ -59,7 +60,9 @@ class Button extends Component {
     }
 
     return (
-      <Comp onPress={onPress}>
+      <Comp activeOpacity={activeOpacity}
+            onPress={onPress}
+      >
         {this.renderContent(children, renderContent)}
       </Comp>
     );

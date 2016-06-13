@@ -97,7 +97,11 @@ class GridView extends AbstractComponent {
     this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.cells)});
   }
 
+  // refs
+  listView;
+  
   rowStyle;
+  
 
   getCellSize() {
     return {
@@ -122,6 +126,7 @@ class GridView extends AbstractComponent {
       <ListView {...other}
         contentContainerStyle={styles.grid}
         dataSource={this.state.dataSource}
+        ref={listView => this.listView = listView}
         renderRow={this.renderRow}
       />
     );

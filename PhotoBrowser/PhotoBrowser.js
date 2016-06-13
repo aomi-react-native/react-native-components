@@ -1,14 +1,18 @@
 import React, { PropTypes } from 'react';
-import Component from './AbstractComponent';
+import Component from '../AbstractComponent';
 import {
   View,
   Text,
   StyleSheet,
-  Image
+  Image,
+  Dimensions
 } from 'react-native';
-import GridView from './GridView';
-import Button from './bootstrap/Button';
-import Icon from './Icon';
+import GridView from '../GridView';
+import Dialog from '../Dialog';
+import Button from '../bootstrap/Button';
+import Icon from '../Icon';
+import { View as AnimatableView } from 'react-native-animatable';
+import FullScreen from './FullScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,8 +34,14 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 10,
     backgroundColor: 'transparent'
+  },
+  fullScreen: {
+    flex: 1,
+    backgroundColor: '#000'
   }
 });
+
+const {width, height} = Dimensions.get('window');
 
 /**
  * 照片浏览器
@@ -41,44 +51,32 @@ const styles = StyleSheet.create({
 class PhotoBrowser extends Component {
 
   static propTypes = {
-    hideAnimation: PropTypes.object,
+    headerHeight: PropTypes.number,
+    onEnterFullScreen: PropTypes.func,
     renderHeader: PropTypes.func,
     mediaList: PropTypes.array,
-    showAnimation: PropTypes.object,
-    singleSelected: PropTypes.bool,
-    title: PropTypes.string
+    singleSelected: PropTypes.bool
   };
 
   static defaultProps = {
-    hideAnimation: {
-      animation: 'fadeIn'
-    },
-    showAnimation: {
-      animation: 'fadeOut'
-    },
-    singleSelected: false,
-    title: 'Photos'
+    headerHeight: 60,
+    singleSelected: false
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      inChoice: false,
-      selected: []
-    };
-  }
+  // 数据状态
+  state = {
+    // 是否正在选择图片
+    inChoice: false,
+    // 当前选择的图片
+    selected: [],
+    // 是否正在全屏浏览
+    fullBrowser: false,
+    // 全屏浏览开始第一张图片
+    startIndex: 0
+  };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.open && !this.state.open) {
-      this.switchOpen();
-    }
-  }
-
+  // 上一次选择的图片
   prevSelected = [];
-
-  switchOpen() {
-    this.setState({open: !this.state.open});
-  }
 
   /**
    * 进入选择模式
@@ -94,6 +92,43 @@ class PhotoBrowser extends Component {
     this.setState({inChoice: false});
   }
 
+  /**
+   * 获取选择的图片
+   * @return {Array}
+   */
+  getSelected() {
+    return this.state.selected;
+  }
+
+  /**
+   * 进入全屏浏览
+   * @param startIndex 浏览第一张图片下标
+   */
+  enterFullBrowser(startIndex) {
+    this.setState({
+      fullBrowser: true,
+      startIndex: startIndex * 1
+    }, ()=> {
+      const {onEnterFullScreen} = this.props;
+      onEnterFullScreen && onEnterFullScreen();
+    });
+  }
+
+  /**
+   * 退出全屏浏览
+   */
+  exitFullBrowser() {
+    this.setState({
+      fullBrowser: false
+    });
+  }
+
+  /**
+   * 用于选择图片时更新ListView
+   * @param prevRow row
+   * @param nextRow row
+   * @return {boolean} 是否变动
+   */
   rowHasChanged(prevRow, nextRow) {
     const {inChoice, selected} = this.state;
     if (inChoice) {
@@ -105,23 +140,36 @@ class PhotoBrowser extends Component {
     return prevRow !== nextRow;
   }
 
-  cellPress(row) {
+  /**
+   * grid 元素点击,
+   * 如果正在选择图片,则更新选择状态,反之进入全屏浏览模式
+   * @param row 当前row
+   * @param rowId id
+   * @return {function()} 点击执行函数
+   */
+  cellPress(row, rowId = 0) {
     return () => {
       let {inChoice, selected} = this.state;
       this.prevSelected = selected;
       if (inChoice) {
         if (selected.indexOf(row) > -1) {
+          // 目标已经选择,再次点击,删除选择
           selected.splice(selected.indexOf(row), 1);
         } else {
           if (this.props.singleSelected) {
+            // 单选初始化
             selected = [];
           }
           selected.push(row);
         }
         this.setState({selected});
+      } else {
+        // 进入全屏模式
+        this.enterFullBrowser(rowId);
       }
     };
   }
+
 
   renderHeader() {
     return null;
@@ -131,7 +179,7 @@ class PhotoBrowser extends Component {
     const {inChoice, selected} = this.state;
     return (
       <Button bsStyle="link"
-              onPress={this.cellPress(source)}
+              onPress={this.cellPress(source, rowID)}
               style={styles.cell}
       >
         <Image source={source}
@@ -149,6 +197,7 @@ class PhotoBrowser extends Component {
       </Button>
     );
   }
+
 
   render() {
     const {
@@ -170,6 +219,16 @@ class PhotoBrowser extends Component {
                   style={styles.gridView}
                   verticalSpacing={1}
         />
+        <Dialog visible={this.state.fullBrowser}
+                style={styles.fullScreen}
+        >
+          <AnimatableView animation={this.state.headerAnimation}>
+            {renderHeader ? renderHeader() : this.renderHeader()}
+          </AnimatableView>
+          <FullScreen mediaList={mediaList}
+                      startIndex={this.state.startIndex}
+          />
+        </Dialog>
       </View>
     );
   }
