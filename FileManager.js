@@ -15,7 +15,7 @@ const SitbRNFileManager = NativeModules.SitbRNFileManager;
 
 class RNFileManager {
 
-  static getPhotoByUri(uri:String) {
+  static getPhotoFromCameraRoll(uri:String) {
     if (Platform.OS === 'android') {
       return SitbRNFileManager.getPhotoByContentUri(uri);
     }
