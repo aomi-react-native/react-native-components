@@ -5,9 +5,7 @@ import React, {
 import {
   View,
   Text,
-  TouchableHighlight,
   StyleSheet,
-  Platform
 } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import Icon from './Icon';
@@ -135,7 +133,6 @@ class List extends AbstractComponent {
     let Comp = disablePress ? View : Button;
     return (
       <Comp bsStyle="link"
-            Comp={Platform.OS === 'ios' ? TouchableHighlight : null}
             key={index}
             onPress={onPress}
             style={styles.row}
