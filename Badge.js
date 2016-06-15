@@ -50,6 +50,10 @@ class Badge extends Component {
 
   renderBadge(badgeContent, badgeContainerStyle, badgeStyle) {
 
+    if (!badgeContent || badgeContent === 0) {
+      return null;
+    }
+
     let children;
     if (badgeContent instanceof Component) {
       children = badgeContent;
