@@ -44,6 +44,8 @@ class GridView extends AbstractComponent {
      * 列数
      */
     cols: PropTypes.number,
+
+    cellStyle: View.propTypes.style,
     /**
      * grid cell 列表数组
      */
@@ -87,7 +89,7 @@ class GridView extends AbstractComponent {
       }
     }
     const ds = new ListView.DataSource({rowHasChanged});
-    
+
     this.state = {
       dataSource: ds.cloneWithRows(cells)
     };
@@ -99,9 +101,9 @@ class GridView extends AbstractComponent {
 
   // refs
   listView;
-  
+
   rowStyle;
-  
+
 
   getCellSize() {
     return {
@@ -111,9 +113,9 @@ class GridView extends AbstractComponent {
   }
 
   renderRow(rowData, sectionID:Number, rowID:Number) {
-    let {renderCell} = this.props;
+    let {renderCell, cellStyle} = this.props;
     return (
-      <View style={this.rowStyle}>
+      <View style={[cellStyle, this.rowStyle]}>
         {renderCell(rowData, sectionID, rowID, this.getCellSize())}
       </View>
     );
