@@ -20,6 +20,7 @@ class Button extends Component {
     activeOpacity: PropTypes.number,
     children: PropTypes.any,
     Comp: PropTypes.any,
+    containerStyle: View.propTypes.style,
     disabled: PropTypes.bool,
     renderContent: PropTypes.func
   };
@@ -48,8 +49,12 @@ class Button extends Component {
       disabled,
       children,
       renderContent,
+      containerStyle,
       onPress,
-      activeOpacity
+      activeOpacity,
+      onHideUnderlay,
+      onShowUnderlay,
+      underlayColor
     } = this.props;
 
     let Comp;
@@ -60,8 +65,12 @@ class Button extends Component {
     }
 
     return (
-      <Comp activeOpacity={activeOpacity}
+      <Comp underlayColor={underlayColor}
+            onHideUnderlay={onHideUnderlay}
+            onShowUnderlay={onShowUnderlay}
+            activeOpacity={activeOpacity}
             onPress={onPress}
+            style={containerStyle}
       >
         {this.renderContent(children, renderContent)}
       </Comp>
