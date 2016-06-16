@@ -150,7 +150,7 @@ class PhotoBrowser extends Component {
   cellPress(row, rowId = 0) {
     return () => {
       let {inChoice, selected} = this.state;
-      this.prevSelected = selected;
+      this.prevSelected = selected.slice();
       if (inChoice) {
         if (selected.indexOf(row) > -1) {
           // 目标已经选择,再次点击,删除选择
