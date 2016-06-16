@@ -142,26 +142,19 @@ class Input extends AbstractFormComponent {
     defaultValue: '',
     iconProps: {},
     underlineColorAndroid: 'transparent',
-    validate: true,
-    value: ''
+    validate: true
   };
 
   constructor(props) {
     super(props);
     ['onChangeText'].forEach(f => this[f] = this[f].bind(this));
     let {name, form} = props;
-    name && form && form.putFormValue(name, props.value || props.defaultValue);
+    name && form && form.putFormValue(name, props.defaultValue);
+
+    this.state.value = props.defaultValue || '';
   }
 
-  state = {
-    value: this.props.value || this.props.defaultValue
-  };
-
-  componentWillUpdate(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      this.onChangeText(nextProps.value);
-    }
-  }
+  state = {};
 
   getComp(name, isLabel) {
     let {iconProps, iconStyle, label, labelProps} = this.props;
@@ -252,7 +245,6 @@ class Input extends AbstractFormComponent {
       newProps[key] && delete newProps[key];
     });
 
-
     return (
       <View {...newProps}
         style={[styles.container, style]}>
@@ -260,7 +252,6 @@ class Input extends AbstractFormComponent {
         <TextInput {...newInputProps}
           onChangeText={this.onChangeText}
           style={[styles.input, inputStyle]}
-          value={this.state.value}
         />
         {this.getComp(after)}
       </View>
