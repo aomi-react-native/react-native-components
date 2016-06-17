@@ -119,10 +119,9 @@ class PhotoBrowser extends Component {
     this.setState({
       fullBrowser: true,
       startIndex: startIndex * 1
-    }, ()=> {
-      const {onEnterFullScreen} = this.props;
-      onEnterFullScreen && onEnterFullScreen();
     });
+    const {onEnterFullScreen} = this.props;
+    onEnterFullScreen && onEnterFullScreen();
   }
 
   /**
