@@ -75,6 +75,12 @@ class PhotoBrowser extends Component {
     startIndex: 0
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.mediaList !== this.props.mediaList) {
+      this.clearSelected();
+    }
+  }
+
   // 上一次选择的图片
   prevSelected = [];
 
@@ -98,6 +104,11 @@ class PhotoBrowser extends Component {
    */
   getSelected() {
     return this.state.selected;
+  }
+
+  clearSelected() {
+    this.prevSelected = [];
+    this.setState({selected: []});
   }
 
   /**
