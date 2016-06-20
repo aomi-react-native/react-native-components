@@ -5,6 +5,7 @@ import React, {
 import {
   TouchableOpacity,
   TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   Text,
   View,
   Platform
@@ -17,16 +18,15 @@ import {
 class Button extends Component {
 
   static propTypes = {
-    activeOpacity: PropTypes.number,
-    children: PropTypes.any,
+    ...TouchableWithoutFeedback.propTypes,
     Comp: PropTypes.any,
+    children: PropTypes.any,
     containerStyle: View.propTypes.style,
     disabled: PropTypes.bool,
     renderContent: PropTypes.func
   };
 
   static defaultProps = {
-    Comp: Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback,
     disabled: false
   };
 
@@ -46,10 +46,9 @@ class Button extends Component {
 
 
   render() {
-    let {
+    const {
       disabled,
       children,
-      Comp,
       renderContent,
       containerStyle,
       onPress,
@@ -59,14 +58,19 @@ class Button extends Component {
       underlayColor
     } = this.props;
 
+    let Comp = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+    if (this.props.Comp) {
+      Comp = this.props.Comp;
+    }
+
     return (
       <Comp activeOpacity={activeOpacity}
             disabled={disabled}
-            underlayColor={underlayColor}
             onHideUnderlay={onHideUnderlay}
-            onShowUnderlay={onShowUnderlay}
             onPress={onPress}
+            onShowUnderlay={onShowUnderlay}
             style={containerStyle}
+            underlayColor={underlayColor}
       >
         {this.renderContent(children, renderContent)}
       </Comp>
