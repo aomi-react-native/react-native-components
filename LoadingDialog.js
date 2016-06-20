@@ -14,7 +14,8 @@ class LoadingDialog extends AbstractComponent {
     hideAnimation: PropTypes.object,
     loadProps: PropTypes.object,
     minShowTime: PropTypes.number,
-    showAnimation: PropTypes.object
+    showAnimation: PropTypes.object,
+    statusBarAutoHidden: PropTypes.bool
   };
 
   static defaultProps = {
@@ -28,7 +29,8 @@ class LoadingDialog extends AbstractComponent {
     },
     showAnimation: {
       animation: 'fadeIn'
-    }
+    },
+    statusBarAutoHidden: false
   };
 
   constructor(props) {
