@@ -40,7 +40,7 @@ class SearchBar extends Component {
     this.searchText = text;
     const {onSearch} = this.props;
     onSearch && onSearch({
-      event: 'inputChange',
+      type: 'inputChange',
       value: this.searchText
     });
   }
