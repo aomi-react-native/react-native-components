@@ -41,6 +41,9 @@ class LoadingDialog extends AbstractComponent {
 
     setTimeout(()=> {
       this.canClose = true;
+      if (!this.props.visible) {
+        this.close();
+      }
     }, props.minShowTime);
   }
 
