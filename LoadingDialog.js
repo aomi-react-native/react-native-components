@@ -1,32 +1,6 @@
 import React, { PropTypes } from 'react';
-import {
-  View,
-  Text,
-  Platform,
-  StyleSheet,
-  ProgressBarAndroid,
-  ActivityIndicatorIOS
-} from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import Dialog from './Dialog';
-
-const styles = StyleSheet.create({
-  content: {
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.7)'
-  },
-  text: {
-    color: '#FFF'
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,.4)'
-  }
-});
 
 /**
  * 全屏加载弹出框
@@ -40,9 +14,7 @@ class LoadingDialog extends AbstractComponent {
     hideAnimation: PropTypes.object,
     loadProps: PropTypes.object,
     minShowTime: PropTypes.number,
-    showAnimation: PropTypes.object,
-    statusBarAutoHidden: PropTypes.bool,
-    style: View.propTypes.style
+    showAnimation: PropTypes.object
   };
 
   static defaultProps = {
@@ -56,8 +28,7 @@ class LoadingDialog extends AbstractComponent {
     },
     showAnimation: {
       animation: 'fadeIn'
-    },
-    statusBarAutoHidden: false
+    }
   };
 
   constructor(props) {
@@ -75,7 +46,6 @@ class LoadingDialog extends AbstractComponent {
 
   taskId;
   canClose = false;
-
 
   componentWillReceiveProps(nextProps) {
     if (this.props.visible !== nextProps.visible) {
@@ -97,51 +67,14 @@ class LoadingDialog extends AbstractComponent {
     }
   }
 
-  renderLoading() {
-    let content = null;
-    const {loadProps, children} = this.props;
-    if (Platform.OS === 'android') {
-      content = (
-        <ProgressBarAndroid {...loadProps} />
-      );
-    }
-    if (Platform.OS === 'ios') {
-      content = (
-        <ActivityIndicatorIOS {...loadProps}/>
-      );
-    }
-    return (
-      <View style={[styles.content]}>
-        {content}
-        <View style={{height: 5}}/>
-        {
-          typeof children === 'string' ? (
-            <Text style={styles.text}>
-              {children}
-            </Text>
-          ) : children
-        }
-      </View>
-    );
-
-
-  }
-
-  handlePress() {
-    console.log('loading dialog press');
-  }
-
   render() {
-    let {style, ...other} = this.props;
-
+    let {children, ...other} = this.props;
     return (
       <Dialog {...other}
-        onPress={this.handlePress}
-        style={[styles.container, style]}
+        loadChildren={children}
+        loading
         visible={this.state.visible}
-      >
-        {this.renderLoading()}
-      </Dialog>
+      />
     );
   }
 }

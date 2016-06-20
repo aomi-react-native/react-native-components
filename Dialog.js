@@ -1,15 +1,18 @@
 import React, {
-  Component,
   PropTypes
 } from 'react';
-import  {
+import {
   StyleSheet,
   View,
+  Text,
   StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform,
+  ProgressBarAndroid,
+  ActivityIndicatorIOS
 } from 'react-native';
 
-import AbstractComponent from './AbstractComponent';
+import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 
 
@@ -20,6 +23,21 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0
+  },
+  loadingStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,.4)'
+  },
+  content: {
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.7)'
+  },
+  text: {
+    color: '#FFF'
   }
 });
 
@@ -27,14 +45,16 @@ const styles = StyleSheet.create({
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/24
  */
-class Dialog extends AbstractComponent {
+class Dialog extends Component {
 
   static propTypes = {
-    style: View.propTypes.style,
-    visible: PropTypes.bool,
     hideAnimation: PropTypes.object,
+    loadProps: PropTypes.object,
+    loading: PropTypes.bool,
     showAnimation: PropTypes.object,
     statusBarAutoHidden: PropTypes.bool,
+    style: View.propTypes.style,
+    visible: PropTypes.bool,
     onPress: PropTypes.func
   };
 
@@ -71,12 +91,12 @@ class Dialog extends AbstractComponent {
     if (visible) {
       if (statusBarAutoHidden) {
         this.statusBarHidden = true;
-        StatusBar.setHidden(true)
+        StatusBar.setHidden(true);
       }
     } else {
       if (this.statusBarHidden) {
         this.statusBarHidden = false;
-        StatusBar.setHidden(false)
+        StatusBar.setHidden(false);
       }
     }
 
@@ -85,6 +105,33 @@ class Dialog extends AbstractComponent {
       animating: false
     });
 
+  }
+
+  renderLoading(loadProps, loadChildren) {
+    let content = null;
+    if (Platform.OS === 'android') {
+      content = (
+        <ProgressBarAndroid {...loadProps} />
+      );
+    }
+    if (Platform.OS === 'ios') {
+      content = (
+        <ActivityIndicatorIOS {...loadProps}/>
+      );
+    }
+    return (
+      <View style={styles.content}>
+        {content}
+        <View style={{height: 5}}/>
+        {
+          typeof loadChildren === 'string' ? (
+            <Text style={styles.text}>
+              {loadChildren}
+            </Text>
+          ) : loadChildren
+        }
+      </View>
+    );
   }
 
   render() {
@@ -96,30 +143,33 @@ class Dialog extends AbstractComponent {
       style,
       showAnimation,
       hideAnimation,
+      loading,
+      loadProps,
+      loadChildren
     } = this.props;
 
     if (!visible && !this.state.visible) {
-      return <View />
+      return <View />;
     }
 
     let animation = visible ? showAnimation : hideAnimation;
 
+    let tmp = loading ? styles.loadingStyle : null;
+
     return (
-      <AnimatableView
-        {...animation}
-        style={[styles.container, style]}
+      <AnimatableView {...animation}
         onAnimationBegin={this.handleAnimationBegin}
         onAnimationEnd={this.handleAnimationEnd}
+        style={[styles.container, tmp, style]}
       >
         <TouchableOpacity
           activeOpacity={activeOpacity}
           onPress={this.handlePress}
           style={styles.container}
         />
-        {children}
+        {loading ? this.renderLoading(loadProps, loadChildren) : children}
       </AnimatableView>
-    )
-
+    );
   }
 }
 
