@@ -5,7 +5,6 @@ import React, {
 import {
   TouchableOpacity,
   TouchableNativeFeedback,
-  View,
   Text,
   Platform
 } from 'react-native';
@@ -26,6 +25,7 @@ class Button extends Component {
   };
 
   static defaultProps = {
+    Comp: Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback,
     disabled: false
   };
 
@@ -48,6 +48,7 @@ class Button extends Component {
     let {
       disabled,
       children,
+      Comp,
       renderContent,
       containerStyle,
       onPress,
@@ -57,18 +58,12 @@ class Button extends Component {
       underlayColor
     } = this.props;
 
-    let Comp;
-    if (this.props.Comp) {
-      Comp = this.props.Comp;
-    } else {
-      Comp = disabled ? View : Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
-    }
-
     return (
-      <Comp underlayColor={underlayColor}
+      <Comp activeOpacity={activeOpacity}
+            disabled={disabled}
+            underlayColor={underlayColor}
             onHideUnderlay={onHideUnderlay}
             onShowUnderlay={onShowUnderlay}
-            activeOpacity={activeOpacity}
             onPress={onPress}
             style={containerStyle}
       >
