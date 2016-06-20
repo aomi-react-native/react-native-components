@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Text,
+  View,
   Platform
 } from 'react-native';
 
