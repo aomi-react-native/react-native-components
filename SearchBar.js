@@ -34,10 +34,28 @@ class SearchBar extends Component {
     onSearch: PropTypes.func
   };
 
+  searchText = '';
+
+  handleChangeText(text) {
+    this.searchText = text;
+    const {onSearch} = this.props;
+    onSearch && onSearch({
+      event: 'inputChange',
+      value: this.searchText
+    });
+  }
+
+  handleSubmit() {
+    const {onSearch} = this.props;
+    onSearch && onSearch({
+      event: 'inputSubmit',
+      value: this.searchText
+    });
+  }
+
   render() {
 
     const {
-      onSearch,
       placeholder
     } = this.props;
 
@@ -54,7 +72,8 @@ class SearchBar extends Component {
                  clearButtonMode="while-editing"
                  enablesReturnKeyAutomatically
                  iconProps={iconProps}
-                 onChangeText={onSearch}
+                 onChangeText={this.handleChangeText}
+                 onSubmitEditing={this.handleSubmit}
                  placeholder={placeholder}
                  returnKeyType="search"
                  style={styles.input}
