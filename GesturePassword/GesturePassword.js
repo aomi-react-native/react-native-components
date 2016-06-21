@@ -213,14 +213,6 @@ class GesturePassword extends Component {
       prevPageY = center.pageY;
     }
 
-    // 绘制结束
-    // if (isEnd) {
-    //   if (value && line && line.startX && !line.endX) {
-    //     line.endX = center.pageX;
-    //     line.endY = center.pageY;
-    //   }
-    // }
-
     if (this.password.length === this.props.passwordValues.length || isEnd) {
       this.reset();
       const {onComplete} = this.props;
@@ -274,18 +266,19 @@ class GesturePassword extends Component {
       circleSelectedStyle,
       circleStyle,
       circleContainerStyle,
-      wrongColor
+      wrongColor,
+      innerCircleStyle
     } = this.props;
 
     let selected = this.password.indexOf(`${value}`) > -1;
 
     let circleColor,
-      innerCircleStyle;
+      innerCircleStyleTmp;
     if (!this.state.success && selected) {
       circleColor = {
         borderColor: wrongColor
       };
-      innerCircleStyle = {
+      innerCircleStyleTmp = {
         backgroundColor: wrongColor
       };
     }
@@ -293,7 +286,7 @@ class GesturePassword extends Component {
 
     return (
       <Circle circleStyle={[circleStyle, circleColor]}
-              innerCircleStyle={innerCircleStyle}
+              innerCircleStyle={[innerCircleStyle, innerCircleStyleTmp]}
               key={index}
               ref={circle => this.valueComponents[value] = circle}
               selected={selected}
