@@ -42,6 +42,10 @@ class Line extends Component {
       endY
     } = this.props;
 
+    if (startX === 0 && startY === 0) {
+      return null;
+    }
+
     let transform = utils.calTransform(startX, startY, endX, endY);
 
     const lineStyle = {

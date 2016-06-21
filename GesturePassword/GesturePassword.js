@@ -35,12 +35,17 @@ class GesturePassword extends Component {
     passwordValues: PropTypes.array,
     style: View.propTypes.style,
     successColor: PropTypes.string,
-    wrongColor: PropTypes.string
+    wrongColor: PropTypes.string,
+    onComplete: PropTypes.func,
+    onEnd: PropTypes.func,
+    onMove: PropTypes.func,
+    onStart: PropTypes.func
   };
 
   static defaultProps = {
     passwordValues: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    successColor: '#15617F'
+    successColor: '#15617F',
+    wrongColor: '#FF0000'
   };
 
   state = {
@@ -57,20 +62,13 @@ class GesturePassword extends Component {
 
   componentWillMount() {
     this.panResponder = PanResponder.create({
-      // 要求成为响应者：
       onStartShouldSetPanResponder: () => true,
       onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
-      onPanResponderGrant: (event, gestureState) => {
-        this.onStart(event, gestureState);
-      },
-      onPanResponderMove: (event, gestureState) => {
-        this.onMove(event, gestureState);
-      },
-      onPanResponderRelease: (event, gestureState) => {
-        this.onEnd(event, gestureState);
-      }
+      onPanResponderGrant: this.onStart,
+      onPanResponderMove: this.onMove,
+      onPanResponderRelease: this.onEnd
     });
   }
 
@@ -96,8 +94,6 @@ class GesturePassword extends Component {
     Object.keys(this.valueComponents).forEach(key => {
       // noinspection Eslint
       this.valueComponents[key].measure((x, y, width, height, pageX, pageY)=> {
-        console.log('x=%o,y=%o,width=%o,height=%o, pageX=%o, pageY=%o', x, y, width, height, pageX, pageY);
-
         // noinspection Eslint
         this.valuePosition[key] = {
           min: {
@@ -116,6 +112,31 @@ class GesturePassword extends Component {
 
       });
     });
+  }
+
+  /**
+   * 获取手势密码
+   * @return {string} 手势密码
+   */
+  getPassword() {
+    return this.password.join('');
+  }
+
+  setSuccess(success) {
+    this.setState({success});
+  }
+
+  reset() {
+    let state = {
+      prevPageX: 0,
+      prevPageY: 0,
+      // 当前x
+      pageX: 0,
+      // 当前y
+      pageY: 0,
+      success: true
+    };
+    this.setState(state);
   }
 
   /**
@@ -139,14 +160,20 @@ class GesturePassword extends Component {
    * 如果给定的点在密码区域内,则更新密码,同时更新上一个坐标点位置和当前坐标值
    * @param pageX x
    * @param pageY y
+   * @param isStart 是否开始绘制
    * @param isEnd 是否是绘制结束
    */
-  handle(pageX, pageY, isEnd) {
+  handle(pageX, pageY, isStart, isEnd) {
     let value = this.inCircle(pageX, pageY);
 
     const {center} = this.valuePosition[value] || {};
 
     let {prevPageX, prevPageY, lines} = this.state;
+    if (isStart) {
+      this.reset();
+      this.password = [];
+      lines = [];
+    }
 
     let line = lines[lines.length - 1] || {};
 
@@ -187,11 +214,18 @@ class GesturePassword extends Component {
     }
 
     // 绘制结束
-    if (isEnd) {
-      if (value && line && line.startX && !line.endX) {
-        line.endX = center.pageX;
-        line.endY = center.pageY;
-      }
+    // if (isEnd) {
+    //   if (value && line && line.startX && !line.endX) {
+    //     line.endX = center.pageX;
+    //     line.endY = center.pageY;
+    //   }
+    // }
+
+    if (this.password.length === this.props.passwordValues.length || isEnd) {
+      this.reset();
+      const {onComplete} = this.props;
+      onComplete && onComplete(this.getPassword());
+      return;
     }
 
     this.setState({
@@ -203,23 +237,25 @@ class GesturePassword extends Component {
     });
   }
 
-  onStart(event) {
+  onStart(event, gestureState) {
+    const {onStart} = this.props;
     const {pageX, pageY} = event.nativeEvent;
-    this.setState({
-      lines: []
-    });
-    this.password = [];
-    this.handle(pageX, pageY);
+    this.handle(pageX, pageY, true, false);
+    onStart && onStart(event, gestureState);
   }
 
-  onMove(event) {
+  onMove(event, gestureState) {
+    const {onMove} = this.props;
     const {pageX, pageY} = event.nativeEvent;
     this.handle(pageX, pageY);
+    onMove && onMove(event, gestureState);
   }
 
-  onEnd(event) {
+  onEnd(event, gestureState) {
+    const {onEnd} = this.props;
     const {pageX, pageY} = event.nativeEvent;
-    this.handle(pageX, pageY, true);
+    this.handle(pageX, pageY, false, true);
+    onEnd && onEnd(event, gestureState);
   }
 
   handleLayout(event) {
@@ -237,14 +273,30 @@ class GesturePassword extends Component {
     const {
       circleSelectedStyle,
       circleStyle,
-      circleContainerStyle
+      circleContainerStyle,
+      wrongColor
     } = this.props;
 
+    let selected = this.password.indexOf(`${value}`) > -1;
+
+    let circleColor,
+      innerCircleStyle;
+    if (!this.state.success && selected) {
+      circleColor = {
+        borderColor: wrongColor
+      };
+      innerCircleStyle = {
+        backgroundColor: wrongColor
+      };
+    }
+
+
     return (
-      <Circle circleStyle={circleStyle}
+      <Circle circleStyle={[circleStyle, circleColor]}
+              innerCircleStyle={innerCircleStyle}
               key={index}
               ref={circle => this.valueComponents[value] = circle}
-              selected={this.password.indexOf(`${value}`) > -1}
+              selected={selected}
               selectedStyle={circleSelectedStyle}
               style={[circleContainerStyle, this.state.cellSize]}
       />

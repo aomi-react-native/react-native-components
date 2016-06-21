@@ -38,6 +38,7 @@ class Circle extends Component {
 
   static propTypes = {
     circleStyle: View.propTypes.style,
+    innerCircleStyle: View.propTypes.style,
     selected: PropTypes.bool,
     selectedStyle: View.propTypes.style,
     style: View.propTypes.style
@@ -52,7 +53,7 @@ class Circle extends Component {
 
   render() {
 
-    const {selected, style, circleStyle} = this.props;
+    const {selected, style, circleStyle, innerCircleStyle} = this.props;
 
     return (
       <View style={[styles.container, style]}>
@@ -61,7 +62,7 @@ class Circle extends Component {
         >
           {
             selected ? (
-              <View style={[styles.innerCircle]}/>
+              <View style={[styles.innerCircle, innerCircleStyle]}/>
             ) : null
           }
         </View>
