@@ -47,8 +47,8 @@ class Circle extends Component {
   // refs
   circle;
 
-  measure(handle) {
-    this.circle && this.circle.measure(handle);
+  measureLayout(relativeToNativeNode, handle) {
+    this.circle && this.circle.measureLayout(relativeToNativeNode, handle);
   }
 
   render() {

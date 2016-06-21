@@ -3,7 +3,8 @@ import Component from '../AbstractComponent';
 import {
   View,
   StyleSheet,
-  PanResponder
+  PanResponder,
+  findNodeHandle
 } from 'react-native';
 import Circle from './Circle';
 import Line from './Line';
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0C1628'
   },
   circleContainer: {
+    position: 'relative',
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap'
@@ -32,6 +34,7 @@ class GesturePassword extends Component {
     circleContainerStyle: View.propTypes.style,
     circleSelectedStyle: View.propTypes.style,
     circleStyle: View.propTypes.style,
+    innerCircleStyle: View.propTypes.style,
     passwordValues: PropTypes.array,
     style: View.propTypes.style,
     successColor: PropTypes.string,
@@ -52,12 +55,12 @@ class GesturePassword extends Component {
     lines: [],
     cellSize: {},
     success: true,
-    prevPageX: 0,
-    prevPageY: 0,
+    prevX: 0,
+    prevY: 0,
     // 当前x
-    pageX: 0,
+    x: 0,
     // 当前y
-    pageY: 0
+    y: 0
   };
 
   componentWillMount() {
@@ -91,22 +94,23 @@ class GesturePassword extends Component {
    * 计算圆位置
    */
   measure() {
+    let handle = findNodeHandle(this);
     Object.keys(this.valueComponents).forEach(key => {
       // noinspection Eslint
-      this.valueComponents[key].measure((x, y, width, height, pageX, pageY)=> {
+      this.valueComponents[key].measureLayout(handle, (x, y, width, height)=> {
         // noinspection Eslint
         this.valuePosition[key] = {
           min: {
-            pageX: pageX,
-            pageY: pageY
+            x,
+            y
           },
           max: {
-            pageX: pageX + width,
-            pageY: pageY + height
+            x: x + width,
+            y: y + height
           },
           center: {
-            pageX: pageX + (width / 2),
-            pageY: pageY + (height / 2)
+            x: x + (width / 2),
+            y: y + (height / 2)
           }
         };
 
@@ -128,12 +132,12 @@ class GesturePassword extends Component {
 
   reset() {
     let state = {
-      prevPageX: 0,
-      prevPageY: 0,
+      prevX: 0,
+      prevY: 0,
       // 当前x
-      pageX: 0,
+      x: 0,
       // 当前y
-      pageY: 0,
+      y: 0,
       success: true
     };
     this.setState(state);
@@ -141,15 +145,15 @@ class GesturePassword extends Component {
 
   /**
    * 判断指定的点是否在圆内
-   * @param pageX x
-   * @param pageY y
+   * @param x x
+   * @param y y
    * @return {*} 如果存在圆内,返回改圆的值
    */
-  inCircle(pageX, pageY) {
+  inCircle(x, y) {
     let result = null;
     Object.keys(this.valuePosition).forEach(key => {
       const {min, max} = this.valuePosition[key];
-      if ((min.pageX <= pageX && min.pageY <= pageY) && (max.pageX >= pageX && max.pageY >= pageY)) {
+      if ((min.x <= x && min.y <= y) && (max.x >= x && max.y >= y)) {
         result = key;
       }
     });
@@ -158,17 +162,17 @@ class GesturePassword extends Component {
 
   /**
    * 如果给定的点在密码区域内,则更新密码,同时更新上一个坐标点位置和当前坐标值
-   * @param pageX x
-   * @param pageY y
+   * @param x x
+   * @param y y
    * @param isStart 是否开始绘制
    * @param isEnd 是否是绘制结束
    */
-  handle(pageX, pageY, isStart, isEnd) {
-    let value = this.inCircle(pageX, pageY);
+  handle(x, y, isStart, isEnd) {
+    let value = this.inCircle(x, y);
 
     const {center} = this.valuePosition[value] || {};
 
-    let {prevPageX, prevPageY, lines} = this.state;
+    let {prevX, prevY, lines} = this.state;
     if (isStart) {
       this.reset();
       this.password = [];
@@ -186,13 +190,13 @@ class GesturePassword extends Component {
       if (line.startX) {
         if (line.endX) {
           let newLine = {
-            startX: center.pageX,
-            startY: center.pageY
+            startX: center.x,
+            startY: center.y
           };
           lines.push(newLine);
         } else {
-          line.endX = center.pageX;
-          line.endY = center.pageY;
+          line.endX = center.x;
+          line.endY = center.y;
 
           let newLine = {
             startX: line.endX,
@@ -202,15 +206,15 @@ class GesturePassword extends Component {
         }
       } else {
         line = {
-          startX: center.pageX,
-          startY: center.pageY
+          startX: center.x,
+          startY: center.y
         };
         lines.push(line);
       }
 
       this.password.push(value);
-      prevPageX = center.pageX;
-      prevPageY = center.pageY;
+      prevX = center.x;
+      prevY = center.y;
     }
 
     if (this.password.length === this.props.passwordValues.length || isEnd) {
@@ -221,32 +225,32 @@ class GesturePassword extends Component {
     }
 
     this.setState({
-      prevPageX,
-      prevPageY,
-      pageX,
-      pageY,
+      prevX,
+      prevY,
+      x,
+      y,
       lines
     });
   }
 
   onStart(event, gestureState) {
     const {onStart} = this.props;
-    const {pageX, pageY} = event.nativeEvent;
-    this.handle(pageX, pageY, true, false);
+    const {locationX, locationY} = event.nativeEvent;
+    this.handle(locationX, locationY, true, false);
     onStart && onStart(event, gestureState);
   }
 
   onMove(event, gestureState) {
     const {onMove} = this.props;
-    const {pageX, pageY} = event.nativeEvent;
-    this.handle(pageX, pageY);
+    const {locationX, locationY} = event.nativeEvent;
+    this.handle(locationX, locationY);
     onMove && onMove(event, gestureState);
   }
 
   onEnd(event, gestureState) {
     const {onEnd} = this.props;
-    const {pageX, pageY} = event.nativeEvent;
-    this.handle(pageX, pageY, false, true);
+    const {locationX, locationY} = event.nativeEvent;
+    this.handle(locationX, locationY, false, true);
     onEnd && onEnd(event, gestureState);
   }
 
@@ -320,17 +324,17 @@ class GesturePassword extends Component {
 
     const {
       lines,
-      pageX,
-      pageY,
-      prevPageX,
-      prevPageY
+      x,
+      y,
+      prevX,
+      prevY
     } = this.state;
 
     const line = {
-      startX: prevPageX,
-      startY: prevPageY,
-      endX: pageX,
-      endY: pageY,
+      startX: prevX,
+      startY: prevY,
+      endX: x,
+      endY: y,
       color: successColor
     };
 
