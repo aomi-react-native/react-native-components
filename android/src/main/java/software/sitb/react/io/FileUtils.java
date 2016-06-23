@@ -1,6 +1,9 @@
-package software.sitb.react.file;
+package software.sitb.react.io;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -19,20 +22,19 @@ import java.io.IOException;
  *
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class FileManager extends DefaultReactContextBaseJavaModule {
+public class FileUtils extends DefaultReactContextBaseJavaModule {
 
     private ReactApplicationContext context;
 
-    public FileManager(ReactApplicationContext reactContext) {
+    public FileUtils(ReactApplicationContext reactContext) {
         super(reactContext);
         this.context = reactContext;
     }
 
     @Override
     public String getName() {
-        return "SitbRNFileManager";
+        return "SitbFileManager";
     }
-
 
     /**
      * 读取文件
@@ -108,5 +110,19 @@ public class FileManager extends DefaultReactContextBaseJavaModule {
         }
 
         return null;
+    }
+
+
+    public static String saveImageToCameraColl(Context context, byte[] data, String title, String description) {
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, bitmapOptions);
+
+        return MediaStore.Images.Media.insertImage(
+                context.getContentResolver(),
+                bitmap,
+                title,
+                description
+        );
+
     }
 }
