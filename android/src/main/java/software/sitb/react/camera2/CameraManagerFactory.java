@@ -1,12 +1,9 @@
-package software.sitb.react.camera;
+package software.sitb.react.camera2;
 
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CaptureRequest;
 import android.media.ImageReader;
-import android.view.Surface;
-
-import java.util.List;
 
 /**
  * @author 田尘殇Sean sean.snow@live.com
