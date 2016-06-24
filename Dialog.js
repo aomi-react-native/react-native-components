@@ -51,6 +51,7 @@ class Dialog extends Component {
     hideAnimation: PropTypes.object,
     loadProps: PropTypes.object,
     loading: PropTypes.bool,
+    loadChildren: PropTypes.node,
     showAnimation: PropTypes.object,
     statusBarAutoHidden: PropTypes.bool,
     style: View.propTypes.style,
@@ -73,6 +74,12 @@ class Dialog extends Component {
     return !this.state.animating;
   }
 
+  componentWillUnmount() {
+    if (this.statusBarHidden) {
+      StatusBar.setHidden(false);
+    }
+  }
+
   handlePress() {
     let {onPress} = this.props;
     onPress && onPress();
@@ -85,7 +92,7 @@ class Dialog extends Component {
   handleAnimationEnd() {
     let {
       visible,
-      statusBarAutoHidden,
+      statusBarAutoHidden
     } = this.props;
 
     if (visible) {
