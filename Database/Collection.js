@@ -73,7 +73,6 @@ class Collection {
   }
 
   async merge() {
-    console.log(this.database);
     await AsyncStorage.setItem(this.databaseName, JSON.stringify(this.database));
   }
 
