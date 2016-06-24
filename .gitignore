@@ -4,7 +4,9 @@
 !default.perspectivev3
 DerivedData
 project.xcworkspace
+xcuserdata
 
+.deco
 .DS_Store
 .idea
 .gradle
@@ -32,11 +34,11 @@ overridedb.*
 node_modules
 build
 /code
-log
 lib/
 target
 _site/
 activemq-data
+log
 
 *.iml
 *.ipr
@@ -55,4 +57,3 @@ activemq-data
 *.sw?
 .#*
 *#
-
