@@ -19,6 +19,13 @@ public class CameraViewManager extends SimpleViewManager<CameraView> {
     }
 
     @ReactProp(name = "type")
-    public void setType(CameraView view, String type) {
+    public void setType(CameraView view, int type) {
+        view.setCameraType(type);
     }
+
+    @ReactProp(name = "orientation")
+    public void setOrientation(CameraView view, int orientation) {
+        view.setOrientation(orientation);
+    }
+
 }

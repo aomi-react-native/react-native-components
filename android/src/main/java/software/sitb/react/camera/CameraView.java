@@ -2,10 +2,11 @@ package software.sitb.react.camera;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
+import android.hardware.SensorManager;
 import android.os.Build;
-import android.view.TextureView;
+import android.view.OrientationEventListener;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.WindowManager;
 
 /**
@@ -13,51 +14,73 @@ import android.view.WindowManager;
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
 @SuppressWarnings("deprecation")
-public class CameraView extends TextureView implements TextureView.SurfaceTextureListener {
-
-    private static final String TAG = "CameraView";
-
-    private SurfaceTexture surfaceTexture;
-
-    private Camera camera;
+public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Context context;
 
-    public CameraView(Context context) {
-        super(context);
-        setSurfaceTextureListener(this);
-        this.context = context;
+    private int actualDeviceOrientation;
+
+    public CameraView(Context ctx) {
+        super(ctx);
+        this.context = ctx;
+        setActualDeviceOrientation(this.context);
+
+        OrientationEventListener orientationListener = new OrientationEventListener(ctx, SensorManager.SENSOR_DELAY_NORMAL) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                if (setActualDeviceOrientation(context)) {
+                    cameraLayout();
+                }
+            }
+        };
+        if (orientationListener.canDetectOrientation()) {
+            orientationListener.enable();
+        } else {
+            orientationListener.disable();
+        }
+
     }
 
 
     @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        this.surfaceTexture = surface;
+    public void surfaceCreated(SurfaceHolder holder) {
+        CameraFactory.getInstance().setHolder(holder);
         startPreview();
     }
 
     @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        if (holder.getSurface() == null) {
+            // preview surface does not exist
+            return;
+        }
+        // stop preview before making changes
+        try {
+            stopPreview();
+        } catch (Exception ignore) {
+            // ignore: tried to stop a non-existent preview
+        }
+
+        CameraFactory.getInstance().acquireCameraInstance().startPreview();
 
     }
 
     @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        surfaceTexture = null;
-        stopPreview();
-        return true;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        CameraFactory.getInstance().setHolder(null);
+        release();
     }
 
     synchronized private void startPreview() {
-        CameraFactory.getInstance().startPreview(surfaceTexture);
+        CameraFactory.getInstance().startPreview();
     }
 
     synchronized private void stopPreview() {
         CameraFactory.getInstance().stopPreview();
+    }
+
+    synchronized private void release() {
+        CameraFactory.getInstance().release();
     }
 
 
@@ -84,8 +107,14 @@ public class CameraView extends TextureView implements TextureView.SurfaceTextur
 
     }
 
-    private void setActualDeviceOrientation(Context context) {
+    private boolean setActualDeviceOrientation(Context context) {
         int actualDeviceOrientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
-        CameraFactory.getInstance().setActualDeviceOrientation(actualDeviceOrientation);
+        if (this.actualDeviceOrientation != actualDeviceOrientation) {
+            this.actualDeviceOrientation = actualDeviceOrientation;
+            CameraFactory.getInstance().setActualDeviceOrientation(actualDeviceOrientation);
+            return true;
+        }
+        return false;
     }
+
 }

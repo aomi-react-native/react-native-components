@@ -148,7 +148,7 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
         );
     }
 
-    private static String insertImage(ContentResolver cr, ContentValues values, Bitmap source) {
+    public static String insertImage(ContentResolver cr, ContentValues values, Bitmap source) {
 
         Uri url = null;
         String stringUrl = null;    /* value to be returned */
