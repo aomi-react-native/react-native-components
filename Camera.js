@@ -9,10 +9,11 @@ import {
 
 const CameraManager = NativeModules.SitbCameraModule;
 
-export const CameraType = {
-  FRONT: '1',
-  BEHIND: '0'
-};
+const {
+  CameraType,
+  Orientation
+} = CameraManager;
+
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -22,11 +23,13 @@ class Camera extends Component {
 
   static propTypes = {
     ...View.propTypes,
-    type: PropTypes.oneOf(['0', '1'])
+    orientation: PropTypes.number,
+    type: PropTypes.number
   };
 
   static defaultProps = {
-    type: CameraType.BEHIND
+    orientation: 0,
+    type: CameraType.back
   };
 
   capture(option) {
@@ -44,4 +47,8 @@ class Camera extends Component {
 const RCTCamera = requireNativeComponent('SitbCameraViewManager', Camera);
 
 
-export default Camera;
+export {
+  Camera as default,
+  CameraType,
+  Orientation
+};
