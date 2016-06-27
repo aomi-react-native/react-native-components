@@ -7,12 +7,13 @@ import {
 } from 'react-native';
 
 
-const CameraManager = NativeModules.SitbCameraModule;
-
 const {
-  CameraType,
-  Orientation
-} = CameraManager;
+  SitbCameraModule: {
+    CameraType,
+    Orientation,
+    capture
+  }
+} = NativeModules;
 
 
 /**
@@ -28,12 +29,12 @@ class Camera extends Component {
   };
 
   static defaultProps = {
-    orientation: 0,
+    orientation: Orientation.auto,
     type: CameraType.back
   };
 
   capture(option) {
-    return CameraManager.takePicture(option);
+    return capture(option);
   }
 
   render() {
@@ -44,7 +45,7 @@ class Camera extends Component {
 
 }
 
-const RCTCamera = requireNativeComponent('SitbCameraViewManager', Camera);
+const RCTCamera = requireNativeComponent('RCTSitbCameraView', Camera);
 
 
 export {
