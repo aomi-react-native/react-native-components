@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
   }
 });
 
-let actionSheet = new RootSiblings(<View />);
 
 
 /**
@@ -193,6 +192,7 @@ class ActionSheet {
    * @param callback
    */
   static showActionSheetWithOptions(options:Object, callback:Function) {
+    let actionSheet = new RootSiblings(<View />);
     actionSheet.update(
       <ActionSheetComponent {...options}
         manager={actionSheet}
