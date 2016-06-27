@@ -35,9 +35,7 @@ class Switch extends AbstractFormComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      this.setState({value: nextProps.value});
-    }
+    this.setState({value: nextProps.value});
   }
 
   onValueChange(value) {
