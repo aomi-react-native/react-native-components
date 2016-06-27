@@ -1,9 +1,9 @@
 package software.sitb.react.camera;
 
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.SurfaceHolder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class CameraFactory {
 
     private Camera camera;
 
-    private SurfaceHolder holder;
+    private SurfaceTexture surfaceTexture;
 
     private int orientation;
 
@@ -53,8 +53,8 @@ public class CameraFactory {
         return cameraFactory;
     }
 
-    public void setHolder(SurfaceHolder holder) {
-        this.holder = holder;
+    public void setSurfaceTexture(SurfaceTexture surfaceTexture) {
+        this.surfaceTexture = surfaceTexture;
     }
 
     public Camera acquireCameraInstance() {
@@ -143,7 +143,7 @@ public class CameraFactory {
                 Log.e(TAG, "设置参数失败", e);
             }
 
-            camera.setPreviewDisplay(holder);
+            camera.setPreviewTexture(this.surfaceTexture);
             camera.startPreview();
         } catch (IOException e) {
             release();

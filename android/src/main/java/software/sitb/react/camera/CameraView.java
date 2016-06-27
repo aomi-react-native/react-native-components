@@ -2,19 +2,17 @@ package software.sitb.react.camera;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.hardware.SensorManager;
 import android.os.Build;
-import android.view.OrientationEventListener;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.WindowManager;
+import android.view.*;
 
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
 @SuppressWarnings("deprecation")
-public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraView  extends TextureView implements TextureView.SurfaceTextureListener  {
 
     private Context context;
 
@@ -38,37 +36,29 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         } else {
             orientationListener.disable();
         }
-
+        this.setSurfaceTextureListener(this);
     }
 
-
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        CameraFactory.getInstance().setHolder(holder);
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        CameraFactory.getInstance().setSurfaceTexture(surface);
         startPreview();
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        if (holder.getSurface() == null) {
-            // preview surface does not exist
-            return;
-        }
-        // stop preview before making changes
-        try {
-            stopPreview();
-        } catch (Exception ignore) {
-            // ignore: tried to stop a non-existent preview
-        }
-
-        CameraFactory.getInstance().acquireCameraInstance().startPreview();
-
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        CameraFactory.getInstance().setHolder(null);
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        CameraFactory.getInstance().setSurfaceTexture(null);
         release();
+        return true;
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+
     }
 
     synchronized private void startPreview() {
@@ -116,5 +106,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         }
         return false;
     }
+
 
 }
