@@ -8,6 +8,7 @@ import Component from '../AbstractComponent';
 import GridView from '../GridView';
 import Button from '../bootstrap/Button';
 import Image from './Image';
+
 const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -107,9 +108,9 @@ class FullScreen extends Component {
               style={[styles.fullImage, styles.image]}
       >
         <Image ref={ref => this.photos[rowID] = ref}
-               resizeMode="contain"
+               resizeMode="cover"
                source={source}
-               size={{width, height}}
+               style={{width, height, resizeMode: 'contain'}}
         />
       </Button>
     );
@@ -121,16 +122,16 @@ class FullScreen extends Component {
 
     return (
       <GridView bouncesZoom
-                cols={1}
                 cells={mediaList}
+                cols={1}
                 directionalLockEnabled
                 horizontal
                 initialListSize={1}
-                ref={fullScreen => this.fullScreen = fullScreen}
-                renderCell={this.renderFullCell}
                 onScroll={this.handleScroll}
                 pageSzie={5}
                 pagingEnabled
+                ref={fullScreen => this.fullScreen = fullScreen}
+                renderCell={this.renderFullCell}
                 scrollEventThrottle={16}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}

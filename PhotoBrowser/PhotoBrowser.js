@@ -229,8 +229,8 @@ class PhotoBrowser extends Component {
                   style={styles.gridView}
                   verticalSpacing={1}
         />
-        <Dialog visible={this.state.fullBrowser}
-                style={styles.fullScreen}
+        <Dialog style={styles.fullScreen}
+                visible={this.state.fullBrowser}
         >
           <AnimatableView animation={this.state.headerAnimation}>
             {renderHeader ? renderHeader() : this.renderHeader()}

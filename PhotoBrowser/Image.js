@@ -10,13 +10,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  image: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
   }
 });
 
@@ -27,8 +20,10 @@ const styles = StyleSheet.create({
 class Image extends Component {
 
   static propTypes = {
+    containerStyle: View.propTypes.style,
+    size: PropTypes.object,
     source: RNImage.propTypes.source,
-    size: PropTypes.object
+    style: RNImage.propTypes.style
   };
 
   state = {
@@ -66,19 +61,18 @@ class Image extends Component {
   }
 
   render() {
-    const {error, progress, ...other} = this.state;
-    const {size, source} = this.props;
+    const {error} = this.state;
+    const {style, containerStyle, source, ...other} = this.props;
 
     return (
-      <View style={[styles.container, size]}>
+      <View style={[styles.container, containerStyle]}>
         {error && this.renderError()}
-        <RNImage
-          {...other}
-          style={[styles.image, size]}
-          source={source}
-          onProgress={this.handleOnProgress}
+        <RNImage {...other}
           onError={this.handleImageError}
           onLoad={this.handleImageLoad}
+          onProgress={this.handleOnProgress}
+          source={source}
+          style={[style]}
         />
       </View>
     );
