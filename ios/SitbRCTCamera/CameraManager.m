@@ -10,7 +10,7 @@
 
 @implementation CameraManager
 
-RCT_EXPORT_MODULE(SitbCameraManager);
+RCT_EXPORT_MODULE(RCTSitbCameraView);
 
 
 /******************** Component PropTypes **********************/
