@@ -6,6 +6,7 @@ import {
   ScrollView
 } from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
+import RootSiblings from 'react-native-root-siblings';
 import Component from './AbstractComponent';
 import Button from './bootstrap/Button';
 import Dialog from './Dialog';
@@ -56,40 +57,34 @@ const styles = StyleSheet.create({
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/12
  */
-class ActionSheet extends Component {
+class ActionSheetComponent extends Component {
 
   static propTypes = {
-    open: PropTypes.bool,
-
-    //（字符串数组） - 一组按钮的标题（必选）
+    /**
+     * （字符串数组） - 一组按钮的标题（必选）
+     */
     options: PropTypes.arrayOf(PropTypes.object).isRequired,
-
-    // （字符串） - 弹出框顶部的标题
-    title: PropTypes.string,
 
     cancel: PropTypes.string,
     cancelPress: PropTypes.func,
 
-    // （字符串） - 弹出框顶部标题下方的信息
-    message: PropTypes.string
+    manager: PropTypes.object,
+    /**
+     * （字符串） - 弹出框顶部标题下方的信息
+     */
+    message: PropTypes.string,
+
+    // （字符串） - 弹出框顶部的标题
+    title: PropTypes.string
   };
 
-  static defaultProps = {
-    open: false
+  state = {
+    open: true
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: props.open
-    };
-  }
-
-  state = {};
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.open && !this.state.open) {
-      this.switchOpen();
+  componentDidUpdate() {
+    if (!this.state.open) {
+      this.props.manager.destroy();
     }
   }
 
@@ -118,7 +113,6 @@ class ActionSheet extends Component {
     cancelPress && cancelPress();
   }
 
-
   switchOpen() {
     this.setState({open: !this.state.open});
   }
@@ -146,7 +140,7 @@ class ActionSheet extends Component {
         >
           <View style={[styles.content]}>
             <View style={styles.title}>
-              <Text style={styles.titleText}>{title}</Text>
+              <Text style={styles.titleText}>{title || 'Action'}</Text>
             </View>
             <ScrollView alwaysBounceVertical={false}>
               {
@@ -175,7 +169,7 @@ class ActionSheet extends Component {
                   style={[styles.content, styles.cancel]}
           >
             <Text style={styles.cancelText}>
-              {cancel}
+              {cancel || 'Cancel'}
             </Text>
           </Button>
         </AnimatableView>
@@ -183,6 +177,27 @@ class ActionSheet extends Component {
     );
   }
 
+}
+
+class ActionSheet {
+  /**
+   * @param options
+   * options（字符串数组） - 一组按钮的标题（必选）
+   * cancelButtonIndex（整型） - 选项中取消按钮所在的位置（索引）
+   * destructiveButtonIndex（整型） - 选项中删除按钮所在的位置（索引）
+   * title（字符串） - 弹出框顶部的标题
+   * message（字符串） - 弹出框顶部标题下方的信息
+   * @param callback
+   */
+  static showActionSheetWithOptions(options:Object, callback:Function) {
+    let actionSheet = new RootSiblings(<View />);
+    actionSheet.update(
+      <ActionSheetComponent {...options}
+        manager={actionSheet}
+      />
+    );
+
+  }
 }
 
 export default ActionSheet;
