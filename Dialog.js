@@ -7,9 +7,7 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  Platform,
-  ProgressBarAndroid,
-  ActivityIndicatorIOS
+  ActivityIndicator
 } from 'react-native';
 
 import Component from './AbstractComponent';
@@ -115,20 +113,9 @@ class Dialog extends Component {
   }
 
   renderLoading(loadProps, loadChildren) {
-    let content = null;
-    if (Platform.OS === 'android') {
-      content = (
-        <ProgressBarAndroid {...loadProps} />
-      );
-    }
-    if (Platform.OS === 'ios') {
-      content = (
-        <ActivityIndicatorIOS {...loadProps}/>
-      );
-    }
     return (
       <View style={styles.content}>
-        {content}
+        <ActivityIndicator {...loadProps}/>
         <View style={{height: 5}}/>
         {
           typeof loadChildren === 'string' ? (
