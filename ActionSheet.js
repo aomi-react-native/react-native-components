@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
 });
 
 
-
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/12
@@ -115,6 +114,13 @@ class ActionSheetComponent extends Component {
     cancelPress && cancelPress();
   }
 
+  handlePress(onPress) {
+    return () => {
+      onPress && onPress();
+      this.switchOpen();
+    };
+  }
+
   switchOpen() {
     this.setState({open: !this.state.open});
   }
@@ -157,7 +163,7 @@ class ActionSheetComponent extends Component {
                   return (
                     <Button color="#0977FF"
                             key={index}
-                            onPress={option.onPress}
+                            onPress={this.handlePress(option.onPress)}
                             style={[styles.button, tmp]}
                     >
                       {option.label}
