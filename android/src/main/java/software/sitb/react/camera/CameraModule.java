@@ -19,11 +19,11 @@ import java.util.Map;
  * @author 田尘殇Sean sean.snow@live.com
  */
 @SuppressWarnings("deprecation")
-public class SitbCameraModule extends DefaultReactContextBaseJavaModule {
+public class CameraModule extends DefaultReactContextBaseJavaModule {
 
     private ReactApplicationContext reactContext;
 
-    public SitbCameraModule(ReactApplicationContext reactContext) {
+    public CameraModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
     }
@@ -51,7 +51,7 @@ public class SitbCameraModule extends DefaultReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void takePicture(final ReadableMap options, final Promise promise) {
+    public void capture(final ReadableMap options, final Promise promise) {
 
         new GuardedAsyncTask<Void, Integer>(reactContext) {
             @Override

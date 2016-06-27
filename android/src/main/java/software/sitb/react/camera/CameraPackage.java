@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class SitbCameraPackage implements ReactPackage {
+public class CameraPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Collections.<NativeModule>singletonList(new SitbCameraModule(reactContext));
+        return Collections.<NativeModule>singletonList(new CameraModule(reactContext));
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 public class CameraViewManager extends SimpleViewManager<CameraView> {
     @Override
     public String getName() {
-        return "SitbCameraViewManager";
+        return "SitbCameraManager";
     }
 
     @Override
