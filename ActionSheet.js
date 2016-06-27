@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
   }
 });
 
+let actionSheet = new RootSiblings(<View />);
+
+
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/12
@@ -190,7 +193,6 @@ class ActionSheet {
    * @param callback
    */
   static showActionSheetWithOptions(options:Object, callback:Function) {
-    let actionSheet = new RootSiblings(<View />);
     actionSheet.update(
       <ActionSheetComponent {...options}
         manager={actionSheet}
