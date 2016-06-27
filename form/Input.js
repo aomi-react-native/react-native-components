@@ -156,6 +156,12 @@ class Input extends AbstractFormComponent {
 
   state = {};
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.defaultValue !== this.props.defaultValue) {
+      this.onChangeText(nextProps.defaultValue);
+    }
+  }
+
   getComp(name, isLabel) {
     let {iconProps, iconStyle, label, labelProps} = this.props;
     if (name) {
@@ -177,7 +183,7 @@ class Input extends AbstractFormComponent {
               {label}
             </Text>
           </View>
-        )
+        );
       }
       return label;
     }
@@ -201,10 +207,9 @@ class Input extends AbstractFormComponent {
         if (this.state.value === '') {
           name && form && form.putMissField(name);
           return false;
-        } else {
-          name && form && form.deleteErrOrMissField(name);
-          return true;
         }
+        name && form && form.deleteErrOrMissField(name);
+        return true;
       }
 
       if (pattern) {
@@ -237,8 +242,8 @@ class Input extends AbstractFormComponent {
   render() {
     let {before, after, style, inputStyle, ...other} = this.props;
 
-    let newInputProps = {},
-      newProps = Object.assign({}, other);
+    let newInputProps = {};
+    let newProps = Object.assign({}, other);
 
     INPUT_PROPS_KEYS.forEach(key => {
       newInputProps[key] = this.props[key];
@@ -247,7 +252,8 @@ class Input extends AbstractFormComponent {
 
     return (
       <View {...newProps}
-        style={[styles.container, style]}>
+        style={[styles.container, style]}
+      >
         {this.getComp(before, true)}
         <TextInput {...newInputProps}
           onChangeText={this.onChangeText}
