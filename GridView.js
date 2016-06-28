@@ -1,12 +1,11 @@
 import React, { PropTypes } from 'react';
 import {
-  ListView,
   View,
   StyleSheet,
   Dimensions
 } from 'react-native';
 import AbstractComponent from './AbstractComponent';
-
+import WindowedListView from 'react-native/Libraries/Experimental/WindowedListView';
 
 const {width} = Dimensions.get('window');
 
@@ -31,6 +30,14 @@ const styles = StyleSheet.create({
 class GridView extends AbstractComponent {
   static propTypes = {
     /**
+     * grid cell 列表数组
+     */
+    cells: PropTypes.array.isRequired,
+    /**
+     * 渲染Grid Cell
+     */
+    renderCell: PropTypes.func.isRequired,
+    /**
      * 自动设置高度为宽度
      */
     autoHeightEqWidth: PropTypes.bool,
@@ -40,16 +47,12 @@ class GridView extends AbstractComponent {
      */
     autoWidth: PropTypes.bool,
 
+    cellStyle: View.propTypes.style,
+
     /**
      * 列数
      */
     cols: PropTypes.number,
-
-    cellStyle: View.propTypes.style,
-    /**
-     * grid cell 列表数组
-     */
-    cells: PropTypes.array.isRequired,
 
     enableEmptySections: PropTypes.bool,
 
@@ -57,11 +60,9 @@ class GridView extends AbstractComponent {
      * 水平间距
      */
     horizontalSpacing: PropTypes.number,
-    /**
-     * 渲染Grid Cell
-     */
-    renderCell: PropTypes.func.isRequired,
+
     rowHasChanged: PropTypes.func,
+
     verticalSpacing: PropTypes.number
   };
 
@@ -74,7 +75,7 @@ class GridView extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    let {autoWidth, autoHeightEqWidth, verticalSpacing, horizontalSpacing, cols, cells, rowHasChanged} = this.props;
+    let {autoWidth, autoHeightEqWidth, verticalSpacing, horizontalSpacing, cols, cells} = this.props;
     if (autoWidth) {
       const spacingWidth = verticalSpacing ? verticalSpacing * cols : 0;
       const rowWidth = (width - spacingWidth) / cols;
@@ -84,19 +85,17 @@ class GridView extends AbstractComponent {
         marginRight: verticalSpacing ? verticalSpacing : 0
       };
       if (autoHeightEqWidth) {
-        //noinspection JSSuspiciousNameCombination
+        // noinspection JSSuspiciousNameCombination
         this.rowStyle.height = rowWidth;
       }
     }
-    const ds = new ListView.DataSource({rowHasChanged});
-
     this.state = {
-      dataSource: ds.cloneWithRows(cells)
+      dataSource: this.handleCells(cells)
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.cells)});
+    this.setState({dataSource: this.handleCells(nextProps.cells)});
   }
 
   // refs
@@ -105,6 +104,13 @@ class GridView extends AbstractComponent {
   rowStyle;
 
 
+  handleCells(cells:Array<any>):Array<{rowKey: string, rowData: any}> {
+    return cells.map((cell, index) => ({
+      rowKey: `cell_${index}`,
+      rowData: cell
+    }));
+  }
+
   getCellSize() {
     return {
       width: this.rowStyle.width,
@@ -112,22 +118,24 @@ class GridView extends AbstractComponent {
     };
   }
 
-  renderRow(rowData, sectionID:Number, rowID:Number) {
-    let {renderCell, cellStyle} = this.props;
+  renderRow(rowData:any, sectionIdx:Number, rowIdx:Number) {
+    const {renderCell, cellStyle} = this.props;
     return (
       <View style={[cellStyle, this.rowStyle]}>
-        {renderCell(rowData, sectionID, rowID, this.getCellSize())}
+        {renderCell(rowData, sectionIdx, rowIdx, this.getCellSize())}
       </View>
     );
   }
 
   render() {
     let {...other} = this.props;
-
+    if (this.state.dataSource.length === 0) {
+      return null;
+    }
     return (
-      <ListView {...other}
+      <WindowedListView {...other}
         contentContainerStyle={styles.grid}
-        dataSource={this.state.dataSource}
+        data={this.state.dataSource}
         ref={listView => this.listView = listView}
         renderRow={this.renderRow}
       />
