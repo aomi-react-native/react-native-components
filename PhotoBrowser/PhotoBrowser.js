@@ -1,17 +1,17 @@
-import React, { PropTypes } from 'react';
-import Component from '../AbstractComponent';
+import React, { PropTypes } from "react";
+import Component from "../AbstractComponent";
 import {
   View,
   StyleSheet,
   Image,
   CameraRoll
-} from 'react-native';
-import GridView from '../GridView';
-import Dialog from '../Dialog';
-import Button from '../bootstrap/Button';
-import Icon from '../Icon';
-import { View as AnimatableView } from 'react-native-animatable';
-import FullScreen from './FullScreen';
+} from "react-native";
+import GridView from "../GridView";
+import Dialog from "../Dialog";
+import Button from "../bootstrap/Button";
+import Icon from "../Icon";
+import { View as AnimatableView } from "react-native-animatable";
+import FullScreen from "./FullScreen";
 
 const styles = StyleSheet.create({
   container: {
@@ -248,6 +248,7 @@ class PhotoBrowser extends Component {
           autoHeightEqWidth
           cells={this.state.mediaList}
           cols={4}
+          disableIncrementalRendering
           horizontalSpacing={1}
           renderCell={this.renderCell}
           rowHasChanged={this.rowHasChanged}
