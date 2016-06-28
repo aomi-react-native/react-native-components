@@ -35,9 +35,7 @@ class Container extends Component {
       return true;
     }
 
-    if (this.state !== nextState) {
-      return true;
-    }
+    return this.state !== nextState;
   }
 
 
