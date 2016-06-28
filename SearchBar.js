@@ -56,27 +56,30 @@ class SearchBar extends Component {
   render() {
 
     const {
-      placeholder
+      placeholder,
+      ...other
     } = this.props;
 
     const iconProps = {
       color: '#ccc',
       size: 16
     };
+
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <Input autoCapitalize="none"
-                 autoCorrect={false}
-                 before="search"
-                 clearButtonMode="while-editing"
-                 enablesReturnKeyAutomatically
-                 iconProps={iconProps}
-                 onChangeText={this.handleChangeText}
-                 onSubmitEditing={this.handleSubmit}
-                 placeholder={placeholder}
-                 returnKeyType="search"
-                 style={styles.input}
+          <Input {...other}
+            autoCapitalize="none"
+            autoCorrect={false}
+            before="search"
+            clearButtonMode="while-editing"
+            enablesReturnKeyAutomatically
+            iconProps={iconProps}
+            onChangeText={this.handleChangeText}
+            onSubmitEditing={this.handleSubmit}
+            placeholder={placeholder}
+            returnKeyType="search"
+            style={styles.input}
           />
         </View>
       </View>
