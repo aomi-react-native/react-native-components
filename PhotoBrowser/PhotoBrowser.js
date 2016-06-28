@@ -76,8 +76,10 @@ class PhotoBrowser extends Component {
       CameraRoll.getPhotos({
         first: props.initialListSize,
         assetType: 'Photos'
-      }).then((photos)=> {
-        let page = photos.edges.map(photo=> photo.node.image);
+      }).then((medias)=> {
+        this.pageInfo = medias.page_info;
+        this.first = props.initialListSize;
+        let page = medias.edges.map(photo=> photo.node.image);
         this.setState({
           photoBrowserOpen: true,
           mediaList: page
@@ -107,6 +109,10 @@ class PhotoBrowser extends Component {
 
   // 上一次选择的图片
   prevSelected = [];
+  // 分页信息
+  pageInfo = {};
+  // 开始位置
+  first = 0;
 
   /**
    * 进入选择模式
@@ -160,7 +166,20 @@ class PhotoBrowser extends Component {
   /**
    * 如果为浏览系统相册,则自动加载下一页
    */
-  handleEndReached() {
+  async handleEndReached() {
+    if (this.pageInfo.has_next_page) {
+      this.first = this.first + this.props.pageSize;
+      let photos = await CameraRoll.getPhotos({
+        first: this.first,
+        after: this.pageInfo.end_cursor,
+        assetType: 'Photos'
+      });
+      this.pageInfo = photos.page_info;
+      let page = photos.edges.map(photo=> photo.node.image);
+      this.setState({
+        mediaList: this.state.mediaList.concat(page)
+      });
+    }
 
   }
 
