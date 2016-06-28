@@ -42,8 +42,13 @@ class FullScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state.startIndex = props.startIndex;
+    this.state = {
+      headerAnimation: 'fadeInDown',
+      startIndex: props.startIndex || 0
+    };
   }
+
+  state = {};
 
   componentDidMount() {
     DeviceEventEmitter.addListener('didUpdateDimensions', () => {
@@ -53,10 +58,6 @@ class FullScreen extends Component {
     this.openPage(this.state.startIndex, false);
   }
 
-  state = {
-    headerAnimation: 'fadeInDown',
-    startIndex: 0
-  };
 
   // refs
   fullScreen;
@@ -108,7 +109,6 @@ class FullScreen extends Component {
               style={[styles.fullImage, styles.image]}
       >
         <Image ref={ref => this.photos[rowID] = ref}
-               resizeMode="cover"
                source={source}
                style={{width, height, resizeMode: 'contain'}}
         />
@@ -118,23 +118,24 @@ class FullScreen extends Component {
 
   render() {
 
-    const {mediaList} = this.props;
+    const {mediaList, ...other} = this.props;
 
     return (
-      <GridView bouncesZoom
-                cells={mediaList}
-                cols={1}
-                directionalLockEnabled
-                horizontal
-                initialListSize={1}
-                onScroll={this.handleScroll}
-                pageSzie={5}
-                pagingEnabled
-                ref={fullScreen => this.fullScreen = fullScreen}
-                renderCell={this.renderFullCell}
-                scrollEventThrottle={16}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
+      <GridView {...other}
+        bouncesZoom
+        cells={mediaList}
+        cols={1}
+        directionalLockEnabled
+        horizontal
+        initialListSize={1}
+        onScroll={this.handleScroll}
+        pageSzie={5}
+        pagingEnabled
+        ref={fullScreen => this.fullScreen = fullScreen}
+        renderCell={this.renderFullCell}
+        scrollEventThrottle={16}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       />
     );
   }
