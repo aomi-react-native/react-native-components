@@ -51,6 +51,10 @@ class SearchBar extends Component {
     this.input.textInput.focus();
   }
 
+  blur() {
+    this.input.textInput.blur();
+  }
+
   handleChangeText(text) {
     this.searchText = text;
     const {onSearch} = this.props;
