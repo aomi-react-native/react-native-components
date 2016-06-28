@@ -2,10 +2,9 @@ import React, { PropTypes } from 'react';
 import Component from '../AbstractComponent';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
-  Dimensions
+  CameraRoll
 } from 'react-native';
 import GridView from '../GridView';
 import Dialog from '../Dialog';
@@ -38,10 +37,14 @@ const styles = StyleSheet.create({
   fullScreen: {
     flex: 1,
     backgroundColor: '#000'
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0
   }
 });
-
-const {width, height} = Dimensions.get('window');
 
 /**
  * 照片浏览器
@@ -52,16 +55,36 @@ class PhotoBrowser extends Component {
 
   static propTypes = {
     headerHeight: PropTypes.number,
-    onEnterFullScreen: PropTypes.func,
-    renderHeader: PropTypes.func,
+    initialListSize: PropTypes.number,
     mediaList: PropTypes.array,
-    singleSelected: PropTypes.bool
+    pageSize: PropTypes.number,
+    renderHeader: PropTypes.func,
+    singleSelected: PropTypes.bool,
+    onEnterFullScreen: PropTypes.func
   };
 
   static defaultProps = {
+    initialListSize: 50,
+    pageSize: 30,
     headerHeight: 60,
     singleSelected: false
   };
+
+  constructor(props) {
+    super(props);
+    if (!props.mediaList) {
+      CameraRoll.getPhotos({
+        first: props.initialListSize,
+        assetType: 'Photos'
+      }).then((photos)=> {
+        let page = photos.edges.map(photo=> photo.node.image);
+        this.setState({
+          photoBrowserOpen: true,
+          mediaList: page
+        });
+      });
+    }
+  }
 
   // 数据状态
   state = {
@@ -72,7 +95,8 @@ class PhotoBrowser extends Component {
     // 是否正在全屏浏览
     fullBrowser: false,
     // 全屏浏览开始第一张图片
-    startIndex: 0
+    startIndex: 0,
+    mediaList: []
   };
 
   componentWillReceiveProps(nextProps) {
@@ -131,6 +155,13 @@ class PhotoBrowser extends Component {
     this.setState({
       fullBrowser: false
     });
+  }
+
+  /**
+   * 如果为浏览系统相册,则自动加载下一页
+   */
+  handleEndReached() {
+
   }
 
   /**
@@ -211,31 +242,34 @@ class PhotoBrowser extends Component {
 
   render() {
     const {
-      mediaList,
-      renderHeader
+      renderHeader,
+      ...other
     } = this.props;
 
     return (
       <View style={styles.container}>
         {renderHeader ? renderHeader() : this.renderHeader()}
-        <GridView autoHeightEqWidth
-                  cols={4}
-                  cells={mediaList}
-                  horizontalSpacing={1}
-                  initialListSize={50}
-                  pageSize={20}
-                  renderCell={this.renderCell}
-                  rowHasChanged={this.rowHasChanged}
-                  style={styles.gridView}
-                  verticalSpacing={1}
+        <GridView {...other}
+          autoHeightEqWidth
+          cells={this.state.mediaList}
+          cols={4}
+          horizontalSpacing={1}
+          onEndReached={this.handleEndReached}
+          renderCell={this.renderCell}
+          rowHasChanged={this.rowHasChanged}
+          style={styles.gridView}
+          verticalSpacing={1}
         />
         <Dialog style={styles.fullScreen}
                 visible={this.state.fullBrowser}
         >
-          <AnimatableView animation={this.state.headerAnimation}>
+          <AnimatableView animation={this.state.headerAnimation}
+                          style={styles.header}
+          >
             {renderHeader ? renderHeader() : this.renderHeader()}
           </AnimatableView>
-          <FullScreen mediaList={mediaList}
+          <FullScreen mediaList={this.state.mediaList}
+                      onEndReached={this.handleEndReached}
                       startIndex={this.state.startIndex}
           />
         </Dialog>
