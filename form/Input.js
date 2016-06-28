@@ -156,6 +156,9 @@ class Input extends AbstractFormComponent {
 
   state = {};
 
+  // refs
+  textInput;
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.defaultValue !== this.props.defaultValue) {
       this.onChangeText(nextProps.defaultValue);
@@ -257,6 +260,7 @@ class Input extends AbstractFormComponent {
         {this.getComp(before, true)}
         <TextInput {...newInputProps}
           onChangeText={this.onChangeText}
+          ref={textInput => this.textInput = textInput}
           style={[styles.input, inputStyle]}
         />
         {this.getComp(after)}

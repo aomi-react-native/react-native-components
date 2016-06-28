@@ -34,7 +34,18 @@ class SearchBar extends Component {
     onSearch: PropTypes.func
   };
 
+  // refs
+  input;
+
   searchText = '';
+
+  isFocused():Boolean {
+    this.input.textInput.isFocused();
+  }
+
+  clear():void {
+    this.input.textInput.clear();
+  }
 
   handleChangeText(text) {
     this.searchText = text;
@@ -78,6 +89,7 @@ class SearchBar extends Component {
             onChangeText={this.handleChangeText}
             onSubmitEditing={this.handleSubmit}
             placeholder={placeholder}
+            ref={input => this.input = input}
             returnKeyType="search"
             style={styles.input}
           />
