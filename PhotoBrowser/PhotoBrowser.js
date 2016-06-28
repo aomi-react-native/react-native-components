@@ -55,8 +55,10 @@ class PhotoBrowser extends Component {
 
   static propTypes = {
     headerHeight: PropTypes.number,
-    initialListSize: PropTypes.number,
+    initialNumToRender: PropTypes.number,
+    maxNumToRender: PropTypes.number,
     mediaList: PropTypes.array,
+    numToRenderAhead: PropTypes.number,
     pageSize: PropTypes.number,
     renderHeader: PropTypes.func,
     singleSelected: PropTypes.bool,
@@ -64,8 +66,9 @@ class PhotoBrowser extends Component {
   };
 
   static defaultProps = {
-    initialListSize: 50,
-    pageSize: 30,
+    initialNumToRender: 100,
+    maxNumToRender: 200,
+    numToRenderAhead: 60,
     headerHeight: 60,
     singleSelected: false
   };
@@ -74,14 +77,11 @@ class PhotoBrowser extends Component {
     super(props);
     if (!props.mediaList) {
       CameraRoll.getPhotos({
-        first: props.initialListSize,
+        first: 999999,
         assetType: 'Photos'
       }).then((medias)=> {
-        this.pageInfo = medias.page_info;
-        this.first = props.initialListSize;
         let page = medias.edges.map(photo=> photo.node.image);
         this.setState({
-          photoBrowserOpen: true,
           mediaList: page
         });
       });
@@ -109,10 +109,6 @@ class PhotoBrowser extends Component {
 
   // 上一次选择的图片
   prevSelected = [];
-  // 分页信息
-  pageInfo = {};
-  // 开始位置
-  first = 0;
 
   /**
    * 进入选择模式
@@ -161,26 +157,6 @@ class PhotoBrowser extends Component {
     this.setState({
       fullBrowser: false
     });
-  }
-
-  /**
-   * 如果为浏览系统相册,则自动加载下一页
-   */
-  async handleEndReached() {
-    if (this.pageInfo.has_next_page) {
-      this.first = this.first + this.props.pageSize;
-      let photos = await CameraRoll.getPhotos({
-        first: this.first,
-        after: this.pageInfo.end_cursor,
-        assetType: 'Photos'
-      });
-      this.pageInfo = photos.page_info;
-      let page = photos.edges.map(photo=> photo.node.image);
-      this.setState({
-        mediaList: this.state.mediaList.concat(page)
-      });
-    }
-
   }
 
   /**
@@ -273,7 +249,6 @@ class PhotoBrowser extends Component {
           cells={this.state.mediaList}
           cols={4}
           horizontalSpacing={1}
-          onEndReached={this.handleEndReached}
           renderCell={this.renderCell}
           rowHasChanged={this.rowHasChanged}
           style={styles.gridView}
@@ -288,7 +263,6 @@ class PhotoBrowser extends Component {
             {renderHeader ? renderHeader() : this.renderHeader()}
           </AnimatableView>
           <FullScreen mediaList={this.state.mediaList}
-                      onEndReached={this.handleEndReached}
                       startIndex={this.state.startIndex}
           />
         </Dialog>
