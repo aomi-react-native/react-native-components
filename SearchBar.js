@@ -1,10 +1,10 @@
-import React, { PropTypes } from 'react';
-import Component from './AbstractComponent';
+import React, { PropTypes } from "react";
+import Component from "./AbstractComponent";
 import {
   View,
   StyleSheet
-} from 'react-native';
-import Input from './form/Input';
+} from "react-native";
+import Input from "./form/Input";
 
 const styles = StyleSheet.create({
   container: {
@@ -45,6 +45,10 @@ class SearchBar extends Component {
 
   clear():void {
     this.input.textInput.clear();
+  }
+
+  focus() {
+    this.input.textInput.focus();
   }
 
   handleChangeText(text) {
