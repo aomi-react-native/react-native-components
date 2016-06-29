@@ -91,8 +91,14 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                 if (OPEN_CAMERA_REQUEST_CODE == requestCode) {
                     if (RESULT_OK == resultCode) {
                         Log.d(TAG, "拍照成功");
+                        String path = data.getData().toString();
+
+                        WritableMap response = new WritableNativeMap();
+                        response.putString("path", data.getData().toString());
+                        promise.resolve(response);
                     } else {
                         Log.d(TAG, "拍照取消");
+                        promise.reject("CANCEL", "用户取消");
                     }
                     reactContext.removeActivityEventListener(openCameraListener);
                 }
