@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react';
-import {
-  Switch as RNSwitch
-} from 'react-native';
-
+import { Switch as RNSwitch } from 'react-native';
 import AbstractFormComponent from './AbstractFormComponent';
 
 /**
@@ -14,12 +11,7 @@ class Switch extends AbstractFormComponent {
   static propTypes = {
     form: PropTypes.object,
     name: PropTypes.string,
-    onValueChange: PropTypes.func,
-    value: PropTypes.bool
-  };
-
-  static defaultProps = {
-    value: false
+    onValueChange: PropTypes.func
   };
 
   static displayName = 'Switch';
@@ -29,9 +21,6 @@ class Switch extends AbstractFormComponent {
     ['onValueChange'].forEach(f => this[f] = this[f].bind(this));
     let {name, form} = this.props;
     name && form && form.putFormValue(name, this.props.value);
-    this.state = {
-      value: props.value
-    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,10 +34,6 @@ class Switch extends AbstractFormComponent {
     onValueChange && onValueChange(value);
   }
 
-  getValue() {
-    return this.state.value;
-  }
-
   valid() {
     return true;
   }
@@ -57,7 +42,6 @@ class Switch extends AbstractFormComponent {
     return (
       <RNSwitch {...this.props}
         onValueChange={this.onValueChange}
-        value={this.state.value}
       />
     );
   }
