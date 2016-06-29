@@ -17,7 +17,8 @@ type Options = {
 
 const DEFAULT_OPTIONS = {
   sourceType: sourceType.savedPhotosAlbum,
-  mediaType: mediaType.Image
+  mediaType: mediaType.Image,
+  allowsEditing: false
 };
 
 /**
