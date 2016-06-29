@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		274210C3D2A808F472FFDD92 /* MediaBrowserModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2742195A7ADBA4BF008B1FBA /* MediaBrowserModule.m */; };
+		274218E198BE75C12C648FA6 /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27421736EFA9E72453EB812C /* MediaManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		14A1FC8A1D236B5B00F5DD92 /* CopyFiles */ = {
+		14A1FD2E1D23B1FB00F5DD92 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -23,13 +23,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14A1FC8C1D236B5B00F5DD92 /* libSitbRCTMediaBrowser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbRCTMediaBrowser.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2742195A7ADBA4BF008B1FBA /* MediaBrowserModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaBrowserModule.m; sourceTree = "<group>"; };
-		27421CB8379E84903D0ABE68 /* MediaBrowserModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaBrowserModule.h; sourceTree = "<group>"; };
+		14A1FD301D23B1FB00F5DD92 /* libSitbRCTMediaMananger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbRCTMediaMananger.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		274211443D6342B1D9CB425F /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
+		27421736EFA9E72453EB812C /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		14A1FC891D236B5B00F5DD92 /* Frameworks */ = {
+		14A1FD2D1D23B1FB00F5DD92 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,19 +39,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		14A1FC831D236B5B00F5DD92 = {
+		14A1FD271D23B1FB00F5DD92 = {
 			isa = PBXGroup;
 			children = (
-				27421CB8379E84903D0ABE68 /* MediaBrowserModule.h */,
-				2742195A7ADBA4BF008B1FBA /* MediaBrowserModule.m */,
-				14A1FC8D1D236B5B00F5DD92 /* Products */,
+				14A1FD311D23B1FB00F5DD92 /* Products */,
+				274211443D6342B1D9CB425F /* MediaManager.h */,
+				27421736EFA9E72453EB812C /* MediaManager.m */,
 			);
 			sourceTree = "<group>";
 		};
-		14A1FC8D1D236B5B00F5DD92 /* Products */ = {
+		14A1FD311D23B1FB00F5DD92 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				14A1FC8C1D236B5B00F5DD92 /* libSitbRCTMediaBrowser.a */,
+				14A1FD301D23B1FB00F5DD92 /* libSitbRCTMediaMananger.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,67 +59,67 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		14A1FC8B1D236B5B00F5DD92 /* SitbRCTMediaBrowser */ = {
+		14A1FD2F1D23B1FB00F5DD92 /* SitbRCTMediaMananger */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14A1FC951D236B5B00F5DD92 /* Build configuration list for PBXNativeTarget "SitbRCTMediaBrowser" */;
+			buildConfigurationList = 14A1FD391D23B1FB00F5DD92 /* Build configuration list for PBXNativeTarget "SitbRCTMediaMananger" */;
 			buildPhases = (
-				14A1FC881D236B5B00F5DD92 /* Sources */,
-				14A1FC891D236B5B00F5DD92 /* Frameworks */,
-				14A1FC8A1D236B5B00F5DD92 /* CopyFiles */,
+				14A1FD2C1D23B1FB00F5DD92 /* Sources */,
+				14A1FD2D1D23B1FB00F5DD92 /* Frameworks */,
+				14A1FD2E1D23B1FB00F5DD92 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = SitbRCTMediaBrowser;
-			productName = SitbRCTMediaBrowser;
-			productReference = 14A1FC8C1D236B5B00F5DD92 /* libSitbRCTMediaBrowser.a */;
+			name = SitbRCTMediaMananger;
+			productName = SitbRCTMediaMananger;
+			productReference = 14A1FD301D23B1FB00F5DD92 /* libSitbRCTMediaMananger.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		14A1FC841D236B5B00F5DD92 /* Project object */ = {
+		14A1FD281D23B1FB00F5DD92 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Sitb;
 				TargetAttributes = {
-					14A1FC8B1D236B5B00F5DD92 = {
+					14A1FD2F1D23B1FB00F5DD92 = {
 						CreatedOnToolsVersion = 7.2.1;
 					};
 				};
 			};
-			buildConfigurationList = 14A1FC871D236B5B00F5DD92 /* Build configuration list for PBXProject "SitbRCTMediaBrowser" */;
+			buildConfigurationList = 14A1FD2B1D23B1FB00F5DD92 /* Build configuration list for PBXProject "SitbRCTMediaMananger" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 14A1FC831D236B5B00F5DD92;
-			productRefGroup = 14A1FC8D1D236B5B00F5DD92 /* Products */;
+			mainGroup = 14A1FD271D23B1FB00F5DD92;
+			productRefGroup = 14A1FD311D23B1FB00F5DD92 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				14A1FC8B1D236B5B00F5DD92 /* SitbRCTMediaBrowser */,
+				14A1FD2F1D23B1FB00F5DD92 /* SitbRCTMediaMananger */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		14A1FC881D236B5B00F5DD92 /* Sources */ = {
+		14A1FD2C1D23B1FB00F5DD92 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				274210C3D2A808F472FFDD92 /* MediaBrowserModule.m in Sources */,
+				274218E198BE75C12C648FA6 /* MediaManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		14A1FC931D236B5B00F5DD92 /* Debug */ = {
+		14A1FD371D23B1FB00F5DD92 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -162,7 +162,7 @@
 			};
 			name = Debug;
 		};
-		14A1FC941D236B5B00F5DD92 /* Release */ = {
+		14A1FD381D23B1FB00F5DD92 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -199,7 +199,7 @@
 			};
 			name = Release;
 		};
-		14A1FC961D236B5B00F5DD92 /* Debug */ = {
+		14A1FD3A1D23B1FB00F5DD92 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
@@ -214,7 +214,7 @@
 			};
 			name = Debug;
 		};
-		14A1FC971D236B5B00F5DD92 /* Release */ = {
+		14A1FD3B1D23B1FB00F5DD92 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
@@ -232,25 +232,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14A1FC871D236B5B00F5DD92 /* Build configuration list for PBXProject "SitbRCTMediaBrowser" */ = {
+		14A1FD2B1D23B1FB00F5DD92 /* Build configuration list for PBXProject "SitbRCTMediaMananger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				14A1FC931D236B5B00F5DD92 /* Debug */,
-				14A1FC941D236B5B00F5DD92 /* Release */,
+				14A1FD371D23B1FB00F5DD92 /* Debug */,
+				14A1FD381D23B1FB00F5DD92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14A1FC951D236B5B00F5DD92 /* Build configuration list for PBXNativeTarget "SitbRCTMediaBrowser" */ = {
+		14A1FD391D23B1FB00F5DD92 /* Build configuration list for PBXNativeTarget "SitbRCTMediaMananger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				14A1FC961D236B5B00F5DD92 /* Debug */,
-				14A1FC971D236B5B00F5DD92 /* Release */,
+				14A1FD3A1D23B1FB00F5DD92 /* Debug */,
+				14A1FD3B1D23B1FB00F5DD92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 14A1FC841D236B5B00F5DD92 /* Project object */;
+	rootObject = 14A1FD281D23B1FB00F5DD92 /* Project object */;
 }

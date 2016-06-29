@@ -1,18 +1,18 @@
 //
-//  MediaBrowserModule.m
+//  MediaManager.m
 //  SitbRCTMediaBrowser
 //
 //  Created by 田尘殇 on 16/6/29.
 //  Copyright © 2016年 Sitb. All rights reserved.
 //
 
-#import "MediaBrowserModule.h"
-#import <AssetsLibrary/AssetsLibrary.h>
+#import "MediaManager.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
-@implementation MediaBrowserModule
 
-RCT_EXPORT_MODULE(SitbRCTMediaBrowserModule)
+@implementation MediaManager
+
+RCT_EXPORT_MODULE(SitbRCTMediaManager)
 
 /** 常量 */
 - (NSDictionary<NSString *, id> *)constantsToExport {
@@ -22,12 +22,17 @@ RCT_EXPORT_MODULE(SitbRCTMediaBrowserModule)
                     @"savedPhotosAlbum" : @(UIImagePickerControllerSourceTypeSavedPhotosAlbum)
             },
             @"mediaType" : @{
+                    @"Image" : @(MediaTypeImage),
+                    @"Video" : @(MediaTypeVideo)
             }
     };
 }
 
 
 /*********JavaScript Method************/
+/**
+ * 启动手机图库浏览器
+ */
 RCT_EXPORT_METHOD(
         launchImageLibrary:
         (NSDictionary *) options
@@ -41,10 +46,19 @@ RCT_EXPORT_METHOD(
     UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
 
     pickerController.sourceType = (UIImagePickerControllerSourceType) ((NSNumber *) [options valueForKey:@"sourceType"]).intValue;
-    pickerController.mediaTypes = @[(NSString *) kUTTypeImage];
-    pickerController.allowsEditing = YES;
+
+    MediaType mediaType = (MediaType) ((NSNumber *) options[@"mediaType"]).intValue;
+    switch (mediaType) {
+        case MediaTypeImage:
+            pickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+            break;
+        case MediaTypeVideo:
+            pickerController.mediaTypes = @[(NSString *) kUTTypeVideo];
+            break;
+    }
+
+    pickerController.allowsEditing = [options[@"allowsEditing"] boolValue];
     pickerController.delegate = self;
-    pickerController
 
     pickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -79,19 +93,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     self.reject(@"CANCEL", @"用户取消", nil);
 }
-
-
-//
-//- (void)imagePickerController:(UIImagePickerController *)picker
-//        didFinishPickingImage:(UIImage *)image
-//                  editingInfo:(NSDictionary *)editingInfo {
-//    RCTLog(@"选取照片成功[%@]", [editingInfo valueForKey:@"UIImagePickerControllerReferenceURL"]);
-//
-//    self.resolve(@{
-//            @"path" : editingInfo[@"UIImagePickerControllerReferenceURL"]
-//    });
-//
-//}
 
 
 @end
