@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
 import {
+  ListView,
   View,
   StyleSheet,
   Dimensions
 } from 'react-native';
 import AbstractComponent from './AbstractComponent';
-import WindowedListView from 'react-native/Libraries/Experimental/WindowedListView';
+
 
 const {width} = Dimensions.get('window');
 
@@ -33,10 +34,12 @@ class GridView extends AbstractComponent {
      * grid cell 列表数组
      */
     cells: PropTypes.array.isRequired,
+
     /**
      * 渲染Grid Cell
      */
     renderCell: PropTypes.func.isRequired,
+
     /**
      * 自动设置高度为宽度
      */
@@ -48,7 +51,6 @@ class GridView extends AbstractComponent {
     autoWidth: PropTypes.bool,
 
     cellStyle: View.propTypes.style,
-
     /**
      * 列数
      */
@@ -62,7 +64,6 @@ class GridView extends AbstractComponent {
     horizontalSpacing: PropTypes.number,
 
     rowHasChanged: PropTypes.func,
-
     verticalSpacing: PropTypes.number
   };
 
@@ -75,7 +76,7 @@ class GridView extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    let {autoWidth, autoHeightEqWidth, verticalSpacing, horizontalSpacing, cols, cells} = this.props;
+    let {autoWidth, autoHeightEqWidth, verticalSpacing, horizontalSpacing, cols, cells, rowHasChanged} = this.props;
     if (autoWidth) {
       const spacingWidth = verticalSpacing ? verticalSpacing * cols : 0;
       const rowWidth = (width - spacingWidth) / cols;
@@ -85,17 +86,19 @@ class GridView extends AbstractComponent {
         marginRight: verticalSpacing ? verticalSpacing : 0
       };
       if (autoHeightEqWidth) {
-        // noinspection JSSuspiciousNameCombination
+        //noinspection JSSuspiciousNameCombination
         this.rowStyle.height = rowWidth;
       }
     }
+    const ds = new ListView.DataSource({rowHasChanged});
+
     this.state = {
-      dataSource: this.handleCells(cells)
+      dataSource: ds.cloneWithRows(cells)
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({dataSource: this.handleCells(nextProps.cells)});
+    this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.cells)});
   }
 
   // refs
@@ -104,13 +107,6 @@ class GridView extends AbstractComponent {
   rowStyle;
 
 
-  handleCells(cells:Array<any>):Array<{rowKey: string, rowData: any}> {
-    return cells.map((cell, index) => ({
-      rowKey: `cell_${index}`,
-      rowData: cell
-    }));
-  }
-
   getCellSize() {
     return {
       width: this.rowStyle.width,
@@ -118,24 +114,22 @@ class GridView extends AbstractComponent {
     };
   }
 
-  renderRow(rowData:any, sectionIdx:Number, rowIdx:Number) {
-    const {renderCell, cellStyle} = this.props;
+  renderRow(rowData, sectionID:Number, rowID:Number) {
+    let {renderCell, cellStyle} = this.props;
     return (
       <View style={[cellStyle, this.rowStyle]}>
-        {renderCell(rowData, sectionIdx, rowIdx, this.getCellSize())}
+        {renderCell(rowData, sectionID, rowID, this.getCellSize())}
       </View>
     );
   }
 
   render() {
     let {...other} = this.props;
-    if (this.state.dataSource.length === 0) {
-      return null;
-    }
+
     return (
-      <WindowedListView {...other}
+      <ListView {...other}
         contentContainerStyle={styles.grid}
-        data={this.state.dataSource}
+        dataSource={this.state.dataSource}
         ref={listView => this.listView = listView}
         renderRow={this.renderRow}
       />
