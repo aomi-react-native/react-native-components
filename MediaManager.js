@@ -4,6 +4,7 @@ const {
   SitbRCTMediaManager: {
     sourceType,
     mediaType,
+    cameraType,
     launchImageLibrary,
     launchCamera
   }
@@ -16,10 +17,15 @@ type Options = {
   allowsEditing: Boolean
 };
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_LIBRARY_OPTIONS = {
   sourceType: sourceType.savedPhotosAlbum,
   mediaType: mediaType.Image,
   allowsEditing: false
+};
+
+const DEFAULT_CAMERA_OPTIONS = {
+  sourceType: sourceType.camera,
+  cameraType: cameraType.back
 };
 
 /**
@@ -28,11 +34,11 @@ const DEFAULT_OPTIONS = {
  */
 class MediaBrowser {
 
-  static launchImageLibrary(options:Options = DEFAULT_OPTIONS) {
+  static launchImageLibrary(options:Options = DEFAULT_LIBRARY_OPTIONS) {
     return launchImageLibrary(options);
   }
 
-  static launchCamera(options) {
+  static launchCamera(options = DEFAULT_CAMERA_OPTIONS) {
     return launchCamera(options);
   }
 

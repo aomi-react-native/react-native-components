@@ -19,11 +19,16 @@ RCT_EXPORT_MODULE(SitbRCTMediaManager)
     return @{
             @"sourceType" : @{
                     @"photoLibrary" : @(UIImagePickerControllerSourceTypePhotoLibrary),
-                    @"savedPhotosAlbum" : @(UIImagePickerControllerSourceTypeSavedPhotosAlbum)
+                    @"savedPhotosAlbum" : @(UIImagePickerControllerSourceTypeSavedPhotosAlbum),
+                    @"camera" : @(UIImagePickerControllerSourceTypeCamera)
             },
             @"mediaType" : @{
                     @"Image" : @(MediaTypeImage),
                     @"Video" : @(MediaTypeVideo)
+            },
+            @"cameraType" : @{
+                    @"front" : @(UIImagePickerControllerCameraDeviceFront),
+                    @"back" : @(UIImagePickerControllerCameraDeviceRear)
             }
     };
 }
@@ -41,11 +46,41 @@ RCT_EXPORT_METHOD(
         reject:
         (RCTPromiseRejectBlock) reject
 ) {
+    self.hasReturn = false;
     self.resolve = resolve;
     self.reject = reject;
-    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+    [self launchWithOptions:options];
+}
 
-    pickerController.sourceType = (UIImagePickerControllerSourceType) ((NSNumber *) [options valueForKey:@"sourceType"]).intValue;
+/**
+ * 启动系统相机
+ */
+RCT_EXPORT_METHOD(
+        launchCamera:
+        (NSDictionary *) options
+        resolver:
+        (RCTPromiseResolveBlock) resolve
+        reject:
+        (RCTPromiseRejectBlock) reject
+) {
+    self.hasReturn = false;
+    self.resolve = resolve;
+    self.reject = reject;
+    [self launchWithOptions:options];
+}
+
+
+- (void)launchWithOptions:(NSDictionary *)options {
+    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+    UIImagePickerControllerSourceType sourceType = (UIImagePickerControllerSourceType) ((NSNumber *) [options valueForKey:@"sourceType"]).intValue;
+
+    if (sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImagePickerControllerCameraDevice cameraDevice = (UIImagePickerControllerCameraDevice) ((NSNumber *) options[@"cameraType"]).intValue;
+        pickerController.cameraDevice = cameraDevice;
+    }
+
+
+    pickerController.sourceType = sourceType;
 
     MediaType mediaType = (MediaType) ((NSNumber *) options[@"mediaType"]).intValue;
     switch (mediaType) {
@@ -70,7 +105,6 @@ RCT_EXPORT_METHOD(
     });
 }
 
-
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker
@@ -81,17 +115,22 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         RCTLog(@"选取照片成功[%@]", [info valueForKey:@"UIImagePickerControllerReferenceURL"]);
 
         NSURL *url = [info valueForKey:@"UIImagePickerControllerReferenceURL"];
-
-        self.resolve(
-                @{
-                        @"path" : url.absoluteString,
-                }
-        );
+        if (!self.hasReturn) {
+            self.resolve(
+                    @{
+                            @"path" : url.absoluteString,
+                    }
+            );
+            self.hasReturn = true;
+        }
     }];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    self.reject(@"CANCEL", @"用户取消", nil);
+    if (!self.hasReturn) {
+        self.reject(@"CANCEL", @"用户取消", nil);
+        self.hasReturn = true;
+    }
 }
 
 
