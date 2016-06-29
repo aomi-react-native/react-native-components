@@ -1,7 +1,7 @@
 import { NativeModules } from 'react-native';
 
 const {
-  SitbRCTMediaBrowserModule: {
+  SitbRCTMediaManager: {
     sourceType,
     mediaType,
     launchImageLibrary
@@ -9,8 +9,15 @@ const {
 } = NativeModules;
 
 
+type Options = {
+  sourceType: Number,
+  mediaType: String,
+  allowsEditing: Boolean
+};
+
 const DEFAULT_OPTIONS = {
-  sourceType: sourceType.savedPhotosAlbum
+  sourceType: sourceType.savedPhotosAlbum,
+  mediaType: mediaType.Image
 };
 
 /**
@@ -19,7 +26,7 @@ const DEFAULT_OPTIONS = {
  */
 class MediaBrowser {
 
-  static launchImageLibrary(options = DEFAULT_OPTIONS) {
+  static launchImageLibrary(options:Options = DEFAULT_OPTIONS) {
     return launchImageLibrary(options);
   }
 
