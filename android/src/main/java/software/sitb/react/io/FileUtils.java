@@ -95,7 +95,11 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getPhotoByContentUri(String uriStr, Promise promise) {
-        String path = getFilePathFromContentUri(uriStr, new String[]{MediaStore.Images.Media.DATA});
+        String path = getFilePathFromContentUri(
+                this.context.getContentResolver(),
+                uriStr,
+                new String[]{MediaStore.Images.Media.DATA}
+        );
         readFile(path, promise);
     }
 
@@ -105,9 +109,9 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
      * @param uriStr 资源URI
      * @return file path
      */
-    public String getFilePathFromContentUri(String uriStr, String[] filePathColumn) {
+    public static String getFilePathFromContentUri(ContentResolver contentResolver, String uriStr, String[] filePathColumn) {
         Uri uri = Uri.parse(uriStr);
-        Cursor cursor = this.context.getContentResolver().query(uri, filePathColumn, null, null, null);
+        Cursor cursor = contentResolver.query(uri, filePathColumn, null, null, null);
         if (null != cursor) {
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);

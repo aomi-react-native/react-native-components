@@ -4,7 +4,8 @@ const {
   SitbRCTMediaManager: {
     sourceType,
     mediaType,
-    launchImageLibrary
+    launchImageLibrary,
+    launchCamera
   }
 } = NativeModules;
 
@@ -29,6 +30,10 @@ class MediaBrowser {
 
   static launchImageLibrary(options:Options = DEFAULT_OPTIONS) {
     return launchImageLibrary(options);
+  }
+
+  static launchCamera(options) {
+    return launchCamera(options);
   }
 
 }

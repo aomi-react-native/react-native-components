@@ -152,9 +152,9 @@ public class CameraModule extends DefaultReactContextBaseJavaModule {
                         );
                         try {
                             ExifInterface exif = new ExifInterface(path);
-                            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, decimalToDMS(finalLatitude));
+                            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, finalLatitude + "");
                             exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, finalLatitude > 0 ? "N" : "S");
-                            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, decimalToDMS(finalLongitude));
+                            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, finalLongitude + "");
                             exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, finalLongitude > 0 ? "E" : "W");
                             exif.saveAttributes();
                         } catch (IOException e) {

@@ -56,10 +56,9 @@ class Circle extends Component {
     const {selected, style, circleStyle, innerCircleStyle} = this.props;
 
     return (
-      <View style={[styles.container, style]}>
-        <View ref={circle => this.circle = circle}
-              style={[styles.circle, circleStyle]}
-        >
+      <View ref={circle => this.circle = circle}
+            style={[styles.container, style]}>
+        <View style={[styles.circle, circleStyle]}>
           {
             selected ? (
               <View style={[styles.innerCircle, innerCircleStyle]}/>

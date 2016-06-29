@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 class GesturePassword extends Component {
 
   static propTypes = {
+    checkDistance: PropTypes.number,
     circleContainerStyle: View.propTypes.style,
     circleSelectedStyle: View.propTypes.style,
     circleStyle: View.propTypes.style,
@@ -46,6 +47,7 @@ class GesturePassword extends Component {
   };
 
   static defaultProps = {
+    checkDistance: 30,
     passwordValues: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     successColor: '#15617F',
     wrongColor: '#FF0000'
@@ -101,8 +103,8 @@ class GesturePassword extends Component {
         // noinspection Eslint
         this.valuePosition[key] = {
           min: {
-            x,
-            y
+            x: x,
+            y: y
           },
           max: {
             x: x + width,

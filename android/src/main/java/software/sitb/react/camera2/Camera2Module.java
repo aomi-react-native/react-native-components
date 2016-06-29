@@ -24,7 +24,7 @@ import java.nio.ByteBuffer;
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class SitbCamera2Module extends DefaultReactContextBaseJavaModule {
+public class Camera2Module extends DefaultReactContextBaseJavaModule {
 
 
     private static final String TAG = "SitbCamera2Module";
@@ -43,7 +43,7 @@ public class SitbCamera2Module extends DefaultReactContextBaseJavaModule {
     private ReactApplicationContext reactContext;
 
 
-    public SitbCamera2Module(ReactApplicationContext reactContext, Activity activity) {
+    public Camera2Module(ReactApplicationContext reactContext, Activity activity) {
         super(reactContext);
         this.activity = activity;
         this.reactContext = reactContext;

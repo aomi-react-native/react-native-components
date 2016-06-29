@@ -6,6 +6,7 @@ import android.graphics.SurfaceTexture;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.view.*;
+import com.facebook.react.bridge.ReactContext;
 
 /**
  * @author 田尘殇Sean sean.snow@live.com
@@ -21,12 +22,12 @@ public class CameraView  extends TextureView implements TextureView.SurfaceTextu
     public CameraView(Context ctx) {
         super(ctx);
         this.context = ctx;
-        setActualDeviceOrientation(this.context);
+        setActualDeviceOrientation();
 
         OrientationEventListener orientationListener = new OrientationEventListener(ctx, SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
             public void onOrientationChanged(int orientation) {
-                if (setActualDeviceOrientation(context)) {
+                if (setActualDeviceOrientation()) {
                     cameraLayout();
                 }
             }
@@ -97,7 +98,7 @@ public class CameraView  extends TextureView implements TextureView.SurfaceTextu
 
     }
 
-    private boolean setActualDeviceOrientation(Context context) {
+    private boolean setActualDeviceOrientation() {
         int actualDeviceOrientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
         if (this.actualDeviceOrientation != actualDeviceOrientation) {
             this.actualDeviceOrientation = actualDeviceOrientation;

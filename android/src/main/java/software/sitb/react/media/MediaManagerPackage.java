@@ -1,6 +1,5 @@
-package software.sitb.react.camera2;
+package software.sitb.react.media;
 
-import android.app.Activity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
@@ -11,21 +10,14 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 相机package
- *
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class SitbCamera2Package implements ReactPackage {
-
-    private Activity activity;
-
-    public SitbCamera2Package(Activity activity) {
-        this.activity = activity;
-    }
-
+public class MediaManagerPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Collections.<NativeModule>singletonList(new SitbCamera2Module(reactContext, this.activity));
+        return Collections.<NativeModule>singletonList(
+                new MediaManager(reactContext)
+        );
     }
 
     @Override
@@ -35,6 +27,6 @@ public class SitbCamera2Package implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Collections.<ViewManager>singletonList(new CameraViewManager());
+        return Collections.emptyList();
     }
 }
