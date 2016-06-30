@@ -119,6 +119,12 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         if (self.pickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
             RCTLog(@"拍摄成功");
 
+            NSString *editPath = @"";
+            if (self.pickerController.allowsEditing) {
+                UIImage *edit = info[@"UIImagePickerControllerEditedImage"];
+                editPath = [self saveTempImage:edit];
+            }
+
             UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
 
             NSDictionary *cameraMetadata = info[@"UIImagePickerControllerMediaMetadata"];
@@ -136,7 +142,12 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                         self.reject(@"ERROR", @"保存图片失败", saveError);
                     } else {
                         self.resolve(@{
-                                @"path" : assetURL.absoluteString
+                                @"original" : @{
+                                        @"path" : assetURL.absoluteString
+                                },
+                                @"edited" : @{
+                                        @"path" : editPath
+                                }
                         });
                     }
                 }];
@@ -147,23 +158,15 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
             response[@"reference"] = @{
                     @"path" : ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
             };
+
+            NSString *editedImageTempFile = @"";
             if (self.pickerController.allowsEditing) {
-                NSString *documentsDirectory = NSTemporaryDirectory();
                 UIImage *editedImage = info[@"UIImagePickerControllerEditedImage"];
-
-                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                [formatter setDateFormat:@"YYYYMMddhhmmssSSS"];
-                NSString *date = [formatter stringFromDate:[NSDate date]];
-
-                NSString *editedImageTempFile = [documentsDirectory
-                        stringByAppendingPathComponent:[NSString stringWithFormat:@"temp_edited_%@.jpg", date]
-                ];
-                [UIImageJPEGRepresentation(editedImage, 1.0f) writeToFile:editedImageTempFile atomically:YES];
-
-                response[@"edited"] = @{
-                        @"path" : editedImageTempFile
-                };
+                editedImageTempFile = [self saveTempImage:editedImage];
             }
+            response[@"edited"] = @{
+                    @"path" : editedImageTempFile
+            };
             self.resolve(response);
         }
     }];
@@ -176,6 +179,16 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
             self.hasReturn = true;
         }
     }];
+}
+
+- (NSString *)saveTempImage:(UIImage *)image {
+    NSString *documentsDirectory = NSTemporaryDirectory();
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYYMMddhhmmssSSS"];
+    NSString *date = [formatter stringFromDate:[NSDate date]];
+    NSString *imageTempFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"temp_edited_%@.jpg", date]];
+    [UIImageJPEGRepresentation(image, 1.0f) writeToFile:imageTempFile atomically:YES];
+    return imageTempFile;
 }
 
 @end
