@@ -1,6 +1,8 @@
 package software.sitb.react.media;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import com.facebook.react.bridge.*;
@@ -8,6 +10,8 @@ import software.sitb.react.DefaultReactContextBaseJavaModule;
 import software.sitb.react.io.FileUtils;
 
 import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +68,8 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
 
     @ReactMethod
     public void launchImageLibrary(final ReadableMap options, final Promise promise) {
+        final boolean allowsEditing = options.getBoolean("allowsEditing");
+
         openImageListener = new ActivityEventListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -72,9 +78,16 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                         Log.d(TAG, "处理成功");
                         String url = data.getData().toString();
                         WritableMap response = new WritableNativeMap();
-                        WritableMap reference = new WritableNativeMap();
-                        reference.putString("path", url);
-                        response.putMap("reference", reference);
+
+                        if (allowsEditing) {
+                            WritableMap edited = new WritableNativeMap();
+                            edited.putString("path", url);
+                            response.putMap("edited", edited);
+                        } else {
+                            WritableMap reference = new WritableNativeMap();
+                            reference.putString("path", url);
+                            response.putMap("reference", reference);
+                        }
                         promise.resolve(response);
                     } else {
                         Log.d(TAG, "取消");
@@ -87,8 +100,30 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         };
 
         this.reactContext.addActivityEventListener(openImageListener);
-        // 打开相册
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (allowsEditing) {
+            intent.putExtra("crop", "true");
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("outputX", 200);
+            intent.putExtra("outputY", 200);
+            intent.putExtra("noFaceDetection", true);
+            intent.putExtra("return-data", true);
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+
+            try {
+                File cacheDir = this.reactContext.getExternalCacheDir();
+                if (null == cacheDir)
+                    throw new IOException("无法读取数据目录");
+                String filePath = cacheDir.getAbsolutePath() + System.currentTimeMillis() + ".jpg";
+                Uri uri = Uri.fromFile(new File(filePath));
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            } catch (Exception e) {
+                promise.reject("EXCEPTION", "获取目录失败", e);
+            }
+        }
+
+        // 打开相册
         this.reactContext.startActivityForResult(intent, OPEN_IMAGE_LIBRARY_REQUEST_CODE, null);
     }
 
@@ -138,7 +173,6 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
             }
         };
         this.reactContext.addActivityEventListener(openCameraListener);
-
         // 打开相机
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         this.reactContext.startActivityForResult(intent, OPEN_CAMERA_REQUEST_CODE, null);
