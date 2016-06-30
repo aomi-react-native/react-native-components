@@ -184,7 +184,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 - (NSString *)saveTempImage:(UIImage *)image {
     NSString *documentsDirectory = NSTemporaryDirectory();
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYYMMddhhmmssSSS"];
+    [formatter setDateFormat:@"YYYYMMddHHmmssSSS"];
     NSString *date = [formatter stringFromDate:[NSDate date]];
     NSString *imageTempFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"temp_edited_%@.jpg", date]];
     [UIImageJPEGRepresentation(image, 1.0f) writeToFile:imageTempFile atomically:YES];
