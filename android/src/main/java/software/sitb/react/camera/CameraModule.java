@@ -4,16 +4,13 @@ import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.media.ExifInterface;
 import android.provider.MediaStore;
-import android.util.Log;
 import com.facebook.react.bridge.*;
 import software.sitb.react.DefaultReactContextBaseJavaModule;
 import software.sitb.react.Error;
 import software.sitb.react.io.FileUtils;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -150,16 +147,8 @@ public class CameraModule extends DefaultReactContextBaseJavaModule {
                                 url,
                                 new String[]{MediaStore.Images.Media.DATA}
                         );
-                        try {
-                            ExifInterface exif = new ExifInterface(path);
-                            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, finalLatitude + "");
-                            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, finalLatitude > 0 ? "N" : "S");
-                            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, finalLongitude + "");
-                            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, finalLongitude > 0 ? "E" : "W");
-                            exif.saveAttributes();
-                        } catch (IOException e) {
-                            Log.e(TAG, "保存图片失败", e);
-                        }
+                        FileUtils.setImageGps(path, finalLatitude, finalLongitude);
+
                         response.putString("path", url);
                         promise.resolve(response);
                     }
@@ -169,25 +158,4 @@ public class CameraModule extends DefaultReactContextBaseJavaModule {
     }
 
 
-    private String decimalToDMS(double coord) {
-        String output, degrees, minutes, seconds;
-        double mod = coord % 1;
-        int intPart = (int) coord;
-        degrees = String.valueOf(intPart);
-        coord = mod * 60;
-        mod = coord % 1;
-        intPart = (int) coord;
-        if (intPart < 0) {
-            intPart *= -1;
-        }
-        minutes = String.valueOf(intPart);
-        coord = mod * 60;
-        intPart = (int) coord;
-        if (intPart < 0) {
-            intPart *= -1;
-        }
-        seconds = String.valueOf(intPart);
-        output = degrees + "/1," + minutes + "/1," + seconds + "/1";
-        return output;
-    }
 }

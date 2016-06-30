@@ -5,6 +5,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import com.facebook.react.bridge.*;
 import software.sitb.react.DefaultReactContextBaseJavaModule;
+import software.sitb.react.io.FileUtils;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -64,8 +65,35 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                 if (OPEN_IMAGE_LIBRARY_REQUEST_CODE == requestCode) {
                     if (resultCode == RESULT_OK) {
                         Log.d(TAG, "处理成功");
+
+                        String url = data.getData().toString();
                         WritableMap response = new WritableNativeMap();
-                        response.putString("path", data.getData().toString());
+                        response.putString("path", url);
+
+                        double longitude = 0,
+                                latitude = 0;
+
+                        if (options.hasKey("metadata")) {
+                            ReadableMap metadata = options.getMap("metadata");
+                            if (metadata.hasKey("location")) {
+                                ReadableMap location = metadata.getMap("location");
+                                if (location.hasKey("coords")) {
+                                    ReadableMap coords = location.getMap("coords");
+                                    if (coords.hasKey("longitude")) {
+                                        longitude = coords.getDouble("longitude");
+                                    }
+                                    if (coords.hasKey("latitude")) {
+                                        latitude = coords.getDouble("latitude");
+                                    }
+                                }
+                            }
+                        }
+                        String path = FileUtils.getFilePathFromContentUri(
+                                reactContext.getContentResolver(),
+                                url,
+                                new String[]{MediaStore.Images.Media.DATA}
+                        );
+                        FileUtils.setImageGps(path, latitude, longitude);
                         promise.resolve(response);
                     } else {
                         Log.d(TAG, "取消");

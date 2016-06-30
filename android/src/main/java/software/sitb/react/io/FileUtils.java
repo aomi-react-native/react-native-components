@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -231,4 +232,25 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
         }
     }
 
+    public static void setImageGps(String path, double latitude, double longitude) {
+        try {
+            ExifInterface exif = new ExifInterface(path);
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, toGps(latitude));
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, latitude > 0 ? "N" : "S");
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, toGps(longitude));
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, longitude > 0 ? "E" : "W");
+            exif.saveAttributes();
+        } catch (IOException e) {
+            Log.e(TAG, "设置GPS失败", e);
+        }
+    }
+
+    public static String toGps(double gps) {
+        int a = (int) gps;
+        double bb = (gps - a) * 60;
+        int b = (int) bb;
+        double cc = bb - b;
+        String c = (cc * 60) + "";
+        return a + "," + b + "," + c + "";
+    }
 }
