@@ -28,10 +28,13 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
 
     private static final int OPEN_CAMERA_REQUEST_CODE = 777_1;
 
+    private static final int OPEN_EDIT_REQUEST_CODE = 777_2;
+
     private ReactApplicationContext reactContext;
 
     private ActivityEventListener openImageListener;
     private ActivityEventListener openCameraListener;
+    private ActivityEventListener openEditListener;
 
     public MediaManager(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -102,25 +105,7 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         this.reactContext.addActivityEventListener(openImageListener);
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         if (allowsEditing) {
-            intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-            intent.putExtra("outputX", 200);
-            intent.putExtra("outputY", 200);
-            intent.putExtra("noFaceDetection", true);
-            intent.putExtra("return-data", true);
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-
-            try {
-                File cacheDir = this.reactContext.getExternalCacheDir();
-                if (null == cacheDir)
-                    throw new IOException("无法读取数据目录");
-                String filePath = cacheDir.getAbsolutePath() + System.currentTimeMillis() + ".jpg";
-                Uri uri = Uri.fromFile(new File(filePath));
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            } catch (Exception e) {
-                promise.reject("EXCEPTION", "获取目录失败", e);
-            }
+            this.setEditingParams(intent);
         }
 
         // 打开相册
@@ -129,16 +114,15 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
 
     @ReactMethod
     public void launchCamera(final ReadableMap options, final Promise promise) {
+
         openCameraListener = new ActivityEventListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 if (OPEN_CAMERA_REQUEST_CODE == requestCode) {
                     if (RESULT_OK == resultCode) {
                         Log.d(TAG, "拍照成功");
-                        WritableMap response = new WritableNativeMap();
-                        String url = data.getData().toString();
-                        response.putString("path", url);
-
+                        Uri uri = data.getData();
+                        String url = uri.toString();
                         double longitude = 0,
                                 latitude = 0;
 
@@ -163,6 +147,8 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                                 new String[]{MediaStore.Images.Media.DATA}
                         );
                         FileUtils.setImageGps(path, latitude, longitude);
+                        WritableMap response = new WritableNativeMap();
+                        response.putString("path", url);
                         promise.resolve(response);
                     } else {
                         Log.d(TAG, "拍照取消");
@@ -177,4 +163,56 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         this.reactContext.startActivityForResult(intent, OPEN_CAMERA_REQUEST_CODE, null);
     }
+
+    @ReactMethod
+    public void launchEditing(String path, final Promise promise) {
+        openEditListener = new ActivityEventListener() {
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                if (OPEN_EDIT_REQUEST_CODE == requestCode) {
+                    if (RESULT_OK == resultCode) {
+                        Log.d(TAG, "编辑成功");
+                        Uri uri = data.getData();
+                        WritableMap response = new WritableNativeMap();
+                        response.putString("path", uri.toString());
+                        promise.resolve(response);
+                    } else {
+                        Log.w(TAG, "编辑失败");
+                        promise.reject("EXCEPTION", "编辑失败");
+                    }
+                    reactContext.removeActivityEventListener(openEditListener);
+                }
+            }
+        };
+        this.reactContext.addActivityEventListener(openEditListener);
+        // 打开照片编辑
+        Intent intent = new Intent("com.android.camera.action.CROP"); //剪裁
+        intent.setDataAndType(Uri.parse(path), "image/*");
+        setEditingParams(intent);
+        reactContext.startActivityForResult(intent, OPEN_EDIT_REQUEST_CODE, null);
+    }
+
+    public void setEditingParams(Intent intent) {
+
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 200);
+        intent.putExtra("noFaceDetection", true);
+        intent.putExtra("return-data", true);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+
+        try {
+            File cacheDir = this.reactContext.getExternalCacheDir();
+            if (null == cacheDir)
+                throw new IOException("无法读取数据目录");
+            String filePath = cacheDir.getAbsolutePath() + File.separatorChar + System.currentTimeMillis() + ".jpg";
+            Uri tempUri = Uri.fromFile(new File(filePath));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+        } catch (Exception e) {
+//            promise.reject("EXCEPTION", "获取目录失败", e);
+        }
+    }
+
 }

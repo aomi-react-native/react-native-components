@@ -1,4 +1,7 @@
-import { NativeModules } from 'react-native';
+import {
+  NativeModules,
+  Platform
+} from 'react-native';
 
 const {
   SitbRCTMediaManager: {
@@ -42,6 +45,21 @@ class MediaBrowser {
 
   static launchCamera(options = DEFAULT_CAMERA_OPTIONS):Promise {
     const newOptions = Object.assign({}, DEFAULT_CAMERA_OPTIONS, options);
+    if (Platform.OS === 'android' && newOptions.allowsEditing) {
+      return new Promise((resolve, reject)=> {
+        launchCamera(newOptions).then(original=> {
+          NativeModules.SitbRCTMediaManager.launchEditing(original.path)
+            .then(edited => {
+              resolve({
+                original,
+                edited
+              });
+            })
+            .catch(err => reject(err));
+        })
+          .catch(err=> reject(err));
+      });
+    }
     return launchCamera(newOptions);
   }
 
