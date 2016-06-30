@@ -21,10 +21,15 @@ class Switch extends AbstractFormComponent {
     ['onValueChange'].forEach(f => this[f] = this[f].bind(this));
     let {name, form} = this.props;
     name && form && form.putFormValue(name, this.props.value);
+    this.state = {
+      value: this.props.value
+    };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({value: nextProps.value});
+    if (this.state.value !== nextProps.value) {
+      this.setState({value: nextProps.value});
+    }
   }
 
   onValueChange(value) {
@@ -42,6 +47,7 @@ class Switch extends AbstractFormComponent {
     return (
       <RNSwitch {...this.props}
         onValueChange={this.onValueChange}
+        value={this.state.value}
       />
     );
   }
