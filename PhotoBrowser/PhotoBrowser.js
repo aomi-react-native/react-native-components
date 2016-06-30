@@ -1,17 +1,16 @@
-import React, { PropTypes } from "react";
-import Component from "../AbstractComponent";
+import React, { PropTypes } from 'react';
+import Component from '../AbstractComponent';
 import {
   View,
   StyleSheet,
-  Image,
-  CameraRoll
-} from "react-native";
-import GridView from "../GridView";
-import Dialog from "../Dialog";
-import Button from "../bootstrap/Button";
-import Icon from "../Icon";
-import { View as AnimatableView } from "react-native-animatable";
-import FullScreen from "./FullScreen";
+  Image
+} from 'react-native';
+import GridView from '../GridView';
+import Dialog from '../Dialog';
+import Button from '../bootstrap/Button';
+import Icon from '../Icon';
+import { View as AnimatableView } from 'react-native-animatable';
+import FullScreen from './FullScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,10 +54,7 @@ class PhotoBrowser extends Component {
 
   static propTypes = {
     headerHeight: PropTypes.number,
-    initialNumToRender: PropTypes.number,
-    maxNumToRender: PropTypes.number,
     mediaList: PropTypes.array,
-    numToRenderAhead: PropTypes.number,
     pageSize: PropTypes.number,
     renderHeader: PropTypes.func,
     singleSelected: PropTypes.bool,
@@ -66,27 +62,9 @@ class PhotoBrowser extends Component {
   };
 
   static defaultProps = {
-    initialNumToRender: 100,
-    maxNumToRender: 200,
-    numToRenderAhead: 60,
     headerHeight: 60,
     singleSelected: false
   };
-
-  constructor(props) {
-    super(props);
-    if (!props.mediaList) {
-      CameraRoll.getPhotos({
-        first: 999999,
-        assetType: 'Photos'
-      }).then((medias)=> {
-        let page = medias.edges.map(photo=> photo.node.image);
-        this.setState({
-          mediaList: page
-        });
-      });
-    }
-  }
 
   // 数据状态
   state = {
@@ -97,8 +75,7 @@ class PhotoBrowser extends Component {
     // 是否正在全屏浏览
     fullBrowser: false,
     // 全屏浏览开始第一张图片
-    startIndex: 0,
-    mediaList: []
+    startIndex: 0
   };
 
   componentWillReceiveProps(nextProps) {
@@ -238,6 +215,7 @@ class PhotoBrowser extends Component {
   render() {
     const {
       renderHeader,
+      mediaList,
       ...other
     } = this.props;
 
@@ -246,7 +224,7 @@ class PhotoBrowser extends Component {
         {renderHeader ? renderHeader() : this.renderHeader()}
         <GridView {...other}
           autoHeightEqWidth
-          cells={this.state.mediaList}
+          cells={mediaList}
           cols={4}
           disableIncrementalRendering
           horizontalSpacing={1}
@@ -258,14 +236,14 @@ class PhotoBrowser extends Component {
         <Dialog style={styles.fullScreen}
                 visible={this.state.fullBrowser}
         >
+          <FullScreen mediaList={mediaList}
+                      startIndex={this.state.startIndex}
+          />
           <AnimatableView animation={this.state.headerAnimation}
                           style={styles.header}
           >
             {renderHeader ? renderHeader() : this.renderHeader()}
           </AnimatableView>
-          <FullScreen mediaList={this.state.mediaList}
-                      startIndex={this.state.startIndex}
-          />
         </Dialog>
       </View>
     );
