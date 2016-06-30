@@ -144,6 +144,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
         } else {
             RCTLog(@"相册获取成功");
+            response[@"reference"] = @{
+                    @"path" : ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
+            };
             if (self.pickerController.allowsEditing) {
                 NSString *documentsDirectory = NSTemporaryDirectory();
                 UIImage *editedImage = info[@"UIImagePickerControllerEditedImage"];
@@ -160,12 +163,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                 response[@"edited"] = @{
                         @"path" : editedImageTempFile
                 };
-                response[@"reference"] = @{
-                        @"path" : ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
-                };
-                self.resolve(response);
             }
-
+            self.resolve(response);
         }
     }];
 }
