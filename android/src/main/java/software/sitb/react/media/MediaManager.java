@@ -42,18 +42,23 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
     @Nullable
     @Override
     public Map<String, Object> getConstants() {
-        HashMap<String, Object> sourceType = new HashMap<>();
+        HashMap<String, Object> sourceType = new HashMap<>(2);
         sourceType.put("photoLibrary", 0);
         sourceType.put("savedPhotosAlbum", 1);
 
-        HashMap<String, Object> mediaType = new HashMap<>();
+        HashMap<String, Object> mediaType = new HashMap<>(2);
         mediaType.put("Image", 0);
         mediaType.put("Video", 1);
+
+        HashMap<String, Object> cameraType = new HashMap<>(2);
+        cameraType.put("back", 0);
+        cameraType.put("front", 1);
 
 
         HashMap<String, Object> constants = new HashMap<>();
         constants.put("sourceType", sourceType);
         constants.put("mediaType", mediaType);
+        constants.put("cameraType", cameraType);
         return constants;
     }
 
@@ -65,35 +70,11 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                 if (OPEN_IMAGE_LIBRARY_REQUEST_CODE == requestCode) {
                     if (resultCode == RESULT_OK) {
                         Log.d(TAG, "处理成功");
-
                         String url = data.getData().toString();
                         WritableMap response = new WritableNativeMap();
-                        response.putString("path", url);
-
-                        double longitude = 0,
-                                latitude = 0;
-
-                        if (options.hasKey("metadata")) {
-                            ReadableMap metadata = options.getMap("metadata");
-                            if (metadata.hasKey("location")) {
-                                ReadableMap location = metadata.getMap("location");
-                                if (location.hasKey("coords")) {
-                                    ReadableMap coords = location.getMap("coords");
-                                    if (coords.hasKey("longitude")) {
-                                        longitude = coords.getDouble("longitude");
-                                    }
-                                    if (coords.hasKey("latitude")) {
-                                        latitude = coords.getDouble("latitude");
-                                    }
-                                }
-                            }
-                        }
-                        String path = FileUtils.getFilePathFromContentUri(
-                                reactContext.getContentResolver(),
-                                url,
-                                new String[]{MediaStore.Images.Media.DATA}
-                        );
-                        FileUtils.setImageGps(path, latitude, longitude);
+                        WritableMap reference = new WritableNativeMap();
+                        reference.putString("path", url);
+                        response.putMap("reference", reference);
                         promise.resolve(response);
                     } else {
                         Log.d(TAG, "取消");
@@ -120,7 +101,33 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                     if (RESULT_OK == resultCode) {
                         Log.d(TAG, "拍照成功");
                         WritableMap response = new WritableNativeMap();
-                        response.putString("path", data.getData().toString());
+                        String url = data.getData().toString();
+                        response.putString("path", url);
+
+                        double longitude = 0,
+                                latitude = 0;
+
+                        if (options.hasKey("metadata")) {
+                            ReadableMap metadata = options.getMap("metadata");
+                            if (metadata.hasKey("location")) {
+                                ReadableMap location = metadata.getMap("location");
+                                if (location.hasKey("coords")) {
+                                    ReadableMap coords = location.getMap("coords");
+                                    if (coords.hasKey("longitude")) {
+                                        longitude = coords.getDouble("longitude");
+                                    }
+                                    if (coords.hasKey("latitude")) {
+                                        latitude = coords.getDouble("latitude");
+                                    }
+                                }
+                            }
+                        }
+                        String path = FileUtils.getFilePathFromContentUri(
+                                reactContext.getContentResolver(),
+                                url,
+                                new String[]{MediaStore.Images.Media.DATA}
+                        );
+                        FileUtils.setImageGps(path, latitude, longitude);
                         promise.resolve(response);
                     } else {
                         Log.d(TAG, "拍照取消");
