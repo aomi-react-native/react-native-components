@@ -85,7 +85,9 @@ class ActionSheetComponent extends Component {
 
   componentDidUpdate() {
     if (!this.state.open) {
-      this.props.manager.destroy();
+      setTimeout(()=> {
+        this.props.manager.destroy();
+      }, 600);
     }
   }
 
