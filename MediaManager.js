@@ -71,5 +71,6 @@ class MediaBrowser {
 export {
   MediaBrowser as default,
   sourceType,
-  mediaType
+  mediaType,
+  cameraType
 };
