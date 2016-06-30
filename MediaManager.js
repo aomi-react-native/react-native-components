@@ -48,14 +48,16 @@ class MediaBrowser {
     if (Platform.OS === 'android' && newOptions.allowsEditing) {
       return new Promise((resolve, reject)=> {
         launchCamera(newOptions).then(original=> {
-          NativeModules.SitbRCTMediaManager.launchEditing(original.path)
-            .then(edited => {
-              resolve({
-                original,
-                edited
-              });
-            })
-            .catch(err => reject(err));
+          setTimeout(()=> {
+            NativeModules.SitbRCTMediaManager.launchEditing(original.path)
+              .then(edited => {
+                resolve({
+                  original,
+                  edited
+                });
+              })
+              .catch(err => reject(err));
+          }, 1);
         })
           .catch(err=> reject(err));
       });
