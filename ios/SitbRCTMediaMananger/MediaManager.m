@@ -8,7 +8,11 @@
 
 #import "MediaManager.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "NSMutableDictionary+ImageMetadata.m";
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 @implementation MediaManager
 
@@ -66,42 +70,41 @@ RCT_EXPORT_METHOD(
     self.hasReturn = false;
     self.resolve = resolve;
     self.reject = reject;
+    self.options = options;
     [self launchWithOptions:options];
 }
 
 
 - (void)launchWithOptions:(NSDictionary *)options {
-    UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+    self.pickerController = [[UIImagePickerController alloc] init];
     UIImagePickerControllerSourceType sourceType = (UIImagePickerControllerSourceType) ((NSNumber *) [options valueForKey:@"sourceType"]).intValue;
-
+    self.pickerController.sourceType = sourceType;
     if (sourceType == UIImagePickerControllerSourceTypeCamera) {
         UIImagePickerControllerCameraDevice cameraDevice = (UIImagePickerControllerCameraDevice) ((NSNumber *) options[@"cameraType"]).intValue;
-        pickerController.cameraDevice = cameraDevice;
+        self.pickerController.cameraDevice = cameraDevice;
     }
 
-
-    pickerController.sourceType = sourceType;
 
     MediaType mediaType = (MediaType) ((NSNumber *) options[@"mediaType"]).intValue;
     switch (mediaType) {
         case MediaTypeImage:
-            pickerController.mediaTypes = @[(NSString *) kUTTypeImage];
+            self.pickerController.mediaTypes = @[(NSString *) kUTTypeImage];
             break;
         case MediaTypeVideo:
-            pickerController.mediaTypes = @[(NSString *) kUTTypeVideo];
+            self.pickerController.mediaTypes = @[(NSString *) kUTTypeVideo];
             break;
     }
 
-    pickerController.allowsEditing = [options[@"allowsEditing"] boolValue];
-    pickerController.delegate = self;
+    self.pickerController.allowsEditing = [options[@"allowsEditing"] boolValue];
+    self.pickerController.delegate = self;
 
-    pickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    self.pickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
         while (root.presentedViewController != nil) {
             root = root.presentedViewController;
         }
-        [root presentViewController:pickerController animated:YES completion:nil];
+        [root presentViewController:self.pickerController animated:YES completion:nil];
     });
 }
 
@@ -111,28 +114,72 @@ RCT_EXPORT_METHOD(
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^() {
 
-        RCTLog(@"%@", info);
-        RCTLog(@"选取照片成功[%@]", [info valueForKey:@"UIImagePickerControllerReferenceURL"]);
+        NSMutableDictionary *response = [[NSMutableDictionary alloc] init];
 
-        NSURL *url = [info valueForKey:@"UIImagePickerControllerReferenceURL"];
-        if (!self.hasReturn) {
-            self.resolve(
-                    @{
-                            @"path" : url.absoluteString,
+        if (self.pickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            RCTLog(@"拍摄成功");
+
+            UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+
+            NSDictionary *cameraMetadata = info[@"UIImagePickerControllerMediaMetadata"];
+            NSDictionary *requestMetadata = self.options[@"metadata"];
+
+            NSMutableDictionary *metadata = [[cameraMetadata copy] mutableCopy];
+            [metadata addEntriesFromDictionary:requestMetadata];
+            [metadata setGpsMetadata:requestMetadata];
+
+            // It's unclear if writeImageToSavedPhotosAlbum is thread-safe
+            dispatch_async(dispatch_get_main_queue(), ^{
+                ALAssetsLibrary *assets = [[ALAssetsLibrary alloc] init];
+                [assets writeImageToSavedPhotosAlbum:image.CGImage metadata:metadata completionBlock:^(NSURL *assetURL, NSError *saveError) {
+                    if (saveError) {
+                        self.reject(@"ERROR", @"保存图片失败", saveError);
+                    } else {
+                        self.resolve(@{
+                                @"path" : assetURL.absoluteString
+                        });
                     }
-            );
-            self.hasReturn = true;
+                }];
+            });
+
+        } else {
+            RCTLog(@"相册获取成功");
+            if (self.pickerController.allowsEditing) {
+                NSString *documentsDirectory = NSTemporaryDirectory();
+                UIImage *editedImage = info[@"UIImagePickerControllerEditedImage"];
+
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                [formatter setDateFormat:@"YYYYMMddhhmmssSSS"];
+                NSString *date = [formatter stringFromDate:[NSDate date]];
+
+                NSString *editedImageTempFile = [documentsDirectory
+                        stringByAppendingPathComponent:[NSString stringWithFormat:@"temp_edited_%@.jpg", date]
+                ];
+                [UIImageJPEGRepresentation(editedImage, 1.0f) writeToFile:editedImageTempFile atomically:YES];
+
+                response[@"edited"] = @{
+                        @"path" : editedImageTempFile
+                };
+                response[@"reference"] = @{
+                        @"path" : ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
+                };
+                self.resolve(response);
+            }
+
         }
     }];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    if (!self.hasReturn) {
-        self.reject(@"CANCEL", @"用户取消", nil);
-        self.hasReturn = true;
-    }
+    [picker dismissViewControllerAnimated:YES completion:^() {
+        if (!self.hasReturn) {
+            self.reject(@"CANCEL", @"用户取消", nil);
+            self.hasReturn = true;
+        }
+    }];
 }
-
 
 @end
 
+
+#pragma clang diagnostic pop

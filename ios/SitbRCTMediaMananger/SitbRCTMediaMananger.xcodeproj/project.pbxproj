@@ -24,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		14A1FD301D23B1FB00F5DD92 /* libSitbRCTMediaMananger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbRCTMediaMananger.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		14A1FD431D24D13600F5DD92 /* NSMutableDictionary+ImageMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+ImageMetadata.m"; sourceTree = "<group>"; };
 		274211443D6342B1D9CB425F /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
 		27421736EFA9E72453EB812C /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -42,6 +43,7 @@
 		14A1FD271D23B1FB00F5DD92 = {
 			isa = PBXGroup;
 			children = (
+				14A1FD431D24D13600F5DD92 /* NSMutableDictionary+ImageMetadata.m */,
 				14A1FD311D23B1FB00F5DD92 /* Products */,
 				274211443D6342B1D9CB425F /* MediaManager.h */,
 				27421736EFA9E72453EB812C /* MediaManager.m */,

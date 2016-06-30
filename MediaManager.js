@@ -14,7 +14,8 @@ const {
 type Options = {
   sourceType: Number,
   mediaType: String,
-  allowsEditing: Boolean
+  allowsEditing: Boolean,
+  cameraType: Number
 };
 
 const DEFAULT_LIBRARY_OPTIONS = {
@@ -34,12 +35,14 @@ const DEFAULT_CAMERA_OPTIONS = {
  */
 class MediaBrowser {
 
-  static launchImageLibrary(options:Options = DEFAULT_LIBRARY_OPTIONS) {
-    return launchImageLibrary(options);
+  static launchImageLibrary(options:Options = DEFAULT_LIBRARY_OPTIONS):Promise {
+    const newOptions = Object.assign({}, DEFAULT_LIBRARY_OPTIONS, options);
+    return launchImageLibrary(newOptions);
   }
 
-  static launchCamera(options = DEFAULT_CAMERA_OPTIONS) {
-    return launchCamera(options);
+  static launchCamera(options = DEFAULT_CAMERA_OPTIONS):Promise {
+    const newOptions = Object.assign({}, DEFAULT_CAMERA_OPTIONS, options);
+    return launchCamera(newOptions);
   }
 
 }

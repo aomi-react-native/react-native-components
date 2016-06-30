@@ -8,6 +8,7 @@
 
 #import "RCTBridgeModule.h"
 #import "RCTLog.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, MediaType) {
@@ -20,5 +21,7 @@ typedef NS_ENUM(NSInteger, MediaType) {
 @property(nonatomic, copy) RCTPromiseResolveBlock resolve;
 @property(nonatomic, copy) RCTPromiseRejectBlock reject;
 @property Boolean hasReturn;
+@property UIImagePickerController *pickerController;
+@property NSDictionary *options;
 
 @end
