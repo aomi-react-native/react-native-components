@@ -31,11 +31,7 @@ class Container extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props !== nextProps) {
-      return true;
-    }
-
-    return this.state !== nextState;
+    return this.props !== nextProps || this.state !== nextState;
   }
 
 
