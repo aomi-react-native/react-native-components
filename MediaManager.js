@@ -26,14 +26,14 @@ type Options = {
 const DEFAULT_LIBRARY_OPTIONS = {
   sourceType: SourceType.savedPhotosAlbum,
   mediaType: MediaType.image,
-  allowsEditing: false,
-  quality: Quality.high
+  allowsEditing: false
 };
 
 const DEFAULT_CAMERA_OPTIONS = {
   sourceType: SourceType.camera,
   cameraType: CameraType.back,
-  quality: Quality.VGA1280x720
+  allowsEditing: false,
+  quality: Quality.high
 };
 
 /**
@@ -76,5 +76,6 @@ export {
   MediaBrowser as default,
   SourceType,
   MediaType,
-  CameraType
+  CameraType,
+  Quality
 };
