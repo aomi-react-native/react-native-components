@@ -107,17 +107,17 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                 if (OPEN_IMAGE_LIBRARY_REQUEST_CODE == requestCode) {
                     if (resultCode == RESULT_OK) {
                         Log.d(TAG, "处理成功");
-                        String url = uri[0].toString();
 
                         WritableMap response = new WritableNativeMap();
 
                         if (allowsEditing) {
+                            String url = uri[0].toString();
                             WritableMap edited = new WritableNativeMap();
                             edited.putString("path", url);
                             response.putMap("edited", edited);
                         } else {
                             WritableMap reference = new WritableNativeMap();
-                            reference.putString("path", url);
+                            reference.putString("path", data.getData().toString());
                             response.putMap("reference", reference);
                         }
                         promise.resolve(response);
