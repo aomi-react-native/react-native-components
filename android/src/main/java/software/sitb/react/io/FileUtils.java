@@ -153,6 +153,24 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
         );
     }
 
+    public static void compressImage(ContentResolver contentResolver, Uri uri, int quality) {
+        OutputStream imageOut = null;
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri);
+            imageOut = contentResolver.openOutputStream(uri);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, imageOut);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (null != imageOut)
+                try {
+                    imageOut.close();
+                } catch (IOException ignored) {
+                }
+        }
+
+    }
+
     public static String insertImage(ContentResolver cr, ContentValues values, Bitmap source) {
 
         Uri url = null;

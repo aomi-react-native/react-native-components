@@ -31,6 +31,7 @@ const DEFAULT_LIBRARY_OPTIONS = {
 
 const DEFAULT_CAMERA_OPTIONS = {
   sourceType: SourceType.camera,
+  mediaType: MediaType.image,
   cameraType: CameraType.back,
   allowsEditing: false,
   quality: Quality.high
@@ -51,14 +52,11 @@ class MediaBrowser {
     const newOptions = Object.assign({}, DEFAULT_CAMERA_OPTIONS, options);
     if (Platform.OS === 'android' && newOptions.allowsEditing) {
       return new Promise((resolve, reject)=> {
-        launchCamera(newOptions).then(original=> {
+        launchCamera(newOptions).then(image=> {
           setTimeout(()=> {
-            NativeModules.SitbRCTMediaManager.launchEditing(original.path)
+            NativeModules.SitbRCTMediaManager.launchEditing(image.original.path)
               .then(edited => {
-                resolve({
-                  original,
-                  edited
-                });
+                resolve(Object.assign({}, image, edited));
               })
               .catch(err => reject(err));
           }, 1);

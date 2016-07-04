@@ -1,8 +1,10 @@
 package software.sitb.react.media;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import com.facebook.react.bridge.*;
@@ -46,26 +48,55 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         return "SitbRCTMediaManager";
     }
 
+    public enum SourceType {
+        PhotoLibrary,
+        SavedPhotosAlbum,
+        Camera
+    }
+
+    public enum MediaType {
+        Image,
+        Video
+    }
+
+    public enum CameraType {
+        Back,
+        Front
+    }
+
+    public enum Quality {
+        High,
+        Medium,
+        Low
+    }
+
     @Nullable
     @Override
     public Map<String, Object> getConstants() {
         HashMap<String, Object> sourceType = new HashMap<>(2);
-        sourceType.put("photoLibrary", 0);
-        sourceType.put("savedPhotosAlbum", 1);
+        sourceType.put("photoLibrary", SourceType.PhotoLibrary.ordinal());
+        sourceType.put("savedPhotosAlbum", SourceType.SavedPhotosAlbum.ordinal());
+        sourceType.put("camera", SourceType.Camera.ordinal());
 
         HashMap<String, Object> mediaType = new HashMap<>(2);
-        mediaType.put("Image", 0);
-        mediaType.put("Video", 1);
+        mediaType.put("image", MediaType.Image.ordinal());
+        mediaType.put("video", MediaType.Video.ordinal());
 
         HashMap<String, Object> cameraType = new HashMap<>(2);
-        cameraType.put("back", 0);
-        cameraType.put("front", 1);
+        cameraType.put("back", CameraType.Back.ordinal());
+        cameraType.put("front", CameraType.Front.ordinal());
+
+        HashMap<String, Object> quality = new HashMap<>(4);
+        quality.put("high", Quality.High.ordinal());
+        quality.put("medium", Quality.Medium.ordinal());
+        quality.put("low", Quality.Low.ordinal());
 
 
         HashMap<String, Object> constants = new HashMap<>();
-        constants.put("sourceType", sourceType);
-        constants.put("mediaType", mediaType);
-        constants.put("cameraType", cameraType);
+        constants.put("SourceType", sourceType);
+        constants.put("MediaType", mediaType);
+        constants.put("CameraType", cameraType);
+        constants.put("Quality", quality);
         return constants;
     }
 
@@ -114,41 +145,64 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
 
     @ReactMethod
     public void launchCamera(final ReadableMap options, final Promise promise) {
-
+        final Uri[] uri = new Uri[1];
+        double longitude = 0,
+                latitude = 0;
+        if (options.hasKey("metadata")) {
+            ReadableMap metadata = options.getMap("metadata");
+            if (metadata.hasKey("location")) {
+                ReadableMap location = metadata.getMap("location");
+                if (location.hasKey("coords")) {
+                    ReadableMap coords = location.getMap("coords");
+                    if (coords.hasKey("longitude")) {
+                        try {
+                            longitude = coords.getDouble("longitude");
+                        } catch (Exception ignored) {
+                        }
+                    }
+                    if (coords.hasKey("latitude")) {
+                        try {
+                            latitude = coords.getDouble("latitude");
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
+            }
+        }
+        final double finalLatitude = latitude;
+        final double finalLongitude = longitude;
         openCameraListener = new ActivityEventListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 if (OPEN_CAMERA_REQUEST_CODE == requestCode) {
                     if (RESULT_OK == resultCode) {
                         Log.d(TAG, "拍照成功");
-                        Uri uri = data.getData();
-                        String url = uri.toString();
-                        double longitude = 0,
-                                latitude = 0;
-
-                        if (options.hasKey("metadata")) {
-                            ReadableMap metadata = options.getMap("metadata");
-                            if (metadata.hasKey("location")) {
-                                ReadableMap location = metadata.getMap("location");
-                                if (location.hasKey("coords")) {
-                                    ReadableMap coords = location.getMap("coords");
-                                    if (coords.hasKey("longitude")) {
-                                        longitude = coords.getDouble("longitude");
-                                    }
-                                    if (coords.hasKey("latitude")) {
-                                        latitude = coords.getDouble("latitude");
-                                    }
-                                }
+                        if (options.hasKey("quality")) {
+                            // 压缩图片
+                            Quality quality = Quality.values()[options.getInt("quality")];
+                            switch (quality) {
+                                case High:
+                                    break;
+                                case Medium:
+                                    FileUtils.compressImage(reactContext.getContentResolver(), uri[0], 100 / 2);
+                                    break;
+                                case Low:
+                                    FileUtils.compressImage(reactContext.getContentResolver(), uri[0], 100 / 3);
+                                    break;
                             }
                         }
                         String path = FileUtils.getFilePathFromContentUri(
                                 reactContext.getContentResolver(),
-                                url,
+                                uri[0].toString(),
                                 new String[]{MediaStore.Images.Media.DATA}
                         );
-                        FileUtils.setImageGps(path, latitude, longitude);
+
+                        FileUtils.setImageGps(path, finalLatitude, finalLongitude);
+
                         WritableMap response = new WritableNativeMap();
-                        response.putString("path", url);
+                        WritableMap original = new WritableNativeMap();
+                        original.putString("path", uri[0].toString());
+                        response.putMap("original", original);
                         promise.resolve(response);
                     } else {
                         Log.d(TAG, "拍照取消");
@@ -160,7 +214,48 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         };
         this.reactContext.addActivityEventListener(openCameraListener);
         // 打开相机
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = null;
+        MediaType mediaType = MediaType.values()[options.getInt("mediaType")];
+        switch (mediaType) {
+            case Image:
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                break;
+            case Video:
+                intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                break;
+        }
+        CameraType cameraType = CameraType.values()[options.getInt("cameraType")];
+        switch (cameraType) {
+            case Front:
+                break;
+            case Back:
+                break;
+        }
+        String title = "",
+                description = "";
+        if (options.hasKey("title")) {
+            title = options.getString("title");
+        }
+        if (options.hasKey("description")) {
+            description = options.getString("description");
+        }
+
+        if (intent.resolveActivity(reactContext.getPackageManager()) != null) {
+            long timestamp = System.currentTimeMillis();
+            ContentValues values = new ContentValues(6);
+            values.put(MediaStore.Images.Media.TITLE, title);
+            values.put(MediaStore.Images.Media.DESCRIPTION, description);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            values.put(MediaStore.Images.Media.LATITUDE, latitude);
+            values.put(MediaStore.Images.Media.LONGITUDE, longitude);
+            values.put(MediaStore.Images.Media.DATE_TAKEN, timestamp);
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_" + timestamp + ".jpg");
+            values.put(MediaStore.Images.Media.DATE_TAKEN, timestamp);
+            uri[0] = reactContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri[0]);
+        }
+
+
         this.reactContext.startActivityForResult(intent, OPEN_CAMERA_REQUEST_CODE, null);
     }
 
@@ -174,7 +269,9 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                         Log.d(TAG, "编辑成功");
                         Uri uri = data.getData();
                         WritableMap response = new WritableNativeMap();
-                        response.putString("path", uri.toString());
+                        WritableMap edited = new WritableNativeMap();
+                        edited.putString("path", uri.toString());
+                        response.putMap("edited", edited);
                         promise.resolve(response);
                     } else {
                         Log.w(TAG, "编辑失败");
@@ -207,11 +304,13 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
             File cacheDir = this.reactContext.getExternalCacheDir();
             if (null == cacheDir)
                 throw new IOException("无法读取数据目录");
-            String filePath = cacheDir.getAbsolutePath() + File.separatorChar + System.currentTimeMillis() + ".jpg";
+            File tempDirFile = reactContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            assert tempDirFile != null;
+            String filePath = tempDirFile.getAbsolutePath() + File.separatorChar + System.currentTimeMillis() + ".jpg";
             Uri tempUri = Uri.fromFile(new File(filePath));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
         } catch (Exception e) {
-//            promise.reject("EXCEPTION", "获取目录失败", e);
+            Log.e(TAG, "创建临时目录失败", e);
         }
     }
 
