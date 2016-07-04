@@ -5,9 +5,10 @@ import {
 
 const {
   SitbRCTMediaManager: {
-    sourceType,
-    mediaType,
-    cameraType,
+    SourceType,
+    MediaType,
+    CameraType,
+    Quality,
     launchImageLibrary,
     launchCamera
   }
@@ -15,21 +16,24 @@ const {
 
 
 type Options = {
-  sourceType: Number,
-  mediaType: String,
+  sourceType: SourceType,
+  mediaType: MediaType,
   allowsEditing: Boolean,
-  cameraType: Number
+  cameraType: CameraType,
+  quality: Quality
 };
 
 const DEFAULT_LIBRARY_OPTIONS = {
-  sourceType: sourceType.savedPhotosAlbum,
-  mediaType: mediaType.Image,
-  allowsEditing: false
+  sourceType: SourceType.savedPhotosAlbum,
+  mediaType: MediaType.image,
+  allowsEditing: false,
+  quality: Quality.high
 };
 
 const DEFAULT_CAMERA_OPTIONS = {
-  sourceType: sourceType.camera,
-  cameraType: cameraType.back
+  sourceType: SourceType.camera,
+  cameraType: CameraType.back,
+  quality: Quality.VGA1280x720
 };
 
 /**
@@ -70,7 +74,7 @@ class MediaBrowser {
 
 export {
   MediaBrowser as default,
-  sourceType,
-  mediaType,
-  cameraType
+  SourceType,
+  MediaType,
+  CameraType
 };
