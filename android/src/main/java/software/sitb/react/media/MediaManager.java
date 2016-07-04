@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import com.facebook.react.bridge.*;
@@ -12,8 +11,6 @@ import software.sitb.react.DefaultReactContextBaseJavaModule;
 import software.sitb.react.io.FileUtils;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,14 +100,15 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
     @ReactMethod
     public void launchImageLibrary(final ReadableMap options, final Promise promise) {
         final boolean allowsEditing = options.getBoolean("allowsEditing");
-
+        final Uri[] uri = new Uri[1];
         openImageListener = new ActivityEventListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 if (OPEN_IMAGE_LIBRARY_REQUEST_CODE == requestCode) {
                     if (resultCode == RESULT_OK) {
                         Log.d(TAG, "处理成功");
-                        String url = data.getData().toString();
+                        String url = uri[0].toString();
+
                         WritableMap response = new WritableNativeMap();
 
                         if (allowsEditing) {
@@ -136,7 +134,7 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         this.reactContext.addActivityEventListener(openImageListener);
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         if (allowsEditing) {
-            this.setEditingParams(intent);
+            uri[0] = this.setEditingParams(intent);
         }
 
         // 打开相册
@@ -261,16 +259,17 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
 
     @ReactMethod
     public void launchEditing(String path, final Promise promise) {
+        final Uri[] result = new Uri[1];
         openEditListener = new ActivityEventListener() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 if (OPEN_EDIT_REQUEST_CODE == requestCode) {
                     if (RESULT_OK == resultCode) {
                         Log.d(TAG, "编辑成功");
-                        Uri uri = data.getData();
+
                         WritableMap response = new WritableNativeMap();
                         WritableMap edited = new WritableNativeMap();
-                        edited.putString("path", uri.toString());
+                        edited.putString("path", result[0].toString());
                         response.putMap("edited", edited);
                         promise.resolve(response);
                     } else {
@@ -285,12 +284,12 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         // 打开照片编辑
         Intent intent = new Intent("com.android.camera.action.CROP"); //剪裁
         intent.setDataAndType(Uri.parse(path), "image/*");
-        setEditingParams(intent);
+        result[0] = setEditingParams(intent);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, result[0]);
         reactContext.startActivityForResult(intent, OPEN_EDIT_REQUEST_CODE, null);
     }
 
-    public void setEditingParams(Intent intent) {
-
+    public Uri setEditingParams(Intent intent) {
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
@@ -299,19 +298,9 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         intent.putExtra("noFaceDetection", true);
         intent.putExtra("return-data", true);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-
-        try {
-            File cacheDir = this.reactContext.getExternalCacheDir();
-            if (null == cacheDir)
-                throw new IOException("无法读取数据目录");
-            File tempDirFile = reactContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            assert tempDirFile != null;
-            String filePath = tempDirFile.getAbsolutePath() + File.separatorChar + System.currentTimeMillis() + ".jpg";
-            Uri tempUri = Uri.fromFile(new File(filePath));
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
-        } catch (Exception e) {
-            Log.e(TAG, "创建临时目录失败", e);
-        }
+        Uri uri = reactContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        return uri;
     }
 
 }
