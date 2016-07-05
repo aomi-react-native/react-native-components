@@ -1,9 +1,6 @@
 package software.sitb.react.io;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,10 +16,7 @@ import com.facebook.react.bridge.ReactMethod;
 import software.sitb.react.DefaultReactContextBaseJavaModule;
 import software.sitb.react.Error;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * 文件工具
@@ -126,39 +120,31 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
     }
 
 
-    public static String saveImageToCameraColl(
-            Context context,
-            byte[] data,
-            String title,
-            String description,
-            String longitude,
-            String latitude,
-            String timestamp
-    ) {
-        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, bitmapOptions);
-        ContentValues values = new ContentValues();
-
-        values.put(MediaStore.Images.Media.TITLE, title);
-        values.put(MediaStore.Images.Media.DESCRIPTION, description);
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        values.put(MediaStore.Images.Media.LATITUDE, latitude);
-        values.put(MediaStore.Images.Media.LONGITUDE, longitude);
-        values.put(MediaStore.Images.Media.DATE_TAKEN, timestamp);
-
-        return insertImage(
-                context.getContentResolver(),
-                values,
-                bitmap
-        );
-    }
-
     public static void compressImage(ContentResolver contentResolver, Uri uri, int quality) {
         OutputStream imageOut = null;
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri);
             imageOut = contentResolver.openOutputStream(uri);
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, imageOut);
+        } catch (IOException e) {
+            Log.e(TAG, "压缩图片失败", e);
+        } finally {
+            if (null != imageOut)
+                try {
+                    imageOut.close();
+                } catch (IOException ignored) {
+                }
+        }
+    }
+
+    public static void autofixOrientation(ContentResolver contentResolver, String path) {
+        int degree = readPictureDegree(path);
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        Bitmap newBitmap = rotaingImageView(degree, bitmap);
+        OutputStream imageOut = null;
+        try {
+            imageOut = contentResolver.openOutputStream(Uri.fromFile(new File(path)));
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, 100, imageOut);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -167,86 +153,6 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
                     imageOut.close();
                 } catch (IOException ignored) {
                 }
-        }
-
-    }
-
-    public static String insertImage(ContentResolver cr, ContentValues values, Bitmap source) {
-
-        Uri url = null;
-        String stringUrl = null;    /* value to be returned */
-
-        try {
-            url = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-            if (source != null && url != null) {
-                OutputStream imageOut = cr.openOutputStream(url);
-                try {
-                    source.compress(Bitmap.CompressFormat.JPEG, 50, imageOut);
-                } finally {
-                    if (imageOut != null) {
-                        imageOut.close();
-                    }
-                }
-
-                long id = ContentUris.parseId(url);
-
-                // Wait until MINI_KIND thumbnail is generated.
-                Bitmap miniThumb = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MINI_KIND, null);
-
-                // This is for backward compatibility.
-                //Bitmap microThumb = StoreThumbnail(cr, miniThumb, id, 50F, 50F, MediaStore.Images.Thumbnails.MICRO_KIND);
-                StoreThumbnail(cr, miniThumb, id, 50F, 50F, MediaStore.Images.Thumbnails.MICRO_KIND);
-            } else {
-                Log.e(TAG, "Failed to create thumbnail, removing original");
-                assert url != null;
-                cr.delete(url, null, null);
-                url = null;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to insert image", e);
-            if (url != null) {
-                cr.delete(url, null, null);
-                url = null;
-            }
-        }
-
-        if (url != null) {
-            stringUrl = url.toString();
-        }
-
-        return stringUrl;
-    }
-
-    private static Bitmap StoreThumbnail(ContentResolver cr, Bitmap source, long id, float width, float height, int kind) {
-        // create the matrix to scale it
-        Matrix matrix = new Matrix();
-
-        float scaleX = width / source.getWidth();
-        float scaleY = height / source.getHeight();
-
-        matrix.setScale(scaleX, scaleY);
-
-        Bitmap thumb = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-
-        ContentValues values = new ContentValues(4);
-        values.put(MediaStore.Images.Thumbnails.KIND, kind);
-        values.put(MediaStore.Images.Thumbnails.IMAGE_ID, (int) id);
-        values.put(MediaStore.Images.Thumbnails.HEIGHT, thumb.getHeight());
-        values.put(MediaStore.Images.Thumbnails.WIDTH, thumb.getWidth());
-
-        Uri url = cr.insert(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, values);
-
-        try {
-            assert url != null;
-            OutputStream thumbOut = cr.openOutputStream(url);
-
-            thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbOut);
-            assert thumbOut != null;
-            thumbOut.close();
-            return thumb;
-        } catch (IOException ex) {
-            return null;
         }
     }
 
@@ -270,5 +176,48 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
         double cc = bb - b;
         String c = (cc * 60) + "";
         return a + "," + b + "," + c + "";
+    }
+
+    /**
+     * 读取图片属性：旋转的角度
+     *
+     * @param path 图片绝对路径
+     * @return degree旋转的角度
+     */
+    public static int readPictureDegree(String path) {
+        int degree = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "读取图片信息失败", e);
+        }
+        return degree;
+    }
+
+    /**
+     * 旋转图片
+     *
+     * @param angle  度数
+     * @param bitmap 图片
+     * @return Bitmap
+     */
+    public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
+        //旋转图片 动作
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        // 创建新的图片
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 }

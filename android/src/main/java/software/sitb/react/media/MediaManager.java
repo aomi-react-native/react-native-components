@@ -175,6 +175,15 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                 if (OPEN_CAMERA_REQUEST_CODE == requestCode) {
                     if (RESULT_OK == resultCode) {
                         Log.d(TAG, "拍照成功");
+                        Uri imageUri = uri[0];
+
+                        String path = FileUtils.getFilePathFromContentUri(
+                                reactContext.getContentResolver(),
+                                imageUri.toString(),
+                                new String[]{MediaStore.Images.Media.DATA}
+                        );
+
+                        FileUtils.autofixOrientation(reactContext.getContentResolver(), path);
                         if (options.hasKey("quality")) {
                             // 压缩图片
                             Quality quality = Quality.values()[options.getInt("quality")];
@@ -182,24 +191,17 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                                 case High:
                                     break;
                                 case Medium:
-                                    FileUtils.compressImage(reactContext.getContentResolver(), uri[0], 100 / 2);
+                                    FileUtils.compressImage(reactContext.getContentResolver(), imageUri, 100 / 2);
                                     break;
                                 case Low:
-                                    FileUtils.compressImage(reactContext.getContentResolver(), uri[0], 100 / 3);
+                                    FileUtils.compressImage(reactContext.getContentResolver(), imageUri, 100 / 3);
                                     break;
                             }
                         }
-                        String path = FileUtils.getFilePathFromContentUri(
-                                reactContext.getContentResolver(),
-                                uri[0].toString(),
-                                new String[]{MediaStore.Images.Media.DATA}
-                        );
-
                         FileUtils.setImageGps(path, finalLatitude, finalLongitude);
-
                         WritableMap response = new WritableNativeMap();
                         WritableMap original = new WritableNativeMap();
-                        original.putString("path", uri[0].toString());
+                        original.putString("path", imageUri.toString());
                         response.putMap("original", original);
                         promise.resolve(response);
                     } else {
@@ -240,16 +242,18 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
 
         if (intent.resolveActivity(reactContext.getPackageManager()) != null) {
             long timestamp = System.currentTimeMillis();
-            ContentValues values = new ContentValues(6);
+            ContentValues values = new ContentValues(9);
             values.put(MediaStore.Images.Media.TITLE, title);
             values.put(MediaStore.Images.Media.DESCRIPTION, description);
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            values.put(MediaStore.Images.Media.LATITUDE, latitude);
-            values.put(MediaStore.Images.Media.LONGITUDE, longitude);
             values.put(MediaStore.Images.Media.DATE_TAKEN, timestamp);
             values.put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_" + timestamp + ".jpg");
             values.put(MediaStore.Images.Media.DATE_TAKEN, timestamp);
             uri[0] = reactContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            // 需要对图片设置压缩,所以不适用自带GPS设置
+//            intent.putExtra(MediaStore.Images.Media.LATITUDE, latitude);
+//            intent.putExtra(MediaStore.Images.Media.LONGITUDE, longitude);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri[0]);
         }
 
@@ -302,5 +306,6 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         return uri;
     }
+
 
 }

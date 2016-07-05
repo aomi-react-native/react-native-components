@@ -1,6 +1,5 @@
 package software.sitb.react.camera;
 
-import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -113,7 +112,7 @@ public class CameraModule extends DefaultReactContextBaseJavaModule {
                 final String finalDeprecation = deprecation;
                 final double finalLongitude = longitude;
                 final double finalLatitude = latitude;
-                final String finalTimestamp = timestamp + "";
+//                final String finalTimestamp = timestamp + "";
                 camera.takePicture(null, null, new Camera.PictureCallback() {
 
                     @Override
@@ -122,26 +121,23 @@ public class CameraModule extends DefaultReactContextBaseJavaModule {
                         camera.startPreview();
                         WritableMap response = new WritableNativeMap();
 
-                        ContentValues values = new ContentValues();
-                        values.put(MediaStore.Images.Media.TITLE, finalTitle);
-                        values.put(MediaStore.Images.Media.DESCRIPTION, finalDeprecation);
-                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+//                        ContentValues values = new ContentValues();
+//                        values.put(MediaStore.Images.Media.TITLE, finalTitle);
+//                        values.put(MediaStore.Images.Media.DESCRIPTION, finalDeprecation);
+//                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
 //                        values.put(MediaStore.Images.Media.LATITUDE, finalLatitude);
 //                        values.put(MediaStore.Images.Media.LONGITUDE, finalLongitude);
 //                        values.put(MediaStore.Images.Media.DATE_TAKEN, finalTimestamp);
-
-                        Camera.Size size = camera.getParameters().getPictureSize();
-                        values.put(MediaStore.Images.Media.WIDTH, size.width);
-                        values.put(MediaStore.Images.Media.HEIGHT, size.height);
+//
+//                        Camera.Size size = camera.getParameters().getPictureSize();
+//                        values.put(MediaStore.Images.Media.WIDTH, size.width);
+//                        values.put(MediaStore.Images.Media.HEIGHT, size.height);
 
                         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, bitmapOptions);
 
-                        String url = FileUtils.insertImage(
-                                reactContext.getContentResolver(),
-                                values,
-                                bitmap
-                        );
+                        String url = MediaStore.Images.Media.insertImage(reactContext.getContentResolver(), bitmap, finalTitle, finalDeprecation);
+
                         String path = FileUtils.getFilePathFromContentUri(
                                 reactContext.getContentResolver(),
                                 url,
