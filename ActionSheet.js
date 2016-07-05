@@ -83,14 +83,6 @@ class ActionSheetComponent extends Component {
     open: true
   };
 
-  componentDidUpdate() {
-    if (!this.state.open) {
-      setTimeout(()=> {
-        this.props.manager.destroy();
-      }, 600);
-    }
-  }
-
   showAnimation = {
     animation: 'fadeIn',
     duration: 500
@@ -111,20 +103,23 @@ class ActionSheetComponent extends Component {
   };
 
   cancelPress() {
-    this.switchOpen();
     const {cancelPress} = this.props;
-    cancelPress && cancelPress();
+    this.close(cancelPress);
   }
 
   handlePress(onPress) {
     return () => {
-      onPress && onPress();
-      this.switchOpen();
+      this.close(onPress);
     };
   }
 
-  switchOpen() {
-    this.setState({open: !this.state.open});
+  close(onPress) {
+    this.setState({open: false}, ()=> {
+      setTimeout(()=> {
+        onPress && onPress();
+        this.props.manager.destroy();
+      }, 600);
+    });
   }
 
   render() {
