@@ -1,6 +1,4 @@
-import React, {
-  PropTypes
-} from 'react';
+import React, { PropTypes } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,7 +7,6 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
-
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 
@@ -76,7 +73,10 @@ class Dialog extends Component {
     if (this.statusBarHidden) {
       StatusBar.setHidden(false);
     }
+    this.mounted = false;
   }
+
+  mounted = true;
 
   handlePress() {
     let {onPress} = this.props;
@@ -88,6 +88,9 @@ class Dialog extends Component {
   }
 
   handleAnimationEnd() {
+    if (!this.mounted) {
+      return;
+    }
     let {
       visible,
       statusBarAutoHidden
