@@ -8,6 +8,10 @@
 
 #import "MediaManager.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wextra-tokens"
+
 #import "NSMutableDictionary+ImageMetadata.m";
 
 
@@ -59,7 +63,6 @@ RCT_EXPORT_METHOD(
         reject:
         (RCTPromiseRejectBlock) reject
 ) {
-    self.hasReturn = false;
     self.resolve = resolve;
     self.reject = reject;
     [self launchWithOptions:options];
@@ -76,7 +79,6 @@ RCT_EXPORT_METHOD(
         reject:
         (RCTPromiseRejectBlock) reject
 ) {
-    self.hasReturn = false;
     self.resolve = resolve;
     self.reject = reject;
     self.options = options;
@@ -90,10 +92,10 @@ RCT_EXPORT_METHOD(
  */
 - (void)launchWithOptions:(NSDictionary *)options {
     self.pickerController = [[UIImagePickerController alloc] init];
-    UIImagePickerControllerSourceType sourceType = (UIImagePickerControllerSourceType) ((NSNumber *) [options valueForKey:@"sourceType"]).intValue;
+    UIImagePickerControllerSourceType sourceType = (UIImagePickerControllerSourceType) [options[@"sourceType"] intValue];
     self.pickerController.sourceType = sourceType;
     if (sourceType == UIImagePickerControllerSourceTypeCamera) {
-        UIImagePickerControllerCameraDevice cameraDevice = (UIImagePickerControllerCameraDevice) ((NSNumber *) options[@"cameraType"]).intValue;
+        UIImagePickerControllerCameraDevice cameraDevice = (UIImagePickerControllerCameraDevice) [options[@"cameraType"] intValue];
         self.pickerController.cameraDevice = cameraDevice;
     }
 
@@ -105,7 +107,7 @@ RCT_EXPORT_METHOD(
         }
         case MediaTypeVideo: {
             self.pickerController.mediaTypes = @[(NSString *) kUTTypeVideo];
-            UIImagePickerControllerQualityType quality = (UIImagePickerControllerQualityType) ((NSNumber *) options[@"quality"]).intValue;
+            UIImagePickerControllerQualityType quality = (UIImagePickerControllerQualityType) [options[@"quality"] intValue];
             self.pickerController.videoQuality = quality;
             break;
         }
@@ -133,84 +135,16 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         NSMutableDictionary *response = [[NSMutableDictionary alloc] init];
 
         if (self.pickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            RCTLog(@"拍摄成功");
 
-            NSString *editPath = @"";
-            if (self.pickerController.allowsEditing) {
-                UIImage *edit = info[@"UIImagePickerControllerEditedImage"];
-                editPath = [self saveTempImage:edit];
-            }
-
-            UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
-
-            UIImagePickerControllerQualityType quality = (UIImagePickerControllerQualityType) ((NSNumber *) self.options[@"quality"]).intValue;
-
-            CGFloat qualityFloat = 1.0F;
-
-            switch (quality) {
-                case UIImagePickerControllerQualityTypeMedium:
-                    qualityFloat /= 2;
+            MediaType mediaType = (MediaType) ((NSNumber *) self.options[@"mediaType"]).intValue;
+            switch (mediaType) {
+                case MediaTypeImage:
+                    RCTLog(@"拍摄照片成功");
+                    [self handleCaptureImageWithInfo:info];
                     break;
-                case UIImagePickerControllerQualityTypeLow:
-                    qualityFloat /= 3;
-                    break;
-                default:
+                case MediaTypeVideo:
                     break;
             }
-
-            NSData *imageData = UIImageJPEGRepresentation(image, qualityFloat);
-            CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) imageData, NULL);
-            NSMutableDictionary *imageMetadata = [(NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source, 0, NULL)) mutableCopy];
-            CGImageRef CGImage = CGImageSourceCreateImageAtIndex(source, 0, NULL);
-            CGImageRef rotatedCGImage;
-            int metadataOrientation = [imageMetadata[(NSString *) kCGImagePropertyOrientation] intValue];
-            if (metadataOrientation == 6) {
-                rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:270];
-            } else if (metadataOrientation == 1) {
-                rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0];
-            } else if (metadataOrientation == 3) {
-                rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:180];
-            } else {
-                rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0];
-            }
-            CGImageRelease(CGImage);
-            // Erase metadata orientation
-            [imageMetadata removeObjectForKey:(NSString *) kCGImagePropertyOrientation];
-            // Erase stupid TIFF stuff
-            [imageMetadata removeObjectForKey:(NSString *) kCGImagePropertyTIFFDictionary];
-            // Set GPS
-            [imageMetadata setGpsMetadata:self.options[@"metadata"]];
-            [imageMetadata addEntriesFromDictionary:self.options[@"metadata"]];
-
-            // Create destination thing
-            NSMutableData *rotatedImageData = [NSMutableData data];
-            CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)rotatedImageData, CGImageSourceGetType(source), 1, NULL);
-            CFRelease(source);
-            // add the image to the destination, reattaching metadata
-            CGImageDestinationAddImage(destination, rotatedCGImage, (__bridge CFDictionaryRef) imageMetadata);
-            // And write
-            CGImageDestinationFinalize(destination);
-            CFRelease(destination);
-
-            // It's unclear if writeImageToSavedPhotosAlbum is thread-safe
-            dispatch_async(dispatch_get_main_queue(), ^{
-                ALAssetsLibrary *assets = [[ALAssetsLibrary alloc] init];
-                [assets writeImageToSavedPhotosAlbum:rotatedCGImage metadata:imageMetadata completionBlock:^(NSURL *assetURL, NSError *saveError) {
-                    if (saveError) {
-                        self.reject(@"ERROR", @"保存图片失败", saveError);
-                    } else {
-                        self.resolve(@{
-                                @"original" : @{
-                                        @"path" : assetURL.absoluteString
-                                },
-                                @"edited" : @{
-                                        @"path" : editPath
-                                }
-                        });
-                    }
-                }];
-            });
-
         } else {
             RCTLog(@"相册获取成功");
             response[@"reference"] = @{
@@ -232,12 +166,135 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:^() {
-        if (!self.hasReturn) {
-            self.reject(@"CANCEL", @"用户取消", nil);
-            self.hasReturn = true;
-        }
+        self.reject(@"CANCEL", @"用户取消", nil);
     }];
 }
+
+
+- (void)handleCaptureImageWithInfo:(NSDictionary *)info {
+
+    NSString *editPath = @"";
+    if (self.pickerController.allowsEditing) {
+        UIImage *edit = info[@"UIImagePickerControllerEditedImage"];
+        editPath = [self saveTempImage:edit];
+    }
+
+    UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+
+    NSDictionary *size = self.options[@"size"];
+    if (size) {
+        CGSize newSize;
+        newSize.width = [size[@"width"] floatValue];
+        newSize.height = [size[@"height"] floatValue];
+
+        CGFloat scale = [self calcScaleRate:image.size targetSize:newSize];
+
+        newSize.width = image.size.width / scale;
+        newSize.height = image.size.height / scale;
+        image = [self zoomImage:image toSize:newSize];
+    }
+
+    UIImagePickerControllerQualityType quality = (UIImagePickerControllerQualityType) [self.options[@"quality"] intValue];
+
+    CGFloat qualityFloat = 1.0F;
+
+    switch (quality) {
+        case UIImagePickerControllerQualityTypeMedium:
+            qualityFloat /= 2;
+            break;
+        case UIImagePickerControllerQualityTypeLow:
+            qualityFloat /= 3;
+            break;
+        default:
+            break;
+    }
+
+    NSData *imageData = UIImageJPEGRepresentation(image, qualityFloat);
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) imageData, NULL);
+    NSMutableDictionary *imageMetadata = [(NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source, 0, NULL)) mutableCopy];
+    CGImageRef CGImage = CGImageSourceCreateImageAtIndex(source, 0, NULL);
+    CGImageRef rotatedCGImage;
+    int metadataOrientation = [imageMetadata[(NSString *) kCGImagePropertyOrientation] intValue];
+    if (metadataOrientation == 6) {
+        rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:270];
+    } else if (metadataOrientation == 1) {
+        rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0];
+    } else if (metadataOrientation == 3) {
+        rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:180];
+    } else {
+        rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0];
+    }
+    CGImageRelease(CGImage);
+    // Erase metadata orientation
+    [imageMetadata removeObjectForKey:(NSString *) kCGImagePropertyOrientation];
+    // Erase stupid TIFF stuff
+    [imageMetadata removeObjectForKey:(NSString *) kCGImagePropertyTIFFDictionary];
+    // Set GPS
+    [imageMetadata setGpsMetadata:self.options[@"metadata"]];
+    [imageMetadata addEntriesFromDictionary:self.options[@"metadata"]];
+
+    // Create destination thing
+    NSMutableData *rotatedImageData = [NSMutableData data];
+    CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef) rotatedImageData, CGImageSourceGetType(source), 1, NULL);
+    CFRelease(source);
+    // add the image to the destination, reattaching metadata
+    CGImageDestinationAddImage(destination, rotatedCGImage, (__bridge CFDictionaryRef) imageMetadata);
+    // And write
+    CGImageDestinationFinalize(destination);
+    CFRelease(destination);
+
+    // It's unclear if writeImageToSavedPhotosAlbum is thread-safe
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ALAssetsLibrary *assets = [[ALAssetsLibrary alloc] init];
+        [assets writeImageToSavedPhotosAlbum:rotatedCGImage metadata:imageMetadata completionBlock:^(NSURL *assetURL, NSError *saveError) {
+            if (saveError) {
+                self.reject(@"ERROR", @"保存图片失败", saveError);
+            } else {
+                self.resolve(@{
+                        @"original" : @{
+                                @"path" : assetURL.absoluteString
+                        },
+                        @"edited" : @{
+                                @"path" : editPath
+                        }
+                });
+            }
+        }];
+    });
+}
+
+/**
+ * 缩放图片
+ * @param image 需要缩放的图片
+ * @param size 新的图片大小
+ */
+#pragma mark - 设置图片大小
+
+- (UIImage *)zoomImage:(UIImage *)image toSize:(CGSize)size {
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+- (CGFloat)calcScaleRate:(CGSize)orgSize targetSize:(CGSize)tarSize {
+    CGSize trgSizeP = CGSizeMake(tarSize.width, tarSize.height);
+    CGSize trgSizeL = CGSizeMake(tarSize.height, tarSize.width);
+
+    CGSize targetSize = (orgSize.width < orgSize.height) ? trgSizeP : trgSizeL;
+
+    CGFloat pRate = orgSize.height / targetSize.height;
+    CGFloat lRate = orgSize.width / targetSize.width;
+
+    RCTLog(@"P...%f...%f", MAX(pRate, lRate), MIN(pRate, lRate));
+    return MIN(pRate, lRate);
+}
+
+/**
+ * 保存一个文件到临时目录
+ */
+#pragma mark - 保存一个文件到临时目录
 
 - (NSString *)saveTempImage:(UIImage *)image {
     NSString *documentsDirectory = NSTemporaryDirectory();
@@ -248,6 +305,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [UIImageJPEGRepresentation(image, 1.0f) writeToFile:imageTempFile atomically:YES];
     return imageTempFile;
 }
+
+/**
+ * 旋转图片
+ */
+#pragma mark - 旋转图片
 
 - (CGImageRef)newCGImageRotatedByAngle:(CGImageRef)imgRef angle:(CGFloat)angle {
     CGFloat angleInRadians = (CGFloat) (angle * (M_PI / 180));
@@ -279,3 +341,5 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 
 @end
+
+#pragma clang diagnostic pop

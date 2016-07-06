@@ -20,7 +20,6 @@ typedef NS_ENUM(NSInteger, MediaType) {
 
 @property(nonatomic, copy) RCTPromiseResolveBlock resolve;
 @property(nonatomic, copy) RCTPromiseRejectBlock reject;
-@property Boolean hasReturn;
 @property UIImagePickerController *pickerController;
 @property NSDictionary *options;
 
