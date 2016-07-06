@@ -25,29 +25,29 @@ RCT_EXPORT_MODULE(SitbRCTMediaManager)
 /** 常量 */
 - (NSDictionary<NSString *, id> *)constantsToExport {
     return @{
-            @"SourceType" : @{
-                    @"photoLibrary" : @(UIImagePickerControllerSourceTypePhotoLibrary),
-                    @"savedPhotosAlbum" : @(UIImagePickerControllerSourceTypeSavedPhotosAlbum),
-                    @"camera" : @(UIImagePickerControllerSourceTypeCamera)
-            },
-            @"MediaType" : @{
-                    @"image" : @(MediaTypeImage),
-                    @"video" : @(MediaTypeVideo)
-            },
-            @"CameraType" : @{
-                    @"front" : @(UIImagePickerControllerCameraDeviceFront),
-                    @"back" : @(UIImagePickerControllerCameraDeviceRear)
-            },
-            @"Quality" : @{
-                    @"high" : @(UIImagePickerControllerQualityTypeHigh),
-                    @"medium" : @(UIImagePickerControllerQualityTypeMedium),
-                    @"low" : @(UIImagePickerControllerQualityTypeLow),
-                    @"VGA640x480" : @(UIImagePickerControllerQualityType640x480),
-                    @"VGA1280x720" : @(UIImagePickerControllerQualityTypeIFrame1280x720),
-                    @"VGA960x540" : @(UIImagePickerControllerQualityTypeIFrame960x540)
+             @"SourceType" : @{
+                     @"photoLibrary" : @(UIImagePickerControllerSourceTypePhotoLibrary),
+                     @"savedPhotosAlbum" : @(UIImagePickerControllerSourceTypeSavedPhotosAlbum),
+                     @"camera" : @(UIImagePickerControllerSourceTypeCamera)
+                     },
+             @"MediaType" : @{
+                     @"image" : @(MediaTypeImage),
+                     @"video" : @(MediaTypeVideo)
+                     },
+             @"CameraType" : @{
+                     @"front" : @(UIImagePickerControllerCameraDeviceFront),
+                     @"back" : @(UIImagePickerControllerCameraDeviceRear)
+                     },
+             @"Quality" : @{
+                     @"high" : @(UIImagePickerControllerQualityTypeHigh),
+                     @"medium" : @(UIImagePickerControllerQualityTypeMedium),
+                     @"low" : @(UIImagePickerControllerQualityTypeLow),
+                     @"VGA640x480" : @(UIImagePickerControllerQualityType640x480),
+                     @"VGA1280x720" : @(UIImagePickerControllerQualityTypeIFrame1280x720),
+                     @"VGA960x540" : @(UIImagePickerControllerQualityTypeIFrame960x540)
 
-            }
-    };
+                     }
+             };
 }
 
 
@@ -56,13 +56,13 @@ RCT_EXPORT_MODULE(SitbRCTMediaManager)
  * 启动手机图库浏览器
  */
 RCT_EXPORT_METHOD(
-        launchImageLibrary:
-        (NSDictionary *) options
-        resolver:
-        (RCTPromiseResolveBlock) resolve
-        reject:
-        (RCTPromiseRejectBlock) reject
-) {
+                  launchImageLibrary:
+                  (NSDictionary *) options
+                  resolver:
+                  (RCTPromiseResolveBlock) resolve
+                  reject:
+                  (RCTPromiseRejectBlock) reject
+                  ) {
     self.resolve = resolve;
     self.reject = reject;
     [self launchWithOptions:options];
@@ -72,13 +72,13 @@ RCT_EXPORT_METHOD(
  * 启动系统相机
  */
 RCT_EXPORT_METHOD(
-        launchCamera:
-        (NSDictionary *) options
-        resolver:
-        (RCTPromiseResolveBlock) resolve
-        reject:
-        (RCTPromiseRejectBlock) reject
-) {
+                  launchCamera:
+                  (NSDictionary *) options
+                  resolver:
+                  (RCTPromiseResolveBlock) resolve
+                  reject:
+                  (RCTPromiseRejectBlock) reject
+                  ) {
     self.resolve = resolve;
     self.reject = reject;
     self.options = options;
@@ -148,8 +148,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         } else {
             RCTLog(@"相册获取成功");
             response[@"reference"] = @{
-                    @"path" : ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
-            };
+                                       @"path" : ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
+                                       };
 
             NSString *editedImageTempFile = @"";
             if (self.pickerController.allowsEditing) {
@@ -157,8 +157,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                 editedImageTempFile = [self saveTempImage:editedImage];
             }
             response[@"edited"] = @{
-                    @"path" : editedImageTempFile
-            };
+                                    @"path" : editedImageTempFile
+                                    };
             self.resolve(response);
         }
     }];
@@ -188,10 +188,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         newSize.height = [size[@"height"] floatValue];
 
         CGFloat scale = [self calcScaleRate:image.size targetSize:newSize];
-
-        newSize.width = image.size.width / scale;
-        newSize.height = image.size.height / scale;
-        image = [self zoomImage:image toSize:newSize];
+        if (scale > 1) {
+            newSize.width = image.size.width / scale;
+            newSize.height = image.size.height / scale;
+            image = [self zoomImage:image toSize:newSize];
+        }
     }
 
     UIImagePickerControllerQualityType quality = (UIImagePickerControllerQualityType) [self.options[@"quality"] intValue];
@@ -225,6 +226,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         rotatedCGImage = [self newCGImageRotatedByAngle:CGImage angle:0];
     }
     CGImageRelease(CGImage);
+    [imageMetadata addEntriesFromDictionary:info[@"UIImagePickerControllerMediaMetadata"]];
     // Erase metadata orientation
     [imageMetadata removeObjectForKey:(NSString *) kCGImagePropertyOrientation];
     // Erase stupid TIFF stuff
@@ -251,13 +253,13 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                 self.reject(@"ERROR", @"保存图片失败", saveError);
             } else {
                 self.resolve(@{
-                        @"original" : @{
-                                @"path" : assetURL.absoluteString
-                        },
-                        @"edited" : @{
-                                @"path" : editPath
-                        }
-                });
+                               @"original" : @{
+                                       @"path" : assetURL.absoluteString
+                                       },
+                               @"edited" : @{
+                                       @"path" : editPath
+                                       }
+                               });
             }
         }];
     });
@@ -279,8 +281,12 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 }
 
 - (CGFloat)calcScaleRate:(CGSize)orgSize targetSize:(CGSize)tarSize {
-    CGSize trgSizeP = CGSizeMake(tarSize.width, tarSize.height);
-    CGSize trgSizeL = CGSizeMake(tarSize.height, tarSize.width);
+
+    CGFloat tempMin = MIN(tarSize.width, tarSize.height);
+    CGFloat tempMax = MAX(tarSize.width, tarSize.height);
+
+    CGSize trgSizeP = CGSizeMake(tempMin, tempMax);
+    CGSize trgSizeL = CGSizeMake(tempMax, tempMin);
 
     CGSize targetSize = (orgSize.width < orgSize.height) ? trgSizeP : trgSizeL;
 
