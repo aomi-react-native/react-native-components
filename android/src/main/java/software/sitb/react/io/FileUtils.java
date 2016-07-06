@@ -137,10 +137,10 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
         }
     }
 
-    public static void autofixOrientation(ContentResolver contentResolver, String path) {
+    public static void fixOrientationAndScale(ContentResolver contentResolver, String path, int width, int height) {
         int degree = readPictureDegree(path);
         Bitmap bitmap = BitmapFactory.decodeFile(path);
-        Bitmap newBitmap = rotaingImageView(degree, bitmap);
+        Bitmap newBitmap = rotateAndScale(degree, width, height, bitmap);
         OutputStream imageOut = null;
         try {
             imageOut = contentResolver.openOutputStream(Uri.fromFile(new File(path)));
@@ -207,17 +207,38 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
     }
 
     /**
-     * 旋转图片
+     * 旋转图片和缩放照片
      *
      * @param angle  度数
      * @param bitmap 图片
      * @return Bitmap
      */
-    public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
+    public static Bitmap rotateAndScale(int angle, int newWidth, int newHeight, Bitmap bitmap) {
         //旋转图片 动作
         Matrix matrix = new Matrix();
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        if (newWidth != 0 && newHeight != 0) {
+            int tempMin = Math.min(newWidth, newHeight);
+            int tempMax = Math.max(newWidth, newHeight);
+
+            if (width < height) {
+                newWidth = tempMin;
+                newHeight = tempMax;
+            } else {
+                newWidth = tempMax;
+                newHeight = tempMin;
+            }
+            //计算缩放率，新尺寸除原始尺寸
+            float widthScale = ((float) newWidth) / width;
+            float heightScale = ((float) newHeight) / height;
+
+            // 缩放图片动作
+            matrix.postScale(widthScale, heightScale);
+        }
         matrix.postRotate(angle);
         // 创建新的图片
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
+
 }

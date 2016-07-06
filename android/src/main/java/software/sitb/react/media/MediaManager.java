@@ -177,13 +177,21 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                         Log.d(TAG, "拍照成功");
                         Uri imageUri = uri[0];
 
+                        int width = 0;
+                        int height = 0;
+                        if (options.hasKey("size")) {
+                            ReadableMap size = options.getMap("size");
+                            width = size.getInt("width");
+                            height = size.getInt("height");
+                        }
+
                         String path = FileUtils.getFilePathFromContentUri(
                                 reactContext.getContentResolver(),
                                 imageUri.toString(),
                                 new String[]{MediaStore.Images.Media.DATA}
                         );
 
-                        FileUtils.autofixOrientation(reactContext.getContentResolver(), path);
+                        FileUtils.fixOrientationAndScale(reactContext.getContentResolver(), path, width, height);
                         if (options.hasKey("quality")) {
                             // 压缩图片
                             Quality quality = Quality.values()[options.getInt("quality")];
@@ -199,6 +207,7 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                             }
                         }
                         FileUtils.setImageGps(path, finalLatitude, finalLongitude);
+
                         WritableMap response = new WritableNativeMap();
                         WritableMap original = new WritableNativeMap();
                         original.putString("path", imageUri.toString());
@@ -249,11 +258,13 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
             values.put(MediaStore.Images.Media.DATE_TAKEN, timestamp);
             values.put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_" + timestamp + ".jpg");
             values.put(MediaStore.Images.Media.DATE_TAKEN, timestamp);
+
             uri[0] = reactContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
             // 需要对图片设置压缩,所以不适用自带GPS设置
 //            intent.putExtra(MediaStore.Images.Media.LATITUDE, latitude);
 //            intent.putExtra(MediaStore.Images.Media.LONGITUDE, longitude);
+
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri[0]);
         }
 
@@ -293,7 +304,7 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         reactContext.startActivityForResult(intent, OPEN_EDIT_REQUEST_CODE, null);
     }
 
-    public Uri setEditingParams(Intent intent) {
+    private Uri setEditingParams(Intent intent) {
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
@@ -306,6 +317,5 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         return uri;
     }
-
 
 }
