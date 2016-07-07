@@ -145,13 +145,14 @@ class GridView extends AbstractComponent {
   }
 
   render() {
-    let {...other} = this.props;
+    let {...other, style, verticalSpacing, horizontalSpacing} = this.props;
 
     return (
       <ListView {...other}
         dataSource={this.state.dataSource}
         ref={listView => this.listView = listView}
         renderRow={this.renderRow}
+        style={[{marginHorizontal: -horizontalSpacing, marginVertical: -verticalSpacing},style]}
       />
     );
 
