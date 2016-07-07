@@ -13,7 +13,8 @@ const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
   },
   row: {
     flexDirection: 'row',
