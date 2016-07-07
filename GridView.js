@@ -1,26 +1,19 @@
-import React, { PropTypes } from 'react';
+import React, {
+  PropTypes,
+  cloneElement
+} from 'react';
 import {
   ListView,
   View,
-  StyleSheet,
-  Dimensions
+  StyleSheet
 } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 
-
-const {width} = Dimensions.get('window');
-
 const styles = StyleSheet.create({
-  grid: {
+  row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start'
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden'
   }
 });
 
@@ -65,6 +58,7 @@ class GridView extends AbstractComponent {
     horizontalSpacing: PropTypes.number,
 
     rowHasChanged: PropTypes.func,
+
     verticalSpacing: PropTypes.number
   };
 
@@ -75,51 +69,77 @@ class GridView extends AbstractComponent {
     rowHasChanged: (r1, r2) => r1 !== r2
   };
 
-  constructor(props) {
-    super(props);
-    let {autoWidth, autoHeightEqWidth, verticalSpacing, horizontalSpacing, cols, cells, rowHasChanged} = this.props;
-    if (autoWidth) {
-      const spacingWidth = verticalSpacing ? verticalSpacing * cols : 0;
-      const rowWidth = (width - spacingWidth) / cols;
-      this.rowStyle = {
-        width: rowWidth,
-        marginBottom: horizontalSpacing ? horizontalSpacing : 0,
-        marginRight: verticalSpacing ? verticalSpacing : 0
-      };
-      if (autoHeightEqWidth) {
-        //noinspection JSSuspiciousNameCombination
-        this.rowStyle.height = rowWidth;
-      }
-    }
-    const ds = new ListView.DataSource({rowHasChanged});
-
-    this.state = {
-      dataSource: ds.cloneWithRows(cells)
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.cells)});
-  }
-
+  props:Object;
+  state = {};
   // refs
   listView;
 
-  rowStyle;
-
-
-  getCellSize() {
-    return {
-      width: this.rowStyle.width,
-      height: this.rowStyle.height
+  constructor(props) {
+    super(props);
+    let {cols, cells, rowHasChanged} = this.props;
+    const ds = new ListView.DataSource({rowHasChanged});
+    let data = this.handleCellData(cells, cols);
+    this.state = {
+      dataSource: ds.cloneWithRows(data),
+      cellHeight: 0
     };
   }
 
-  renderRow(rowData, sectionID:Number, rowID:Number) {
-    let {renderCell, cellStyle} = this.props;
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.cells !== nextProps.cells || this.props.cols !== nextProps.cols) {
+      this.setState({dataSource: this.state.dataSource.cloneWithRows(this.handleCellData(nextProps.cells, nextProps.cols))});
+    }
+  }
+
+  handleCellData(cells, cols) {
+    let data = [];
+    let size = Math.ceil(cells.length / cols);
+
+    for (let i = 0; i < size; i++) {
+      let group = [];
+      for (let j = 0; j < cols; j++) {
+        group.push(cells[i * cols + j]);
+      }
+      data.push(group);
+    }
+    return data;
+  }
+
+  handleCellLayout(event) {
+    const {layout:{width}} = event.nativeEvent;
+    this.setState({cellHeight: width});
+  }
+
+
+  renderRow(rowData:Array, sectionID, rowID) {
+    const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, autoHeightEqWidth} = this.props;
+    let style = {
+      marginHorizontal: horizontalSpacing / 2
+    };
+    if (autoWidth) {
+      style.flex = 1;
+    }
+    let onLayout = null;
+
+    if (autoHeightEqWidth) {
+      style.height = this.state.cellHeight;
+      if (rowID === '0') {
+        onLayout = this.handleCellLayout;
+      }
+    }
+
+    let children = rowData.map((cell, key)=> {
+      return cloneElement(<View />, {
+        key,
+        style,
+        onLayout,
+        children: renderCell(cell, key, style.height)
+      });
+    });
     return (
-      <View style={[cellStyle, this.rowStyle]}>
-        {renderCell(rowData, sectionID, rowID, this.getCellSize())}
+      <View style={[styles.row, {marginVertical: verticalSpacing / 2}]}>
+        {children}
       </View>
     );
   }
@@ -129,7 +149,6 @@ class GridView extends AbstractComponent {
 
     return (
       <ListView {...other}
-        contentContainerStyle={styles.grid}
         dataSource={this.state.dataSource}
         ref={listView => this.listView = listView}
         renderRow={this.renderRow}
