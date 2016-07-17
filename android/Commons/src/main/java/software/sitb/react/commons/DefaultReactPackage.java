@@ -1,4 +1,4 @@
-package software.sitb.react.media;
+package software.sitb.react.commons;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
@@ -12,12 +12,11 @@ import java.util.List;
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class MediaManagerPackage implements ReactPackage {
+public abstract class DefaultReactPackage implements ReactPackage {
+
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Collections.<NativeModule>singletonList(
-                new MediaManager(reactContext)
-        );
+        return Collections.emptyList();
     }
 
     @Override

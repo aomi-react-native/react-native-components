@@ -7,8 +7,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import com.facebook.react.bridge.*;
-import software.sitb.react.DefaultReactContextBaseJavaModule;
-import software.sitb.react.io.FileUtils;
+import software.sitb.react.commons.DefaultReactContextBaseJavaModule;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

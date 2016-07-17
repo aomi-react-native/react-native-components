@@ -1,4 +1,4 @@
-package software.sitb.react.io;
+package software.sitb.react.media;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -8,95 +8,20 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactMethod;
-import software.sitb.react.DefaultReactContextBaseJavaModule;
-import software.sitb.react.Error;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * 文件工具
  *
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class FileUtils extends DefaultReactContextBaseJavaModule {
+public class FileUtils {
 
     private static final String TAG = "FileUtils";
-
-    private ReactApplicationContext context;
-
-    public FileUtils(ReactApplicationContext reactContext) {
-        super(reactContext);
-        this.context = reactContext;
-    }
-
-    @Override
-    public String getName() {
-        return "SitbFileManager";
-    }
-
-    /**
-     * 读取文件
-     *
-     * @param path    文件路径
-     * @param promise 异步回调
-     */
-    @ReactMethod
-    public void readFile(String path, final Promise promise) {
-        if (path == null || path.trim().isEmpty()) {
-            promise.reject(Error.PARAMS_ERROR, "path is not empty", new IllegalArgumentException("path is not empty"));
-        } else {
-            FileInputStream inputStream = null;
-            ByteArrayOutputStream outputStream = null;
-            try {
-                inputStream = new FileInputStream(path);
-                outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[256 * 256];
-                int len;
-                while ((len = inputStream.read(buffer)) > 0) {
-                    outputStream.write(buffer, 0, len);
-                }
-                byte[] result = outputStream.toByteArray();
-                promise.resolve(Base64.encodeToString(result, Base64.NO_WRAP));
-            } catch (IOException e) {
-                promise.reject(Error.EXCEPTION, e.getMessage(), e);
-            } finally {
-                if (inputStream != null) {
-                    try {
-                        inputStream.close();
-                    } catch (IOException ignored) {
-                    }
-                }
-
-                if (outputStream != null) {
-                    try {
-                        outputStream.close();
-                    } catch (IOException ignored) {
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * 通过URI获取一个图片
-     *
-     * @param uriStr  图片URI
-     * @param promise 异步回调
-     */
-    @ReactMethod
-    public void getPhotoByContentUri(String uriStr, Promise promise) {
-        String path = getFilePathFromContentUri(
-                this.context.getContentResolver(),
-                uriStr,
-                new String[]{MediaStore.Images.Media.DATA}
-        );
-        readFile(path, promise);
-    }
 
     /**
      * uri 转换为 file path
@@ -169,7 +94,7 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
         }
     }
 
-    public static String toGps(double gps) {
+    private static String toGps(double gps) {
         int a = (int) gps;
         double bb = (gps - a) * 60;
         int b = (int) bb;
@@ -184,7 +109,7 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
      * @param path 图片绝对路径
      * @return degree旋转的角度
      */
-    public static int readPictureDegree(String path) {
+    private static int readPictureDegree(String path) {
         int degree = 0;
         try {
             ExifInterface exifInterface = new ExifInterface(path);
@@ -213,7 +138,7 @@ public class FileUtils extends DefaultReactContextBaseJavaModule {
      * @param bitmap 图片
      * @return Bitmap
      */
-    public static Bitmap rotateAndScale(int angle, int newWidth, int newHeight, Bitmap bitmap) {
+    private static Bitmap rotateAndScale(int angle, int newWidth, int newHeight, Bitmap bitmap) {
         //旋转图片 动作
         Matrix matrix = new Matrix();
         int width = bitmap.getWidth();
