@@ -35,11 +35,6 @@
     [self setNeedsDisplay];
 }
 
-- (void)clearScreen {
-    [self.lines removeAllObjects];
-    [self setNeedsDisplay];
-}
-
 - (UIImage *)capture {
     CGRect rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     return [self captureViewWithFrame:rect];

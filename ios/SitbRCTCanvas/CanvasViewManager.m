@@ -20,10 +20,6 @@ RCT_EXPORT_VIEW_PROPERTY(strokeColor, UIColor);
 
 #pragma mark - view method
 
-RCT_EXPORT_METHOD(clearScreen) {
-    [[self canvas] clearScreen];
-}
-
 RCT_EXPORT_METHOD(
         capture:
         (NSString *) mimeType

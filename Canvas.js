@@ -83,7 +83,7 @@ class Canvas extends Component {
 
   clearScreen() {
     this.lines = [];
-    SitbRCTCanvasView.clearScreen();
+    this.updateNativeStyles();
   }
 
   render() {
