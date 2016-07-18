@@ -9,6 +9,7 @@ import {
   PixelRatio
 } from 'react-native';
 
+const ratio = PixelRatio.get();
 
 const {
   SitbRCTCanvasView
@@ -39,6 +40,13 @@ class Canvas extends Component {
   points:Array;
   lines = [];
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      lineWidth: props.lineWidth * ratio
+    };
+  }
+
   componentWillMount() {
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -49,6 +57,10 @@ class Canvas extends Component {
       onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: () => {}
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({lineWidth: nextProps.lineWidth});
   }
 
   setNativeProps(props) {
@@ -108,6 +120,7 @@ class Canvas extends Component {
     return (
       <RCTCanvas {...this.props}
         {...this.panResponder.panHandlers}
+        lineWidth={this.state.lineWidth}
         ref={ref => this.canvas = ref}
       />
     );
