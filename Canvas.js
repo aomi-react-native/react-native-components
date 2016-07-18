@@ -43,7 +43,7 @@ class Canvas extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lineWidth: props.lineWidth * ratio
+      lineWidth: this.getLineWidth(props.lineWidth)
     };
   }
 
@@ -60,7 +60,11 @@ class Canvas extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({lineWidth: nextProps.lineWidth});
+    this.setState({lineWidth: this.getLineWidth(nextProps.lineWidth)});
+  }
+
+  getLineWidth(width) {
+    return Platform.OS === 'android' ? width * ratio : width;
   }
 
   setNativeProps(props) {
