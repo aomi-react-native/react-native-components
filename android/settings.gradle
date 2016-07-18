@@ -1,4 +1,8 @@
 rootProject.name = 'react-native-components'
 
-include(':Commons')
-include(':MediaManager')
+include(':SitbRCT:Canvas')
+project(':SitbRCT:Canvas').projectDir = new File(rootProject.projectDir, './Canvas')
+include(':SitbRCT:Commons')
+project(':SitbRCT:Commons').projectDir = new File(rootProject.projectDir, './Commons')
+include(':SitbRCT:MediaManager')
+project(':SitbRCT:MediaManager').projectDir = new File(rootProject.projectDir, './MediaManager')
