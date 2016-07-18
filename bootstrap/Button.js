@@ -15,8 +15,6 @@ import Colors from './Colors';
 
 const styles = {
   button: {
-    borderRadius: 5,
-    height: 44,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -61,6 +59,7 @@ class Button extends Component {
     bsStyle: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link', 'default']),
     children: PropTypes.any,
     color: PropTypes.string,
+    containerStyle: View.propTypes.style,
     disabled: PropTypes.bool,
     fontSize: PropTypes.number,
     iconProps: PropTypes.object,
@@ -92,12 +91,13 @@ class Button extends Component {
       style
     } = this.props;
 
-    let newChild = [],
-      iconStyle = {
-        marginRight: 5,
-        marginLeft: 5
-      };
-    let textStyle = Object.assign({}, bsStyle === 'default' || bsStyle === 'link' ? styles.textDefault : styles.textOther);
+    let newChild = [];
+    let iconStyle = {
+      marginRight: 5,
+      marginLeft: 5
+    };
+    let textStyle = Object.assign({},
+      bsStyle === 'default' || bsStyle === 'link' ? styles.textDefault : styles.textOther);
     if (disabled) {
       textStyle = Object.assign({}, styles.textDisabled);
     }
@@ -163,8 +163,13 @@ class Button extends Component {
   }
 
   render() {
+    const {
+      containerStyle,
+      ...other
+    } = this.props;
     return (
-      <BaseButton {...this.props}
+      <BaseButton {...other}
+        containerStyle={[{borderRadius: 5, height: 44}, containerStyle]}
         renderContent={this.renderContent}
       />
     );
