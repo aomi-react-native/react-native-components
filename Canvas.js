@@ -4,7 +4,9 @@ import {
   View,
   PanResponder,
   requireNativeComponent,
-  NativeModules
+  NativeModules,
+  Platform,
+  PixelRatio
 } from 'react-native';
 
 
@@ -36,9 +38,6 @@ class Canvas extends Component {
   panResponder;
   points:Array;
   lines = [];
-  canvasProps = {
-    lines: []
-  };
 
   componentWillMount() {
     this.panResponder = PanResponder.create({
@@ -46,35 +45,54 @@ class Canvas extends Component {
       onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
-      onPanResponderGrant: this.onStart,
-      onPanResponderMove: this.onMove,
+      onPanResponderGrant: this.handlePanResponderGrant,
+      onPanResponderMove: this.handlePanResponderMove,
       onPanResponderRelease: () => {}
     });
   }
 
-  updateNativeStyles() {
-    this.canvasProps.lines = this.lines;
-    this.canvas && this.canvas.setNativeProps(this.canvasProps);
+  setNativeProps(props) {
+    console.log(props);
+    this.canvas && this.canvas.setNativeProps(props);
   }
 
-  onStart(event) {
-    this.points = [];
-    this.lines.push(this.points);
-    const {locationX, locationY} = event.nativeEvent;
-    this.points.push({
-      x: locationX,
-      y: locationY
-    });
-    this.updateNativeStyles();
+  handlePanResponderGrant(event, gestureState) {
+    const {touchStart} = this.props;
+    if (touchStart) {
+      touchStart(event, gestureState);
+    } else {
+      this.points = [];
+      this.lines.push(this.points);
+      this.points.push(this.handlePoint(event, gestureState));
+      this.setNativeProps({lines: this.lines});
+    }
   }
 
-  onMove(event) {
+  handlePanResponderMove(event, gestureState) {
+    const {touchMove} = this.props;
+    if (touchMove) {
+      touchMove(event, gestureState);
+    } else {
+      this.points.push(this.handlePoint(event, gestureState));
+      this.setNativeProps({lines: this.lines});
+    }
+  }
+
+  handlePoint(event, gestureState) {
+    const {dx, dy} = gestureState;
     const {locationX, locationY} = event.nativeEvent;
-    this.points.push({
+
+    if (Platform.OS === 'android') {
+      return {
+        x: (locationX + dx ) * PixelRatio.get(),
+        y: (locationY + dy) * PixelRatio.get()
+      };
+    }
+
+    return {
       x: locationX,
       y: locationY
-    });
-    this.updateNativeStyles();
+    };
   }
 
   capture() {
@@ -83,7 +101,7 @@ class Canvas extends Component {
 
   clearScreen() {
     this.lines = [];
-    this.updateNativeStyles();
+    this.setNativeProps({lines: []});
   }
 
   render() {
