@@ -21,6 +21,9 @@ public class CanvasView extends View {
     // 画笔
     private Paint paint;
 
+    private float lineWidth;
+    private int strokeColor;
+
     private Set<Point> points = new HashSet<>(50);
 
     public CanvasView(Context context) {
@@ -40,6 +43,8 @@ public class CanvasView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        paint.setStrokeWidth(lineWidth);
+        paint.setColor(strokeColor);
         canvas.drawPath(path, paint);
     }
 
@@ -72,12 +77,10 @@ public class CanvasView extends View {
 
 
     public void setLineWidth(float lineWidth) {
-        paint.setStrokeWidth(lineWidth);
-        invalidate();
+        this.lineWidth = lineWidth;
     }
 
     public void setStrokeColor(int strokeColor) {
-        paint.setColor(strokeColor);
-        invalidate();
+        this.strokeColor = strokeColor;
     }
 }
