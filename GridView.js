@@ -99,7 +99,11 @@ class GridView extends AbstractComponent {
     for (let i = 0; i < size; i++) {
       let group = [];
       for (let j = 0; j < cols; j++) {
-        group.push(cells[i * cols + j]);
+        if (cells[i * cols + j]) {
+          group.push(cells[i * cols + j]);
+        } else {
+          group.push({empty: true});
+        }
       }
       data.push(group);
     }
@@ -107,8 +111,12 @@ class GridView extends AbstractComponent {
   }
 
   handleCellLayout(event) {
-    const {layout:{width}} = event.nativeEvent;
-    this.setState({cellHeight: width});
+    const {
+      layout: {
+        width: cellHeight
+      }
+    } = event.nativeEvent;
+    this.setState({cellHeight});
   }
 
 
@@ -130,6 +138,11 @@ class GridView extends AbstractComponent {
     }
 
     let children = rowData.map((cell, key)=> {
+      if (cell.empty) {
+        return cloneElement(<View />, {
+          key
+        });
+      }
       return cloneElement(<View />, {
         key,
         style,
