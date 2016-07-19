@@ -140,7 +140,8 @@ class GridView extends AbstractComponent {
     let children = rowData.map((cell, key)=> {
       if (cell.empty) {
         return cloneElement(<View />, {
-          key
+          key,
+          style
         });
       }
       return cloneElement(<View />, {
