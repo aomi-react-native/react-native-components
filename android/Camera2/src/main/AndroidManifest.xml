@@ -1,5 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="software.sitb.react.camera2">
-
-    <uses-permission android:name="android.permission.CAMERA"/>
-</manifest>
