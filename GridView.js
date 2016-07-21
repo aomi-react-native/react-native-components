@@ -148,7 +148,13 @@ class GridView extends AbstractComponent {
         key,
         style,
         onLayout,
-        children: renderCell(cell, key, style.height)
+        children: renderCell({
+          cell,
+          sectionID,
+          rowID,
+          key: key,
+          height: style.height
+        })
       });
     });
     return (
