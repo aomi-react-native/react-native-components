@@ -150,6 +150,8 @@ public class Camera2View extends TextureView implements TextureView.SurfaceTextu
         }
     };
 
+    private CameraCaptureSession.CaptureCallback customCaptureCallback;
+
     /**
      * A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
      */
@@ -205,14 +207,22 @@ public class Camera2View extends TextureView implements TextureView.SurfaceTextu
         public void onCaptureProgressed(@NonNull CameraCaptureSession session,
                                         @NonNull CaptureRequest request,
                                         @NonNull CaptureResult partialResult) {
-            process(partialResult);
+            if (null == customCaptureCallback) {
+                process(partialResult);
+            } else {
+                customCaptureCallback.onCaptureProgressed(session, request, partialResult);
+            }
         }
 
         @Override
         public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                        @NonNull CaptureRequest request,
                                        @NonNull TotalCaptureResult result) {
-            process(result);
+            if (null == customCaptureCallback) {
+                process(result);
+            } else {
+                customCaptureCallback.onCaptureCompleted(session, request, result);
+            }
         }
 
     };
@@ -376,7 +386,7 @@ public class Camera2View extends TextureView implements TextureView.SurfaceTextu
     }
 
     /**
-     * Configures the necessary {@link android.graphics.Matrix} transformation to `mTextureView`.
+     * Configures the necessary {@link Matrix} transformation to `mTextureView`.
      * This method should be called after the camera preview size is determined in
      * setUpCameraOutputs and also the size of `mTextureView` is fixed.
      *
@@ -433,7 +443,7 @@ public class Camera2View extends TextureView implements TextureView.SurfaceTextu
     /**
      * Creates a new {@link CameraCaptureSession} for camera preview.
      */
-    private void createCameraPreviewSession() {
+    protected void createCameraPreviewSession() {
         try {
             SurfaceTexture texture = getSurfaceTexture();
             assert texture != null;
@@ -489,7 +499,7 @@ public class Camera2View extends TextureView implements TextureView.SurfaceTextu
      * Capture a still picture. This method should be called when we get a response in
      * {@link #captureCallback} from both {@link #lockFocus()}.
      */
-    private void captureStillPicture() {
+    protected void captureStillPicture() {
         try {
             if (null == cameraDevice) {
                 return;
@@ -507,8 +517,7 @@ public class Camera2View extends TextureView implements TextureView.SurfaceTextu
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
 
-            CameraCaptureSession.CaptureCallback CaptureCallback
-                    = new CameraCaptureSession.CaptureCallback() {
+            CameraCaptureSession.CaptureCallback CaptureCallback = new CameraCaptureSession.CaptureCallback() {
 
                 @Override
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
@@ -674,4 +683,47 @@ public class Camera2View extends TextureView implements TextureView.SurfaceTextu
         this.cameraId = cameraId;
     }
 
+    public CameraCaptureSession.CaptureCallback getCustomCaptureCallback() {
+        return customCaptureCallback;
+    }
+
+    public ImageReader getImageReader() {
+        return imageReader;
+    }
+
+    public void setCustomCaptureCallback(CameraCaptureSession.CaptureCallback customCaptureCallback) {
+        this.customCaptureCallback = customCaptureCallback;
+    }
+
+    public CaptureRequest.Builder getPreviewRequestBuilder() {
+        return previewRequestBuilder;
+    }
+
+    public void setPreviewRequestBuilder(CaptureRequest.Builder previewRequestBuilder){
+        this.previewRequestBuilder = previewRequestBuilder;
+    }
+
+    public CaptureRequest getPreviewRequest() {
+        return previewRequest;
+    }
+
+    public CameraDevice getCameraDevice() {
+        return cameraDevice;
+    }
+
+    public void setPreviewRequest(CaptureRequest previewRequest) {
+        this.previewRequest = previewRequest;
+    }
+
+    public Handler getBackgroundHandler() {
+        return handler;
+    }
+
+    public CameraCaptureSession getCaptureSession() {
+        return captureSession;
+    }
+
+    public void setCaptureSession(CameraCaptureSession captureSession) {
+        this.captureSession = captureSession;
+    }
 }

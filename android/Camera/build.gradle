@@ -1,4 +1,4 @@
-description = 'Camera2'
+description = 'Camera'
 
 apply plugin: 'com.android.library'
 

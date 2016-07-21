@@ -8,6 +8,8 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import software.sitb.react.camera.commons.CameraFacing;
+import software.sitb.react.camera.commons.Orientation;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
