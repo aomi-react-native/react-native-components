@@ -11,7 +11,5 @@
 @property(nonatomic, strong) UIColor *strokeColor;
 @property(nonatomic) CGFloat lineWidth;
 
-- (void)clearScreen;
-
 - (UIImage *)capture;
 @end
