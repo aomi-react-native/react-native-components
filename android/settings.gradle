@@ -1,8 +1,12 @@
 rootProject.name = 'react-native-components'
 
+include(':SitbRCT:Camera')
+project(':SitbRCT:Camera').projectDir = new File(rootProject.projectDir, './Camera')
 include(':SitbRCT:Canvas')
 project(':SitbRCT:Canvas').projectDir = new File(rootProject.projectDir, './Canvas')
 include(':SitbRCT:Commons')
 project(':SitbRCT:Commons').projectDir = new File(rootProject.projectDir, './Commons')
 include(':SitbRCT:MediaManager')
 project(':SitbRCT:MediaManager').projectDir = new File(rootProject.projectDir, './MediaManager')
+include(':SitbRCT:Barcode')
+project(':SitbRCT:Barcode').projectDir = new File(rootProject.projectDir, './Barcode')
