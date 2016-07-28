@@ -15,6 +15,8 @@ import Colors from './Colors';
 
 const styles = {
   button: {
+    borderRadius: 5,
+    height: 44,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -169,7 +171,7 @@ class Button extends Component {
     } = this.props;
     return (
       <BaseButton {...other}
-        containerStyle={[{borderRadius: 5, height: 44}, containerStyle]}
+        containerStyle={[containerStyle]}
         renderContent={this.renderContent}
       />
     );
