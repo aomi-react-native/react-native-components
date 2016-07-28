@@ -16,11 +16,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 40,
     alignItems: 'center',
-    paddingLeft: 10,
-    paddingRight: 10
+    paddingHorizontal: 10
   },
   left: {
-    width: 30
+    width: 30,
+    marginTop: 1
   },
   center: {
     flex: 1
@@ -77,10 +77,10 @@ class List extends AbstractComponent {
           </View>
         );
       } else {
-        return left;
+        return row.left;
       }
     }
-    return <View />
+    return <View />;
   }
 
   renderCenter(row:Item) {
@@ -126,6 +126,9 @@ class List extends AbstractComponent {
   renderRow(row:Item, index) {
     let {renderLeft, renderCenter, renderRight, disablePress, onPress} = row;
     const rightStyle = {};
+    if (this.props.items.length !== 0) {
+      rightStyle.marginTop = 0.5;
+    }
     if (this.props.items.length - 1 !== index) {
       rightStyle.borderBottomWidth = 0.5;
       rightStyle.borderBottomColor = '#c8c8c8';
