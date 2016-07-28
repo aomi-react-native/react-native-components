@@ -17,12 +17,10 @@ const styles = StyleSheet.create({
   icon: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 35
+    width: 30
   },
   input: {
-    flex: 1,
-    height: 35,
-    padding: 4
+    flex: 1
   },
   label: {
     justifyContent: 'center'
@@ -64,6 +62,7 @@ const INPUT_PROPS_KEYS = [
 class Input extends AbstractFormComponent {
 
   static propTypes = {
+    ...TextInput.propTypes,
     /**
      * Input 之后,如果为String  则显示Icon
      */
@@ -170,7 +169,7 @@ class Input extends AbstractFormComponent {
     if (name) {
       if (typeof name === 'string') {
         return (
-          <View style={[styles.icon,iconStyle]}>
+          <View style={[styles.icon, iconStyle]}>
             <Icon {...iconProps}
               name={name}
             />
