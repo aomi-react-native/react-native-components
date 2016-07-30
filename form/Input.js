@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     width: 30
   },
   input: {
-    flex: 1
+    flex: 1,
+    minHeight: 30
   },
   label: {
     justifyContent: 'center'
