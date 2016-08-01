@@ -115,7 +115,7 @@ class Input extends AbstractFormComponent {
     /**
      * input value 验证正则表达式
      */
-    pattern: PropTypes.string,
+    pattern: PropTypes.instanceOf(RegExp),
     /**
      * 表明表单的值是必须的
      */
@@ -216,8 +216,7 @@ class Input extends AbstractFormComponent {
       }
 
       if (pattern) {
-        let reg = new RegExp(pattern);
-        let result = reg.test(this.state.value);
+        let result = pattern.test(this.state.value);
         this.setFormFieldInfo(result);
         return result;
       }
