@@ -10,6 +10,7 @@ import {
   View,
   Platform
 } from 'react-native';
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -20,6 +21,7 @@ class Button extends Component {
   static propTypes = {
     ...TouchableWithoutFeedback.propTypes,
     Comp: PropTypes.any,
+    autoDismissKeyboard: PropTypes.bool,
     children: PropTypes.any,
     containerStyle: View.propTypes.style,
     disabled: PropTypes.bool,
@@ -27,8 +29,19 @@ class Button extends Component {
   };
 
   static defaultProps = {
+    autoDismissKeyboard: false,
     disabled: false
   };
+
+
+  handlePress(onPress) {
+    const {autoDismissKeyboard} = this.props;
+    return () => {
+      autoDismissKeyboard && dismissKeyboard();
+      onPress && onPress();
+    };
+  }
+
 
   renderContent(children, renderContent) {
     if (renderContent) {
@@ -43,7 +56,6 @@ class Button extends Component {
     }
     return <Text />;
   }
-
 
   render() {
     const {
@@ -67,7 +79,7 @@ class Button extends Component {
       <Comp activeOpacity={activeOpacity}
             disabled={disabled}
             onHideUnderlay={onHideUnderlay}
-            onPress={onPress}
+            onPress={this.handlePress(onPress)}
             onShowUnderlay={onShowUnderlay}
             style={containerStyle}
             underlayColor={underlayColor}
