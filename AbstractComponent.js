@@ -6,7 +6,7 @@ const excludeFunc = [
   'componentWillMount',
   'componentDidMount',
   'componentWillReceiveProps',
-  'shounldComponentUpdate',
+  'shouldComponentUpdate',
   'componentWillUpdate',
   'componentDidUpdate',
   'componentWillUnmount'
