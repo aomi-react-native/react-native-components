@@ -30,7 +30,7 @@ class LoadingDialog extends AbstractComponent {
     showAnimation: {
       animation: 'fadeIn'
     },
-    statusBarAutoHidden: true
+    statusBarAutoHidden: false
   };
 
   constructor(props) {
@@ -73,12 +73,11 @@ class LoadingDialog extends AbstractComponent {
   }
 
   render() {
-    let {statusBarAutoHidden, children, ...other} = this.props;
+    let {children, ...other} = this.props;
     return (
       <Dialog {...other}
         loadChildren={children}
         loading={true}
-        statusBarAutoHidden={statusBarAutoHidden}
         visible={this.state.visible}
       />
     );
