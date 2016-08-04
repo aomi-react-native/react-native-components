@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...commonStyle.center
   },
-  tab_bottom_active: {
+  tabBottomActive: {
     borderTopWidth: 3,
     borderTopColor: 'red'
   }
@@ -35,15 +35,19 @@ const styles = StyleSheet.create({
 class Tabs extends Component {
 
   static propTypes = {
-    activeTab: PropTypes.string,
     children: PropTypes.node.isRequired,
-    onTabChange: PropTypes.func,
-    position: PropTypes.oneOf(['top', 'bottom'])
+    activeTab: PropTypes.string,
+    position: PropTypes.oneOf(['Top', 'Bottom']),
+    renderTabBar: PropTypes.func,
+    style: View.propTypes.style,
+    tabContainerStyle: View.propTypes.style,
+    tabStyle: View.propTypes.style,
+    onTabChange: PropTypes.func
   };
 
   static defaultProps = {
     position: 'bottom',
-    onTabChange: ()=> {}
+    onTabChange: ()=> console.log('tab change')
   };
 
   state = {};
@@ -78,11 +82,12 @@ class Tabs extends Component {
 
   goTab(tab) {
     return () => {
-      if (tab === this.state.activeTab)
+      if (tab === this.state.activeTab) {
         return;
+      }
       const {onTabChange} = this.props;
       const routes = this.navigator.getCurrentRoutes();
-      const route = routes.find(r => r.tabLabel === tab);
+      const route = routes.find(route => route.tabLabel === tab);
       this.navigator.jumpTo(route);
       this.setState({
         activeTab: tab
@@ -111,12 +116,12 @@ class Tabs extends Component {
       <View style={[styles.tabContainer, tabContainerStyle]}>
         {
           tabs.map((tab, index)=> (
-            <Button key={index}
-                    onPress={this.goTab(tab)}
-                    containerStyle={[styles.tab,
-                      tab === this.state.activeTab ? styles[`tab_${position}_active`] : {},
+            <Button containerStyle={[styles.tab,
+                      tab === this.state.activeTab ? styles[`tab${position}Active`] : {},
                       tabStyle
                     ]}
+                    key={index}
+                    onPress={this.goTab(tab)}
             >
               {tab}
             </Button>
@@ -141,10 +146,11 @@ class Tabs extends Component {
                  initialRoute={initialRoute}
                  initialRouteStack={routes}
                  navigationBar={this.renderTabBar()}
+                 onDidFocus={this.handleDidFocus}
                  ref={navigator => this.navigator = navigator}
                  renderScene={this.renderScene}
                  sceneStyle={style}
-                 onDidFocus={this.handleDidFocus}
+
       />
     );
   }
