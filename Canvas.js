@@ -37,7 +37,7 @@ class Canvas extends Component {
   canvas;
 
   panResponder;
-  points:Array;
+  points: Array;
   lines = [];
 
   constructor(props) {
@@ -111,8 +111,8 @@ class Canvas extends Component {
     };
   }
 
-  capture() {
-    return SitbRCTCanvasView.capture();
+  capture(mimeType = 'png') {
+    return SitbRCTCanvasView.capture(mimeType);
   }
 
   clearScreen() {
