@@ -46,8 +46,7 @@ class Tabs extends Component {
   };
 
   static defaultProps = {
-    position: 'bottom',
-    onTabChange: ()=> console.log('tab change')
+    position: 'Bottom'
   };
 
   state = {};
@@ -88,18 +87,20 @@ class Tabs extends Component {
       const {onTabChange} = this.props;
       const routes = this.navigator.getCurrentRoutes();
       const route = routes.find(route => route.tabLabel === tab);
-      this.navigator.jumpTo(route);
       this.setState({
         activeTab: tab
-      }, onTabChange);
+      });
+      onTabChange && onTabChange(tab);
+      this.navigator.jumpTo(route);
     };
   }
 
-  handleDidFocus(route) {
+  handleWillFocus(route) {
     const {onTabChange} = this.props;
     this.setState({
       activeTab: route.tabLabel
-    }, onTabChange);
+    });
+    onTabChange && onTabChange(route.tabLabel);
   }
 
   configureScene() {
@@ -146,7 +147,7 @@ class Tabs extends Component {
                  initialRoute={initialRoute}
                  initialRouteStack={routes}
                  navigationBar={this.renderTabBar()}
-                 onDidFocus={this.handleDidFocus}
+                 onWillFocus={this.handleWillFocus}
                  ref={navigator => this.navigator = navigator}
                  renderScene={this.renderScene}
                  sceneStyle={style}
