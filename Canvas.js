@@ -100,7 +100,7 @@ class Canvas extends Component {
 
     if (Platform.OS === 'android') {
       return {
-        x: (locationX + dx ) * PixelRatio.get(),
+        x: (locationX + dx) * PixelRatio.get(),
         y: (locationY + dy) * PixelRatio.get()
       };
     }
