@@ -7,7 +7,6 @@ import {
   View,
   Text
 } from 'react-native';
-
 import Icon from '../Icon';
 import BaseButton from '../Button';
 import Colors from './Colors';
@@ -59,13 +58,13 @@ class Button extends Component {
      * bootstrap 风格
      */
     bsStyle: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link', 'default']),
+    buttonStyle: View.propTypes.style,
     children: PropTypes.any,
     color: PropTypes.string,
     containerStyle: View.propTypes.style,
     disabled: PropTypes.bool,
     fontSize: PropTypes.number,
-    iconProps: PropTypes.object,
-    style: View.propTypes.style
+    iconProps: PropTypes.object
   };
 
   static defaultProps = {
@@ -90,7 +89,7 @@ class Button extends Component {
       children,
       bsStyle,
       color,
-      style
+      buttonStyle
     } = this.props;
 
     let newChild = [];
@@ -156,7 +155,7 @@ class Button extends Component {
       temp.push(styles.button);
       temp.push({backgroundColor: Colors[bsStyle]});
     }
-    temp.push(style);
+    temp.push(buttonStyle);
 
     return cloneElement(<View />, {
       children: newChild,
@@ -166,12 +165,10 @@ class Button extends Component {
 
   render() {
     const {
-      containerStyle,
       ...other
     } = this.props;
     return (
       <BaseButton {...other}
-        containerStyle={[containerStyle]}
         renderContent={this.renderContent}
       />
     );

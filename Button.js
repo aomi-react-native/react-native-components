@@ -62,7 +62,7 @@ class Button extends Component {
       disabled,
       children,
       renderContent,
-      containerStyle,
+      style,
       onPress,
       activeOpacity,
       onHideUnderlay,
@@ -81,7 +81,7 @@ class Button extends Component {
             onHideUnderlay={onHideUnderlay}
             onPress={this.handlePress(onPress)}
             onShowUnderlay={onShowUnderlay}
-            style={containerStyle}
+            style={style}
             underlayColor={underlayColor}
       >
         {this.renderContent(children, renderContent)}
