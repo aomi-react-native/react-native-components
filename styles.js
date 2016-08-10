@@ -3,6 +3,11 @@
  * @date 16/7/20
  */
 
+export const Colors = {
+  separator: '#dfdfdf',
+  underlay: '#d0d0d0'
+};
+
 export default {
   fullScreenAbsolute: {
     position: 'absolute',
