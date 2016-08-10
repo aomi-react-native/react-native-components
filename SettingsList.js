@@ -1,22 +1,23 @@
-import React, {
-  Component,
-  PropTypes
-} from 'react';
+import React, { PropTypes } from 'react';
 import {
   View,
   Text,
   StyleSheet,
+  TouchableHighlight
 } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import Icon from './Icon';
 import Button from './bootstrap/Button';
+import { Colors } from './styles';
 
 const styles = StyleSheet.create({
   row: {
+    flex: 1,
     flexDirection: 'row',
     height: 40,
     alignItems: 'center',
-    paddingHorizontal: 10
+    marginLeft: 10,
+    paddingRight: 10
   },
   left: {
     width: 30,
@@ -24,12 +25,6 @@ const styles = StyleSheet.create({
   },
   center: {
     flex: 1
-  },
-  rightContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    height: 40,
-    alignItems: 'center'
   },
   right: {},
   text: {
@@ -47,7 +42,7 @@ type Item = {
   renderLeft: Function,
   renderCenter: Function,
   renderRight: Function,
-  disablePress: Boolean,
+  disabled: Boolean,
   onPress: Function
 };
 
@@ -61,7 +56,7 @@ class List extends AbstractComponent {
     items: PropTypes.array
   };
 
-  renderLeft(row:Item) {
+  renderLeft(row: Item) {
     if (row.left) {
       if (typeof row.left === 'string') {
         let props = row.leftProps || {};
@@ -83,7 +78,7 @@ class List extends AbstractComponent {
     return <View />;
   }
 
-  renderCenter(row:Item) {
+  renderCenter(row: Item) {
     if (row.center) {
       const props = row.centerProps || {};
       const {style, textProps, ...other} = props;
@@ -108,7 +103,7 @@ class List extends AbstractComponent {
 
   }
 
-  renderRight(row:Item) {
+  renderRight(row: Item) {
     const props = row.rightProps || {};
     const {color, style, size, ...other} = props;
     return (
@@ -123,29 +118,28 @@ class List extends AbstractComponent {
     );
   }
 
-  renderRow(row:Item, index) {
-    let {renderLeft, renderCenter, renderRight, disablePress, onPress} = row;
-    const rightStyle = {};
-    if (this.props.items.length !== 0) {
-      rightStyle.marginTop = 0.5;
-    }
+  renderRow(row: Item, index) {
+    let {renderLeft, renderCenter, renderRight, disabled, onPress} = row;
+    const separator = {};
     if (this.props.items.length - 1 !== index) {
-      rightStyle.borderBottomWidth = 0.5;
-      rightStyle.borderBottomColor = '#c8c8c8';
+      separator.borderBottomWidth = 0.5;
+      separator.borderBottomColor = Colors.separator;
     }
-    let Comp = disablePress ? View : Button;
     return (
-      <Comp bsStyle="link"
-            key={index}
-            onPress={onPress}
-            style={styles.row}
+      <Button Comp={TouchableHighlight}
+              bsStyle="link"
+              buttonStyle={{justifyContent: 'flex-start'}}
+              disabled={disabled}
+              key={index}
+              onPress={onPress}
+              underlayColor={Colors.underlay}
       >
-        {renderLeft ? renderLeft(row) : this.renderLeft(row)}
-        <View style={[styles.rightContainer, rightStyle]}>
+        <View style={[styles.row, separator]}>
+          {renderLeft ? renderLeft(row) : this.renderLeft(row)}
           {renderCenter ? renderCenter(row) : this.renderCenter(row)}
           {renderRight ? renderRight(row) : this.renderRight(row)}
         </View>
-      </Comp>
+      </Button>
     );
   }
 
