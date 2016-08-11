@@ -35,7 +35,7 @@ RCT_EXPORT_METHOD(
         imageData = UIImageJPEGRepresentation(image, 1.0F);
     }
 
-    resolve([imageData base64EncodedDataWithOptions:0]);
+    resolve([[NSString alloc]initWithData:[imageData base64EncodedDataWithOptions:0] encoding:NSUTF8StringEncoding]);
 }
 
 - (UIView *)view {
