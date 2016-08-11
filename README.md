@@ -9,11 +9,19 @@ React Native Components Library, 封装常用的组件,提供IOS和Android统一
 ### Button
 ### Camera
 ### Canvas
+### DatePicker
 ### Dialog
+### Form
 ### GridView
 ### Icon
+### Input
 ### LoadingDialog
+### Picker
+### RadioGroup
 ### SettingsList
+### Slider
+### Switch
+### Tabs
 
 
 
