@@ -8,8 +8,6 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
  */
 public abstract class DefaultReactContextBaseJavaModule extends ReactContextBaseJavaModule {
 
-    protected ReactApplicationContext context;
-
     public DefaultReactContextBaseJavaModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
