@@ -43,8 +43,8 @@ RCT_EXPORT_MODULE(SitbRCTOrientationManager)
 }
 
 - (void)deviceOrientationDidChange:(id)deviceOrientationDidChange {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    [self sendEventWithName:@"deviceOrientationDidChange" body:@(orientation)];
+//    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+//    [self sendEventWithName:@"deviceOrientationDidChange" body:@(orientation)];
 }
 
 
