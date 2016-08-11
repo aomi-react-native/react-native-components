@@ -69,7 +69,7 @@ class GridView extends AbstractComponent {
     rowHasChanged: (r1, r2) => r1 !== r2
   };
 
-  props:Object;
+  props: Object;
   state = {};
   // refs
   listView;
@@ -84,7 +84,6 @@ class GridView extends AbstractComponent {
       cellHeight: 0
     };
   }
-
 
   componentWillReceiveProps(nextProps) {
     if (this.props.cells !== nextProps.cells || this.props.cols !== nextProps.cols) {
@@ -119,8 +118,7 @@ class GridView extends AbstractComponent {
     this.setState({cellHeight});
   }
 
-
-  renderRow(rowData:Array, sectionID, rowID) {
+  renderRow(rowData: Array, sectionID, rowID) {
     const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, autoHeightEqWidth} = this.props;
     let style = {
       marginHorizontal: horizontalSpacing / 2
@@ -172,7 +170,7 @@ class GridView extends AbstractComponent {
         dataSource={this.state.dataSource}
         ref={listView => this.listView = listView}
         renderRow={this.renderRow}
-        style={[{marginHorizontal: -horizontalSpacing, marginVertical: -verticalSpacing},style]}
+        style={[{marginHorizontal: -horizontalSpacing, marginVertical: -verticalSpacing}, style]}
       />
     );
 
