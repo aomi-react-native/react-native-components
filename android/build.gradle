@@ -14,7 +14,7 @@ allprojects {
 
 buildscript {
     repositories {
-        jcenter { url "http://repo.sitb.software/content/groups/public/" }
+        maven { url "http://repo.sitb.software/content/groups/public/" }
     }
 
     dependencies {
