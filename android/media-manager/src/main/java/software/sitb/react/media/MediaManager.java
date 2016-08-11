@@ -44,28 +44,6 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         return "SitbRCTMediaManager";
     }
 
-    public enum SourceType {
-        PhotoLibrary,
-        SavedPhotosAlbum,
-        Camera
-    }
-
-    public enum MediaType {
-        Image,
-        Video
-    }
-
-    public enum CameraType {
-        Back,
-        Front
-    }
-
-    public enum Quality {
-        High,
-        Medium,
-        Low
-    }
-
     @Nullable
     @Override
     public Map<String, Object> getConstants() {
@@ -127,6 +105,11 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
 
                     reactContext.removeActivityEventListener(openImageListener);
                 }
+            }
+
+            @Override
+            public void onNewIntent(Intent intent) {
+                Log.d(TAG, "on new intent");
             }
         };
 
@@ -219,6 +202,11 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                     reactContext.removeActivityEventListener(openCameraListener);
                 }
             }
+
+            @Override
+            public void onNewIntent(Intent intent) {
+
+            }
         };
         this.reactContext.addActivityEventListener(openCameraListener);
         // 打开相机
@@ -293,6 +281,11 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
                     reactContext.removeActivityEventListener(openEditListener);
                 }
             }
+
+            @Override
+            public void onNewIntent(Intent intent) {
+
+            }
         };
         this.reactContext.addActivityEventListener(openEditListener);
         // 打开照片编辑
@@ -315,6 +308,28 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
         Uri uri = reactContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         return uri;
+    }
+
+    public enum SourceType {
+        PhotoLibrary,
+        SavedPhotosAlbum,
+        Camera
+    }
+
+    public enum MediaType {
+        Image,
+        Video
+    }
+
+    public enum CameraType {
+        Back,
+        Front
+    }
+
+    public enum Quality {
+        High,
+        Medium,
+        Low
     }
 
 }

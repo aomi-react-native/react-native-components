@@ -1,11 +1,17 @@
 package software.sitb.canvas;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import com.facebook.react.bridge.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +32,8 @@ public class CanvasView extends View {
 
     private Set<Point> points = new HashSet<>(50);
 
+    private Bitmap.CompressFormat format;
+
     public CanvasView(Context context) {
         super(context);
         path = new Path();
@@ -38,7 +46,6 @@ public class CanvasView extends View {
         paint.setFilterBitmap(true);
         paint.setSubpixelText(true);
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -68,13 +75,12 @@ public class CanvasView extends View {
                     } else {
                         path.lineTo(x, y);
                         path.moveTo(x, y);
-                        invalidate();
                     }
                 }
             }
+            invalidate();
         }
     }
-
 
     public void setLineWidth(float lineWidth) {
         this.lineWidth = lineWidth;
@@ -82,5 +88,34 @@ public class CanvasView extends View {
 
     public void setStrokeColor(int strokeColor) {
         this.strokeColor = strokeColor;
+    }
+
+
+    public void setCaptureData(final Callback callback) {
+        new GuardedAsyncTask<Void, Integer>((ReactContext) getContext()) {
+            @Override
+            protected void doInBackgroundGuarded(Void... params) {
+                Bitmap screenshot = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(screenshot);
+                canvas.translate(-getScrollX(), -getScrollY());
+                draw(canvas);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                screenshot.compress(format, 100, outputStream);
+
+                String data = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    Log.e("", e.getMessage(), e);
+                }
+                WritableMap event = Arguments.createMap();
+                event.putString("data", data);
+
+            }
+        }.execute();
+    }
+
+    public void setFormat(Bitmap.CompressFormat format) {
+        this.format = format;
     }
 }

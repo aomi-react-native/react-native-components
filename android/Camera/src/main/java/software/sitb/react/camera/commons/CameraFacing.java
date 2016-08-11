@@ -3,7 +3,7 @@ package software.sitb.react.camera.commons;
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
-public enum  CameraFacing {
+public enum CameraFacing {
     BACK,
     FRONT
 }

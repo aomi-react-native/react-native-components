@@ -1,11 +1,13 @@
 package software.sitb.canvas;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import com.facebook.react.bridge.*;
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import software.sitb.react.commons.DefaultReactContextBaseJavaModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +17,16 @@ import java.util.List;
  */
 public class CanvasViewManager extends SimpleViewManager<CanvasView> {
 
+    private static final String NAME = "SitbRCTCanvasView";
+
     @Override
     public String getName() {
-        return "SitbRCTCanvasView";
+        return NAME;
     }
 
     @Override
     protected CanvasView createViewInstance(ThemedReactContext reactContext) {
         return new CanvasView(reactContext);
-    }
-
-    @ReactMethod
-    public void capture(String mimeType, Promise promise) {
-
     }
 
     @ReactProp(name = "lines")
@@ -55,6 +54,16 @@ public class CanvasViewManager extends SimpleViewManager<CanvasView> {
     @ReactProp(name = "strokeColor")
     public void setStrokeColor(CanvasView view, String strokeColor) {
         view.setStrokeColor(Color.parseColor(strokeColor));
+    }
+
+    @ReactProp(name = "format")
+    public void setFormat(CanvasView view, String format) {
+        view.setFormat(Bitmap.CompressFormat.valueOf(format.toUpperCase()));
+    }
+
+    @ReactProp(name = "setStrokeColorAndroid")
+    public void setSetCaptureData(CanvasView view, Callback setCaptureDataAndroid) {
+        view.setCaptureData(setCaptureDataAndroid);
     }
 
 }
