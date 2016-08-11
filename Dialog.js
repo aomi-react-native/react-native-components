@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
-
+import createRootView from './createRootView';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,9 +44,9 @@ class Dialog extends Component {
 
   static propTypes = {
     hideAnimation: PropTypes.object,
+    loadChildren: PropTypes.node,
     loadProps: PropTypes.object,
     loading: PropTypes.bool,
-    loadChildren: PropTypes.node,
     showAnimation: PropTypes.object,
     statusBarAutoHidden: PropTypes.bool,
     style: View.propTypes.style,
@@ -65,6 +65,8 @@ class Dialog extends Component {
     visible: false
   };
 
+  mounted = true;
+
   shounldComponentUpdate() {
     return !this.state.animating;
   }
@@ -75,8 +77,6 @@ class Dialog extends Component {
     }
     this.mounted = false;
   }
-
-  mounted = true;
 
   handlePress() {
     let {onPress} = this.props;
@@ -170,4 +170,5 @@ class Dialog extends Component {
   }
 }
 
-export default Dialog;
+// noinspection Eslint
+export default createRootView(Dialog);
