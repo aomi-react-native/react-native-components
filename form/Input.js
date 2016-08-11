@@ -4,7 +4,8 @@ import {
   TextInput,
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from 'react-native';
 import Icon from '../Icon';
 
@@ -17,11 +18,12 @@ const styles = StyleSheet.create({
   icon: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 30
+    width: 25
   },
   input: {
     flex: 1,
-    height: 40
+    height: 40,
+    marginTop: Platform.OS === 'ios' ? 2 : 0
   },
   label: {
     justifyContent: 'center'
@@ -109,10 +111,6 @@ class Input extends AbstractFormComponent {
      */
     name: PropTypes.string,
     /**
-     * input 值更改回调函数
-     */
-    onChangeText: PropTypes.func,
-    /**
      * input value 验证正则表达式
      */
     pattern: PropTypes.instanceOf(RegExp),
@@ -135,7 +133,11 @@ class Input extends AbstractFormComponent {
     /**
      * input 值
      */
-    value: PropTypes.string
+    value: PropTypes.string,
+    /**
+     * input 值更改回调函数
+     */
+    onChangeText: PropTypes.func,
   };
 
   static defaultProps = {
@@ -147,7 +149,6 @@ class Input extends AbstractFormComponent {
 
   constructor(props) {
     super(props);
-    ['onChangeText'].forEach(f => this[f] = this[f].bind(this));
     let {name, form} = props;
     name && form && form.putFormValue(name, props.defaultValue);
 
@@ -161,7 +162,7 @@ class Input extends AbstractFormComponent {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.defaultValue !== this.props.defaultValue) {
-      this.onChangeText(nextProps.defaultValue);
+      this.handleChangeText(nextProps.defaultValue);
     }
   }
 
@@ -234,7 +235,7 @@ class Input extends AbstractFormComponent {
     }
   }
 
-  onChangeText(value) {
+  handleChangeText(value) {
     this.setState({value});
     let {onChangeText, name, form} = this.props;
     name && form && form.putFormValue(name, value);
@@ -258,7 +259,7 @@ class Input extends AbstractFormComponent {
       >
         {this.getComp(before, true)}
         <TextInput {...newInputProps}
-          onChangeText={this.onChangeText}
+          onChangeText={this.handleChangeText}
           ref={textInput => this.textInput = textInput}
           style={[styles.input, inputStyle]}
         />
