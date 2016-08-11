@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    compile project(':SitbRCT:Commons')
-    compile project(':SitbRCT:Camera')
+    compile project(':react-native-components:commons')
+    compile project(':react-native-components:camera')
     compile 'com.google.zxing:core:3.2.1'
 }
