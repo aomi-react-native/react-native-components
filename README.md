@@ -4,8 +4,32 @@ React Native Components Library, 封装常用的组件,提供IOS和Android统一
 
 ## Components
 
+### Badge
+### Barcode
+### Button
+### Camera
+### Canvas
+### Dialog
+### GridView
+### Icon
+### LoadingDialog
+### SettingsList
+
+
+
+## Api
+### ActionSheet
 ### Database
 数据访问API
+
+#### Database API Reference
+##### constructor
+构造一个``Database``对象
+* databaseName 数据库名字(默认:REACT_NATIVE_DEFAULT_DATABASE_NAME)
+  
+    let db = new Database();
+    let myDb = new Database('myDB');
+
 
 #### Example
     
@@ -20,18 +44,9 @@ React Native Components Library, 封装常用的组件,提供IOS和Android统一
     collection.update(user);
     await collection.delete(user);
 
-#### Database API Reference
-
-##### constructor
-构造一个``Database``对象
-* databaseName 数据库名字(默认:REACT_NATIVE_DEFAULT_DATABASE_NAME)
-  
-    let db = new Database();
-    let myDb = new Database('myDB');
-
-
-
-* [Icon](docs/Icon.md)
+### MediaManager
+### OrientationManager
+### Toast
 
 ## Run Examples
 
