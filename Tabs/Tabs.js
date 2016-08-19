@@ -37,6 +37,7 @@ class Tabs extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     activeTab: PropTypes.string,
+    navigatorSceneConfigs: PropTypes.object,
     position: PropTypes.oneOf(['Top', 'Bottom']),
     renderTabBar: PropTypes.func,
     style: View.propTypes.style,
@@ -46,7 +47,8 @@ class Tabs extends Component {
   };
 
   static defaultProps = {
-    position: 'Bottom'
+    position: 'Bottom',
+    navigatorSceneConfigs: Navigator.SceneConfigs.HorizontalSwipeJump
   };
 
   state = {};
@@ -56,6 +58,7 @@ class Tabs extends Component {
 
   componentDidMount() {
     this.getTabs();
+    console.log(this.tabs);
   }
 
   getTabs() {
@@ -81,11 +84,13 @@ class Tabs extends Component {
 
   goTab(tab) {
     return () => {
+      console.log(tab);
       if (tab === this.state.activeTab) {
         return;
       }
       const {onTabChange} = this.props;
       const routes = this.navigator.getCurrentRoutes();
+      console.log(routes);
       const route = routes.find(route => route.tabLabel === tab);
       this.setState({
         activeTab: tab
@@ -104,7 +109,7 @@ class Tabs extends Component {
   }
 
   configureScene() {
-    return Navigator.SceneConfigs.HorizontalSwipeJump;
+    return this.props.navigatorSceneConfigs;
   }
 
   renderTabBar() {
@@ -143,16 +148,17 @@ class Tabs extends Component {
     const routes = Object.keys(this.tabs).map(tab => ({tabLabel: tab}));
     const initialRoute = routes.find(route => route.tabLabel === this.state.activeTab);
     return (
-      <Navigator configureScene={this.configureScene}
-                 initialRoute={initialRoute}
-                 initialRouteStack={routes}
-                 navigationBar={this.renderTabBar()}
-                 onWillFocus={this.handleWillFocus}
-                 ref={navigator => this.navigator = navigator}
-                 renderScene={this.renderScene}
-                 sceneStyle={style}
+      <View style={style}>
+        <Navigator configureScene={this.configureScene}
+                   initialRoute={initialRoute}
+                   initialRouteStack={routes}
+                   navigationBar={this.renderTabBar()}
+                   onWillFocus={this.handleWillFocus}
+                   ref={navigator => this.navigator = navigator}
+                   renderScene={this.renderScene}
 
-      />
+        />
+      </View>
     );
   }
 
