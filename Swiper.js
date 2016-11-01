@@ -41,7 +41,6 @@ class Swiper extends Component {
 
   componentDidMount() {
     this.handleAutoPlay();
-    console.log(this.items)
   }
 
   componentWillUnmount() {

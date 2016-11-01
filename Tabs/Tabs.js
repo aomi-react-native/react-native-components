@@ -1,13 +1,13 @@
 import React, {
   PropTypes,
   Children,
-  isValidElement
+  isValidElement,
+  cloneElement
 } from 'react';
 import Component from '../AbstractComponent';
 import {
   Navigator,
   View,
-  Text,
   StyleSheet
 } from 'react-native';
 import Button from '../Button';
@@ -58,7 +58,6 @@ class Tabs extends Component {
 
   componentDidMount() {
     this.getTabs();
-    console.log(this.tabs);
   }
 
   getTabs() {
@@ -84,13 +83,11 @@ class Tabs extends Component {
 
   goTab(tab) {
     return () => {
-      console.log(tab);
       if (tab === this.state.activeTab) {
         return;
       }
       const {onTabChange} = this.props;
       const routes = this.navigator.getCurrentRoutes();
-      console.log(routes);
       const route = routes.find(route => route.tabLabel === tab);
       this.setState({
         activeTab: tab
@@ -106,6 +103,16 @@ class Tabs extends Component {
       activeTab: route.tabLabel
     });
     onTabChange && onTabChange(route.tabLabel);
+  }
+
+  getTabProps() {
+    let props = {};
+    Object.keys(this.props).forEach(key => {
+      if (!Tabs.propTypes[key]) {
+        props[key] = this.props[key];
+      }
+    });
+    return props;
   }
 
   configureScene() {
@@ -137,7 +144,7 @@ class Tabs extends Component {
   }
 
   renderScene(route) {
-    return this.tabs[route.tabLabel] || <View />;
+    return cloneElement(this.tabs[route.tabLabel] || <View />, this.getTabProps());
   }
 
   render() {

@@ -6,10 +6,16 @@ import {
   requireNativeComponent,
   NativeModules,
   Platform,
-  PixelRatio
+  PixelRatio,
+  UIManager,
+  findNodeHandle,
+  DeviceEventEmitter
 } from 'react-native';
 
 const ratio = PixelRatio.get();
+
+
+// UIManager.dispatchViewManagerCommand
 
 const {
   SitbRCTCanvasView
@@ -55,7 +61,8 @@ class Canvas extends Component {
       onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: this.handlePanResponderGrant,
       onPanResponderMove: this.handlePanResponderMove,
-      onPanResponderRelease: () => {}
+      onPanResponderRelease: () => {
+      }
     });
   }
 
@@ -68,7 +75,6 @@ class Canvas extends Component {
   }
 
   setNativeProps(props) {
-    console.log(props);
     this.canvas && this.canvas.setNativeProps(props);
   }
 
@@ -112,6 +118,11 @@ class Canvas extends Component {
   }
 
   capture(mimeType = 'png') {
+    if (Platform.OS === 'android') {
+      return new Promise((resolve, reject)=> {
+        reject('安卓平台暂未实现该功能');
+      });
+    }
     return SitbRCTCanvasView.capture(mimeType);
   }
 
@@ -125,6 +136,7 @@ class Canvas extends Component {
       <RCTCanvas {...this.props}
         {...this.panResponder.panHandlers}
         lineWidth={this.state.lineWidth}
+        onChange={this.handleChange}
         ref={ref => this.canvas = ref}
       />
     );
@@ -132,6 +144,10 @@ class Canvas extends Component {
 
 }
 
-const RCTCanvas = requireNativeComponent('SitbRCTCanvasView', Canvas);
+const RCTCanvas = requireNativeComponent('SitbRCTCanvasView', Canvas, {
+  nativeOnly: {
+    onChange: true
+  }
+});
 
 export default Canvas;

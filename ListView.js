@@ -126,7 +126,7 @@ class ListView extends Component {
       return renderSeparator(sectionID, rowID, adjacentRowHighlighted);
     }
     let style = {
-      height: 1,
+      height: 0.5,
       backgroundColor: adjacentRowHighlighted ? highlightColor : separatorColor
     };
     return (

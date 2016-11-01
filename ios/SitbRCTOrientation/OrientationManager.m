@@ -47,7 +47,6 @@ RCT_EXPORT_MODULE(SitbRCTOrientationManager)
 //    [self sendEventWithName:@"deviceOrientationDidChange" body:@(orientation)];
 }
 
-
 # pragma mark 获取当前设备方向
 
 RCT_EXPORT_METHOD(
@@ -68,6 +67,8 @@ RCT_EXPORT_METHOD(setOrientation:
         (BOOL) lock) {
     if (lock) {
         [OrientationManager setOrientation:[self getMaskFromDeviceOrientation:(UIDeviceOrientation) orientation]];
+    }else{
+        [OrientationManager setOrientation:UIInterfaceOrientationMaskAll];
     }
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [[UIDevice currentDevice] setValue:@(orientation) forKey:@"orientation"];
@@ -79,6 +80,7 @@ RCT_EXPORT_METHOD(setOrientation:
 
 RCT_EXPORT_METHOD(setOrientationToDefault) {
     [OrientationManager setOrientation:UIInterfaceOrientationMaskAll];
+    [self setOrientation:UIDeviceOrientationPortrait andLock:false];
 }
 
 - (UIInterfaceOrientationMask)getMaskFromDeviceOrientation:(UIDeviceOrientation)deviceOrientation {

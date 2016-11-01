@@ -868,7 +868,7 @@
     "react/require-render-return": 2,
     "react/self-closing-comp": 2,
     "react/sort-comp": [
-      2,
+      0,
       {
         "order": [
           "static-methods",
@@ -923,7 +923,7 @@
       }
     ],
     "react/jsx-boolean-value": [
-      2,
+      0,
       "never"
     ],
     "react/jsx-closing-bracket-location": [
@@ -949,7 +949,7 @@
       "never"
     ],
     "react/jsx-handler-names": [
-      0,
+      2,
       {
         "eventHandlerPrefix": "handle",
         "eventHandlerPropPrefix": "on"
