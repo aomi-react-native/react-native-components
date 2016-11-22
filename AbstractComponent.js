@@ -14,10 +14,14 @@ const excludeFunc = [
 
 /**
  * 1、实现自动绑定
+ * 2、简易判断数据是否改动
  *
  * @author Sean sean.snow@live.com
  */
 class Container extends Component {
+
+  props: Object;
+  state: Object;
 
   constructor(props) {
     super(props);
