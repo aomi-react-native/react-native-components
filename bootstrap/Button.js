@@ -112,7 +112,7 @@ class Button extends Component {
           <Icon {...iconProps}
             key="beforeIcon"
             name={beforeIcon}
-            size={fontSize}
+            size={iconProps.size || fontSize}
             style={[iconStyle, textStyle, iconProps.style]}
           />
         );
@@ -139,7 +139,7 @@ class Button extends Component {
           <Icon {...iconProps}
             key="afterIcon"
             name={afterIcon}
-            size={fontSize}
+            size={iconProps.size || fontSize}
             style={[iconStyle,textStyle,iconProps.style]}
           />
         );
