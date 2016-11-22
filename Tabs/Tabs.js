@@ -14,6 +14,9 @@ import Button from '../Button';
 import commonStyle from '../styles';
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   tabContainer: {
     minHeight: 45,
     flexDirection: 'row'
@@ -123,7 +126,7 @@ class Tabs extends Component {
     const {renderTabBar, tabContainerStyle, tabStyle, position} = this.props;
     const tabs = Object.keys(this.tabs);
     if (renderTabBar) {
-      return renderTabBar(tabs);
+      return renderTabBar(tabs, this.state.activeTab);
     }
     return (
       <View style={[styles.tabContainer, tabContainerStyle]}>
@@ -155,7 +158,7 @@ class Tabs extends Component {
     const routes = Object.keys(this.tabs).map(tab => ({tabLabel: tab}));
     const initialRoute = routes.find(route => route.tabLabel === this.state.activeTab);
     return (
-      <View style={style}>
+      <View style={[styles.container, style]}>
         <Navigator configureScene={this.configureScene}
                    initialRoute={initialRoute}
                    initialRouteStack={routes}
