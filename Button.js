@@ -67,25 +67,23 @@ class Button extends Component {
       activeOpacity,
       onHideUnderlay,
       onShowUnderlay,
-      underlayColor
+      underlayColor,
+      Comp
     } = this.props;
 
-    let Comp = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
-    if (this.props.Comp) {
-      Comp = this.props.Comp;
-    }
+    const ButtonComp = Comp || Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
-      <Comp activeOpacity={activeOpacity}
-            disabled={disabled}
-            onHideUnderlay={onHideUnderlay}
-            onPress={this.handlePress(onPress)}
-            onShowUnderlay={onShowUnderlay}
-            style={style}
-            underlayColor={underlayColor}
+      <ButtonComp activeOpacity={activeOpacity}
+                  disabled={disabled}
+                  onHideUnderlay={onHideUnderlay}
+                  onPress={this.handlePress(onPress)}
+                  onShowUnderlay={onShowUnderlay}
+                  style={style}
+                  underlayColor={underlayColor}
       >
         {this.renderContent(children, renderContent)}
-      </Comp>
+      </ButtonComp>
     );
   }
 
