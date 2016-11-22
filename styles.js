@@ -5,7 +5,8 @@
 
 export const Colors = {
   separator: '#dfdfdf',
-  underlay: '#d0d0d0'
+  underlay: '#d0d0d0',
+  white: '#FFF'
 };
 
 export default {
@@ -19,5 +20,13 @@ export default {
   center: {
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  flexRow: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  flexColumn: {
+    flex: 1,
+    flexDirection: 'column'
   }
 };
