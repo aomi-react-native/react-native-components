@@ -1,12 +1,6 @@
 import React, { PropTypes } from 'react';
 import AbstractFormComponent from './AbstractFormComponent';
-import {
-  TextInput,
-  View,
-  Text,
-  StyleSheet,
-  Platform
-} from 'react-native';
+import { TextInput, View, Text, StyleSheet, Platform } from 'react-native';
 import Icon from '../Icon';
 
 const styles = StyleSheet.create({
@@ -250,7 +244,7 @@ class Input extends AbstractFormComponent {
 
     INPUT_PROPS_KEYS.forEach(key => {
       newInputProps[key] = this.props[key];
-      newProps[key] && delete newProps[key];
+      newProps[key] && Reflect.deleteProperty(newProps, key);
     });
 
     return (
