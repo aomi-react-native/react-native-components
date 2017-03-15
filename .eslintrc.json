@@ -27,11 +27,9 @@
       "node_modules"
     ],
     "react": {
-      "pragma": "React"
+      "pragma": "React",
+      "version": "0.15.0"
     }
-  },
-  "globals": {
-    "lang": true
   },
   "rules": {
     /******** Possible Errors ********/
@@ -126,7 +124,7 @@
     "guard-for-in": 0,
     "no-alert": 2,
     "no-caller": 2,
-    "no-case-declarations": 2,
+    "no-case-declarations": 0,
     "no-div-regex": 2,
     "no-else-return": 2,
     "no-empty-function": [
@@ -290,8 +288,8 @@
       2,
       {
         "vars": "all",
-        "args": "all",
-        "argsIgnorePattern": "^unused_",
+        "args": "after-used",
+        "argsIgnorePattern": "ignored",
         "caughtErrors": "none",
         "caughtErrorsIgnorePattern": "^unused_"
       }
@@ -433,7 +431,7 @@
       }
     ],
     "linebreak-style": [
-      2,
+      0,
       "unix"
     ],
     "lines-around-comment": [
@@ -451,7 +449,7 @@
     ],
     "max-len": [
       1,
-      120,
+      200,
       2
     ],
     "max-nested-callbacks": [
@@ -658,13 +656,13 @@
         }
       }
     ],
-    "wrap-regex": 2,
+    "wrap-regex": 0,
     /*********************************/
 
 
     /********* ECMAScript 6 **********/
     "arrow-body-style": [
-      0,
+      2,
       "as-needed"
     ],
     "arrow-parens": [
@@ -749,27 +747,27 @@
 
     /************* Import ************/
     "import/no-unresolved": [
-      2,
+      0,
       {
         "commonjs": false,
         "amd": false
       }
     ],
-    "import/named": 0,
+    "import/named": 2,
     "import/default": 2,
     "import/namespace": 0,
     "import/export": 2,
-    "import/no-named-as-default": 0,
+    "import/no-named-as-default": 2,
     "import/no-named-as-default-member": 2,
     "import/no-deprecated": 2,
     "import/no-extraneous-dependencies": [
-      2,
+      0,
       {
         "devDependencies": false,
         "optionalDependencies": true
       }
     ],
-    "import/no-mutable-exports": 2,
+    "import/no-mutable-exports": 0,
     "import/no-commonjs": 2,
     "import/no-amd": 2,
     "import/no-nodejs-modules": 0,
@@ -781,7 +779,10 @@
     "import/no-namespace": 0,
     "import/extensions": [
       2,
-      "never"
+      {
+        "js": "never",
+        "json": "always"
+      }
     ],
     "import/order": [
       0,
@@ -818,24 +819,19 @@
       }
     ],
     "react/no-danger": 2,
-    "react/no-deprecated": [
-      2,
-      {
-        "react": "0.14.0"
-      }
-    ],
+    "react/no-deprecated": 2,
     "react/no-did-mount-set-state": [
       2,
-      "allow-in-func"
+      "disallow-in-func"
     ],
     "react/no-did-update-set-state": [
       2,
-      "allow-in-func"
+      "disallow-in-func"
     ],
     "react/no-direct-mutation-state": 2,
     "react/no-is-mounted": 2,
     "react/no-multi-comp": [
-      2,
+      0,
       {
         "ignoreStateless": false
       }
@@ -849,22 +845,13 @@
     ],
     "react/prefer-stateless-function": 0,
     "react/prop-types": [
-      2,
+      0,
       {
         "ignore": [],
         "customValidators": []
       }
     ],
     "react/react-in-jsx-scope": 2,
-    "react/require-extension": [
-      2,
-      {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
-      }
-    ],
     "react/require-render-return": 2,
     "react/self-closing-comp": 2,
     "react/sort-comp": [
@@ -914,16 +901,8 @@
         "requiredFirst": true
       }
     ],
-    "react/wrap-multilines": [
-      2,
-      {
-        "declaration": true,
-        "assignment": true,
-        "return": true
-      }
-    ],
     "react/jsx-boolean-value": [
-      0,
+      2,
       "never"
     ],
     "react/jsx-closing-bracket-location": [
@@ -949,7 +928,7 @@
       "never"
     ],
     "react/jsx-handler-names": [
-      2,
+      0,
       {
         "eventHandlerPrefix": "handle",
         "eventHandlerPropPrefix": "on"
@@ -974,7 +953,7 @@
       2,
       {
         "ignoreRefs": true,
-        "allowArrowFunctions": false,
+        "allowArrowFunctions": true,
         "allowBind": false
       }
     ],
@@ -984,7 +963,7 @@
         "ignoreCase": false
       }
     ],
-    "react/jsx-no-literals": 0,
+    "react/jsx-no-literals": 2,
     "react/jsx-no-target-blank": 2,
     "react/jsx-no-undef": 2,
     "react/jsx-pascal-case": [
@@ -1006,7 +985,15 @@
       "always"
     ],
     "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2
+    "react/jsx-uses-vars": 2,
+    "react/jsx-wrap-multilines": [
+      2,
+      {
+        "declaration": true,
+        "assignment": true,
+        "return": true
+      }
+    ]
     /*********************************/
   }
 }
