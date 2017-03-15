@@ -1,7 +1,4 @@
-import {
-  NativeModules,
-  Platform
-} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 const {
   SitbRCTMediaManager: {
@@ -41,19 +38,19 @@ const DEFAULT_CAMERA_OPTIONS = {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/29
  */
-class MediaBrowser {
+class MediaManager {
 
-  static launchImageLibrary(options:Options = DEFAULT_LIBRARY_OPTIONS):Promise {
+  static launchImageLibrary(options: Options = DEFAULT_LIBRARY_OPTIONS): Promise {
     const newOptions = Object.assign({}, DEFAULT_LIBRARY_OPTIONS, options);
     return launchImageLibrary(newOptions);
   }
 
-  static launchCamera(options = DEFAULT_CAMERA_OPTIONS):Promise {
+  static launchCamera(options = DEFAULT_CAMERA_OPTIONS): Promise {
     const newOptions = Object.assign({}, DEFAULT_CAMERA_OPTIONS, options);
     if (Platform.OS === 'android' && newOptions.allowsEditing) {
-      return new Promise((resolve, reject)=> {
-        launchCamera(newOptions).then(image=> {
-          setTimeout(()=> {
+      return new Promise((resolve, reject) => {
+        launchCamera(newOptions).then(image => {
+          setTimeout(() => {
             NativeModules.SitbRCTMediaManager.launchEditing(image.original.path)
               .then(edited => {
                 resolve(Object.assign({}, image, edited));
@@ -61,7 +58,7 @@ class MediaBrowser {
               .catch(err => reject(err));
           }, 1);
         })
-          .catch(err=> reject(err));
+          .catch(err => reject(err));
       });
     }
     return launchCamera(newOptions);
@@ -71,7 +68,7 @@ class MediaBrowser {
 
 
 export {
-  MediaBrowser as default,
+  MediaManager as default,
   SourceType,
   MediaType,
   CameraType,
