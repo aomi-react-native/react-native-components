@@ -13,13 +13,14 @@ class LoadingDialog extends AbstractComponent {
     children: PropTypes.node,
     hideAnimation: PropTypes.object,
     loadProps: PropTypes.object,
+    loadingText: PropTypes.string,
     minShowTime: PropTypes.number,
     showAnimation: PropTypes.object,
     statusBarAutoHidden: PropTypes.bool
   };
 
   static defaultProps = {
-    children: 'loading ...',
+    loadingText: 'loading ...',
     hideAnimation: {
       animation: 'fadeOut'
     },
@@ -39,7 +40,7 @@ class LoadingDialog extends AbstractComponent {
       visible: props.visible
     };
 
-    setTimeout(()=> {
+    this.taskId = setTimeout(() => {
       this.canClose = true;
       if (!this.props.visible) {
         this.close();
@@ -73,11 +74,11 @@ class LoadingDialog extends AbstractComponent {
   }
 
   render() {
-    let {children, ...other} = this.props;
+    const {loadingText, ...other} = this.props;
     return (
       <Dialog {...other}
-        loadChildren={children}
-        loading={true}
+        loadChildren={loadingText}
+        loading
         visible={this.state.visible}
       />
     );
