@@ -1,12 +1,5 @@
-import React, {
-  PropTypes,
-  cloneElement
-} from 'react';
-import {
-  ListView,
-  View,
-  StyleSheet
-} from 'react-native';
+import React, { PropTypes, cloneElement } from 'react';
+import { ListView, View, StyleSheet } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 
 const styles = StyleSheet.create({
@@ -135,7 +128,7 @@ class GridView extends AbstractComponent {
       }
     }
 
-    let children = rowData.map((cell, key)=> {
+    let children = rowData.map((cell, key) => {
       if (cell.empty) {
         return cloneElement(<View />, {
           key,
@@ -150,7 +143,7 @@ class GridView extends AbstractComponent {
           cell,
           sectionID,
           rowID,
-          key: key,
+          key,
           height: style.height
         })
       });
@@ -163,7 +156,7 @@ class GridView extends AbstractComponent {
   }
 
   render() {
-    let {...other, style, verticalSpacing, horizontalSpacing} = this.props;
+    const {style, verticalSpacing, horizontalSpacing, ...other} = this.props;
 
     return (
       <ListView {...other}
