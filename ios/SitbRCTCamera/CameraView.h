@@ -8,10 +8,24 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <React/RCTBridge.h>
+#import <React/RCTComponent.h>
 
-@class CameraViewManager;
+@class CameraManager;
+
 
 @interface CameraView : UIView
+
+// 前置相机还是后置相机
+@property NSInteger *cameraFacing;
+
+// 照片方向
+@property(nonatomic) NSInteger orientation;
+
+// 捕获图像事件
+@property(nonatomic, copy) RCTBubblingEventBlock onCaptureOutputBuffer;
+
+- (id)initWithManager:(CameraManager *)manager bridge:(RCTBridge *)bridge;
 
 
 @end
