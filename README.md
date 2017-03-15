@@ -29,7 +29,6 @@ React Native Components Library, 封装常用的组件,提供IOS和Android统一
 ### ActionSheet
 ### Database
 数据访问API
-
 #### Database API Reference
 ##### constructor
 构造一个``Database``对象
@@ -53,6 +52,12 @@ React Native Components Library, 封装常用的组件,提供IOS和Android统一
     await collection.delete(user);
 
 ### MediaManager
+媒体访问工具
+
+#### 在IOS上使用
+需要先链接 ``RCTCameraRoll`` 库，然后在链接 ``SitbRCTMediaMananger``库
+``SitbRCTMediaMananger``库在 ``~/react-native-components/ios/SitbRCTMediaMananger``
+
 ### OrientationManager
 ### Toast
 
