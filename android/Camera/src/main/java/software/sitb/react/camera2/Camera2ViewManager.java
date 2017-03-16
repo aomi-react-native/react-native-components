@@ -4,21 +4,23 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
-import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import software.sitb.react.camera.commons.AbstractCameraViewManager;
 import software.sitb.react.camera.commons.CameraFacing;
-import software.sitb.react.camera.commons.Orientation;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class Camera2ViewManager extends SimpleViewManager<Camera2View> {
+public class Camera2ViewManager extends AbstractCameraViewManager<Camera2View> {
+
+    public static final String CAPTURE_OUTPUT_BUFFER_EVENT = "captureOutputBuffer";
+
     @Override
     public String getName() {
         return "SitbRCTCamera2View";
@@ -45,13 +47,32 @@ public class Camera2ViewManager extends SimpleViewManager<Camera2View> {
         }
     }
 
+
     @Nullable
     @Override
-    public Map<String, Object> getExportedViewConstants() {
-        Map<String, Object> constants = new HashMap<>();
-        constants.put("CameraFacing", MapBuilder.of("back", CameraFacing.BACK.ordinal(), "front", CameraFacing.FRONT.ordinal()));
-        constants.put("Orientation", MapBuilder.of("auto", Orientation.AUTO.ordinal()));
+    public Map<String, Integer> getCommandsMap() {
+        return MapBuilder.of(
+                "capture", Command.CAPTURE.ordinal()
+        );
+    }
 
-        return constants;
+    @Override
+    public void receiveCommand(Camera2View view, int commandId, @Nullable ReadableArray args) {
+        switch (Command.values()[commandId]) {
+            case CAPTURE:
+                break;
+        }
+    }
+
+    @Override
+    @Nullable
+    public Map getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.of(
+                CAPTURE_OUTPUT_BUFFER_EVENT, MapBuilder.of("registrationName", "onCaptureOutputBuffer")
+        );
+    }
+
+    public enum Command {
+        CAPTURE
     }
 }

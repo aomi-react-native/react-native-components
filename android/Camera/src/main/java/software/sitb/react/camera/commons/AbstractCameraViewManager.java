@@ -32,6 +32,7 @@ public abstract class AbstractCameraViewManager<T extends View> extends SimpleVi
         Map<String, Object> constants = new HashMap<>();
         constants.put("CameraFacing", MapBuilder.of("back", CameraFacing.BACK.ordinal(), "front", CameraFacing.FRONT.ordinal()));
         constants.put("Orientation", MapBuilder.of("auto", Orientation.AUTO.ordinal()));
+        constants.put("Quality", MapBuilder.of("high", 1));
 
         return constants;
     }

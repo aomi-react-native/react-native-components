@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
-public class Camera2ViewManagerPackage extends DefaultReactPackage{
+public class Camera2ViewManagerPackage extends DefaultReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
