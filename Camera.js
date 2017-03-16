@@ -101,7 +101,6 @@ class Camera extends Component {
   }
 
   handleCaptureOutputBuffer(event) {
-    console.log(event.nativeEvent.buffer);
     this.props.onCaptureOutputBuffer && this.props.onCaptureOutputBuffer(event.nativeEvent.buffer);
   }
 
