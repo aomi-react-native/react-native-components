@@ -20,44 +20,40 @@ type QualityType = {
   photo: String
 };
 
-let CameraFacing,
-  Orientation: OrientationType,
-  Quality: QualityType,
-  RCTCamera,
-  CameraManager;
-let cameraVersion = 4;
+let CameraManager = NativeModules.SitbRCTCameraView || NativeModules.SitbRCTCameraModule || NativeModules.SitbRCTCamera2Module;
+let RCTCamera;
+if (UIManager.SitbRCTCameraView) {
+  RCTCamera = requireNativeComponent('SitbRCTCameraView', Camera);
+} else if (UIManager.SitbRCTCamera2View) {
+  RCTCamera = requireNativeComponent('SitbRCTCamera2View', Camera);
+}
+let constants = (UIManager.SitbRCTCameraView || UIManager.SitbRCTCamera2View).Constants;
+
+let CameraFacing = constants.CameraFacing;
+let Orientation: OrientationType = constants.Orientation;
+let Quality: QualityType = constants.Quality;
 
 /**
  * 安卓相机版本
  * 4 使用
  * 5 安卓5.0相机
  * 设置安卓相机版本
- * @param version 版本
+ * @param cameraVersion 版本
  */
-export function setCameraVersion(version) {
-  cameraVersion = version;
-  let constants;
-  if (Platform.OS === 'android') {
-    if (cameraVersion === 4) {
-      CameraManager = NativeModules.SitbRCTCameraView;
-      constants = UIManager.SitbRCTCameraView.Constants;
-      RCTCamera = requireNativeComponent('SitbRCTCameraView', Camera);
-    } else if (cameraVersion === 5) {
-      constants = UIManager.SitbRCTCamera2View.Constants;
-      RCTCamera = requireNativeComponent('SitbRCTCamera2View', Camera);
-    }
-
-  } else {
+export function setCameraVersion(cameraVersion) {
+  if (cameraVersion === 4) {
     CameraManager = NativeModules.SitbRCTCameraView;
     constants = UIManager.SitbRCTCameraView.Constants;
     RCTCamera = requireNativeComponent('SitbRCTCameraView', Camera);
+  } else if (cameraVersion === 5) {
+    CameraManager = NativeModules.SitbRCTCamera2Module;
+    constants = UIManager.SitbRCTCamera2View.Constants;
+    RCTCamera = requireNativeComponent('SitbRCTCamera2View', Camera);
   }
-  CameraFacing = constants.CameraFacing;
-  Orientation = constants.Orientation;
+  CameraFacing = constants.CameraFacin;
+  OrientationType = constants.Orientation;
   Quality = constants.Quality;
 }
-
-setCameraVersion(4);
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -82,11 +78,11 @@ class Camera extends Component {
      * Orientation.portrait
      * Orientation.portraitUpsideDown
      */
-    orientation: PropTypes.number,
+    orientation: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     /**
      * 质量设置
      */
-    quality: PropTypes.string,
+    quality: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     /**
      * 一个回调函数
      * 当需要实时获取预览的图片数据
@@ -105,6 +101,7 @@ class Camera extends Component {
   }
 
   handleCaptureOutputBuffer(event) {
+    console.log(event.nativeEvent.buffer);
     this.props.onCaptureOutputBuffer && this.props.onCaptureOutputBuffer(event.nativeEvent.buffer);
   }
 
@@ -113,6 +110,7 @@ class Camera extends Component {
     return (
       <RCTCamera {...other}
         onCaptureOutputBuffer={onCaptureOutputBuffer ? this.handleCaptureOutputBuffer : null}
+        needCaptureOutputBuffer={!!onCaptureOutputBuffer}
       />
     );
   }
