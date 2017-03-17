@@ -16,6 +16,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import software.sitb.react.camera.commons.BaseCameraView;
 import software.sitb.react.camera.commons.CameraFacing;
 import software.sitb.react.camera.commons.Orientation;
+import software.sitb.react.camera.commons.Quality;
 
 import java.io.ByteArrayOutputStream;
 
@@ -31,6 +32,7 @@ public class CameraView extends TextureView implements BaseCameraView, TextureVi
     private int width;
     private int height;
     private int previewFormat;
+    private Quality quality;
 
     private boolean needCaptureOutputBuffer = false;
 
@@ -89,6 +91,12 @@ public class CameraView extends TextureView implements BaseCameraView, TextureVi
         }
     }
 
+    @Override
+    public void setQuality(Quality quality) {
+        this.quality = quality;
+        cameraManager.setQuality(quality);
+    }
+
     public CameraManager getCameraManager() {
         return cameraManager;
     }
@@ -118,7 +126,16 @@ public class CameraView extends TextureView implements BaseCameraView, TextureVi
             private void decode(byte[] data) {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 YuvImage image = new YuvImage(data, previewFormat, width, height, null);
-                image.compressToJpeg(new Rect(0, 0, image.getWidth(), image.getHeight()), 100, outputStream);
+                int qualityValue = 100;
+                switch (quality) {
+                    case MEDIUM:
+                        qualityValue = 100 / 2;
+                        break;
+                    case LOW:
+                        qualityValue = 100 / 3;
+                        break;
+                }
+                image.compressToJpeg(new Rect(0, 0, image.getWidth(), image.getHeight()), qualityValue, outputStream);
                 byte[] imgBytes = outputStream.toByteArray();
                 String imgBase64 = Base64.encodeToString(imgBytes, Base64.DEFAULT);
                 WritableMap response = Arguments.createMap();
@@ -126,6 +143,8 @@ public class CameraView extends TextureView implements BaseCameraView, TextureVi
 
                 RCTEventEmitter eventEmitter = ((ReactContext) getContext()).getJSModule(RCTEventEmitter.class);
                 eventEmitter.receiveEvent(getId(), CAPTURE_OUTPUT_BUFFER_EVENT, response);
+
+                getCameraManager().setCallbackBuffer(captureOutputBuffer);
             }
 
         }.execute(data);
