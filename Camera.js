@@ -68,7 +68,7 @@ class Camera extends Component {
      * CameraFacing.back
      * CameraFacing.front
      */
-    cameraFacing: PropTypes.number,
+    cameraFacing: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
     /**
      * 相机方向
