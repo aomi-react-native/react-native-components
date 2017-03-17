@@ -1,11 +1,16 @@
 package software.sitb.react.camera;
 
+import android.annotation.TargetApi;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
+import android.util.Size;
 import android.view.Surface;
 import software.sitb.react.camera.commons.CameraFacing;
+import software.sitb.react.camera.commons.Quality;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,9 +20,14 @@ import java.util.Map;
 /**
  * @author 田尘殇Sean sean.snow@live.com
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class CameraManager {
 
     private static final String TAG = "CameraManager";
+
+    private static final Size RESOLUTION_480P = new Size(853, 480); // 480p shoots for a 16:9 HD aspect ratio, but can otherwise fall back/down to any other supported camera sizes, such as 800x480 or 720x480, if (any) present. See getSupportedPictureSizes/getSupportedVideoSizes below.
+    private static final Size RESOLUTION_720P = new Size(1280, 720);
+    private static final Size RESOLUTION_1080P = new Size(1920, 1080);
 
     private Camera camera;
 
@@ -30,6 +40,8 @@ public class CameraManager {
      * 相机方向
      */
     private CameraFacing cameraFacing = CameraFacing.BACK;
+
+    private Quality quality = Quality.HIGH;
 
     private int rotation = 0;
 
@@ -102,6 +114,9 @@ public class CameraManager {
         if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         }
+        // set size
+        Camera.Size size = getQualitySize();
+        parameters.setPictureSize(size.width, size.height);
         try {
             camera.setParameters(parameters);
         } catch (Exception e) {
@@ -165,6 +180,13 @@ public class CameraManager {
         restartPreview();
     }
 
+    public void setQuality(Quality quality) {
+        if (this.quality == quality) {
+            return;
+        }
+        this.quality = quality;
+    }
+
     public void setSurfaceTexture(SurfaceTexture surfaceTexture) {
         this.surfaceTexture = surfaceTexture;
     }
@@ -186,4 +208,77 @@ public class CameraManager {
     public Camera getCamera() {
         return camera;
     }
+
+    public Camera.Size getBestSize(List<Camera.Size> supportedSizes, int maxWidth, int maxHeight) {
+        Camera.Size bestSize = null;
+        for (Camera.Size size : supportedSizes) {
+            if (size.width > maxWidth || size.height > maxHeight) {
+                continue;
+            }
+
+            if (bestSize == null) {
+                bestSize = size;
+                continue;
+            }
+
+            int resultArea = bestSize.width * bestSize.height;
+            int newArea = size.width * size.height;
+
+            if (newArea > resultArea) {
+                bestSize = size;
+            }
+        }
+
+        return bestSize;
+    }
+
+    private Camera.Size getSmallestSize(List<Camera.Size> supportedSizes) {
+        Camera.Size smallestSize = null;
+        for (Camera.Size size : supportedSizes) {
+            if (smallestSize == null) {
+                smallestSize = size;
+                continue;
+            }
+
+            int resultArea = smallestSize.width * smallestSize.height;
+            int newArea = size.width * size.height;
+
+            if (newArea < resultArea) {
+                smallestSize = size;
+            }
+        }
+
+        return smallestSize;
+    }
+
+    private Camera.Size getQualitySize() {
+        Camera.Parameters parameters = camera.getParameters();
+        Camera.Size pictureSize = null;
+        List<Camera.Size> supportedSizes = parameters.getSupportedPictureSizes();
+
+        switch (quality) {
+            case HIGH:
+                pictureSize = getBestSize(parameters.getSupportedPictureSizes(), Integer.MAX_VALUE, Integer.MAX_VALUE);
+                break;
+            case MEDIUM:
+                pictureSize = supportedSizes.get(supportedSizes.size() / 2);
+                break;
+            case LOW:
+                pictureSize = getSmallestSize(supportedSizes);
+                break;
+            case VGA:
+                pictureSize = getBestSize(supportedSizes, RESOLUTION_480P.getWidth(), RESOLUTION_480P.getHeight());
+                break;
+            case HD720:
+                pictureSize = getBestSize(supportedSizes, RESOLUTION_720P.getWidth(), RESOLUTION_720P.getHeight());
+                break;
+            case HD1080:
+                pictureSize = getBestSize(supportedSizes, RESOLUTION_1080P.getWidth(), RESOLUTION_1080P.getHeight());
+                break;
+        }
+
+        return pictureSize;
+    }
+
 }
+
