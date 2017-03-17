@@ -29,6 +29,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import software.sitb.react.camera.commons.BaseCameraView;
 import software.sitb.react.camera.commons.CameraFacing;
 import software.sitb.react.camera.commons.Orientation;
+import software.sitb.react.camera.commons.Quality;
 
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -584,6 +585,11 @@ public class Camera2View extends TextureView implements BaseCameraView, TextureV
     @Override
     public void setOrientation(Orientation orientation) {
 
+    }
+
+    @Override
+    public void setQuality(Quality quality) {
+        
     }
 
 
