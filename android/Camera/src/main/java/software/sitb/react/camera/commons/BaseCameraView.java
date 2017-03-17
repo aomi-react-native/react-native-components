@@ -12,4 +12,6 @@ public interface BaseCameraView {
 
     void setOrientation(Orientation orientation);
 
+    void setQuality(Quality quality);
+
 }
