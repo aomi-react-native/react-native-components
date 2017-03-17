@@ -16,23 +16,34 @@ public abstract class AbstractCameraViewManager<T extends View> extends SimpleVi
 
 
     @ReactProp(name = "cameraFacing")
-    public void setCameraFacing(T view, Integer cameraFacing) {
-        ((BaseCameraView) view).setCameraFacing(CameraFacing.values()[cameraFacing]);
+    public void setCameraFacing(T view, String cameraFacing) {
+        ((BaseCameraView) view).setCameraFacing(CameraFacing.valueOf(cameraFacing));
     }
 
-
     @ReactProp(name = "orientation")
-    public void setOrientation(T view, Integer orientation) {
-        ((BaseCameraView) view).setOrientation(Orientation.values()[orientation]);
+    public void setOrientation(T view, String orientation) {
+        ((BaseCameraView) view).setOrientation(Orientation.valueOf(orientation));
+    }
+
+    @ReactProp(name = "quality")
+    public void setQuality(T view, String quality) {
+        ((BaseCameraView) view).setQuality(Quality.valueOf(quality));
     }
 
     @Nullable
     @Override
     public Map<String, Object> getExportedViewConstants() {
         Map<String, Object> constants = new HashMap<>();
-        constants.put("CameraFacing", MapBuilder.of("back", CameraFacing.BACK.ordinal(), "front", CameraFacing.FRONT.ordinal()));
-        constants.put("Orientation", MapBuilder.of("auto", Orientation.AUTO.ordinal()));
-        constants.put("Quality", MapBuilder.of("high", 1));
+        constants.put("CameraFacing", MapBuilder.of("back", CameraFacing.BACK.toString(), "front", CameraFacing.FRONT.toString()));
+        constants.put("Orientation", MapBuilder.of("auto", Orientation.AUTO.toString()));
+        constants.put("Quality", MapBuilder.of(
+                "high", Quality.HIGH.toString(),
+                "medium", Quality.MEDIUM.toString(),
+                "low", Quality.LOW.toString(),
+                "vga", Quality.VGA.toString(),
+                "hd720", Quality.HD720.toString(),
+                "hd1080", Quality.HD1080.toString()
+        ));
 
         return constants;
     }
