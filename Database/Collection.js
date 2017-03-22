@@ -19,10 +19,10 @@ const SEQUENCE_COLLECTION = 'REACT_NATIVE_DATABASE_SEQUENCE_COLLECTION';
  */
 class Collection {
 
-  database:Object;
-  collection:Object;
-  databaseName:String;
-  collectionName:String;
+  database: Object;
+  collection: Object;
+  databaseName: String;
+  collectionName: String;
 
   logicalOperators = ['$and', '$or'];
 
@@ -31,7 +31,7 @@ class Collection {
    * @param {String} collectionName
    * @param {String} databaseName
    */
-  constructor(collectionName:String = DEFAULT_COLLECTION, databaseName:String) {
+  constructor(collectionName: String = DEFAULT_COLLECTION, databaseName: String) {
     this.databaseName = databaseName;
     this.collectionName = collectionName;
   }
@@ -63,8 +63,6 @@ class Collection {
       this.sequence[this.collectionName] = 1;
       this.database[SEQUENCE_COLLECTION] = this.sequence;
     }
-
-    this.database[this.collectionName] = this.collection;
   }
 
   async generateId() {
@@ -73,6 +71,7 @@ class Collection {
   }
 
   async merge() {
+    this.database[this.collectionName] = this.collection;
     await AsyncStorage.setItem(this.databaseName, JSON.stringify(this.database));
   }
 
@@ -84,10 +83,10 @@ class Collection {
     try {
       if (Array.isArray(data)) {
         data.forEach(row => {
-          this.generateId().then(id=> {
+          this.generateId().then(id => {
             row._id = id;
             this.collection[id] = row;
-          }, err=> {
+          }, err => {
             console.error('create id error');
             console.log(err);
             throw err;
@@ -151,13 +150,18 @@ class Collection {
     return null;
   }
 
-  async delete(data) {
+  async del(data) {
     if (Number.isInteger(data)) {
       this.collection[data] && delete this.collection[data];
     } else {
       data._id && this.collection[data._id] && delete this.collection[data._id];
       await this.merge();
     }
+  }
+
+  async clear() {
+    this.collection = {};
+    await this.merge();
   }
 
   /**
@@ -179,7 +183,7 @@ class Collection {
    * @param {Array} documents 数据文档
    * @param {Object} filter 过虑条件
    */
-  filter(result:Array, documents:Array, filter:Object) {
+  filter(result: Array, documents: Array, filter: Object) {
     Object.keys(filter).forEach(field => {
       let operators = filter[field];
       Object.keys(operators).forEach(operator => {
@@ -199,19 +203,19 @@ class Collection {
     });
   }
 
-  $and(result:Array, documents:Array, filter:Object) {
+  $and(result: Array, documents: Array, filter: Object) {
 
   }
 
-  $or(result:Array, documents:Array, filter:Object) {
+  $or(result: Array, documents: Array, filter: Object) {
 
   }
 
-  $eq(serverValue, whereValue):Boolean {
+  $eq(serverValue, whereValue): Boolean {
     return JSON.stringify(serverValue) === JSON.stringify(whereValue);
   }
 
-  $regex(serverValue, whereValue):Boolean {
+  $regex(serverValue, whereValue): Boolean {
     let reg = new RegExp(whereValue);
     return reg.test(JSON.stringify(serverValue));
   }
