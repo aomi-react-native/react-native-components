@@ -4,7 +4,7 @@
  */
 
 export const Colors = {
-  separator: '#e5e5e5',
+  separator: '#d9d9d9',
   underlay: '#f5f5f9',
   white: '#FFF',
   primary: '#337ab7',
