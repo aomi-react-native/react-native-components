@@ -8,14 +8,12 @@ import { Colors } from './styles';
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: 1,
-    borderBottomColor: Colors.underlay,
-    borderTopWidth: 1,
-    borderTopColor: Colors.underlay
+    borderTopWidth: 1
   },
   row: {
     flex: 1,
     flexDirection: 'row',
-    height: 40,
+    height: 45,
     alignItems: 'center',
     marginLeft: 15,
     paddingRight: 15
@@ -42,6 +40,7 @@ const styles = StyleSheet.create({
 class List extends AbstractComponent {
 
   static propTypes = {
+    bodyTextStyle: Text.propTypes.style,
     cellStyle: View.propTypes.style,
     items: PropTypes.array,
     separatorColor: PropTypes.string,
@@ -76,9 +75,10 @@ class List extends AbstractComponent {
   }
 
   renderBody(body) {
+    const {bodyTextStyle} = this.props;
     if (!body || typeof body === 'string') {
       return (
-        <Text style={styles.body}>{body || ''}</Text>
+        <Text style={[styles.body, bodyTextStyle]}>{body || ''}</Text>
       );
     }
     return body;
@@ -135,14 +135,15 @@ class List extends AbstractComponent {
   }
 
   render() {
-    const {contentContainerStyle, ...other} = this.props;
+    const {style, separatorColor, ...other} = this.props;
     return (
-      <ListView {...other}
-        contentContainerStyle={[styles.container, contentContainerStyle]}
-        dataSource={this.state.dataSource}
-        renderRow={this.renderRow}
-        renderSeparator={this.renderSeparator}
-      />
+      <View style={[styles.container, {borderColor: separatorColor}, style]}>
+        <ListView {...other}
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow}
+          renderSeparator={this.renderSeparator}
+        />
+      </View>
     );
   }
 
