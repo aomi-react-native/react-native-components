@@ -70,7 +70,7 @@ class Button extends Component {
     autoDismissKeyboard: false,
     disabled: false,
     type: 'default',
-    fontSize: 14,
+    fontSize: 16,
     iconProps: {}
   };
 
