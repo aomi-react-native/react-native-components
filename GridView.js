@@ -69,18 +69,23 @@ class GridView extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    let {cols, cells, rowHasChanged} = this.props;
+    const {cols, cells, rowHasChanged} = this.props;
     const ds = new ListView.DataSource({rowHasChanged});
-    let data = this.handleCellData(cells, cols);
+    const data = this.handleCellData(cells, cols);
     this.state = {
       dataSource: ds.cloneWithRows(data),
+      maxRowId: data.length,
       cellHeight: 0
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.cells !== nextProps.cells || this.props.cols !== nextProps.cols) {
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(this.handleCellData(nextProps.cells, nextProps.cols))});
+      const data = this.handleCellData(nextProps.cells, nextProps.cols);
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data),
+        maxRowId: data.length
+      });
     }
   }
 
@@ -143,7 +148,7 @@ class GridView extends AbstractComponent {
           cell,
           sectionID,
           rowID,
-          key,
+          cellId: key,
           height: style.height
         })
       });
@@ -155,6 +160,11 @@ class GridView extends AbstractComponent {
     );
   }
 
+  renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
+    const {renderSeparator} = this.props;
+    renderSeparator && renderSeparator(sectionID, rowID, adjacentRowHighlighted, this.state.maxRowId - 1);
+  }
+
   render() {
     const {style, verticalSpacing, horizontalSpacing, ...other} = this.props;
 
@@ -163,6 +173,7 @@ class GridView extends AbstractComponent {
         dataSource={this.state.dataSource}
         ref={listView => this.listView = listView}
         renderRow={this.renderRow}
+        renderSeparator={this.renderSeparator}
         style={[{marginHorizontal: -horizontalSpacing, marginVertical: -verticalSpacing}, style]}
       />
     );
