@@ -1,5 +1,5 @@
-import React, { PropTypes, cloneElement } from 'react';
-import { ListView, View, StyleSheet } from 'react-native';
+import React, { cloneElement, PropTypes } from 'react';
+import { ListView, StyleSheet, View } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 
 const styles = StyleSheet.create({
@@ -162,7 +162,7 @@ class GridView extends AbstractComponent {
 
   renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     const {renderSeparator} = this.props;
-    renderSeparator && renderSeparator(sectionID, rowID, adjacentRowHighlighted, this.state.maxRowId - 1);
+    return renderSeparator && renderSeparator(sectionID, rowID, adjacentRowHighlighted, this.state.maxRowId - 1);
   }
 
   render() {
