@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, ListView } from 'react-native';
+import { ListView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import Icon from './Icon';
 import Button from './Button';
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   separator: {
-    height: 0.5,
+    height: 1,
     marginLeft: 15
   }
 });
