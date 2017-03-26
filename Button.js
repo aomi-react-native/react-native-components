@@ -1,6 +1,6 @@
-import React, { PropTypes, cloneElement } from 'react';
+import React, { cloneElement, PropTypes } from 'react';
 import Component from './AbstractComponent';
-import { TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback, Text, View, Platform } from 'react-native';
+import { Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import Icon from './Icon';
 import { Colors } from './styles';
@@ -35,7 +35,10 @@ const styles = {
     color: '#FFF'
   },
   textDisabled: {
-    color: '#CCC'
+    color: '#bcbcbc'
+  },
+  disabledStyle: {
+    backgroundColor: '#dddddd'
   }
 };
 
@@ -61,6 +64,7 @@ class Button extends Component {
     color: PropTypes.string,
     containerStyle: View.propTypes.style,
     disabled: PropTypes.bool,
+    disabledStyle: View.propTypes.style,
     fontSize: PropTypes.number,
     iconProps: PropTypes.object,
     type: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link', 'default'])
@@ -69,8 +73,9 @@ class Button extends Component {
   static defaultProps = {
     autoDismissKeyboard: false,
     disabled: false,
+    disabledStyle: styles.disabledStyle,
     type: 'default',
-    fontSize: 16,
+    fontSize: 17,
     iconProps: {}
   };
 
@@ -92,7 +97,8 @@ class Button extends Component {
       children,
       type,
       color,
-      containerStyle
+      containerStyle,
+      disabledStyle
     } = this.props;
 
     let newChild = [];
@@ -113,10 +119,10 @@ class Button extends Component {
       if (typeof before === 'string') {
         newChild.push(
           <Icon {...iconProps}
-            key="before"
-            name={before}
-            size={iconProps.size || fontSize}
-            style={[iconStyle, textStyle, iconProps.style]}
+                key="before"
+                name={before}
+                size={iconProps.size || fontSize}
+                style={[iconStyle, textStyle, iconProps.style]}
           />
         );
       } else {
@@ -140,10 +146,10 @@ class Button extends Component {
       if (typeof after === 'string') {
         newChild.push(
           <Icon {...iconProps}
-            key="after"
-            name={after}
-            size={iconProps.size || fontSize}
-            style={[iconStyle, textStyle, iconProps.style]}
+                key="after"
+                name={after}
+                size={iconProps.size || fontSize}
+                style={[iconStyle, textStyle, iconProps.style]}
           />
         );
       } else {
@@ -162,6 +168,9 @@ class Button extends Component {
       temp.push(styles.containerDefault);
     }
     temp.push(containerStyle);
+    if (disabled) {
+      temp.push(disabledStyle);
+    }
 
     return cloneElement(<View />, {
       children: newChild,
