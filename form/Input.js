@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import AbstractFormComponent from './AbstractFormComponent';
-import { TextInput, View, Text, StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from '../Icon';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: '#CCC'
+    borderColor: '#d9d9d9'
   },
   icon: {
     justifyContent: 'center',
