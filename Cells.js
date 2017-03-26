@@ -42,6 +42,7 @@ class List extends AbstractComponent {
   static propTypes = {
     bodyTextStyle: Text.propTypes.style,
     cellStyle: View.propTypes.style,
+    footerTextStyle: Text.propTypes.style,
     items: PropTypes.array,
     separatorColor: PropTypes.string,
     onItemPress: PropTypes.func
@@ -50,7 +51,10 @@ class List extends AbstractComponent {
   static defaultProps = {
     alwaysBounceVertical: false,
     rowHasChanged: (r1, r2) => r1 !== r2,
-    separatorColor: Colors.separator
+    separatorColor: Colors.separator,
+    footerTextStyle: {
+      color: '#b3b3b3'
+    }
   };
 
   state = {};
@@ -87,8 +91,9 @@ class List extends AbstractComponent {
   renderFooter(footer) {
     if (footer) {
       if (typeof footer === 'string') {
+        const {footerTextStyle} = this.props;
         return (
-          <Text>{footer}</Text>
+          <Text style={footerTextStyle}>{footer}</Text>
         );
       }
       return footer;
@@ -139,9 +144,9 @@ class List extends AbstractComponent {
     return (
       <View style={[styles.container, {borderColor: separatorColor}, style]}>
         <ListView {...other}
-          dataSource={this.state.dataSource}
-          renderRow={this.renderRow}
-          renderSeparator={this.renderSeparator}
+                  dataSource={this.state.dataSource}
+                  renderRow={this.renderRow}
+                  renderSeparator={this.renderSeparator}
         />
       </View>
     );
