@@ -8,15 +8,16 @@ import { Colors } from './styles';
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: 1,
-    borderTopWidth: 1
+    borderTopWidth: 1,
+    backgroundColor: '#b3b3b3'
   },
   row: {
     flex: 1,
     flexDirection: 'row',
     height: 45,
     alignItems: 'center',
-    marginLeft: 15,
-    paddingRight: 15
+    backgroundColor: '#FFF',
+    paddingHorizontal: 15
   },
   header: {
     width: 30
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    marginLeft: 15
+    paddingLeft: 15
   }
 });
 
@@ -99,7 +100,7 @@ class List extends AbstractComponent {
       return footer;
     }
     return (
-      <Icon color="#000"
+      <Icon color="#b3b3b3"
             name="angle-right"
             size={18}
       />
