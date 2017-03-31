@@ -1,14 +1,17 @@
-import React, { PropTypes } from 'react';
-import { ListView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import React, { cloneElement, PropTypes } from 'react';
+import { Image, ListView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import AbstractComponent from './AbstractComponent';
-import Icon from './Icon';
-import Button from './Button';
-import { Colors } from './styles';
+import right from './images/right.png';
 
+const padding = 15;
+
+// noinspection JSSuspiciousNameCombination
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderTopWidth: StyleSheet.hairlineWidth
+  },
+  rowContainer: {
     backgroundColor: '#b3b3b3'
   },
   row: {
@@ -17,22 +20,42 @@ const styles = StyleSheet.create({
     height: 45,
     alignItems: 'center',
     backgroundColor: '#FFF',
-    paddingHorizontal: 15
+    paddingHorizontal: padding
   },
   header: {
-    width: 30
+    marginRight: padding
   },
   body: {
     flex: 1
   },
-  text: {
-    color: '#000'
+  bodyTextStyle: {
+    color: '#1a1a1a',
+    fontSize: 14
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  footerTextStyle: {
+    color: '#b3b3b3'
   },
   separator: {
-    height: 1,
-    paddingLeft: 15
+    height: StyleSheet.hairlineWidth
+  },
+  right: {
+    width: 18,
+    height: 18,
+    resizeMode: Image.resizeMode.contain
   }
 });
+
+
+export const Row = {
+  header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+  footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  displayRightArrow: PropTypes.bool
+};
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -52,10 +75,7 @@ class List extends AbstractComponent {
   static defaultProps = {
     alwaysBounceVertical: false,
     rowHasChanged: (r1, r2) => r1 !== r2,
-    separatorColor: Colors.separator,
-    footerTextStyle: {
-      color: '#b3b3b3'
-    }
+    separatorColor: '#bbbbbb'
   };
 
   state = {};
@@ -76,52 +96,53 @@ class List extends AbstractComponent {
   }
 
   renderHeader(header) {
-    return header || <View />;
+    return header && cloneElement(header, {
+        style: styles.header
+      });
   }
 
   renderBody(body) {
     const {bodyTextStyle} = this.props;
     if (!body || typeof body === 'string') {
       return (
-        <Text style={[styles.body, bodyTextStyle]}>{body || ''}</Text>
+        <Text style={[styles.body, styles.bodyTextStyle, bodyTextStyle]}>{body || ''}</Text>
       );
     }
-    return body;
+    return cloneElement(body, {
+      style: styles.body
+    });
   }
 
-  renderFooter(footer) {
-    if (footer) {
-      if (typeof footer === 'string') {
-        const {footerTextStyle} = this.props;
-        return (
-          <Text style={footerTextStyle}>{footer}</Text>
-        );
-      }
-      return footer;
-    }
+  renderFooter(footer, displayRightArrow = true) {
+    const {footerTextStyle} = this.props;
     return (
-      <Icon color="#b3b3b3"
-            name="angle-right"
-            size={18}
-      />
+      <View style={styles.footer}>
+        {typeof footer === 'string' ? (
+          <Text style={[styles.footerTextStyle, footerTextStyle]}>{footer}</Text>
+        ) : footer}
+        {displayRightArrow && (
+          <Image source={right}
+                 style={styles.right}
+          />
+        )}
+      </View>
     );
   }
 
-  renderRow(row, sectionID, rowID, highlightRow) {
-    const {header, body, footer} = row;
+  renderRow(row: Row, sectionID, rowID) {
+    const {header, body, footer, displayRightArrow} = row;
     const {onItemPress, cellStyle} = this.props;
     return (
-      <Button Comp={TouchableHighlight}
-              containerStyle={[styles.row, cellStyle]}
-              key={rowID}
-              onPress={() => onItemPress && onItemPress(row, sectionID, rowID)}
-              type="link"
-              underlayColor={Colors.underlay}
+      <TouchableHighlight key={rowID}
+                          onPress={() => onItemPress && onItemPress(row, sectionID, rowID)}
+                          style={styles.rowContainer}
       >
-        {this.renderHeader(header)}
-        {this.renderBody(body)}
-        {this.renderFooter(footer)}
-      </Button>
+        <View style={[styles.row, cellStyle]}>
+          {this.renderHeader(header)}
+          {this.renderBody(body)}
+          {this.renderFooter(footer, displayRightArrow)}
+        </View>
+      </TouchableHighlight>
     );
   }
 
@@ -131,12 +152,14 @@ class List extends AbstractComponent {
       return null;
     }
     const style = {
-      backgroundColor: adjacentRowHighlighted ? 'transparent' : separatorColor
+      backgroundColor: adjacentRowHighlighted ? '#FFF' : separatorColor
     };
     return (
       <View key={`${sectionID}-${rowID}`}
-            style={[styles.separator, style]}
-      />
+            style={{backgroundColor: '#FFF'}}
+      >
+        <View style={[{marginLeft: padding}, styles.separator, style]}/>
+      </View>
     );
   }
 
