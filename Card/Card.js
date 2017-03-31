@@ -1,12 +1,14 @@
 import React from 'react';
 import Component from '../AbstractComponent';
 import { View } from 'react-native';
+import { Colors, separatorHeight } from '../styles';
 
+// noinspection JSSuspiciousNameCombination
 const styles = {
   container: {
     flexDirection: 'column',
-    borderWidth: 0.5,
-    borderColor: '#ddd',
+    borderWidth: separatorHeight,
+    borderColor: Colors.separator,
     borderRadius: 7,
     backgroundColor: '#FFF'
   }
