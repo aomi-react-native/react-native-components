@@ -1,10 +1,11 @@
+import { StyleSheet } from 'react-native';
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/7/20
  */
 
 export const Colors = {
-  separator: '#ebebeb',
+  separator: '#bbbbbb',
   underlay: '#f5f5f9',
   white: '#FFF',
   primary: '#337ab7',
@@ -13,6 +14,9 @@ export const Colors = {
   warning: '#f0ad4e',
   danger: '#d9534f'
 };
+
+// noinspection JSSuspiciousNameCombination
+export const separatorHeight = StyleSheet.hairlineWidth;
 
 export default {
   fullScreenAbsolute: {
