@@ -2,14 +2,14 @@ import React, { cloneElement, PropTypes } from 'react';
 import { Image, ListView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import right from './images/right.png';
+import { Colors, separatorHeight } from './styles';
 
 const padding = 15;
 
-// noinspection JSSuspiciousNameCombination
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderTopWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: separatorHeight,
+    borderTopWidth: separatorHeight
   },
   rowContainer: {
     backgroundColor: '#b3b3b3'
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     color: '#b3b3b3'
   },
   separator: {
-    height: StyleSheet.hairlineWidth
+    height: separatorHeight
   },
   right: {
     width: 18,
@@ -75,7 +75,7 @@ class List extends AbstractComponent {
   static defaultProps = {
     alwaysBounceVertical: false,
     rowHasChanged: (r1, r2) => r1 !== r2,
-    separatorColor: '#bbbbbb'
+    separatorColor: Colors.separator
   };
 
   state = {};
