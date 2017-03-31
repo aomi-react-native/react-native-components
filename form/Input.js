@@ -2,16 +2,18 @@ import React, { PropTypes } from 'react';
 import AbstractFormComponent from './AbstractFormComponent';
 import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from '../Icon';
+import commonStyle, { Colors, separatorHeight } from '../styles';
 
+// noinspection JSSuspiciousNameCombination
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#d9d9d9'
+    borderWidth: separatorHeight,
+    borderColor: Colors.separator,
+    backgroundColor: Colors.white
   },
   icon: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...commonStyle.center,
     width: 25
   },
   input: {
@@ -167,7 +169,7 @@ class Input extends AbstractFormComponent {
         return (
           <View style={[styles.icon, iconStyle]}>
             <Icon {...iconProps}
-              name={name}
+                  name={name}
             />
           </View>
         );
@@ -249,13 +251,13 @@ class Input extends AbstractFormComponent {
 
     return (
       <View {...newProps}
-        style={[styles.container, style]}
+            style={[styles.container, style]}
       >
         {this.getComp(before, true)}
         <TextInput {...newInputProps}
-          onChangeText={this.handleChangeText}
-          ref={textInput => this.textInput = textInput}
-          style={[styles.input, inputStyle]}
+                   onChangeText={this.handleChangeText}
+                   ref={textInput => this.textInput = textInput}
+                   style={[styles.input, inputStyle]}
         />
         {this.getComp(after)}
       </View>
