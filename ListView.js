@@ -1,16 +1,8 @@
-import React, {
-  PropTypes,
-  cloneElement
-} from 'react';
+import React, { cloneElement, PropTypes } from 'react';
 import Component from './AbstractComponent';
-import {
-  ListView as RNListView,
-  View,
-  Text,
-  ActivityIndicator,
-  TouchableHighlight,
-  StyleSheet
-} from 'react-native';
+import { ActivityIndicator, ListView as RNListView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+
+import { Colors, separatorHeight } from './styles';
 
 const styles = StyleSheet.create({
   loadNextContainer: {
@@ -81,7 +73,7 @@ class ListView extends Component {
     autoLoadNextPage: true,
     autoRenderSeparator: true,
     loadNextTitle: '正在加载下一页...',
-    separatorColor: '#dfdfdf'
+    separatorColor: Colors.separator
   };
 
   state = {
@@ -93,7 +85,7 @@ class ListView extends Component {
     const {loadNextPage} = this.props;
     if (loadNextPage) {
       this.setState({loading: true});
-      const handle = ()=> {
+      const handle = () => {
         this.setState({loading: false});
       };
 
@@ -126,7 +118,7 @@ class ListView extends Component {
       return renderSeparator(sectionID, rowID, adjacentRowHighlighted);
     }
     let style = {
-      height: 0.5,
+      height: separatorHeight,
       backgroundColor: adjacentRowHighlighted ? highlightColor : separatorColor
     };
     return (
@@ -136,7 +128,7 @@ class ListView extends Component {
     );
   }
 
-  renderRow(data: String, sectionID: Number, rowID: Number, highlightRow) {
+  renderRow(data: any, sectionID: Number, rowID: Number, highlightRow) {
     const {autoRenderSeparator, touchableHighlighProps, onRowPress, renderRow} = this.props;
     if (autoRenderSeparator) {
       let props = Object.assign({
@@ -146,7 +138,7 @@ class ListView extends Component {
       }, touchableHighlighProps);
       return cloneElement(<TouchableHighlight />, {
         ...props,
-        children: renderRow ? renderRow(data, sectionID, rowID, highlightRow) : null
+        children: renderRow ? renderRow(data, sectionID, rowID, highlightRow) || <View /> : null
       });
     }
     return renderRow ? renderRow(data, sectionID, rowID, highlightRow) : null;
@@ -155,10 +147,10 @@ class ListView extends Component {
   render() {
     return (
       <RNListView {...this.props}
-        onEndReached={this.handleLoadNextPage}
-        renderFooter={this.renderFooter}
-        renderRow={this.renderRow}
-        renderSeparator={this.renderSeparator}
+                  onEndReached={this.handleLoadNextPage}
+                  renderFooter={this.renderFooter}
+                  renderRow={this.renderRow}
+                  renderSeparator={this.renderSeparator}
       />
     );
   }
