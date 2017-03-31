@@ -54,7 +54,8 @@ export const Row = {
   header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  displayRightArrow: PropTypes.bool
+  displayRightArrow: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 /**
@@ -130,10 +131,11 @@ class List extends AbstractComponent {
   }
 
   renderRow(row: Row, sectionID, rowID) {
-    const {header, body, footer, displayRightArrow} = row;
+    const {header, body, footer, displayRightArrow, disabled} = row;
     const {onItemPress, cellStyle} = this.props;
     return (
-      <TouchableHighlight key={rowID}
+      <TouchableHighlight disabled={disabled}
+                          key={rowID}
                           onPress={() => onItemPress && onItemPress(row, sectionID, rowID)}
                           style={styles.rowContainer}
       >
