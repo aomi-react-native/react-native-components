@@ -20,7 +20,6 @@ class LoadingDialog extends AbstractComponent {
   };
 
   static defaultProps = {
-    loadingText: 'loading ...',
     hideAnimation: {
       animation: 'fadeOut'
     },
