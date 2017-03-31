@@ -1,12 +1,5 @@
 import React, { PropTypes } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-  TouchableOpacity,
-  ActivityIndicator
-} from 'react-native';
+import { ActivityIndicator, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 import createRootView from './createRootView';
@@ -32,6 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.7)'
   },
   text: {
+    marginTop: 5,
     color: '#FFF'
   }
 });
@@ -119,14 +113,11 @@ class Dialog extends Component {
     return (
       <View style={styles.content}>
         <ActivityIndicator {...loadProps}/>
-        <View style={{height: 5}}/>
-        {
-          typeof loadChildren === 'string' ? (
-            <Text style={styles.text}>
-              {loadChildren}
-            </Text>
-          ) : loadChildren
-        }
+        {typeof loadChildren === 'string' ? (
+          <Text style={styles.text}>
+            {loadChildren}
+          </Text>
+        ) : loadChildren}
       </View>
     );
   }
@@ -155,9 +146,9 @@ class Dialog extends Component {
 
     return (
       <AnimatableView {...animation}
-        onAnimationBegin={this.handleAnimationBegin}
-        onAnimationEnd={this.handleAnimationEnd}
-        style={[styles.container, tmp, style]}
+                      onAnimationBegin={this.handleAnimationBegin}
+                      onAnimationEnd={this.handleAnimationEnd}
+                      style={[styles.container, tmp, style]}
       >
         <TouchableOpacity
           activeOpacity={activeOpacity}
