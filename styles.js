@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/7/20
@@ -17,6 +17,18 @@ export const Colors = {
 
 // noinspection JSSuspiciousNameCombination
 export const separatorHeight = StyleSheet.hairlineWidth;
+
+
+export function getWindowSize() {
+  const {
+    width,
+    height
+  } = Dimensions.get('window');
+  return {
+    width,
+    height
+  };
+}
 
 export default {
   fullScreenAbsolute: {
