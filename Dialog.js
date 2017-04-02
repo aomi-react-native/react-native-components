@@ -1,18 +1,11 @@
 import React, { PropTypes } from 'react';
-import { ActivityIndicator, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Component from './AbstractComponent';
-import { View as AnimatableView } from 'react-native-animatable';
+import { ActivityIndicator, Modal, StyleSheet, Text, View } from 'react-native';
 import createRootView from './createRootView';
+import { getWindowSize } from './styles';
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0
-  },
-  loadingStyle: {
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -37,129 +30,66 @@ const styles = StyleSheet.create({
 class Dialog extends Component {
 
   static propTypes = {
-    hideAnimation: PropTypes.object,
-    loadChildren: PropTypes.node,
-    loadProps: PropTypes.object,
-    loading: PropTypes.bool,
-    showAnimation: PropTypes.object,
-    statusBarAutoHidden: PropTypes.bool,
-    style: View.propTypes.style,
-    visible: PropTypes.bool,
-    onPress: PropTypes.func
+    ...Modal.propTypes,
+    isLoadingDialog: PropTypes.bool,
+    loadingProps: PropTypes.object,
+    style: View.propTypes.style
   };
 
   static defaultProps = {
-    activeOpacity: 1,
-    visible: false,
-    statusBarAutoHidden: true
-  };
-
-  state = {
-    animating: false,
+    animationType: 'fade',
+    onRequestClose() {
+      console.log('Dialog close');
+    },
+    isLoadingDialog: false,
+    transparent: true,
     visible: false
   };
 
-  mounted = true;
-
-  shounldComponentUpdate() {
-    return !this.state.animating;
-  }
-
-  componentWillUnmount() {
-    if (this.statusBarHidden) {
-      StatusBar.setHidden(false);
-    }
-    this.mounted = false;
-  }
-
-  handlePress() {
-    let {onPress} = this.props;
-    onPress && onPress();
-  }
-
-  handleAnimationBegin() {
-    this.setState({animating: true});
-  }
-
-  handleAnimationEnd() {
-    if (!this.mounted) {
-      return;
-    }
-    let {
-      visible,
-      statusBarAutoHidden
-    } = this.props;
-
-    if (visible) {
-      if (statusBarAutoHidden) {
-        this.statusBarHidden = true;
-        StatusBar.setHidden(true);
-      }
+  renderLoading({children, loadingProps}) {
+    let child;
+    if (typeof children === 'string') {
+      child = <Text style={styles.text}>{children}</Text>;
+    } else if (Array.isArray(children) && typeof children[0] === 'string') {
+      child = <Text style={styles.text}>{children}</Text>;
     } else {
-      if (this.statusBarHidden) {
-        this.statusBarHidden = false;
-        StatusBar.setHidden(false);
-      }
+      child = children;
     }
-
-    this.setState({
-      visible,
-      animating: false
-    });
-
-  }
-
-  renderLoading(loadProps, loadChildren) {
     return (
       <View style={styles.content}>
-        <ActivityIndicator {...loadProps}/>
-        {typeof loadChildren === 'string' ? (
-          <Text style={styles.text}>
-            {loadChildren}
-          </Text>
-        ) : loadChildren}
+        <ActivityIndicator {...loadingProps}/>
+        {child}
       </View>
     );
   }
 
   render() {
-
-    let {
-      children,
-      activeOpacity,
-      visible,
-      style,
-      showAnimation,
-      hideAnimation,
-      loading,
-      loadProps,
-      loadChildren
+    const {
+      style, children,
+      isLoadingDialog,
+      loadingProps,
+      ...other
     } = this.props;
 
-    if (!visible && !this.state.visible) {
-      return <View />;
-    }
-
-    let animation = visible ? showAnimation : hideAnimation;
-
-    let tmp = loading ? styles.loadingStyle : null;
+    const innerStyle = [
+      getWindowSize(),
+      isLoadingDialog ? styles.loadingContainer : {},
+      style
+    ];
 
     return (
-      <AnimatableView {...animation}
-                      onAnimationBegin={this.handleAnimationBegin}
-                      onAnimationEnd={this.handleAnimationEnd}
-                      style={[styles.container, tmp, style]}
-      >
-        <TouchableOpacity
-          activeOpacity={activeOpacity}
-          onPress={this.handlePress}
-          style={styles.container}
-        />
-        {loading ? this.renderLoading(loadProps, loadChildren) : children}
-      </AnimatableView>
+      <Modal {...other}>
+        <View style={innerStyle}>
+          {isLoadingDialog ? this.renderLoading({
+            children,
+            loadingProps
+          }) : children}
+        </View>
+      </Modal>
     );
   }
 }
+
 
 // noinspection Eslint
 export default createRootView(Dialog);
