@@ -4,15 +4,18 @@ import { Image, Text, View } from 'react-native';
 
 const styles = {
   container: {
+    flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 15,
     paddingVertical: 10
   },
   content: {
+    flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 7
   },
   titleContainer: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around'
   },
@@ -69,7 +72,13 @@ export default class Header extends Component {
   renderSubtitle() {
     const {subtitle} = this.props;
     if (typeof subtitle === 'string') {
-      return <Text style={styles.subtitleText}>{subtitle}</Text>;
+      return (
+        <Text numberOfLines={9999}
+              style={styles.subtitleText}
+        >
+          {subtitle}
+        </Text>
+      );
     }
     return subtitle;
   }
