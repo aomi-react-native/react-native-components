@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: padding
   },
   header: {
-    marginRight: padding
+    marginRight: 10
   },
   body: {
     flex: 1
   },
   bodyTextStyle: {
     color: '#1a1a1a',
-    fontSize: 14
+    fontSize: 16
   },
   footer: {
     flexDirection: 'row',
@@ -67,6 +67,7 @@ class List extends AbstractComponent {
   static propTypes = {
     bodyTextStyle: Text.propTypes.style,
     cellStyle: View.propTypes.style,
+    containerStyle: View.propTypes.style,
     footerTextStyle: Text.propTypes.style,
     items: PropTypes.array,
     separatorColor: PropTypes.string,
@@ -166,9 +167,9 @@ class List extends AbstractComponent {
   }
 
   render() {
-    const {style, separatorColor, ...other} = this.props;
+    const {containerStyle, separatorColor, ...other} = this.props;
     return (
-      <View style={[styles.container, {borderColor: separatorColor}, style]}>
+      <View style={[styles.container, {borderColor: separatorColor}, containerStyle]}>
         <ListView {...other}
                   dataSource={this.state.dataSource}
                   renderRow={this.renderRow}
