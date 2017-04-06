@@ -4,7 +4,6 @@ import { Image, Text, View } from 'react-native';
 
 const styles = {
   container: {
-    flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 15,
     paddingVertical: 10
