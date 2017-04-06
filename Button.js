@@ -3,12 +3,12 @@ import Component from './AbstractComponent';
 import { Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import Icon from './Icon';
-import { Colors } from './styles';
+import { Colors, separatorHeight } from './styles';
 
 const styles = {
   button: {
     borderRadius: 5,
-    borderWidth: 1,
+    borderWidth: separatorHeight,
     borderColor: 'transparent',
     borderStyle: 'solid',
     height: 44,
@@ -25,7 +25,7 @@ const styles = {
     justifyContent: 'center'
   },
   containerDefault: {
-    borderColor: '#ccc',
+    borderColor: Colors.separator,
     backgroundColor: Colors.white
   },
   textDefault: {
