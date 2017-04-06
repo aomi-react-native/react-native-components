@@ -28,11 +28,6 @@ class GridView extends AbstractComponent {
     renderCell: PropTypes.func.isRequired,
 
     /**
-     * 自动设置高度为宽度
-     */
-    autoHeightEqWidth: PropTypes.bool,
-
-    /**
      * 自动设置宽度
      */
     autoWidth: PropTypes.bool,
@@ -64,8 +59,6 @@ class GridView extends AbstractComponent {
 
   props: Object;
   state = {};
-  // refs
-  listView;
 
   constructor(props) {
     super(props);
@@ -107,30 +100,13 @@ class GridView extends AbstractComponent {
     return data;
   }
 
-  handleCellLayout(event) {
-    const {
-      layout: {
-        width: cellHeight
-      }
-    } = event.nativeEvent;
-    this.setState({cellHeight});
-  }
-
   renderRow(rowData: Array, sectionID, rowID) {
-    const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, autoHeightEqWidth} = this.props;
+    const {renderCell, horizontalSpacing, verticalSpacing, autoWidth} = this.props;
     let style = {
       marginHorizontal: horizontalSpacing / 2
     };
     if (autoWidth) {
       style.flex = 1;
-    }
-    let onLayout = null;
-
-    if (autoHeightEqWidth) {
-      style.height = this.state.cellHeight;
-      if (rowID === '0') {
-        onLayout = this.handleCellLayout;
-      }
     }
 
     let children = rowData.map((cell, key) => {
@@ -143,13 +119,11 @@ class GridView extends AbstractComponent {
       return cloneElement(<View />, {
         key,
         style,
-        onLayout,
         children: renderCell({
           cell,
           sectionID,
           rowID,
-          cellId: key,
-          height: style.height
+          cellId: key
         })
       });
     });
@@ -170,11 +144,13 @@ class GridView extends AbstractComponent {
 
     return (
       <ListView {...other}
-        dataSource={this.state.dataSource}
-        ref={listView => this.listView = listView}
-        renderRow={this.renderRow}
-        renderSeparator={this.renderSeparator}
-        style={[{marginHorizontal: -horizontalSpacing, marginVertical: -verticalSpacing}, style]}
+                dataSource={this.state.dataSource}
+                renderRow={this.renderRow}
+                renderSeparator={this.renderSeparator}
+                style={[{
+                  marginHorizontal: -horizontalSpacing,
+                  marginVertical: -verticalSpacing
+                }, style]}
       />
     );
 
