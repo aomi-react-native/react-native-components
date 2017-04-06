@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public abstract class AbstractCameraViewManager<T extends View> extends SimpleViewManager<T> {
 
+    public static final String CAPTURE_OUTPUT_BUFFER_EVENT = "captureOutputBuffer";
 
     @ReactProp(name = "cameraFacing")
     public void setCameraFacing(T view, String cameraFacing) {

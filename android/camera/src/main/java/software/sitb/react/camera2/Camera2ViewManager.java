@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public class Camera2ViewManager extends AbstractCameraViewManager<Camera2View> {
 
-    public static final String CAPTURE_OUTPUT_BUFFER_EVENT = "captureOutputBuffer";
 
     @Override
     public String getName() {
