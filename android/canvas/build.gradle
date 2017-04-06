@@ -1,4 +1,4 @@
-description = 'media-manager'
+description = 'canvas'
 
 apply plugin: 'com.android.library'
 

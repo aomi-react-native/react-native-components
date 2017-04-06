@@ -1,4 +1,4 @@
-description = 'media-manager'
+description = 'barcode'
 
 apply plugin: 'com.android.library'
 
@@ -19,4 +19,6 @@ android {
 
 dependencies {
     compile project(':react-native-components:commons')
+    compile project(':react-native-components:camera')
+    compile 'com.google.zxing:core:3.2.1'
 }
