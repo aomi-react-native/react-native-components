@@ -78,7 +78,7 @@ RCT_EXPORT_VIEW_PROPERTY(onCaptureOutputBuffer, RCTBubblingEventBlock);
 /**
  * 初始化 AVCaptureSession
  * 初始化AVCaptureDeviceInput
- * @return
+ * @return js View视图
  */
 - (UIView *)view {
     self.presetCamera = AVCaptureDevicePositionBack;
@@ -92,7 +92,7 @@ RCT_EXPORT_VIEW_PROPERTY(onCaptureOutputBuffer, RCTBubblingEventBlock);
 
 /**
  * 初始化 CaptureSessionInput
- * @param type
+ * @param type 相机类型
  */
 - (void)initializeCaptureSessionInput:(NSString *)type {
     dispatch_async(self.sessionQueue, ^{
@@ -198,9 +198,6 @@ RCT_EXPORT_VIEW_PROPERTY(onCaptureOutputBuffer, RCTBubblingEventBlock);
 
 /**
  * 实时捕获读取的图像信息
- * @param captureOutput
- * @param sampleBuffer
- * @param connection
  */
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
@@ -279,7 +276,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 /**
  * 设置图片质量
- * @param quality
+ * @param quality 图片质量
  */
 - (void)setCaptureQuality:(NSString *)quality {
     if (quality) {
