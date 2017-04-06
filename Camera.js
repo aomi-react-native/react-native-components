@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import Component from './AbstractComponent';
-import { requireNativeComponent, View, UIManager, NativeModules, Platform } from 'react-native';
+import { NativeEventEmitter, NativeModules, requireNativeComponent, UIManager, View } from 'react-native';
 
 type OrientationType = {
   auto: Number,
   landscapeLeft: Number,
   landscapeRight: Number,
-  portrait:Number,
-  portraitUpsideDown:Number
+  portrait: Number,
+  portraitUpsideDown: Number
 };
 
 type QualityType = {
@@ -33,6 +33,8 @@ let CameraFacing = constants.CameraFacing;
 let Orientation: OrientationType = constants.Orientation;
 let Quality: QualityType = constants.Quality;
 
+let event = new NativeEventEmitter(CameraManager);
+
 /**
  * 安卓相机版本
  * 4 使用
@@ -53,6 +55,7 @@ export function setCameraVersion(cameraVersion) {
   CameraFacing = constants.CameraFacin;
   OrientationType = constants.Orientation;
   Quality = constants.Quality;
+  event = new NativeEventEmitter(CameraManager);
 }
 
 /**
@@ -71,6 +74,11 @@ class Camera extends Component {
     cameraFacing: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
     /**
+     * Android 需要，该值不需要传递，如果传递了onCaptureOutputBuffer则该值为true
+     */
+    needCaptureOutputBuffer: PropTypes.bool,
+
+    /**
      * 相机方向
      * Orientation.auto
      * Orientation.landscapeLeft
@@ -83,6 +91,7 @@ class Camera extends Component {
      * 质量设置
      */
     quality: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
     /**
      * 一个回调函数
      * 当需要实时获取预览的图片数据
@@ -96,9 +105,18 @@ class Camera extends Component {
     quality: Quality.high
   };
 
+  componentDidMount() {
+    event.addListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
+  }
+
+  componentWillUnmount() {
+    event.removeListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
+  }
+
   capture(option) {
     return capture(option);
   }
+
 
   handleCaptureOutputBuffer(event) {
     this.props.onCaptureOutputBuffer && this.props.onCaptureOutputBuffer(event.nativeEvent.buffer);
@@ -108,8 +126,8 @@ class Camera extends Component {
     const {onCaptureOutputBuffer, ...other} = this.props;
     return (
       <RCTCamera {...other}
-        onCaptureOutputBuffer={onCaptureOutputBuffer ? this.handleCaptureOutputBuffer : null}
-        needCaptureOutputBuffer={!!onCaptureOutputBuffer}
+                 needCaptureOutputBuffer={!!onCaptureOutputBuffer}
+                 onCaptureOutputBuffer={onCaptureOutputBuffer ? this.handleCaptureOutputBuffer : null}
       />
     );
   }
