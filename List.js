@@ -69,6 +69,7 @@ class List extends AbstractComponent {
     cellStyle: View.propTypes.style,
     containerStyle: View.propTypes.style,
     footerTextStyle: Text.propTypes.style,
+    fullSeparator: PropTypes.bool,
     items: PropTypes.array,
     separatorColor: PropTypes.string,
     onItemPress: PropTypes.func
@@ -76,6 +77,7 @@ class List extends AbstractComponent {
 
   static defaultProps = {
     alwaysBounceVertical: false,
+    fullSeparator: false,
     rowHasChanged: (r1, r2) => r1 !== r2,
     separatorColor: Colors.separator
   };
@@ -150,18 +152,21 @@ class List extends AbstractComponent {
   }
 
   renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    const {separatorColor, items} = this.props;
+    const {separatorColor, items, fullSeparator} = this.props;
     if (rowID === `${items.length - 1}`) {
       return null;
     }
     const style = {
       backgroundColor: adjacentRowHighlighted ? '#FFF' : separatorColor
     };
+    if (!fullSeparator) {
+      style.marginLeft = padding;
+    }
     return (
       <View key={`${sectionID}-${rowID}`}
             style={{backgroundColor: '#FFF'}}
       >
-        <View style={[{marginLeft: padding}, styles.separator, style]}/>
+        <View style={[styles.separator, style]}/>
       </View>
     );
   }
