@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Component from './AbstractComponent';
-import { NativeEventEmitter, NativeModules, requireNativeComponent, UIManager, View } from 'react-native';
+import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager, View } from 'react-native';
 
 type OrientationType = {
   auto: Number,
@@ -106,11 +106,15 @@ class Camera extends Component {
   };
 
   componentDidMount() {
-    event.addListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
+    if (Platform.OS === 'android') {
+      event.addListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
+    }
   }
 
   componentWillUnmount() {
-    event.removeListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
+    if (Platform.OS === 'android') {
+      event.removeListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
+    }
   }
 
   capture(option) {
