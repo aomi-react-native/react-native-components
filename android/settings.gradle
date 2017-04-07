@@ -1,14 +1,22 @@
-rootProject.name = 'ReactNativeAndroidComponents'
+rootProject.name = 'react-native-android-components'
+
+include(':react-native-components:amap')
+project(':react-native-components:amap').projectDir = new File(rootProject.projectDir, './amap')
+
+include(':react-native-components:barcode')
+project(':react-native-components:barcode').projectDir = new File(rootProject.projectDir, './barcode')
 
 include(':react-native-components:camera')
 project(':react-native-components:camera').projectDir = new File(rootProject.projectDir, './camera')
+
 include(':react-native-components:canvas')
 project(':react-native-components:canvas').projectDir = new File(rootProject.projectDir, './canvas')
+
 include(':react-native-components:commons')
 project(':react-native-components:commons').projectDir = new File(rootProject.projectDir, './commons')
+
 include(':react-native-components:media-manager')
 project(':react-native-components:media-manager').projectDir = new File(rootProject.projectDir, './media-manager')
-include(':react-native-components:barcode')
-project(':react-native-components:barcode').projectDir = new File(rootProject.projectDir, './barcode')
+
 include(':react-native-components:orientation')
 project(':react-native-components:orientation').projectDir = new File(rootProject.projectDir, './orientation')
