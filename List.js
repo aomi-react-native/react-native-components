@@ -111,7 +111,7 @@ class List extends AbstractComponent {
       );
     }
     return cloneElement(body, {
-      style: styles.body
+      style: [styles.body, body.props.style]
     });
   }
 
