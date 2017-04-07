@@ -1,12 +1,5 @@
-import React, {
-  Component,
-  PropTypes,
-  Children,
-  isValidElement,
-  cloneElement
-} from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
-import AbstractFormComponent from './AbstractFormComponent';
 
 /**
  * Form 表单组件
@@ -94,37 +87,11 @@ class Form extends Component {
     return miss.length === 0 && error.length === 0;
   }
 
-
-  renderChildren(children) {
-    return Children.map(children, (child, index) => {
-      if (!isValidElement(child)) {
-        return child;
-      }
-      let fieldName = child.props.name;
-
-      let newProps = {
-        key: index
-      };
-      if (fieldName && child.type.__proto__ === AbstractFormComponent) {
-        newProps.form = this;
-        newProps.ref = field => {
-          this.formFields[fieldName] = field;
-          child.ref && child.ref(field);
-        };
-      }
-
-      newProps.children = this.renderChildren(child.props.children);
-
-      return cloneElement(child, newProps);
-    });
-  }
-
   render() {
-    let {children, ...other} = this.props;
+    const {children, ...other} = this.props;
     return (
-      <View {...other}
-        ref="form">
-        {this.renderChildren(children)}
+      <View {...other}>
+        {children}
       </View>
     );
   }

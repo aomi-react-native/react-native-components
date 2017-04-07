@@ -2,7 +2,9 @@ import React, { PropTypes } from 'react';
 import AbstractFormComponent from './AbstractFormComponent';
 import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from '../Icon';
+import Form from './Form';
 import commonStyle, { Colors, separatorHeight } from '../styles';
+import { findAllParent } from '../domUtils';
 
 // noinspection JSSuspiciousNameCombination
 const styles = StyleSheet.create({
@@ -79,10 +81,6 @@ class Input extends AbstractFormComponent {
      */
     defaultValue: PropTypes.string,
     /**
-     * Input 所属表单
-     */
-    form: PropTypes.object,
-    /**
      * 图标属性
      */
     iconProps: PropTypes.object,
@@ -143,23 +141,43 @@ class Input extends AbstractFormComponent {
     validate: true
   };
 
-  constructor(props) {
-    super(props);
-    let {name, form} = props;
-    name && form && form.putFormValue(name, props.defaultValue);
-
-    this.state.value = props.defaultValue || '';
-  }
-
   state = {};
 
   // refs
   textInput;
 
+  constructor(props) {
+    super(props);
+    this.state.value = props.defaultValue || '';
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.defaultValue !== this.props.defaultValue) {
       this.handleChangeText(nextProps.defaultValue);
     }
+  }
+
+  componentDidUpdate() {
+    this.putFormField();
+  }
+
+  componentDidMount() {
+    const {name} = this.props;
+    const form = this.getForm();
+    name && form && form.putFormValue(name, this.props.defaultValue);
+    this.putFormField();
+  }
+
+  putFormField() {
+    const {name} = this.props;
+    const form = this.getForm();
+    if (name && form) {
+      form.formFields[name] = this;
+    }
+  }
+
+  getForm() {
+    return (findAllParent(this, Form) || [])[0];
   }
 
   getComp(name, isLabel) {
@@ -195,7 +213,8 @@ class Input extends AbstractFormComponent {
   }
 
   valid() {
-    let {validate, customValid, pattern, required, name, form} = this.props;
+    let {validate, customValid, pattern, required, name} = this.props;
+    const form = this.getForm();
     if (validate) {
       if (customValid) {
         let result = customValid(this.state.value);
@@ -223,7 +242,8 @@ class Input extends AbstractFormComponent {
   }
 
   setFormFieldInfo(result) {
-    let {name, form} = this.props;
+    const {name} = this.props;
+    const form = this.getForm();
     if (result) {
       name && form && form.deleteErrOrMissField(name);
     } else {
@@ -233,7 +253,8 @@ class Input extends AbstractFormComponent {
 
   handleChangeText(value) {
     this.setState({value});
-    let {onChangeText, name, form} = this.props;
+    const {onChangeText, name} = this.props;
+    const form = this.getForm();
     name && form && form.putFormValue(name, value);
     onChangeText && onChangeText(value);
   }
