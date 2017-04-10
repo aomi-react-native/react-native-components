@@ -1,7 +1,6 @@
 import React, { cloneElement, PropTypes } from 'react';
 import Component from './AbstractComponent';
-import { Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
+import { Keyboard, Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import Icon from './Icon';
 import { Colors, separatorHeight } from './styles';
 
@@ -82,7 +81,7 @@ class Button extends Component {
 
   handlePress() {
     const {onPress, autoDismissKeyboard} = this.props;
-    autoDismissKeyboard && dismissKeyboard();
+    autoDismissKeyboard && Keyboard.dismiss();
     onPress && onPress();
   }
 
