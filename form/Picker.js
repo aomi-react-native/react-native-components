@@ -47,7 +47,20 @@ class Picker extends AbstractFormComponent {
 
   static propTypes = {
     children: PropTypes.node,
-    defaultSelected: PropTypes.any
+    defaultSelected: PropTypes.any,
+    /**
+     * On Android, specifies how to display the selection items when the user taps on the picker:
+     *
+     *   - 'dialog': Show a modal dialog. This is the default.
+     *   - 'dropdown': Shows a dropdown anchored to the picker view
+     *
+     * @platform android
+     */
+    mode: React.PropTypes.oneOf(['dialog', 'dropdown'])
+  };
+
+  static defaultProps = {
+    mode: 'dropdown'
   };
 
   state = {
@@ -70,9 +83,10 @@ class Picker extends AbstractFormComponent {
     this.state.selectedValue = props.defaultSelected;
   }
 
-  handleValueChange(selectedValue) {
+  handleValueChange(selectedValue, index) {
     this.setState({selectedValue});
-
+    const {onValueChange} = this.props;
+    onValueChange && onValueChange(selectedValue, index);
   }
 
   handleDialogSwitch() {
@@ -111,7 +125,7 @@ class Picker extends AbstractFormComponent {
   }
 
   render() {
-    const {children, editable, ...other} = this.props;
+    const {children, editable, mode, ...other} = this.props;
     const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
     let label = '';
     const childrenArr = Children.toArray(children);
@@ -140,7 +154,8 @@ class Picker extends AbstractFormComponent {
                           style={styles.picker}
           >
             {this.renderHeader()}
-            <PickerComponent onValueChange={this.handleValueChange}
+            <PickerComponent mode={mode}
+                             onValueChange={this.handleValueChange}
                              selectedValue={this.state.selectedValue}
             >
               {children}
