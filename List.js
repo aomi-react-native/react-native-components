@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
   header: {
     marginRight: 10
   },
+  headerText: {
+    color: '#1a1a1a'
+  },
   body: {
     flex: 1
   },
@@ -100,6 +103,14 @@ class List extends AbstractComponent {
   }
 
   renderHeader(header) {
+    const {headerTextStyle} = this.props;
+
+    if (typeof header === 'string') {
+      return (
+        <Text style={[styles.header, styles.headerText, headerTextStyle]}>{header}</Text>
+      );
+    }
+
     return header && cloneElement(header, {
         style: styles.header
       });
@@ -112,8 +123,9 @@ class List extends AbstractComponent {
         <Text style={[styles.body, styles.bodyTextStyle, bodyTextStyle]}>{body || ''}</Text>
       );
     }
-    return cloneElement(body, {
-      style: [styles.body, body.props.style]
+    return cloneElement(<View />, {
+      style: styles.body,
+      children: body
     });
   }
 
