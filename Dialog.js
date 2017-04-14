@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { ActivityIndicator, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackAndroid, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 import createRootView from './createRootView';
@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
   }
 });
 
+function handleAndroidBackPress() {
+  return true;
+}
+
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/24
@@ -34,6 +38,7 @@ const styles = StyleSheet.create({
 class Dialog extends Component {
 
   static propTypes = {
+    autoDisableAndroidBackPress: PropTypes.bool,
     hideAnimation: PropTypes.object,
     loadingDialog: PropTypes.bool,
     loadingProps: PropTypes.object,
@@ -45,6 +50,7 @@ class Dialog extends Component {
   };
 
   static defaultProps = {
+    autoDisableAndroidBackPress: true,
     activeOpacity: 1,
     visible: false,
     statusBarAutoHidden: true
@@ -56,6 +62,16 @@ class Dialog extends Component {
   };
 
   mounted = true;
+
+  componentWillReceiveProps() {
+    if (Platform.OS === 'android') {
+      if (this.state.visible) {
+        BackAndroid.addEventListener('hardwareBackPress', handleAndroidBackPress);
+      } else {
+        BackAndroid.removeEventListener('hardwareBackPress', handleAndroidBackPress);
+      }
+    }
+  }
 
   shounldComponentUpdate() {
     return !this.state.animating;
