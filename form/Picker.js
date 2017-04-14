@@ -1,13 +1,5 @@
-import React, { PropTypes } from 'react';
-import {
-  Picker as RNPicker,
-  PickerIOS,
-  Platform,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import React, { Children, PropTypes } from 'react';
+import { Picker as RNPicker, PickerIOS, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
 import AbstractFormComponent from './AbstractFormComponent';
 import Dialog from '../Dialog';
@@ -54,11 +46,13 @@ const hideAnimation = {
 class Picker extends AbstractFormComponent {
 
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    defaultSelected: PropTypes.any
   };
 
   state = {
-    visible: false
+    visible: false,
+    selectedValue: null
   };
 
   contentShowAnimation = {
@@ -71,8 +65,14 @@ class Picker extends AbstractFormComponent {
     duration: 500
   };
 
+  constructor(props) {
+    super(props);
+    this.state.selectedValue = props.defaultSelected;
+  }
+
   handleValueChange(selectedValue) {
     this.setState({selectedValue});
+
   }
 
   handleDialogSwitch() {
@@ -98,32 +98,46 @@ class Picker extends AbstractFormComponent {
         <TouchableOpacity onPress={this.handleDialogSwitch}
                           style={styles.finish}
         >
-          <Text style={{color: '#0977FF', fontSize: 14}}>完成</Text>
+          <Text style={{
+            color: '#0977FF',
+            fontSize: 14
+          }}
+          >
+            {'完成'}
+          </Text>
         </TouchableOpacity>
       </View>
     );
   }
 
   render() {
-    let {children, editable, ...other} = this.props;
-    let props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
+    const {children, editable, ...other} = this.props;
+    const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
+    let label = '';
+    const childrenArr = Children.toArray(children);
+    for (let i = 0; i < childrenArr.length; i++) {
+      const child = childrenArr[i];
+      if (child.props.value === this.state.selectedValue) {
+        label = child.props.label;
+      }
+    }
     return (
       <TouchableOpacity disabled={editable}
                         onPress={this.handleDialogSwitch}
       >
         <Input {...other}
-          defaultValue={this.state.selectedValue}
-          editable={false}
-
+               defaultValue={label}
+               editable={false}
         />
         <Dialog hideAnimation={hideAnimation}
+                onPress={this.handleDialogSwitch}
                 showAnimation={showAnimation}
                 statusBarAutoHidden={false}
                 style={styles.dialogContainer}
                 visible={this.state.visible}
         >
           <AnimatableView {...props}
-            style={styles.picker}
+                          style={styles.picker}
           >
             {this.renderHeader()}
             <PickerComponent onValueChange={this.handleValueChange}
