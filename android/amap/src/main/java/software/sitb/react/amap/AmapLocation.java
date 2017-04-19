@@ -1,5 +1,6 @@
 package software.sitb.react.amap;
 
+import android.os.AsyncTask;
 import android.util.Log;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -32,46 +33,17 @@ public class AmapLocation extends DefaultReactContextBaseJavaModule {
 
   @ReactMethod
   public void getCurrentPosition(ReadableMap options, final Callback success, final Callback error) {
-    new GuardedAsyncTask<Void, Integer>(getReactApplicationContext()) {
-      @Override
-      protected void doInBackgroundGuarded(Void... voids) {
-        //初始化client
-        final AMapLocationClient locationClient = new AMapLocationClient(getReactApplicationContext());
-        //设置定位参数
-        locationClient.setLocationOption(getDefaultOption());
-        // 设置定位监听
-        locationClient.setLocationListener(new AMapLocationListener() {
+    AMapLocationClientOption option = getDefaultOption();
+    option.setOnceLocation(true);
+    new WatchLocationGuardedAsyncTask(getReactApplicationContext(), option, success, error)
+            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+  }
 
-          @Override
-          public void onLocationChanged(AMapLocation location) {
-            if (null == location) {
-              Log.e(TAG, "获取定位信息失败");
-              error.invoke("获取定位信息失败");
-            } else if (location.getErrorCode() == 0) {
-              Log.d(TAG, "获取定位信息成功->" + location.toString());
-              WritableMap result = Arguments.createMap();
-              WritableMap coords = Arguments.createMap();
-              coords.putDouble("latitude", location.getLatitude());
-              coords.putDouble("longitude", location.getLongitude());
-              coords.putDouble("accuracy", location.getAccuracy());
-
-              result.putMap("coords", coords);
-              result.putDouble("timestamp", location.getTime());
-
-              success.invoke(result);
-            } else {
-              Log.e(TAG, "location Error, ErrCode:" + location.getErrorCode() + ", errInfo:" + location.getErrorInfo());
-              WritableMap result = Arguments.createMap();
-              result.putInt("code", location.getErrorCode());
-              result.putString("message", location.getErrorInfo());
-              error.invoke(result);
-            }
-            locationClient.stopLocation();
-          }
-        });
-        locationClient.startLocation();
-      }
-    }.execute();
+  @ReactMethod
+  public void watchPosition(ReadableMap options, final Callback success, final Callback error) {
+    AMapLocationClientOption option = getDefaultOption();
+    new WatchLocationGuardedAsyncTask(getReactApplicationContext(), option, success, error)
+            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
   }
 
   /**
@@ -94,6 +66,61 @@ public class AmapLocation extends DefaultReactContextBaseJavaModule {
     mOption.setWifiScan(true); //可选，设置是否开启wifi扫描。默认为true，如果设置为false会同时停止主动刷新，停止以后完全依赖于系统刷新，定位位置可能存在误差
     mOption.setLocationCacheEnable(true); //可选，设置是否使用缓存定位，默认为true
     return mOption;
+  }
+
+  private static class WatchLocationGuardedAsyncTask extends GuardedAsyncTask<Void, Void> {
+
+    private ReactContext reactContext;
+    private AMapLocationClientOption option;
+    private Callback success;
+    private Callback error;
+
+    protected WatchLocationGuardedAsyncTask(ReactContext reactContext, AMapLocationClientOption option, Callback success, Callback error) {
+      super(reactContext);
+      this.reactContext = reactContext;
+      this.option = option;
+      this.success = success;
+      this.error = error;
+    }
+
+    @Override
+    protected void doInBackgroundGuarded(Void... voids) {
+      //初始化client
+      final AMapLocationClient locationClient = new AMapLocationClient(this.reactContext);
+      //设置定位参数
+      locationClient.setLocationOption(this.option);
+      // 设置定位监听
+      locationClient.setLocationListener(new AMapLocationListener() {
+
+        @Override
+        public void onLocationChanged(AMapLocation location) {
+          if (null == location) {
+            Log.e(TAG, "获取定位信息失败");
+            error.invoke("获取定位信息失败");
+          } else if (location.getErrorCode() == 0) {
+            Log.d(TAG, "获取定位信息成功->" + location.toString());
+            WritableMap result = Arguments.createMap();
+            WritableMap coords = Arguments.createMap();
+            coords.putDouble("latitude", location.getLatitude());
+            coords.putDouble("longitude", location.getLongitude());
+            coords.putDouble("accuracy", location.getAccuracy());
+
+            result.putMap("coords", coords);
+            result.putDouble("timestamp", location.getTime());
+
+            success.invoke(result);
+          } else {
+            Log.e(TAG, "location Error, ErrCode:" + location.getErrorCode() + ", errInfo:" + location.getErrorInfo());
+            WritableMap result = Arguments.createMap();
+            result.putInt("code", location.getErrorCode());
+            result.putString("message", location.getErrorInfo());
+            error.invoke(result);
+          }
+          locationClient.stopLocation();
+        }
+      });
+      locationClient.startLocation();
+    }
   }
 
 }
