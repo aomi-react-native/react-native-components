@@ -2,9 +2,7 @@ import React, { PropTypes } from 'react';
 import AbstractFormComponent from './AbstractFormComponent';
 import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from '../Icon';
-import Form from './Form';
 import commonStyle, { Colors, separatorHeight } from '../styles';
-import { findAllParent } from '../domUtils';
 
 // noinspection JSSuspiciousNameCombination
 const styles = StyleSheet.create({
@@ -131,7 +129,7 @@ class Input extends AbstractFormComponent {
     /**
      * input 值更改回调函数
      */
-    onChangeText: PropTypes.func,
+    onChangeText: PropTypes.func
   };
 
   static defaultProps = {
@@ -149,6 +147,9 @@ class Input extends AbstractFormComponent {
   constructor(props) {
     super(props);
     this.state.value = props.defaultValue || '';
+    const {name, form} = this.props;
+    name && form && form.putFormValue(name, this.props.defaultValue);
+    this.putFormField();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -161,23 +162,11 @@ class Input extends AbstractFormComponent {
     this.putFormField();
   }
 
-  componentDidMount() {
-    const {name} = this.props;
-    const form = this.getForm();
-    name && form && form.putFormValue(name, this.props.defaultValue);
-    this.putFormField();
-  }
-
   putFormField() {
-    const {name} = this.props;
-    const form = this.getForm();
+    const {name, form} = this.props;
     if (name && form) {
       form.formFields[name] = this;
     }
-  }
-
-  getForm() {
-    return (findAllParent(this, Form) || [])[0];
   }
 
   getComp(name, isLabel) {
@@ -213,8 +202,7 @@ class Input extends AbstractFormComponent {
   }
 
   valid() {
-    let {validate, customValid, pattern, required, name} = this.props;
-    const form = this.getForm();
+    let {validate, customValid, pattern, required, name, form} = this.props;
     if (validate) {
       if (customValid) {
         let result = customValid(this.state.value);
@@ -242,8 +230,7 @@ class Input extends AbstractFormComponent {
   }
 
   setFormFieldInfo(result) {
-    const {name} = this.props;
-    const form = this.getForm();
+    const {name, form} = this.props;
     if (result) {
       name && form && form.deleteErrOrMissField(name);
     } else {
@@ -253,10 +240,13 @@ class Input extends AbstractFormComponent {
 
   handleChangeText(value) {
     this.setState({value});
-    const {onChangeText, name} = this.props;
-    const form = this.getForm();
+    const {onChangeText, name, form} = this.props;
     name && form && form.putFormValue(name, value);
     onChangeText && onChangeText(value);
+  }
+
+  focus() {
+    this.textInput.focus();
   }
 
   render() {
