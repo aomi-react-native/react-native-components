@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { DeviceEventEmitter, NativeModules, Platform } from 'react-native';
 
 
 const config = {
@@ -8,6 +8,33 @@ const config = {
 };
 
 const convertUrl = 'http://restapi.amap.com/v3/assistant/coordinate/convert?coordsys=gps&key=';
+
+const ANDROID_EVENT = 'amapWatchPosition';
+
+let watchId = 0;
+const watchFunc = {};
+
+function gpsToAmap(position, success, error) {
+  fetch(`${convertUrl}${config.webApiKey}&locations=${position.coords.longitude},${position.coords.latitude}`)
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === '1') {
+        const tmp = res.locations.split(',');
+        const result = {
+          ...position
+        };
+        result.coords.longitude = tmp[0];
+        result.coords.latitude = tmp[1];
+        success && success(result);
+      } else {
+        error && error({
+          code: res.infocode,
+          message: res.info
+        });
+      }
+    })
+    .catch(err => error && error(err));
+}
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -23,6 +50,7 @@ export default class AmapLocation {
     }
   }
 
+
   /**
    * 高德定位SDK获取当前的地理位置
    * @param success 成功回调函数
@@ -31,29 +59,52 @@ export default class AmapLocation {
    */
   static getCurrentPosition(success: Function, error: Function, options) {
     if (Platform.OS === 'android') {
-      NativeModules.AmapLocation.getCurrentPosition(options, success, error);
+      const onPosition = (payload) => {
+        if (payload.success) {
+          success && success(payload);
+        } else {
+          error && error(payload);
+        }
+        DeviceEventEmitter.removeListener(ANDROID_EVENT, onPosition);
+      };
+
+      DeviceEventEmitter.addListener(ANDROID_EVENT, onPosition);
+      NativeModules.AmapLocation.getCurrentPosition(options);
     } else {
-      navigator.geolocation.getCurrentPosition(position => {
-        fetch(`${convertUrl}${config.webApiKey}&locations=${position.coords.longitude},${position.coords.latitude}`)
-          .then(res => res.json())
-          .then(res => {
-            if (res.status === '1') {
-              const tmp = res.locations.split(',');
-              const result = {
-                ...position
-              };
-              result.coords.longitude = tmp[0];
-              result.coords.latitude = tmp[1];
-              success && success(result);
-            } else {
-              error && error({
-                code: res.infocode,
-                message: res.info
-              });
-            }
-          })
-          .catch(err => error && error(err));
-      }, error, options);
+      navigator.geolocation.getCurrentPosition(position => gpsToAmap(position, success, error), error, options);
+    }
+  }
+
+  static watchPosition(success: Function, error?: Function, options) {
+    if (Platform.OS === 'android') {
+      const onPosition = (payload) => {
+        if (payload.success) {
+          success && success(payload);
+        } else {
+          error && error(payload);
+        }
+      };
+
+      DeviceEventEmitter.addListener(ANDROID_EVENT, onPosition);
+
+      watchId += 1;
+      watchFunc[watchId] = onPosition;
+
+      NativeModules.AmapLocation.watchPosition(options, watchId);
+      return watchId;
+    }
+    return navigator.geolocation.watchPosition(position => gpsToAmap(position, success, error), error, options);
+  }
+
+  static clearWatch(id) {
+    if (Platform.OS === 'android') {
+      const onPosition = watchFunc[id];
+      if (onPosition) {
+        NativeModules.AmapLocation.clearWatch(id);
+        Reflect.deleteProperty(watchFunc, id);
+      }
+    } else {
+      navigator.geolocation.clearWatch(id);
     }
   }
 
