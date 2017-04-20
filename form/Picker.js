@@ -4,7 +4,7 @@ import { View as AnimatableView } from 'react-native-animatable';
 import AbstractFormComponent from './AbstractFormComponent';
 import Dialog from '../Dialog';
 import Input from './Input';
-import { Colors } from '../styles';
+import { Colors, separatorHeight } from '../styles';
 
 const styles = StyleSheet.create({
   dialogContainer: {
@@ -20,15 +20,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 35,
     paddingHorizontal: 15,
-    borderBottomWidth: 1,
+    borderBottomWidth: separatorHeight,
     borderColor: Colors.separator,
     backgroundColor: Colors.underlay
   },
   finish: {}
 });
 
-
-const PickerComponent = Platform.OS === 'ios' ? PickerIOS : RNPicker;
 
 const showAnimation = {
   animation: 'fadeIn',
@@ -47,6 +45,7 @@ class Picker extends AbstractFormComponent {
 
   static propTypes = {
     children: PropTypes.node,
+    confirmText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     defaultSelected: PropTypes.any,
     /**
      * On Android, specifies how to display the selection items when the user taps on the picker:
@@ -60,7 +59,8 @@ class Picker extends AbstractFormComponent {
   };
 
   static defaultProps = {
-    mode: 'dropdown'
+    confirmText: '完成',
+    mode: 'dialog'
   };
 
   state = {
@@ -108,7 +108,7 @@ class Picker extends AbstractFormComponent {
   }
 
   renderHeader() {
-    const {renderHeader, placeholder} = this.props;
+    const {renderHeader, placeholder, confirmText} = this.props;
     if (renderHeader) {
       return renderHeader();
     }
@@ -120,10 +120,10 @@ class Picker extends AbstractFormComponent {
         >
           <Text style={{
             color: '#0977FF',
-            fontSize: 14
+            fontSize: 16
           }}
           >
-            {'完成'}
+            {confirmText}
           </Text>
         </TouchableOpacity>
       </View>
@@ -131,7 +131,23 @@ class Picker extends AbstractFormComponent {
   }
 
   render() {
-    const {children, editable, mode, ...other} = this.props;
+
+    const {children, mode, style} = this.props;
+
+    if (Platform.OS === 'android') {
+      return (
+        <RNPicker mode={mode}
+                  onValueChange={this.handleValueChange}
+                  selectedValue={this.state.selectedValue}
+                  style={style}
+        >
+          {children}
+        </RNPicker>
+      );
+    }
+
+    const {editable, ...other} = this.props;
+
     const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
     let label = '';
     const childrenArr = Children.toArray(children);
@@ -141,6 +157,7 @@ class Picker extends AbstractFormComponent {
         label = child.props.label;
       }
     }
+
     return (
       <TouchableOpacity disabled={editable}
                         onPress={this.handleDialogSwitch}
@@ -160,12 +177,11 @@ class Picker extends AbstractFormComponent {
                           style={styles.picker}
           >
             {this.renderHeader()}
-            <PickerComponent mode={mode}
-                             onValueChange={this.handleValueChange}
-                             selectedValue={this.state.selectedValue}
+            <PickerIOS onValueChange={this.handleValueChange}
+                       selectedValue={this.state.selectedValue}
             >
               {children}
-            </PickerComponent>
+            </PickerIOS>
           </AnimatableView>
         </Dialog>
       </TouchableOpacity>
@@ -175,6 +191,6 @@ class Picker extends AbstractFormComponent {
 
 }
 
-Picker.Item = PickerComponent.Item;
+Picker.Item = Platform.OS === 'android' ? RNPicker.Item : PickerIOS.Item;
 
 export default Picker;
