@@ -2,6 +2,7 @@ package software.sitb.react.amap;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.SparseArray;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -9,12 +10,21 @@ import com.amap.api.location.AMapLocationListener;
 import com.facebook.react.bridge.*;
 import software.sitb.react.commons.DefaultReactContextBaseJavaModule;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Sean sean.snow@live.com createAt 2017/4/6
  */
 public class AmapLocation extends DefaultReactContextBaseJavaModule {
 
   private static final String TAG = "AMAP";
+
+  private static final String EVENT = "amapWatchPosition";
+
+  private SparseArray<AMapLocationClient> watchIds = new SparseArray<>();
 
   public AmapLocation(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -32,18 +42,38 @@ public class AmapLocation extends DefaultReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getCurrentPosition(ReadableMap options, final Callback success, final Callback error) {
+  public void getCurrentPosition(ReadableMap options) {
     AMapLocationClientOption option = getDefaultOption();
     option.setOnceLocation(true);
-    new WatchLocationGuardedAsyncTask(getReactApplicationContext(), option, success, error)
+    //初始化client
+    AMapLocationClient locationClient = new AMapLocationClient(this.reactContext);
+    //设置定位参数
+    locationClient.setLocationOption(option);
+    new WatchLocationGuardedAsyncTask(getReactApplicationContext(), locationClient)
             .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
   }
 
   @ReactMethod
-  public void watchPosition(ReadableMap options, final Callback success, final Callback error) {
+  public void watchPosition(ReadableMap options, Integer watchId) {
     AMapLocationClientOption option = getDefaultOption();
-    new WatchLocationGuardedAsyncTask(getReactApplicationContext(), option, success, error)
+
+    //初始化client
+    AMapLocationClient locationClient = new AMapLocationClient(this.reactContext);
+    //设置定位参数
+    locationClient.setLocationOption(option);
+
+    new WatchLocationGuardedAsyncTask(getReactApplicationContext(), locationClient)
             .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+    watchIds.put(watchId, locationClient);
+  }
+
+  @ReactMethod
+  public void clearWatch(Integer watchId) {
+    AMapLocationClient client = watchIds.get(watchId);
+    if (null != client) {
+      client.stopLocation();
+    }
   }
 
   /**
@@ -68,27 +98,18 @@ public class AmapLocation extends DefaultReactContextBaseJavaModule {
     return mOption;
   }
 
-  private static class WatchLocationGuardedAsyncTask extends GuardedAsyncTask<Void, Void> {
+  private class WatchLocationGuardedAsyncTask extends GuardedAsyncTask<Void, Void> {
 
-    private ReactContext reactContext;
-    private AMapLocationClientOption option;
-    private Callback success;
-    private Callback error;
+    private AMapLocationClient locationClient;
 
-    protected WatchLocationGuardedAsyncTask(ReactContext reactContext, AMapLocationClientOption option, Callback success, Callback error) {
+    protected WatchLocationGuardedAsyncTask(ReactContext reactContext, AMapLocationClient locationClient) {
       super(reactContext);
-      this.reactContext = reactContext;
-      this.option = option;
-      this.success = success;
-      this.error = error;
+      this.locationClient = locationClient;
     }
 
     @Override
     protected void doInBackgroundGuarded(Void... voids) {
-      //初始化client
-      final AMapLocationClient locationClient = new AMapLocationClient(this.reactContext);
-      //设置定位参数
-      locationClient.setLocationOption(this.option);
+
       // 设置定位监听
       locationClient.setLocationListener(new AMapLocationListener() {
 
@@ -96,7 +117,6 @@ public class AmapLocation extends DefaultReactContextBaseJavaModule {
         public void onLocationChanged(AMapLocation location) {
           if (null == location) {
             Log.e(TAG, "获取定位信息失败");
-            error.invoke("获取定位信息失败");
           } else if (location.getErrorCode() == 0) {
             Log.d(TAG, "获取定位信息成功->" + location.toString());
             WritableMap result = Arguments.createMap();
@@ -107,16 +127,17 @@ public class AmapLocation extends DefaultReactContextBaseJavaModule {
 
             result.putMap("coords", coords);
             result.putDouble("timestamp", location.getTime());
+            result.putBoolean("success", true);
 
-            success.invoke(result);
+            sendEvent(EVENT, result);
           } else {
             Log.e(TAG, "location Error, ErrCode:" + location.getErrorCode() + ", errInfo:" + location.getErrorInfo());
             WritableMap result = Arguments.createMap();
             result.putInt("code", location.getErrorCode());
             result.putString("message", location.getErrorInfo());
-            error.invoke(result);
+            result.putBoolean("success", false);
+            sendEvent(EVENT, result);
           }
-          locationClient.stopLocation();
         }
       });
       locationClient.startLocation();
