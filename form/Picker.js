@@ -80,7 +80,13 @@ class Picker extends AbstractFormComponent {
 
   constructor(props) {
     super(props);
-    this.state.selectedValue = props.defaultSelected;
+    this.state.selectedValue = props.defaultSelected || props.selectedValue;
+  }
+
+  componentWillReceiveProps({selectedValue}) {
+    if (this.props.selectedValue !== selectedValue) {
+      this.setState({selectedValue});
+    }
   }
 
   handleValueChange(selectedValue, index) {
