@@ -88,10 +88,10 @@ class Form extends Component {
   }
 
   render() {
-    const {children, ...other} = this.props;
+    const {renderChildren, ...other} = this.props;
     return (
       <View {...other}>
-        {children}
+        {renderChildren && renderChildren(this)}
       </View>
     );
   }
