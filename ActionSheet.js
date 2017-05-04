@@ -1,18 +1,11 @@
 import React, { PropTypes } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableHighlight,
-  Dimensions
-} from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
 import RootSiblings from 'react-native-root-siblings';
 import Component from './AbstractComponent';
-import Button from './bootstrap/Button';
+import Button from './Button';
 import Dialog from './Dialog';
-import { Colors } from './styles';
+import { Colors, separatorHeight } from './styles';
 
 const height = 50;
 
@@ -33,7 +26,7 @@ const styles = StyleSheet.create({
     height,
     justifyContent: 'center',
     borderColor: Colors.separator,
-    borderBottomWidth: 1
+    borderBottomWidth: separatorHeight
   },
   titleText: {
     color: '#8F8F91',
@@ -44,12 +37,13 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     height,
     borderColor: Colors.separator,
-    borderBottomWidth: 1
+    borderBottomWidth: separatorHeight
   },
   cancel: {
     marginTop: 10,
     height,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderWidth: 0
   },
   cancelText: {
     fontWeight: '700',
@@ -69,7 +63,11 @@ class ActionSheetComponent extends Component {
     /**
      * （字符串数组） - 一组按钮的标题（必选）
      */
-    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    options: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      textColor: PropTypes.string,
+      onPress: PropTypes.func
+    })).isRequired,
 
     cancel: PropTypes.string,
     cancelPress: PropTypes.func,
@@ -119,8 +117,8 @@ class ActionSheetComponent extends Component {
   }
 
   close(onPress) {
-    this.setState({open: false}, ()=> {
-      setTimeout(()=> {
+    this.setState({open: false}, () => {
+      setTimeout(() => {
         onPress && onPress();
         this.props.manager.destroy();
       }, 600);
@@ -129,7 +127,7 @@ class ActionSheetComponent extends Component {
 
   render() {
 
-    let props = this.state.open ? this.contentShowAnimation : this.contentHideAnimation;
+    const props = this.state.open ? this.contentShowAnimation : this.contentHideAnimation;
 
     const {
       options,
@@ -143,13 +141,14 @@ class ActionSheetComponent extends Component {
 
     return (
       <Dialog hideAnimation={this.hideAnimation}
+              onPress={this.handleCancelPress}
               showAnimation={this.showAnimation}
               statusBarAutoHidden={false}
               style={styles.container}
               visible={this.state.open}
       >
         <AnimatableView {...props}
-          style={styles.contentContainer}
+                        style={styles.contentContainer}
         >
           <View style={[styles.content]}>
             <View style={styles.title}>
@@ -158,7 +157,7 @@ class ActionSheetComponent extends Component {
             <ScrollView alwaysBounceVertical={false}
                         style={{maxHeight: height * 0.6}}
             >
-              {options.map((option, index)=> {
+              {options.map((option, index) => {
                 let tmp = null;
                 if (options.length - 1 === index) {
                   tmp = {
@@ -167,12 +166,10 @@ class ActionSheetComponent extends Component {
                   };
                 }
                 return (
-                  <Button Comp={TouchableHighlight}
-                          buttonStyle={[styles.button, tmp]}
-                          color="#0977FF"
+                  <Button color={option.textColor || '#0977FF'}
+                          containerStyle={[styles.button, tmp]}
                           key={index}
                           onPress={this.handlePress(option.onPress)}
-                          underlayColor={Colors.underlay}
                   >
                     {option.label}
                   </Button>
@@ -180,10 +177,8 @@ class ActionSheetComponent extends Component {
               })}
             </ScrollView>
           </View>
-          <Button Comp={TouchableHighlight}
+          <Button containerStyle={[styles.content, styles.cancel]}
                   onPress={this.handleCancelPress}
-                  style={[styles.content, styles.cancel]}
-                  underlayColor={Colors.underlay}
           >
             <Text style={styles.cancelText}>
               {cancel || 'Cancel'}
@@ -199,7 +194,7 @@ class ActionSheetComponent extends Component {
 class ActionSheet {
   /**
    * @param options
-   * options (对象数组) - 一组按钮的选择（必选）{label: '按钮标题', onPress: ()=>console.log('press')}
+   * options (对象数组) - 一组按钮的选项（必选）{label: '按钮标题', onPress: ()=>console.log('press')}
    * cancelButtonIndex（整型） - 选项中取消按钮所在的位置（索引）
    * destructiveButtonIndex（整型） - 选项中删除按钮所在的位置（索引）
    * title（字符串） - 弹出框顶部的标题
@@ -210,7 +205,7 @@ class ActionSheet {
     let actionSheet = new RootSiblings(<View />);
     actionSheet.update(
       <ActionSheetComponent {...options}
-        manager={actionSheet}
+                            manager={actionSheet}
       />
     );
 
