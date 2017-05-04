@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { ActivityIndicator, BackAndroid, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 import createRootView from './createRootView';
@@ -66,9 +66,9 @@ class Dialog extends Component {
   componentWillReceiveProps() {
     if (Platform.OS === 'android') {
       if (this.state.visible) {
-        BackAndroid.addEventListener('hardwareBackPress', handleAndroidBackPress);
+        BackHandler.addEventListener('hardwareBackPress', handleAndroidBackPress);
       } else {
-        BackAndroid.removeEventListener('hardwareBackPress', handleAndroidBackPress);
+        BackHandler.removeEventListener('hardwareBackPress', handleAndroidBackPress);
       }
     }
   }
