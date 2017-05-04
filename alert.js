@@ -8,9 +8,16 @@ const DEFAULT_BUTTON = {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/3/22
  */
-export default function ({title, message, button = DEFAULT_BUTTON, onOk, options}) {
-  if (!button.onPress && onOk) {
-    button.onPress = onOk;
+export default function ({title, message, button, onOk, options}) {
+  let buttons;
+  if (Array.isArray(button)) {
+    buttons = button;
+  } else {
+    let tmp = button || DEFAULT_BUTTON;
+    if (!tmp.onPress && onOk) {
+      tmp.onPress = onOk;
+    }
+    buttons = [tmp];
   }
-  Alert.alert(title, message, [button], options);
+  Alert.alert(title, message, buttons, options);
 }
