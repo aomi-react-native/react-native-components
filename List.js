@@ -58,7 +58,8 @@ export const Row = {
   body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   displayRightArrow: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  style: View.propTypes.style
 };
 
 /**
@@ -111,9 +112,10 @@ class List extends AbstractComponent {
       );
     }
 
-    return header && cloneElement(header, {
-        style: styles.header
-      });
+    return cloneElement(<View />, {
+      style: styles.header,
+      children: header
+    });
   }
 
   renderBody(body) {
@@ -146,7 +148,7 @@ class List extends AbstractComponent {
   }
 
   renderRow(row: Row, sectionID, rowID) {
-    const {header, body, footer, displayRightArrow, disabled} = row;
+    const {header, body, footer, displayRightArrow, disabled, style} = row;
     const {onItemPress, cellStyle} = this.props;
     return (
       <TouchableHighlight disabled={disabled}
@@ -154,7 +156,7 @@ class List extends AbstractComponent {
                           onPress={() => onItemPress && onItemPress(row, sectionID, rowID)}
                           style={styles.rowContainer}
       >
-        <View style={[styles.row, cellStyle]}>
+        <View style={[styles.row, style || cellStyle]}>
           {this.renderHeader(header)}
           {this.renderBody(body)}
           {this.renderFooter(footer, displayRightArrow)}
