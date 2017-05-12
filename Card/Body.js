@@ -1,6 +1,6 @@
 import React from 'react';
 import Component from '../AbstractComponent';
-import { View } from 'react-native';
+import { View, ViewPropTypes } from 'react-native';
 
 const styles = {
   container: {
@@ -19,7 +19,7 @@ const styles = {
 export default class Body extends Component {
 
   static propTypes = {
-    style: View.propTypes.style
+    style: ViewPropTypes.style
   };
 
   render() {
