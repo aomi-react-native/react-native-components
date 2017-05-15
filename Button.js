@@ -1,6 +1,6 @@
 import React, { cloneElement, PropTypes } from 'react';
 import Component from './AbstractComponent';
-import { Keyboard, Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View, ViewPropTypes } from 'react-native';
 import Icon from './Icon';
 import { Colors, separatorHeight } from './styles';
 
@@ -61,9 +61,9 @@ class Button extends Component {
     before: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     children: PropTypes.any,
     color: PropTypes.string,
-    containerStyle: View.propTypes.style,
+    containerStyle: ViewPropTypes.style,
     disabled: PropTypes.bool,
-    disabledStyle: View.propTypes.style,
+    disabledStyle: ViewPropTypes.style,
     fontSize: PropTypes.number,
     iconProps: PropTypes.object,
     type: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link', 'default'])

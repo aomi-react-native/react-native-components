@@ -1,10 +1,6 @@
 import React, { PropTypes } from 'react';
 import Component from './AbstractComponent';
-import {
-  View,
-  StyleSheet,
-  requireNativeComponent,
-} from 'react-native';
+import { requireNativeComponent, StyleSheet, View, ViewPropTypes } from 'react-native';
 import common from './styles';
 
 export const Type = {
@@ -77,10 +73,9 @@ const styles = StyleSheet.create({
 class Barcode extends Component {
 
   static propTypes = {
-    ...View.propTypes,
     renderBottom: PropTypes.func,
     renderTop: PropTypes.func,
-    scanLineStyle: View.propTypes.style,
+    scanLineStyle: ViewPropTypes.style,
     type: PropTypes.oneOf([Type.QR]),
     windowSize: PropTypes.shape({
       width: PropTypes.number,
@@ -103,7 +98,7 @@ class Barcode extends Component {
     this.state = {
       windowSize: {
         width: 270,
-        height: props.type == Type.QR ? 270 : 70
+        height: props.type === Type.QR ? 270 : 70
       }
     };
   }

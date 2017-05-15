@@ -1,10 +1,6 @@
 import React, { PropTypes } from 'react';
 import Component from './AbstractComponent';
-import {
-  View,
-  Text,
-  StyleSheet
-} from 'react-native';
+import { StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 
 const radius = 12;
 const radius2x = Math.floor(2 * radius);
@@ -42,7 +38,7 @@ const styles = StyleSheet.create({
 class Badge extends Component {
 
   static propTypes = {
-    badgeContainerStyle: View.propTypes.style,
+    badgeContainerStyle: ViewPropTypes.style,
     badgeContent: PropTypes.node,
     badgeStyle: Text.propTypes.style,
     children: PropTypes.node

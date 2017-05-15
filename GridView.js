@@ -1,5 +1,5 @@
 import React, { cloneElement, PropTypes } from 'react';
-import { ListView, StyleSheet, View } from 'react-native';
+import { ListView, StyleSheet, View, ViewPropTypes } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 
 const styles = StyleSheet.create({
@@ -32,7 +32,7 @@ class GridView extends AbstractComponent {
      */
     autoWidth: PropTypes.bool,
 
-    cellStyle: View.propTypes.style,
+    cellStyle: ViewPropTypes.style,
     /**
      * 列数
      */

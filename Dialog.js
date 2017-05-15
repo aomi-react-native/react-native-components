@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { ActivityIndicator, BackHandler, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewPropTypes } from 'react-native';
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 import createRootView from './createRootView';
@@ -44,7 +44,7 @@ class Dialog extends Component {
     loadingProps: PropTypes.object,
     showAnimation: PropTypes.object,
     statusBarAutoHidden: PropTypes.bool,
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     visible: PropTypes.bool,
     onPress: PropTypes.func
   };

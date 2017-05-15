@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import AbstractFormComponent from './AbstractFormComponent';
-import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Platform, StyleSheet, Text, TextInput, View, ViewPropTypes } from 'react-native';
 import Icon from '../Icon';
 import commonStyle, { Colors, separatorHeight } from '../styles';
 
@@ -85,7 +85,7 @@ class Input extends AbstractFormComponent {
     /**
      * 图标样式
      */
-    iconStyle: View.propTypes.style,
+    iconStyle: ViewPropTypes.style,
     /**
      * 输入框样式
      */
@@ -113,7 +113,7 @@ class Input extends AbstractFormComponent {
     /**
      * container 样式
      */
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     /**
      * Android input 下划线
      */

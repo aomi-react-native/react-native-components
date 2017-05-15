@@ -70,4 +70,14 @@ React Native Components Library, 封装常用的组件,提供IOS和Android统一
     react-native run-ios
 
 
+### Amap 定位SDK API
+
+#### Android 如何使用
+
+##### 权限配置
+
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+      <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+      <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 

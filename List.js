@@ -1,5 +1,5 @@
 import React, { cloneElement, PropTypes } from 'react';
-import { Image, ListView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Image, ListView, StyleSheet, Text, TouchableHighlight, View, ViewPropTypes } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import right from './images/right.png';
 import { Colors, separatorHeight } from './styles';
@@ -59,7 +59,7 @@ export const Row = {
   footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   displayRightArrow: PropTypes.bool,
   disabled: PropTypes.bool,
-  style: View.propTypes.style
+  style: ViewPropTypes.style
 };
 
 /**
@@ -70,8 +70,8 @@ class List extends AbstractComponent {
 
   static propTypes = {
     bodyTextStyle: Text.propTypes.style,
-    cellStyle: View.propTypes.style,
-    containerStyle: View.propTypes.style,
+    cellStyle: ViewPropTypes.style,
+    containerStyle: ViewPropTypes.style,
     footerTextStyle: Text.propTypes.style,
     fullSeparator: PropTypes.bool,
     items: PropTypes.array,

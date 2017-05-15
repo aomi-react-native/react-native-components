@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Component from '../AbstractComponent';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, ViewPropTypes } from 'react-native';
 
 const styles = {
   container: {
@@ -38,7 +38,7 @@ export default class Header extends Component {
 
   static propTypes = {
     extra: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     subtitle: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     thumb: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     title: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
