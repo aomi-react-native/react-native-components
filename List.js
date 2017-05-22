@@ -113,7 +113,7 @@ class List extends AbstractComponent {
     }
 
     return cloneElement(<View />, {
-      style: styles.header,
+      style: header && styles.header,
       children: header
     });
   }
