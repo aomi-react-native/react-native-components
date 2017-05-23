@@ -23,3 +23,6 @@ project(':react-native-components:orientation').projectDir = new File(rootProjec
 
 include(':react-native-components:utils')
 project(':react-native-components:utils').projectDir = new File(rootProject.projectDir, './utils')
+
+include(':react-native-components:wechat')
+project(':react-native-components:wechat').projectDir = new File(rootProject.projectDir, './wechat')
