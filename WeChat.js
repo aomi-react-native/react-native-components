@@ -4,14 +4,29 @@ const {WeChatManager} = NativeModules;
 
 
 type TypeProps = {
+  // 文本分享
   text: Number,
+  // 图片分享
   image: Number,
+  // 音乐分享
   music: Number,
+  // 视频分享
   video: Number,
+  // 网页分享
   webPage: Number
 };
 
+type SceneProps = {
+  // 微信会话
+  session: Number,
+  // 朋友圈
+  timeLine: Number,
+  // 收藏
+  favorite: Number
+};
+
 type Options = {
+  scene: SceneProps,
   type: TypeProps,
   text: String,
   description: String,
@@ -22,6 +37,8 @@ type Options = {
   thumbImageSize: Number,
   webPageUrl: String
 };
+
+export const Scene: SceneProps = WeChatManager.scene;
 
 export const Type: TypeProps = WeChatManager.type;
 
@@ -40,19 +57,11 @@ class WeChat {
   }
 
   /**
-   * 分享给指定的用户
+   * 分享
    * @param options 分享参数
    */
-  static shareToSession(options: Options) {
-    return WeChatManager.shareToSession(options);
-  }
-
-  /**
-   * 分享到朋友圈
-   * @param options 分享参数
-   */
-  static shareToTimeLine(options: Options) {
-    return WeChatManager.shareToTimeLine(options);
+  static share(options: Options) {
+    return WeChatManager.share(options);
   }
 
 }
