@@ -118,7 +118,7 @@ class Camera extends Component {
   }
 
   capture(option) {
-    return capture(option);
+    // return capture(option);
   }
 
 
@@ -136,6 +136,20 @@ class Camera extends Component {
     );
   }
 
+}
+
+if (Platform.OS === 'ios') {
+  /**
+   * 检查是否有相机权限
+   * ios only
+   */
+  Camera.checkVideoAuthorizationStatus = CameraManager.checkVideoAuthorizationStatus;
+
+  /**
+   * 检查是否有麦克风权限
+   * ios only
+   */
+  Camera.checkAudioAuthorizationStatus = CameraManager.checkAudioAuthorizationStatus;
 }
 
 export {
