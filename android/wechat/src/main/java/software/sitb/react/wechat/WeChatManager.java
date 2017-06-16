@@ -97,6 +97,9 @@ public class WeChatManager extends DefaultReactContextBaseJavaModule implements 
     }
 
     WXMediaMessage message = new WXMediaMessage();
+    if (options.hasKey("title")) {
+      message.title = options.getString("title");
+    }
     if (options.hasKey("description")) {
       message.description = options.getString("description");
     }
@@ -137,18 +140,25 @@ public class WeChatManager extends DefaultReactContextBaseJavaModule implements 
         break;
       case VIDEO:
         break;
-      case WEBPAGE:
+      case WEBPAGE: {
         WXWebpageObject webpageObject = new WXWebpageObject();
+        if (!options.hasKey("webPageUrl")) {
+          Log.e(TAG, "微信分享失败,缺少webPageUrl");
+          promise.reject("3001", "缺少webPageUrl");
+          return;
+        }
         webpageObject.webpageUrl = options.getString("webPageUrl");
         message.mediaObject = webpageObject;
         break;
+      }
     }
 
     SendMessageToWX.Req req = new SendMessageToWX.Req();
     req.scene = options.getInt("scene");
     req.message = message;
     req.transaction = UUID.randomUUID().toString();
-    weChatApi.sendReq(req);
+    boolean success = weChatApi.sendReq(req);
+    promise.resolve(success);
   }
 
   @Override
