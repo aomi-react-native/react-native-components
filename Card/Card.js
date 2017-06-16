@@ -1,6 +1,6 @@
 import React from 'react';
 import Component from '../AbstractComponent';
-import { View } from 'react-native';
+import { View, ViewPropTypes } from 'react-native';
 import { Colors, separatorHeight } from '../styles';
 
 // noinspection JSSuspiciousNameCombination
@@ -21,7 +21,7 @@ const styles = {
 export default class Card extends Component {
 
   static propTypes = {
-    style: View.propTypes.style
+    style: ViewPropTypes.style
   };
 
   render() {
