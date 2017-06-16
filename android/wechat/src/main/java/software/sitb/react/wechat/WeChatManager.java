@@ -3,14 +3,12 @@ package software.sitb.react.wechat;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.*;
 import com.facebook.react.common.MapBuilder;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.*;
+import com.tencent.mm.opensdk.modelpay.PayResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -50,6 +48,11 @@ public class WeChatManager extends DefaultReactContextBaseJavaModule implements 
         "music", ShareType.MUSIC.ordinal(),
         "video", ShareType.VIDEO.ordinal(),
         "webPage", ShareType.WEBPAGE.ordinal()
+      ),
+      "scene", MapBuilder.of(
+        "session", SendMessageToWX.Req.WXSceneSession,
+        "timeLine", SendMessageToWX.Req.WXSceneTimeline,
+        "favorite", SendMessageToWX.Req.WXSceneFavorite
       )
     );
   }
@@ -63,34 +66,35 @@ public class WeChatManager extends DefaultReactContextBaseJavaModule implements 
   @ReactMethod
   public void registerApp(String appId, Promise promise) {
     weChatApi = WXAPIFactory.createWXAPI(getReactApplicationContext(), appId, true);
+    if (null != getCurrentActivity()) {
+      weChatApi.handleIntent(getCurrentActivity().getIntent(), this);
+    } else {
+      Log.w(TAG, "current activity is null.");
+    }
     boolean result = weChatApi.registerApp(appId);
     Log.d(TAG, "向微信注册APP, result = " + result);
   }
 
   @ReactMethod
-  public void shareToSession(ReadableMap options, Promise promise) {
-    share(options, SendMessageToWX.Req.WXSceneSession, promise);
-  }
+  public void share(ReadableMap options, Promise promise) {
+    if (!options.hasKey("scene")) {
+      Log.e(TAG, "微信分享失败,不正确的分享场景");
+      promise.reject("3000", "微信分享失败,不正确的分享场景");
+      return;
+    }
 
-  @ReactMethod
-  public void shareToTimeLine(ReadableMap options, Promise promise) {
-    share(options, SendMessageToWX.Req.WXSceneTimeline, promise);
-  }
-
-  private void share(ReadableMap options, int scene, Promise promise) {
     if (!options.hasKey("type")) {
       Log.e(TAG, "微信分享失败,不正确的类型");
-      promise.reject("3000", "不正确的消息类型");
+      promise.reject("3001", "不正确的消息类型");
       return;
     }
 
     ShareType type = ShareType.values()[options.getInt("type")];
     if (null == type) {
       Log.e(TAG, "微信分享失败,不正确的类型");
-      promise.reject("3000", "不正确的消息类型");
+      promise.reject("3001", "不正确的消息类型");
       return;
     }
-
 
     WXMediaMessage message = new WXMediaMessage();
     if (options.hasKey("description")) {
@@ -141,7 +145,7 @@ public class WeChatManager extends DefaultReactContextBaseJavaModule implements 
     }
 
     SendMessageToWX.Req req = new SendMessageToWX.Req();
-    req.scene = scene;
+    req.scene = options.getInt("scene");
     req.message = message;
     req.transaction = UUID.randomUUID().toString();
     weChatApi.sendReq(req);
@@ -149,19 +153,45 @@ public class WeChatManager extends DefaultReactContextBaseJavaModule implements 
 
   @Override
   public void onReq(BaseReq baseReq) {
-
+    Log.d(TAG, "onReq transaction -> " + baseReq.transaction);
   }
 
   @Override
   public void onResp(BaseResp baseResp) {
+    Log.d(TAG, "onResp transaction -> " + baseResp.transaction);
+    WritableMap map = Arguments.createMap();
+    map.putInt("errCode", baseResp.errCode);
+    map.putString("errStr", baseResp.errStr);
+    map.putString("openId", baseResp.openId);
+    map.putString("transaction", baseResp.transaction);
 
+    if (baseResp instanceof SendAuth.Resp) {
+      SendAuth.Resp resp = (SendAuth.Resp) (baseResp);
+
+      map.putString("type", "SendAuth.Resp");
+      map.putString("code", resp.code);
+      map.putString("state", resp.state);
+      map.putString("url", resp.url);
+      map.putString("lang", resp.lang);
+      map.putString("country", resp.country);
+    } else if (baseResp instanceof SendMessageToWX.Resp) {
+      SendMessageToWX.Resp resp = (SendMessageToWX.Resp) (baseResp);
+      map.putString("type", "SendMessageToWX.Resp");
+    } else if (baseResp instanceof PayResp) {
+      PayResp resp = (PayResp) (baseResp);
+      map.putString("type", "PayReq.Resp");
+      map.putString("returnKey", resp.returnKey);
+    }
+
+    sendEvent("WeChatResp", map);
   }
 
   public enum ShareType {
     TEXT,
-      IMAGE,
-      MUSIC,
-      VIDEO,
-      WEBPAGE
+    IMAGE,
+    MUSIC,
+    VIDEO,
+    WEBPAGE
   }
+
 }

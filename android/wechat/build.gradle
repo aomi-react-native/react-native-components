@@ -19,4 +19,5 @@ android {
 
 dependencies {
     compile project(':react-native-components:commons')
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }
