@@ -32,6 +32,11 @@ RCT_EXPORT_MODULE();
                     @"music": @(MUSIC),
                     @"video": @(VIDEO),
                     @"webPage": @(WEBPAGE)
+            },
+            @"scene": @{
+                    @"session": @(WXSceneSession),
+                    @"timeLine": @(WXSceneTimeline),
+                    @"favorite": @(WXSceneFavorite)
             }
     };
 }
@@ -44,21 +49,6 @@ RCT_EXPORT_METHOD(
     RCTLog(@"向微信注册APP %@, result -> %d", appId, result);
 }
 
-/**
- * 分享到朋友圈
- * @return
- */
-RCT_EXPORT_METHOD(
-            shareToTimeLine:
-            (NSDictionary *) data
-            resolve:
-            (RCTPromiseResolveBlock) resolve
-            reject:
-            (RCTPromiseRejectBlock) reject
-) {
-    RCTLog(@"微信分享到朋友圈");
-    [self shareToWeChatWithData:data scene:WXSceneTimeline resolve:resolve reject:reject];
-}
 
 /**
  * 分享给指定的回话
@@ -66,17 +56,13 @@ RCT_EXPORT_METHOD(
  * @return
  */
 RCT_EXPORT_METHOD(
-            shareToSession:
+            share:
             (NSDictionary *) data
             resolve:
             (RCTPromiseResolveBlock) resolve
             reject:
             (RCTPromiseRejectBlock) reject) {
-
-    RCTLog(@"微信分享给指定的回话");
-
-    [self shareToWeChatWithData:data scene:WXSceneSession resolve:resolve reject:reject];
-
+    [self shareToWeChatWithData:data scene:((NSNumber *) data[@"scene"]).intValue resolve:resolve reject:reject];
 }
 
 - (void)shareToWeChatWithData:(NSDictionary *)data
