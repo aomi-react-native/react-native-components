@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Component from './AbstractComponent';
-import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager, View } from 'react-native';
+import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager, ViewPropTypes } from 'react-native';
 
 type OrientationType = {
   auto: Number,
@@ -65,7 +65,7 @@ export function setCameraVersion(cameraVersion) {
 class Camera extends Component {
 
   static propTypes = {
-    ...View.propTypes,
+    ...ViewPropTypes,
     /**
      * 前置相机还是后置相机
      * CameraFacing.back
