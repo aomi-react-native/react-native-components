@@ -73,7 +73,36 @@ RCT_CUSTOM_VIEW_PROPERTY(quality, NSString, CameraView) {
 RCT_EXPORT_VIEW_PROPERTY(onCaptureOutputBuffer, RCTBubblingEventBlock);
 
 /******************** Component Method **********************/
+/**
+ * 检查是否有相机权限
+ */
+RCT_EXPORT_METHOD(
+            checkVideoAuthorizationStatus:
+            (RCTPromiseResolveBlock) resolve
+            reject:
+            (__unused
+        RCTPromiseRejectBlock)reject) {
+    __block NSString *mediaType = AVMediaTypeVideo;
 
+    [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
+        resolve(@(granted));
+    }];
+}
+
+/**
+ * 检查是否有麦克风权限
+ */
+RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
+    (RCTPromiseResolveBlock) resolve
+            reject:
+            (__unused
+        RCTPromiseRejectBlock)reject) {
+    __block NSString *mediaType = AVMediaTypeAudio;
+
+    [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
+        resolve(@(granted));
+    }];
+}
 
 /**
  * 初始化 AVCaptureSession
