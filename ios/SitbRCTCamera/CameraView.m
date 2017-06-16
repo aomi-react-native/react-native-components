@@ -27,9 +27,6 @@
 
 /**
  * 初始化View
- * @param manager
- * @param bridge
- * @return View
  */
 - (id)initWithManager:(CameraManager *)manager bridge:(RCTBridge *)bridge {
     if ((self = [super init])) {
@@ -55,13 +52,13 @@
 }
 
 - (void)insertReactSubview:(UIView *)view atIndex:(NSInteger)atIndex {
+    [super insertReactSubview:view atIndex:atIndex];
     [self insertSubview:view atIndex:atIndex + 1];
-    return;
 }
 
 - (void)removeReactSubview:(UIView *)subview {
+    [super removeReactSubview:subview];
     [subview removeFromSuperview];
-    return;
 }
 
 - (void)removeFromSuperview {
@@ -136,7 +133,7 @@
 //}
 
 - (void)setOrientation:(NSInteger)orientation {
-    [self.manager setOrientation:orientation];
+    [self.manager setOrientation:(AVCaptureVideoOrientation) orientation];
 }
 
 
