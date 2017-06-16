@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     flexDirection: 'row',
-    height: 45,
+    minHeight: 45,
     alignItems: 'center',
     backgroundColor: '#FFF',
     paddingHorizontal: padding
