@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import com.facebook.react.bridge.*;
 import okhttp3.OkHttpClient;
@@ -20,8 +21,6 @@ import software.sitb.react.commons.utils.FileUtils;
 public class VersionManager extends DefaultReactContextBaseJavaModule {
 
   private static final String TAG = "VersionManager";
-
-  private OkHttpClient client = new OkHttpClient();
 
   private ReactApplicationContext context;
 
@@ -79,11 +78,19 @@ public class VersionManager extends DefaultReactContextBaseJavaModule {
         if (completeDownloadId == downloadId) {
           Log.d(TAG, "app 下载成功");
           Uri uri = downloadManager.getUriForDownloadedFile(downloadId);
-          String filePath = FileUtils.getFilePathFromContentUri(context.getContentResolver(), uri);
-          Log.d(TAG, "file path: " + filePath);
+          Log.d(TAG, "SDK_INT");
+
+          Uri apkUri;
+          if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            apkUri = uri;
+          } else {
+            String filePath = FileUtils.getFilePathFromContentUri(context.getContentResolver(), uri);
+            Log.d(TAG, "file path: " + filePath);
+            apkUri = Uri.parse("file://" + filePath);
+          }
 
           Intent installIntent = new Intent(Intent.ACTION_VIEW);
-          installIntent.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
+          installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
           installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
           context.startActivity(installIntent);
           context.unregisterReceiver(this);
