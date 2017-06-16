@@ -3,9 +3,9 @@
 // Copyright (c) 2016 Sitb Software. All rights reserved.
 //
 
-#import "RCTBridgeModule.h"
+#import <React/RCTBridgeModule.h>
 #import <UIKit/UIKit.h>
-#import "RCTEventEmitter.h"
+#import <React/RCTEventEmitter.h>
 
 
 @interface OrientationManager : RCTEventEmitter <RCTBridgeModule>
