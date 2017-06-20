@@ -10,7 +10,7 @@ const styles = {
     borderWidth: separatorHeight,
     borderColor: 'transparent',
     borderStyle: 'solid',
-    height: 44,
+    minHeight: 44,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
