@@ -60,7 +60,7 @@ class Icon extends Component {
                  injectedJavaScript={js}
                  javaScriptEnabled
                  scrollEnabled={false}
-                 style={{backgroundColor: 'transparent'}}
+                 style={[size, {backgroundColor: 'transparent'}]}
         />
       </View>
     );
