@@ -13,7 +13,7 @@ export default function ({title, message, button, onOk, options}) {
   if (Array.isArray(button)) {
     buttons = button;
   } else {
-    let tmp = button || DEFAULT_BUTTON;
+    let tmp = button || {...DEFAULT_BUTTON};
     if (!tmp.onPress && onOk) {
       tmp.onPress = onOk;
     }
