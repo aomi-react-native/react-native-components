@@ -1,4 +1,5 @@
-import React, { cloneElement, PropTypes } from 'react';
+import React, { cloneElement } from 'react';
+import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
 import { ActivityIndicator, ListView as RNListView, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 

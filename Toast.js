@@ -2,14 +2,10 @@
  * @author Sean sean.snow@live.com
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
-import {
-  Platform,
-  ToastAndroid,
-  Text,
-  StyleSheet
-} from 'react-native';
+import { Platform, StyleSheet, Text, ToastAndroid } from 'react-native';
 import RootSiblings from 'react-native-root-siblings';
 import { View } from 'react-native-animatable';
 
@@ -61,9 +57,9 @@ class ToastIOS extends Component {
   state = {};
 
   componentDidMount() {
-    this.closeTask = setTimeout(()=> {
+    this.closeTask = setTimeout(() => {
       this.setState({show: false});
-      setTimeout(()=> {
+      setTimeout(() => {
         this.props.manager.destroy();
       }, 600);
     }, this.props.duration);
@@ -90,7 +86,7 @@ class ToastIOS extends Component {
     let animatable = this.state.show ? this.showAnimation : this.hideAnimation;
     return (
       <View {...animatable}
-        style={styles.container}
+            style={styles.container}
       >
         <View style={styles.content}>
           <Text style={styles.msg}>{msg}</Text>

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
 import { requireNativeComponent, StyleSheet, View, ViewPropTypes } from 'react-native';
 import common from './styles';
@@ -116,7 +117,11 @@ class Barcode extends Component {
             <View style={styles.cell}/>
             <View style={[styles.window, this.state.windowSize]}>
               <View style={styles.windowStyle}>
-                <View style={{flex: 1, borderWidth: 1, borderColor: 'white'}}/>
+                <View style={{
+                  flex: 1,
+                  borderWidth: 1,
+                  borderColor: 'white'
+                }}/>
               </View>
               <View style={[styles.top]}/>
               <View style={[styles.right]}/>

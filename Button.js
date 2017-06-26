@@ -1,4 +1,5 @@
-import React, { cloneElement, PropTypes } from 'react';
+import React, { cloneElement } from 'react';
+import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
 import { Keyboard, Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View, ViewPropTypes } from 'react-native';
 import Icon from './Icon';

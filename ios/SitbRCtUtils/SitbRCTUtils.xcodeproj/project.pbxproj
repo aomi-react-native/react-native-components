@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		141119FD1ED960FB00217B58 /* DeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 141119FC1ED960FB00217B58 /* DeviceManager.m */; };
+		1466D6D11F00D7AC007E10E2 /* SitbPressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1466D6D01F00D7AC007E10E2 /* SitbPressManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +27,8 @@
 		141119E81ED9606A00217B58 /* libSitbRCTUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbRCTUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		141119FB1ED960E300217B58 /* DeviceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DeviceManager.h; path = DeviceManager/DeviceManager.h; sourceTree = "<group>"; };
 		141119FC1ED960FB00217B58 /* DeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeviceManager.m; path = DeviceManager/DeviceManager.m; sourceTree = "<group>"; };
+		1466D6CF1F00D7AC007E10E2 /* SitbPressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SitbPressManager.h; path = PressManager/SitbPressManager.h; sourceTree = "<group>"; };
+		1466D6D01F00D7AC007E10E2 /* SitbPressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SitbPressManager.m; path = PressManager/SitbPressManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,7 @@
 		141119DF1ED9606A00217B58 = {
 			isa = PBXGroup;
 			children = (
+				1466D6CE1F00D2B5007E10E2 /* PressManager */,
 				141119F41ED9608400217B58 /* DeviceManager */,
 				141119E91ED9606A00217B58 /* Products */,
 			);
@@ -62,6 +66,15 @@
 				141119FC1ED960FB00217B58 /* DeviceManager.m */,
 			);
 			name = DeviceManager;
+			sourceTree = "<group>";
+		};
+		1466D6CE1F00D2B5007E10E2 /* PressManager */ = {
+			isa = PBXGroup;
+			children = (
+				1466D6CF1F00D7AC007E10E2 /* SitbPressManager.h */,
+				1466D6D01F00D7AC007E10E2 /* SitbPressManager.m */,
+			);
+			name = PressManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,6 +136,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				141119FD1ED960FB00217B58 /* DeviceManager.m in Sources */,
+				1466D6D11F00D7AC007E10E2 /* SitbPressManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,4 +1,5 @@
-import React, { cloneElement, PropTypes } from 'react';
+import React, { cloneElement } from 'react';
+import PropTypes from 'prop-types';
 import { Image, ListView, StyleSheet, Text, TouchableHighlight, View, ViewPropTypes } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import right from './images/right.png';

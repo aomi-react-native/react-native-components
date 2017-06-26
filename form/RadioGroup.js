@@ -1,11 +1,6 @@
-import React, {
-  PropTypes,
-  cloneElement
-} from 'react';
-import {
-  View,
-  StyleSheet
-} from 'react-native';
+import React, { cloneElement } from 'react';
+import PropTypes from 'prop-types';
+import { StyleSheet, View } from 'react-native';
 import AbstractFormComponent from './AbstractFormComponent';
 import Button from '../bootstrap/Button';
 import Icon from '../Icon';
@@ -71,10 +66,10 @@ class RadioGroup extends AbstractFormComponent {
 
     return (
       <View {...other}
-        style={[styles.container, style]}
+            style={[styles.container, style]}
       >
         {
-          options.map((option, key)=> cloneElement(handle(option, this.state.selectedOption), {
+          options.map((option, key) => cloneElement(handle(option, this.state.selectedOption), {
             key,
             onPress: this.onOptionSelected(option.value)
           }))

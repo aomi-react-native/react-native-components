@@ -1,16 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
-import {
-  View,
-  PanResponder,
-  requireNativeComponent,
-  NativeModules,
-  Platform,
-  PixelRatio,
-  UIManager,
-  findNodeHandle,
-  DeviceEventEmitter
-} from 'react-native';
+import { NativeModules, PanResponder, PixelRatio, Platform, requireNativeComponent, View } from 'react-native';
 
 const ratio = PixelRatio.get();
 
@@ -119,7 +110,7 @@ class Canvas extends Component {
 
   capture(mimeType = 'png') {
     if (Platform.OS === 'android') {
-      return new Promise((resolve, reject)=> {
+      return new Promise((resolve, reject) => {
         reject('安卓平台暂未实现该功能');
       });
     }
@@ -134,10 +125,10 @@ class Canvas extends Component {
   render() {
     return (
       <RCTCanvas {...this.props}
-        {...this.panResponder.panHandlers}
-        lineWidth={this.state.lineWidth}
-        onChange={this.handleChange}
-        ref={ref => this.canvas = ref}
+                 {...this.panResponder.panHandlers}
+                 lineWidth={this.state.lineWidth}
+                 onChange={this.handleChange}
+                 ref={ref => this.canvas = ref}
       />
     );
   }

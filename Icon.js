@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -10,14 +11,14 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Zocial from 'react-native-vector-icons/Zocial';
 
 const Comps = {
-    Entypo,
-    EvilIcons,
-    FontAwesome,
-    Foundation,
-    Ionicons,
-    MaterialIcons,
-    Octicons,
-    Zocial
+  Entypo,
+  EvilIcons,
+  FontAwesome,
+  Foundation,
+  Ionicons,
+  MaterialIcons,
+  Octicons,
+  Zocial
 };
 
 /**
@@ -27,26 +28,26 @@ const Comps = {
  */
 class Icon extends Component {
 
-    static propTypes = {
-        provider: PropTypes.oneOf(['Entypo', 'EvilIcons', 'FontAwesome', 'Foundation', 'Ionicons', 'MaterialIcons', 'Octicons', 'Zocial'])
-    };
+  static propTypes = {
+    provider: PropTypes.oneOf(['Entypo', 'EvilIcons', 'FontAwesome', 'Foundation', 'Ionicons', 'MaterialIcons', 'Octicons', 'Zocial'])
+  };
 
-    static defaultProps = {
-        provider: 'FontAwesome'
-    };
+  static defaultProps = {
+    provider: 'FontAwesome'
+  };
 
-    render() {
-        let {
-            provider,
-            ...other
-        } = this.props;
+  render() {
+    let {
+      provider,
+      ...other
+    } = this.props;
 
-        let Comp = Comps[provider] || Comps.FontAwesome;
+    let Comp = Comps[provider] || Comps.FontAwesome;
 
-        return (
-            <Comp {...other} />
-        );
-    }
+    return (
+      <Comp {...other} />
+    );
+  }
 
 }
 

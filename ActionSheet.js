@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
 import RootSiblings from 'react-native-root-siblings';

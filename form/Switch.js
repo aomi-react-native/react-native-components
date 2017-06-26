@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Switch as RNSwitch } from 'react-native';
 import AbstractFormComponent from './AbstractFormComponent';
 
@@ -46,8 +47,8 @@ class Switch extends AbstractFormComponent {
   render() {
     return (
       <RNSwitch {...this.props}
-        onValueChange={this.onValueChange}
-        value={this.state.value}
+                onValueChange={this.onValueChange}
+                value={this.state.value}
       />
     );
   }
