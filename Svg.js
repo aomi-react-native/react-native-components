@@ -1,5 +1,17 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, WebView } from 'react-native';
+import common from './styles';
+
+const styles = {
+  container: {
+    position: 'relative',
+    flex: 1
+  },
+  mask: {
+    ...common.fullScreenAbsolute
+  }
+};
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -55,13 +67,16 @@ class Icon extends Component {
     };
     return (
       <View style={[size, style]}>
-        <WebView {...props}
-                 domStorageEnabled
-                 injectedJavaScript={js}
-                 javaScriptEnabled
-                 scrollEnabled={false}
-                 style={[size, {backgroundColor: 'transparent'}]}
-        />
+        <View style={styles.container}>
+          <WebView {...props}
+                   domStorageEnabled
+                   injectedJavaScript={js}
+                   javaScriptEnabled
+                   scrollEnabled={false}
+                   style={[size, {backgroundColor: 'transparent'}]}
+          />
+          <View style={styles.mask}/>
+        </View>
       </View>
     );
   }
