@@ -19,5 +19,13 @@ export default function ({title, message, button, onOk, options}) {
     }
     buttons = [tmp];
   }
-  Alert.alert(title, message, buttons, options);
+  const newOptions = options || {};
+  if (!newOptions.onDismiss) {
+    if (onOk) {
+      newOptions.onDismiss = onOk;
+    } else if (buttons.length === 1) {
+      newOptions.onDismiss = buttons[0].onPress;
+    }
+  }
+  Alert.alert(title, message, buttons, newOptions);
 }
