@@ -1,16 +1,32 @@
-import { findNodeHandle, NativeModules } from 'react-native';
+import { findNodeHandle, NativeEventEmitter, NativeModules } from 'react-native';
 
-const {SitbPressManager} = NativeModules;
+const {SitbPressManager, SitbPressManagerEventModule} = NativeModules;
+
+const handler = {};
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/6/26
  */
-export default class PressManager {
+class PressManager {
 
-  static onPress(viewTag, onPress) {
-    const view = findNodeHandle(viewTag);
-    SitbPressManager.onPress(view, onPress);
+  event = new NativeEventEmitter(SitbPressManagerEventModule);
+
+  constructor() {
+    this.event.addListener('SitbPressManagerPressEvent', this.handlePress);
   }
 
+  handlePress(viewTag) {
+    handler[viewTag] && handler[viewTag]();
+  }
+
+  onPress(view, onPress) {
+    const viewTag = findNodeHandle(view);
+    handler[viewTag] = onPress;
+    SitbPressManager.onPress(viewTag);
+  }
+
+
 }
+
+export default new PressManager();
