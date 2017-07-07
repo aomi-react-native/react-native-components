@@ -100,7 +100,11 @@ class ToastIOS extends Component {
 const SHORT = Platform.OS === 'android' ? ToastAndroid.SHORT : 2500;
 const LONG = Platform.OS === 'android' ? ToastAndroid.LONG : 5000;
 
-function show(msg, duration = SHORT) {
+const config = {
+  duration: SHORT
+};
+
+function show(msg, duration) {
 
   if (Platform.OS === 'android') {
     ToastAndroid.show(msg, duration);
@@ -110,13 +114,17 @@ function show(msg, duration = SHORT) {
   if (Platform.OS === 'ios') {
     let toast = new RootSiblings(<View />);
     toast.update(
-      <ToastIOS duration={duration}
+      <ToastIOS duration={duration || config.duration}
                 manager={toast}
                 msg={msg}
       />
     );
   }
 
+}
+
+export function setDefaultDuration(duration) {
+  config.duration = duration;
 }
 
 export {
