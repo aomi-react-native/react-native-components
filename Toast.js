@@ -107,7 +107,7 @@ const config = {
 function show(msg, duration) {
 
   if (Platform.OS === 'android') {
-    ToastAndroid.show(msg, duration);
+    ToastAndroid.show(msg, duration || config.duration);
     return;
   }
 
