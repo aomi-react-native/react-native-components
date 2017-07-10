@@ -6,10 +6,25 @@
 #import "SitbPressManager.h"
 #import <UIKit/UIKit.h>
 #import <React/RCTUIManager.h>
+#import <React/RCTEventEmitter.h>
+
+@interface SitbPressManagerEventModule : RCTEventEmitter <RCTBridgeModule>
+@end
+
+@implementation SitbPressManagerEventModule
+
+RCT_EXPORT_MODULE(SitbPressManagerEventModule)
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"SitbPressManagerPressEvent"];
+}
+
+@end
+
 
 @interface CustomUITapGestureRecognizer : UITapGestureRecognizer
 
-@property RCTResponseSenderBlock onPress;
+@property NSInteger viewTag;
 
 @end
 
@@ -30,19 +45,18 @@ RCT_EXPORT_MODULE(SitbPressManager)
  * @return
  */
 RCT_EXPORT_METHOD(onPress:
-    (NSInteger *) btnTag
-            onPress:
-            (RCTResponseSenderBlock) onPress) {
+    (NSInteger) btnTag) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIView *button = [self.bridge.uiManager viewForReactTag:@((NSInteger) btnTag)];
+        UIView *button = [self.bridge.uiManager viewForReactTag:@(btnTag)];
         CustomUITapGestureRecognizer *tap = [[CustomUITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePress:)];
-        tap.onPress = onPress;
+        tap.viewTag = btnTag;
         [button addGestureRecognizer:tap];
     });
 }
 
 - (void)handlePress:(CustomUITapGestureRecognizer *)press {
-    press.onPress((id) @{});
+    SitbPressManagerEventModule *eventModule = [self.bridge moduleForClass:[SitbPressManagerEventModule class]];
+    [eventModule sendEventWithName:@"SitbPressManagerPressEvent" body:[NSString stringWithFormat:@"%i", press.viewTag]];
 }
 
 
