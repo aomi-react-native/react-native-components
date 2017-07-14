@@ -21,6 +21,9 @@ project(':react-native-components:media-manager').projectDir = new File(rootProj
 include(':react-native-components:orientation')
 project(':react-native-components:orientation').projectDir = new File(rootProject.projectDir, './orientation')
 
+include(':react-native-components:screenshot')
+project(':react-native-components:screenshot').projectDir = new File(rootProject.projectDir, './screenshot')
+
 include(':react-native-components:utils')
 project(':react-native-components:utils').projectDir = new File(rootProject.projectDir, './utils')
 
