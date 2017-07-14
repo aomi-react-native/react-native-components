@@ -1,5 +1,6 @@
 package software.sitb.react.camera;
 
+import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import software.sitb.react.camera.commons.AbstractCameraViewManager;
@@ -8,9 +9,12 @@ import software.sitb.react.camera.commons.AbstractCameraViewManager;
  * @author 田尘殇Sean sean.snow@live.com
  */
 public class CameraViewManager extends AbstractCameraViewManager<CameraView> {
+
+    protected CameraView view;
+
     @Override
     public String getName() {
-        return "SitbRCTCameraView";
+        return "SitbCameraView";
     }
 
     @ReactProp(name = "needCaptureOutputBuffer")
@@ -20,8 +24,13 @@ public class CameraViewManager extends AbstractCameraViewManager<CameraView> {
 
     @Override
     protected CameraView createViewInstance(ThemedReactContext reactContext) {
-        return new CameraView(reactContext);
+        this.view = new CameraView(reactContext);
+        return this.view;
     }
 
+    @ReactMethod
+    public void stopCapture() {
+        this.view.getCameraManager().release();
+    }
 
 }

@@ -5,6 +5,9 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.util.Log;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.zxing.*;
 import com.google.zxing.common.HybridBinarizer;
 import software.sitb.react.camera.CameraView;
@@ -23,6 +26,11 @@ public class BarcodeView extends CameraView implements Camera.PreviewCallback {
     private static final String TAG = "BarcodeView";
 
     private Map<DecodeHintType, Object> hints;
+
+    /**
+     * 成功获取数据以后使用事件发送数据到js
+     */
+    private DeviceEventManagerModule.RCTDeviceEventEmitter eventEmitter;
 
     private byte[] callbackBuffer;
 
@@ -87,10 +95,18 @@ public class BarcodeView extends CameraView implements Camera.PreviewCallback {
                 } else {
                     Log.i(TAG, "Decode succeeded: " + rawResult.getText());
                     getCameraManager().release();
+
+                    WritableMap result = Arguments.createMap();
+                    result.putString("format", rawResult.getBarcodeFormat().toString());
+                    result.putString("text", rawResult.getText());
+                    eventEmitter.emit("onSuccess", result);
                 }
             }
 
         }.execute(data);
     }
 
+    public void setEventEmitter(DeviceEventManagerModule.RCTDeviceEventEmitter eventEmitter) {
+        this.eventEmitter = eventEmitter;
+    }
 }
