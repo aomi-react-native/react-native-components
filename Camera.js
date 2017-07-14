@@ -21,14 +21,14 @@ type QualityType = {
   photo: String
 };
 
-let CameraManager = NativeModules.SitbRCTCameraView || NativeModules.SitbRCTCameraModule || NativeModules.SitbRCTCamera2Module;
+let CameraManager = NativeModules.SitbCameraView || NativeModules.SitbCamera2Module;
 let RCTCamera;
-if (UIManager.SitbRCTCameraView) {
-  RCTCamera = requireNativeComponent('SitbRCTCameraView', Camera);
-} else if (UIManager.SitbRCTCamera2View) {
-  RCTCamera = requireNativeComponent('SitbRCTCamera2View', Camera);
+if (UIManager.SitbCameraView) {
+  RCTCamera = requireNativeComponent('SitbCameraView', Camera);
+} else if (UIManager.SitbCamera2Module) {
+  RCTCamera = requireNativeComponent('SitbCamera2View', Camera);
 }
-let constants = (UIManager.SitbRCTCameraView || UIManager.SitbRCTCamera2View).Constants;
+let constants = (UIManager.SitbCameraView || UIManager.SitbCamera2View).Constants;
 
 let CameraFacing = constants.CameraFacing;
 let Orientation: OrientationType = constants.Orientation;
@@ -45,16 +45,16 @@ let event = new NativeEventEmitter(CameraManager);
  */
 export function setCameraVersion(cameraVersion) {
   if (cameraVersion === 4) {
-    CameraManager = NativeModules.SitbRCTCameraView;
-    constants = UIManager.SitbRCTCameraView.Constants;
-    RCTCamera = requireNativeComponent('SitbRCTCameraView', Camera);
+    CameraManager = NativeModules.SitbCameraView;
+    constants = UIManager.SitbCameraView.Constants;
+    RCTCamera = requireNativeComponent('SitbCameraView', Camera);
   } else if (cameraVersion === 5) {
-    CameraManager = NativeModules.SitbRCTCamera2Module;
-    constants = UIManager.SitbRCTCamera2View.Constants;
-    RCTCamera = requireNativeComponent('SitbRCTCamera2View', Camera);
+    CameraManager = NativeModules.SitbCamera2View;
+    constants = UIManager.SitbCamera2View.Constants;
+    RCTCamera = requireNativeComponent('SitbCamera2View', Camera);
   }
   CameraFacing = constants.CameraFacin;
-  OrientationType = constants.Orientation;
+  Orientation = constants.Orientation;
   Quality = constants.Quality;
   event = new NativeEventEmitter(CameraManager);
 }

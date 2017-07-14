@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
-import { requireNativeComponent, StyleSheet, View, ViewPropTypes } from 'react-native';
+import { DeviceEventEmitter, NativeModules, Platform, requireNativeComponent, StyleSheet, View, ViewPropTypes } from 'react-native';
+import Camera from './Camera';
 import common from './styles';
+
+const {SitbBarcodeView} = NativeModules;
+
+const ANDROID_EVENT_NAME = 'onSuccess';
 
 export const Type = {
   QR: 'QR'
@@ -10,8 +15,8 @@ export const Type = {
 
 const borderStyle = {
   position: 'absolute',
-  width: 20,
-  height: 20,
+  width: 40,
+  height: 40,
   borderColor: '#46b8da'
 };
 
@@ -25,6 +30,9 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  cellBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   window: {
@@ -74,6 +82,7 @@ const styles = StyleSheet.create({
 class Barcode extends Component {
 
   static propTypes = {
+    ...Camera.propTypes,
     renderBottom: PropTypes.func,
     renderTop: PropTypes.func,
     scanLineStyle: ViewPropTypes.style,
@@ -81,7 +90,8 @@ class Barcode extends Component {
     windowSize: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
-    })
+    }),
+    onSuccess: PropTypes.func
   };
 
   static defaultProps = {
@@ -91,6 +101,15 @@ class Barcode extends Component {
       height: 270
     }
   };
+
+  /**
+   * 扫描图片
+   * options.path = 图片路径
+   * @param options
+   */
+  static scanImage(options) {
+    return SitbBarcodeView.scanImage(options);
+  }
 
   state = {};
 
@@ -104,15 +123,53 @@ class Barcode extends Component {
     };
   }
 
+  componentWillMount() {
+    if (Platform.OS === 'android') {
+      DeviceEventEmitter.addListener(ANDROID_EVENT_NAME, this.handleSuccess);
+    }
+  }
+
+  componentWillUnmount() {
+    this.stopCapture();
+  }
+
+  stopCapture() {
+    if (Platform.OS === 'android') {
+      SitbBarcodeView.stopCapture();
+    }
+  }
+
+
+  handleSuccess(data) {
+    if (Platform.OS === 'android') {
+      DeviceEventEmitter.removeAllListeners(ANDROID_EVENT_NAME);
+    }
+    const {onSuccess} = this.props;
+    onSuccess && onSuccess(data);
+  }
+
+  renderTop(renderTop) {
+    if (renderTop) {
+      return (
+        <View style={styles.cellBg}>{renderTop()}</View>
+      );
+    }
+    return (
+      <View style={[{
+        height: 0,
+        paddingTop: 30
+      }, styles.cellBg]}
+      />
+    );
+  }
+
   render() {
     const {renderTop, renderBottom} = this.props;
     return (
       <View style={styles.container}>
         <RCTBarcode style={{flex: 1}}/>
         <View style={styles.captureWindow}>
-          <View style={styles.cell}>
-            {renderTop ? renderTop() : null}
-          </View>
+          {this.renderTop(renderTop)}
           <View style={{flexDirection: 'row'}}>
             <View style={styles.cell}/>
             <View style={[styles.window, this.state.windowSize]}>
@@ -121,7 +178,8 @@ class Barcode extends Component {
                   flex: 1,
                   borderWidth: 1,
                   borderColor: 'white'
-                }}/>
+                }}
+                />
               </View>
               <View style={[styles.top]}/>
               <View style={[styles.right]}/>
@@ -140,6 +198,6 @@ class Barcode extends Component {
 
 }
 
-const RCTBarcode = requireNativeComponent('SitbRCTBarcodeView', Barcode);
+const RCTBarcode = requireNativeComponent('SitbBarcodeView', Barcode);
 
 export default Barcode;
