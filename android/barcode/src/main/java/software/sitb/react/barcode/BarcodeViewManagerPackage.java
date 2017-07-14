@@ -13,19 +13,20 @@ import java.util.List;
  */
 public class BarcodeViewManagerPackage extends DefaultReactPackage {
 
-    private BarcodeViewManager barcodeViewManager;
+  private BarcodeViewManager barcodeViewManager;
 
-    public BarcodeViewManagerPackage() {
-        this.barcodeViewManager = new BarcodeViewManager();
-    }
+  public BarcodeViewManagerPackage() {
+    this.barcodeViewManager = new BarcodeViewManager();
+  }
 
-    @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Collections.<NativeModule>singletonList(this.barcodeViewManager);
-    }
+  @Override
+  public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+    this.barcodeViewManager.setContext(reactContext);
+    return Collections.<NativeModule>singletonList(this.barcodeViewManager);
+  }
 
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Collections.<ViewManager>singletonList(this.barcodeViewManager);
-    }
+  @Override
+  public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+    return Collections.<ViewManager>singletonList(this.barcodeViewManager);
+  }
 }

@@ -1,18 +1,13 @@
 package software.sitb.react.barcode;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import com.facebook.react.bridge.*;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.google.zxing.*;
 import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
-import software.sitb.react.camera.CameraViewManager;
-import software.sitb.react.commons.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,7 +21,7 @@ public class BarcodeViewManager extends SimpleViewManager<BarcodeView> {
 
   private BarcodeView view;
 
-  private ReactApplicationContext context;
+  private ReactContext context;
 
   @Override
   public String getName() {
@@ -35,9 +30,7 @@ public class BarcodeViewManager extends SimpleViewManager<BarcodeView> {
 
   @Override
   protected BarcodeView createViewInstance(ThemedReactContext reactContext) {
-    DeviceEventManagerModule.RCTDeviceEventEmitter eventEmitter = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
     BarcodeView view = new BarcodeView(reactContext);
-    view.setEventEmitter(eventEmitter);
     this.view = view;
     return view;
   }
@@ -60,7 +53,6 @@ public class BarcodeViewManager extends SimpleViewManager<BarcodeView> {
       return;
     }
     String path = options.getString("path");
-    MultiFormatReader multiFormatReader = new MultiFormatReader();
 
     Uri uri = Uri.parse(path);
     try {
@@ -83,7 +75,7 @@ public class BarcodeViewManager extends SimpleViewManager<BarcodeView> {
 
   }
 
-  public void setContext(ReactApplicationContext context) {
+  public void setContext(ReactContext context) {
     this.context = context;
   }
 
