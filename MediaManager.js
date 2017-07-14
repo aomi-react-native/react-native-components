@@ -34,13 +34,29 @@ const DEFAULT_CAMERA_OPTIONS = {
   quality: Quality.high
 };
 
+type PhotoAlbum = {
+  // 编辑后的图片
+  edited: {
+    path: String
+  },
+  // 原图
+  reference: {
+    path: String
+  }
+};
+
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/29
  */
 class MediaManager {
 
-  static launchImageLibrary(options: Options = DEFAULT_LIBRARY_OPTIONS): Promise {
+  /**
+   *
+   * @param options
+   * @returns {*}
+   */
+  static launchImageLibrary(options: Options = DEFAULT_LIBRARY_OPTIONS): Promise<PhotoAlbum> {
     const newOptions = Object.assign({}, DEFAULT_LIBRARY_OPTIONS, options);
     return launchImageLibrary(newOptions);
   }
