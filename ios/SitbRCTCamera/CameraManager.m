@@ -16,7 +16,7 @@
 
 @implementation CameraManager
 
-RCT_EXPORT_MODULE(SitbRCTCameraView)
+RCT_EXPORT_MODULE(SitbCameraView)
 
 
 - (id)init {
