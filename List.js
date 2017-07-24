@@ -1,6 +1,6 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { Image, ListView, StyleSheet, Text, TouchableHighlight, View, ViewPropTypes } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableHighlight, View, ViewPropTypes } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import right from './images/right.png';
 import { Colors, separatorHeight } from './styles';
@@ -10,7 +10,8 @@ const padding = 15;
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: separatorHeight,
-    borderTopWidth: separatorHeight
+    borderTopWidth: separatorHeight,
+    backgroundColor: '#FFF'
   },
   rowContainer: {
     backgroundColor: '#b3b3b3'
@@ -71,10 +72,13 @@ class List extends AbstractComponent {
 
   static propTypes = {
     bodyTextStyle: Text.propTypes.style,
-    cellStyle: ViewPropTypes.style,
     containerStyle: ViewPropTypes.style,
     footerTextStyle: Text.propTypes.style,
     fullSeparator: PropTypes.bool,
+    itemStyle: ViewPropTypes.style,
+    /**
+     * 过时,请使用data
+     */
     items: PropTypes.array,
     separatorColor: PropTypes.string,
     onItemPress: PropTypes.func
@@ -83,20 +87,8 @@ class List extends AbstractComponent {
   static defaultProps = {
     alwaysBounceVertical: false,
     fullSeparator: false,
-    rowHasChanged: (r1, r2) => r1 !== r2,
     separatorColor: Colors.separator
   };
-
-  state = {};
-
-  constructor(props) {
-    super(props);
-    const {items, rowHasChanged} = props;
-    const ds = new ListView.DataSource({rowHasChanged});
-    this.state = {
-      dataSource: ds.cloneWithRows(items)
-    };
-  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.items !== nextProps.items) {
@@ -148,16 +140,15 @@ class List extends AbstractComponent {
     );
   }
 
-  renderRow(row: Row, sectionID, rowID) {
-    const {header, body, footer, displayRightArrow, disabled, style} = row;
-    const {onItemPress, cellStyle} = this.props;
+  renderItem({item}) {
+    const {header, body, footer, displayRightArrow, disabled, style} = item;
+    const {onItemPress, itemStyle} = this.props;
     return (
       <TouchableHighlight disabled={disabled}
-                          key={rowID}
-                          onPress={() => onItemPress && onItemPress(row, sectionID, rowID)}
+                          onPress={() => onItemPress && onItemPress(item)}
                           style={styles.rowContainer}
       >
-        <View style={[styles.row, style || cellStyle]}>
+        <View style={[styles.row, style || itemStyle]}>
           {this.renderHeader(header)}
           {this.renderBody(body)}
           {this.renderFooter(footer, displayRightArrow)}
@@ -166,34 +157,27 @@ class List extends AbstractComponent {
     );
   }
 
-  renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    const {separatorColor, items, fullSeparator} = this.props;
-    if (rowID === `${items.length - 1}`) {
-      return null;
-    }
-    const style = {
-      backgroundColor: adjacentRowHighlighted ? '#FFF' : separatorColor
-    };
-    if (!fullSeparator) {
-      style.marginLeft = padding;
-    }
-    return (
-      <View key={`${sectionID}-${rowID}`}
-            style={{backgroundColor: '#FFF'}}
-      >
-        <View style={[styles.separator, style]}/>
-      </View>
-    );
+  keyExtractor(item, index) {
+    return index;
   }
 
   render() {
-    const {containerStyle, separatorColor, ...other} = this.props;
+    const {containerStyle, fullSeparator, separatorColor, ...other} = this.props;
+
+    function ItemSeparatorComponent() {
+      return (
+        <View style={fullSeparator ? {} : {paddingLeft: 15}}>
+          <View style={[styles.separator, {backgroundColor: separatorColor}]}/>
+        </View>
+      );
+    }
+
     return (
       <View style={[styles.container, {borderColor: separatorColor}, containerStyle]}>
-        <ListView {...other}
-                  dataSource={this.state.dataSource}
-                  renderRow={this.renderRow}
-                  renderSeparator={this.renderSeparator}
+        <FlatList {...other}
+                  ItemSeparatorComponent={ItemSeparatorComponent}
+                  keyExtractor={this.keyExtractor}
+                  renderItem={this.renderItem}
         />
       </View>
     );
