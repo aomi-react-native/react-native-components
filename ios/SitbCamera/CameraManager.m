@@ -18,19 +18,36 @@
 
 RCT_EXPORT_MODULE(SitbCameraView)
 
-
 - (id)init {
     if ((self = [super init])) {
         self.mirrorImage = false;
         self.sessionQueue = dispatch_queue_create("SitbCameraManagerQueue", DISPATCH_QUEUE_SERIAL);
         self.sampleBufferQueue = dispatch_queue_create("SitbCameraManagerSampleBufferQueue", DISPATCH_QUEUE_SERIAL);
-        self.sendBufferQueue = dispatch_queue_create("SitbCameraManagerSendBufferQueue", DISPATCH_QUEUE_SERIAL);
+        self.sendEventQueue = dispatch_queue_create("SitbCameraManagerSendEventQueue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
 
 
 - (NSDictionary<NSString *, id> *)constantsToExport {
+
+    NSMutableDictionary *runtimeBarcodeTypes = [NSMutableDictionary dictionary];
+    [runtimeBarcodeTypes setDictionary:@{
+            @"upce": AVMetadataObjectTypeUPCECode,
+            @"code39": AVMetadataObjectTypeCode39Code,
+            @"code39mod43": AVMetadataObjectTypeCode39Mod43Code,
+            @"ean13": AVMetadataObjectTypeEAN13Code,
+            @"ean8": AVMetadataObjectTypeEAN8Code,
+            @"code93": AVMetadataObjectTypeCode93Code,
+            @"code128": AVMetadataObjectTypeCode128Code,
+            @"pdf417": AVMetadataObjectTypePDF417Code,
+            @"qr": AVMetadataObjectTypeQRCode,
+            @"aztec": AVMetadataObjectTypeAztecCode,
+            @"interleaved2of5": AVMetadataObjectTypeInterleaved2of5Code,
+            @"itf14": AVMetadataObjectTypeITF14Code,
+            @"dataMatrix": AVMetadataObjectTypeDataMatrixCode
+    }];
+
     return @{
             @"CameraFacing": @{
                     @"back": @(AVCaptureDevicePositionBack),
@@ -51,8 +68,8 @@ RCT_EXPORT_MODULE(SitbCameraView)
                     @"hd720": AVCaptureSessionPreset1280x720,
                     @"hd1080": AVCaptureSessionPreset1920x1080,
                     @"photo": AVCaptureSessionPresetPhoto
-            }
-
+            },
+            @"BarCodeType": runtimeBarcodeTypes
     };
 }
 
@@ -63,14 +80,21 @@ RCT_EXPORT_VIEW_PROPERTY(cameraFacing, NSInteger);
 // 相机方向
 RCT_EXPORT_VIEW_PROPERTY(orientation, NSInteger);
 
+// 当获取摄像头数据
+RCT_EXPORT_VIEW_PROPERTY(onCaptureOutputBuffer, RCTBubblingEventBlock);
+
+// 当获取二维码数据
+RCT_EXPORT_VIEW_PROPERTY(onBarCodeRead, RCTBubblingEventBlock);
+
 // 质量
 RCT_CUSTOM_VIEW_PROPERTY(quality, NSString, CameraView) {
     NSString *quality = [RCTConvert NSString:json];
     [self setCaptureQuality:quality];
 }
 
-// 当获取摄像头数据
-RCT_EXPORT_VIEW_PROPERTY(onCaptureOutputBuffer, RCTBubblingEventBlock);
+RCT_CUSTOM_VIEW_PROPERTY(barCodeTypes, NSArray, CameraView) {
+    self.barCodeTypes = [RCTConvert NSArray:json];
+}
 
 /******************** Component Method **********************/
 /**
@@ -151,7 +175,7 @@ RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
         AVCaptureDeviceInput *captureDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
 
         if (error || captureDeviceInput == nil) {
-            NSLog(@"%@", error);
+            RCTLogWarn(@"%@", error);
             return;
         }
 
@@ -170,7 +194,6 @@ RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
                 self.videoCaptureDeviceInput = captureDeviceInput;
                 [self setFlashMode];
             }
-//            [self.metadataOutput setMetadataObjectTypes:self.metadataOutput.availableMetadataObjectTypes];
         }
 
         [self.session commitConfiguration];
@@ -195,6 +218,23 @@ RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
             self.videoDataOutput = videoDataOutput;
         }
 
+//        AVCapturePhotoOutput *photoOutput = [[AVCapturePhotoOutput alloc] init];
+//        if ([self.session canAddOutput:photoOutput]) {
+//            AVCapturePhotoSettings *photoSettings = [[AVCapturePhotoSettings alloc] init];
+//            [photoOutput capturePhotoWithSettings:photoSettings delegate:self];
+//            [self.session addOutput:photoOutput];
+//
+//            self.photoOutput = photoOutput;
+//            self.photoSettings = photoSettings;
+//        }
+
+        AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
+        if ([self.session canAddOutput:metadataOutput]) {
+            [metadataOutput setMetadataObjectsDelegate:self queue:self.sessionQueue];
+            [self.session addOutput:metadataOutput];
+            [metadataOutput setMetadataObjectTypes:self.barCodeTypes];
+            self.metadataOutput = metadataOutput;
+        }
 
         __weak CameraManager *weakSelf = self;
         [self setRuntimeErrorHandlingObserver:[NSNotificationCenter.defaultCenter
@@ -261,11 +301,47 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         CGImageRelease(quartzImage);
 
         NSString *encodedString = [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-        dispatch_async(self.sendBufferQueue, ^{
+        dispatch_async(self.sendEventQueue, ^{
             self.onCaptureOutputBuffer(@{@"buffer": encodedString});
         });
     }
 }
+
+- (void)   captureOutput:(AVCaptureOutput *)captureOutput
+didOutputMetadataObjects:(NSArray *)metadataObjects
+          fromConnection:(AVCaptureConnection *)connection {
+    if (!self.onBarCodeRead) {
+        return;
+    }
+    for (AVMetadataMachineReadableCodeObject *metadata in metadataObjects) {
+        for (id barcodeType in self.barCodeTypes) {
+            if ([metadata.type isEqualToString:barcodeType]) {
+                // Transform the meta-data coordinates to screen coords
+                AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *) [_previewLayer transformedMetadataObjectForMetadataObject:metadata];
+
+                NSDictionary *event = @{
+                        @"format": metadata.type,
+                        @"text": metadata.stringValue,
+                        @"bounds": @{
+                                @"origin": @{
+                                        @"x": [NSString stringWithFormat:@"%f", transformed.bounds.origin.x],
+                                        @"y": [NSString stringWithFormat:@"%f", transformed.bounds.origin.y]
+                                },
+                                @"size": @{
+                                        @"height": [NSString stringWithFormat:@"%f", transformed.bounds.size.height],
+                                        @"width": [NSString stringWithFormat:@"%f", transformed.bounds.size.width],
+                                }
+                        }
+                };
+                dispatch_async(self.sendEventQueue, ^{
+                    self.onBarCodeRead(event);
+                });
+            }
+        }
+    }
+
+}
+
 
 - (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position {
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:mediaType];

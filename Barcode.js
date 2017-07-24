@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
-import { DeviceEventEmitter, NativeModules, Platform, requireNativeComponent, StyleSheet, View, ViewPropTypes } from 'react-native';
+import { DeviceEventEmitter, NativeModules, Platform, requireNativeComponent, StyleSheet, UIManager, View, ViewPropTypes } from 'react-native';
 import Camera from './Camera';
 import common from './styles';
 
@@ -9,8 +9,8 @@ const {SitbBarcodeView} = NativeModules;
 
 const ANDROID_EVENT_NAME = 'onSuccess';
 
-export const Type = {
-  QR: 'QR'
+export const Type = Platform.OS === 'ios' ? UIManager.SitbCameraView.Constants.BarCodeType : {
+  qr: 'QR'
 };
 
 const borderStyle = {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   windowStyle: {
     ...common.fullScreenAbsolute,
     borderWidth: 5,
-    borderColor: 'rgba(0, 0, 0, 0.5)',
+    borderColor: 'rgba(0, 0, 0, 0.5)'
   },
   top: {
     ...borderStyle,
@@ -86,7 +86,7 @@ class Barcode extends Component {
     renderBottom: PropTypes.func,
     renderTop: PropTypes.func,
     scanLineStyle: ViewPropTypes.style,
-    type: PropTypes.oneOf([Type.QR]),
+    type: PropTypes.oneOf([Type.qr]),
     windowSize: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
@@ -95,7 +95,7 @@ class Barcode extends Component {
   };
 
   static defaultProps = {
-    type: Type.QR,
+    type: Type.qr,
     windowSize: {
       width: 270,
       height: 270
@@ -118,7 +118,7 @@ class Barcode extends Component {
     this.state = {
       windowSize: {
         width: 270,
-        height: props.type === Type.QR ? 270 : 70
+        height: props.type === Type.qr ? 270 : 70
       }
     };
   }
@@ -165,9 +165,17 @@ class Barcode extends Component {
 
   render() {
     const {renderTop, renderBottom} = this.props;
+    let props = {};
+    if (Platform.OS === 'ios') {
+      props = {
+        onBarCodeRead: this.handleSuccess
+      };
+    }
     return (
       <View style={styles.container}>
-        <RCTBarcode style={{flex: 1}}/>
+        <RCTBarcode {...props}
+                    style={{flex: 1}}
+        />
         <View style={styles.captureWindow}>
           {this.renderTop(renderTop)}
           <View style={{flexDirection: 'row'}}>
@@ -198,6 +206,6 @@ class Barcode extends Component {
 
 }
 
-const RCTBarcode = requireNativeComponent('SitbBarcodeView', Barcode);
+const RCTBarcode = requireNativeComponent(Platform.OS === 'ios' ? 'SitbCameraView' : 'SitbBarcodeView', Barcode);
 
 export default Barcode;

@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, ShareType) {
 
 @synthesize bridge = _bridge;
 
-RCT_EXPORT_MODULE();
+RCT_EXPORT_MODULE(WeChatManager);
 
 - (NSDictionary<NSString *, id> *)constantsToExport {
     return @{
