@@ -189,7 +189,7 @@ class Barcode extends Component {
             <View style={styles.cell}/>
           </View>
           <View style={styles.cell}>
-            {renderBottom ? renderBottom() : null}
+            {renderBottom && renderBottom()}
           </View>
         </View>
       </View>
