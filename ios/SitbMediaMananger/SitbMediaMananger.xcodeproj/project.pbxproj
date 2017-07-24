@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14A1FD301D23B1FB00F5DD92 /* libSitbRCTMediaMananger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbRCTMediaMananger.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		14A1FD301D23B1FB00F5DD92 /* libSitbMediaMananger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbMediaMananger.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		14A1FD431D24D13600F5DD92 /* NSMutableDictionary+ImageMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+ImageMetadata.m"; sourceTree = "<group>"; };
 		274211443D6342B1D9CB425F /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
 		27421736EFA9E72453EB812C /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
@@ -53,7 +53,7 @@
 		14A1FD311D23B1FB00F5DD92 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				14A1FD301D23B1FB00F5DD92 /* libSitbRCTMediaMananger.a */,
+				14A1FD301D23B1FB00F5DD92 /* libSitbMediaMananger.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,9 +61,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		14A1FD2F1D23B1FB00F5DD92 /* SitbRCTMediaMananger */ = {
+		14A1FD2F1D23B1FB00F5DD92 /* SitbMediaMananger */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14A1FD391D23B1FB00F5DD92 /* Build configuration list for PBXNativeTarget "SitbRCTMediaMananger" */;
+			buildConfigurationList = 14A1FD391D23B1FB00F5DD92 /* Build configuration list for PBXNativeTarget "SitbMediaMananger" */;
 			buildPhases = (
 				14A1FD2C1D23B1FB00F5DD92 /* Sources */,
 				14A1FD2D1D23B1FB00F5DD92 /* Frameworks */,
@@ -73,9 +73,9 @@
 			);
 			dependencies = (
 			);
-			name = SitbRCTMediaMananger;
+			name = SitbMediaMananger;
 			productName = SitbRCTMediaMananger;
-			productReference = 14A1FD301D23B1FB00F5DD92 /* libSitbRCTMediaMananger.a */;
+			productReference = 14A1FD301D23B1FB00F5DD92 /* libSitbMediaMananger.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -92,7 +92,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 14A1FD2B1D23B1FB00F5DD92 /* Build configuration list for PBXProject "SitbRCTMediaMananger" */;
+			buildConfigurationList = 14A1FD2B1D23B1FB00F5DD92 /* Build configuration list for PBXProject "SitbMediaMananger" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -104,7 +104,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				14A1FD2F1D23B1FB00F5DD92 /* SitbRCTMediaMananger */,
+				14A1FD2F1D23B1FB00F5DD92 /* SitbMediaMananger */,
 			);
 		};
 /* End PBXProject section */
@@ -242,7 +242,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14A1FD2B1D23B1FB00F5DD92 /* Build configuration list for PBXProject "SitbRCTMediaMananger" */ = {
+		14A1FD2B1D23B1FB00F5DD92 /* Build configuration list for PBXProject "SitbMediaMananger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14A1FD371D23B1FB00F5DD92 /* Debug */,
@@ -251,7 +251,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14A1FD391D23B1FB00F5DD92 /* Build configuration list for PBXNativeTarget "SitbRCTMediaMananger" */ = {
+		14A1FD391D23B1FB00F5DD92 /* Build configuration list for PBXNativeTarget "SitbMediaMananger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14A1FD3A1D23B1FB00F5DD92 /* Debug */,

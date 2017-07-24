@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14120F171D54699D0060E8E7 /* libSitbRCTOrientation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbRCTOrientation.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		14120F171D54699D0060E8E7 /* libSitbOrientation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbOrientation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		27421442FB7577D71B797124 /* OrientationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrientationManager.h; sourceTree = "<group>"; };
 		27421749B2F38FBCB42A12E8 /* OrientationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrientationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,7 +51,7 @@
 		14120F181D54699D0060E8E7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				14120F171D54699D0060E8E7 /* libSitbRCTOrientation.a */,
+				14120F171D54699D0060E8E7 /* libSitbOrientation.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,9 +59,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		14120F161D54699D0060E8E7 /* SitbRCTOrientation */ = {
+		14120F161D54699D0060E8E7 /* SitbOrientation */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14120F201D54699D0060E8E7 /* Build configuration list for PBXNativeTarget "SitbRCTOrientation" */;
+			buildConfigurationList = 14120F201D54699D0060E8E7 /* Build configuration list for PBXNativeTarget "SitbOrientation" */;
 			buildPhases = (
 				14120F131D54699D0060E8E7 /* Sources */,
 				14120F141D54699D0060E8E7 /* Frameworks */,
@@ -71,9 +71,9 @@
 			);
 			dependencies = (
 			);
-			name = SitbRCTOrientation;
+			name = SitbOrientation;
 			productName = SitbRCTOrientation;
-			productReference = 14120F171D54699D0060E8E7 /* libSitbRCTOrientation.a */;
+			productReference = 14120F171D54699D0060E8E7 /* libSitbOrientation.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -90,7 +90,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 14120F121D54699D0060E8E7 /* Build configuration list for PBXProject "SitbRCTOrientation" */;
+			buildConfigurationList = 14120F121D54699D0060E8E7 /* Build configuration list for PBXProject "SitbOrientation" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -102,7 +102,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				14120F161D54699D0060E8E7 /* SitbRCTOrientation */,
+				14120F161D54699D0060E8E7 /* SitbOrientation */,
 			);
 		};
 /* End PBXProject section */
@@ -230,7 +230,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14120F121D54699D0060E8E7 /* Build configuration list for PBXProject "SitbRCTOrientation" */ = {
+		14120F121D54699D0060E8E7 /* Build configuration list for PBXProject "SitbOrientation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14120F1E1D54699D0060E8E7 /* Debug */,
@@ -239,7 +239,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14120F201D54699D0060E8E7 /* Build configuration list for PBXNativeTarget "SitbRCTOrientation" */ = {
+		14120F201D54699D0060E8E7 /* Build configuration list for PBXNativeTarget "SitbOrientation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14120F211D54699D0060E8E7 /* Debug */,
