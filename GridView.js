@@ -1,6 +1,6 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { ListView, StyleSheet, View, ViewPropTypes } from 'react-native';
+import { FlatList, StyleSheet, View, ViewPropTypes } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 
 const styles = StyleSheet.create({
@@ -53,9 +53,7 @@ class GridView extends AbstractComponent {
 
   static defaultProps = {
     autoWidth: true,
-    cols: 1,
-    enableEmptySections: true,
-    rowHasChanged: (r1, r2) => r1 !== r2
+    cols: 1
   };
 
   props: Object;
@@ -63,13 +61,11 @@ class GridView extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    const {cols, cells, rowHasChanged} = this.props;
-    const ds = new ListView.DataSource({rowHasChanged});
+    const {cols, cells} = this.props;
     const data = this.handleCellData(cells, cols);
     this.state = {
-      dataSource: ds.cloneWithRows(data),
-      maxRowId: data.length,
-      cellHeight: 0
+      cellHeight: 0,
+      data
     };
   }
 
@@ -77,8 +73,7 @@ class GridView extends AbstractComponent {
     if (this.props.cells !== nextProps.cells || this.props.cols !== nextProps.cols) {
       const data = this.handleCellData(nextProps.cells, nextProps.cols);
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data),
-        maxRowId: data.length
+        data
       });
     }
   }
@@ -101,16 +96,16 @@ class GridView extends AbstractComponent {
     return data;
   }
 
-  renderRow(rowData: Array, sectionID, rowID) {
+  renderItem({item}) {
     const {renderCell, horizontalSpacing, verticalSpacing, autoWidth} = this.props;
-    let style = {
+    const style = {
       marginHorizontal: horizontalSpacing / 2
     };
     if (autoWidth) {
       style.flex = 1;
     }
 
-    let children = rowData.map((cell, key) => {
+    const children = item.map((cell, key) => {
       if (cell.empty) {
         return cloneElement(<View />, {
           key,
@@ -122,8 +117,6 @@ class GridView extends AbstractComponent {
         style,
         children: renderCell({
           cell,
-          sectionID,
-          rowID,
           cellId: key
         })
       });
@@ -135,19 +128,19 @@ class GridView extends AbstractComponent {
     );
   }
 
-  renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    const {renderSeparator} = this.props;
-    return renderSeparator && renderSeparator(sectionID, rowID, adjacentRowHighlighted, this.state.maxRowId - 1);
+
+  keyExtractor(item, index) {
+    return index;
   }
 
   render() {
     const {style, verticalSpacing, horizontalSpacing, ...other} = this.props;
 
     return (
-      <ListView {...other}
-                dataSource={this.state.dataSource}
-                renderRow={this.renderRow}
-                renderSeparator={this.renderSeparator}
+      <FlatList {...other}
+                data={this.state.data}
+                keyExtractor={this.keyExtractor}
+                renderItem={this.renderItem}
                 style={[{
                   marginHorizontal: -horizontalSpacing,
                   marginVertical: -verticalSpacing
