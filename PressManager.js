@@ -1,6 +1,6 @@
 import { findNodeHandle, NativeEventEmitter, NativeModules } from 'react-native';
 
-const {SitbPressManager, SitbPressManagerEventModule} = NativeModules;
+const {SitbPressManager} = NativeModules;
 
 const handler = {};
 
@@ -10,7 +10,7 @@ const handler = {};
  */
 class PressManager {
 
-  event = new NativeEventEmitter(SitbPressManagerEventModule);
+  event = new NativeEventEmitter(SitbPressManager);
 
   constructor() {
     this.event.addListener('SitbPressManagerPressEvent', this.handlePress);

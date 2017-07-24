@@ -4,6 +4,7 @@
 //
 
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface SitbPressManager : NSObject <RCTBridgeModule>
+@interface SitbPressManager : RCTEventEmitter
 @end

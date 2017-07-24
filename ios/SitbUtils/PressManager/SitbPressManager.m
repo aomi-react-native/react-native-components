@@ -4,23 +4,7 @@
 //
 
 #import "SitbPressManager.h"
-#import <UIKit/UIKit.h>
 #import <React/RCTUIManager.h>
-#import <React/RCTEventEmitter.h>
-
-@interface SitbPressManagerEventModule : RCTEventEmitter <RCTBridgeModule>
-@end
-
-@implementation SitbPressManagerEventModule
-
-RCT_EXPORT_MODULE(SitbPressManagerEventModule)
-
-- (NSArray<NSString *> *)supportedEvents {
-    return @[@"SitbPressManagerPressEvent"];
-}
-
-@end
-
 
 @interface CustomUITapGestureRecognizer : UITapGestureRecognizer
 
@@ -40,6 +24,10 @@ RCT_EXPORT_MODULE(SitbPressManagerEventModule)
 
 RCT_EXPORT_MODULE(SitbPressManager)
 
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"SitbPressManagerPressEvent"];
+}
+
 /**
  * 给按钮新增点击事件
  * @return
@@ -55,8 +43,7 @@ RCT_EXPORT_METHOD(onPress:
 }
 
 - (void)handlePress:(CustomUITapGestureRecognizer *)press {
-    SitbPressManagerEventModule *eventModule = [self.bridge moduleForClass:[SitbPressManagerEventModule class]];
-    [eventModule sendEventWithName:@"SitbPressManagerPressEvent" body:[NSString stringWithFormat:@"%i", press.viewTag]];
+    [self sendEventWithName:@"SitbPressManagerPressEvent" body:[NSString stringWithFormat:@"%i", press.viewTag]];
 }
 
 
