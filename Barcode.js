@@ -5,7 +5,7 @@ import { DeviceEventEmitter, NativeModules, Platform, requireNativeComponent, St
 import Camera from './Camera';
 import common from './styles';
 
-const {SitbBarcodeView} = NativeModules;
+const {SitbBarcodeView, SitbCameraView} = NativeModules;
 
 const ANDROID_EVENT_NAME = 'onSuccess';
 
@@ -83,24 +83,36 @@ class Barcode extends Component {
 
   static propTypes = {
     ...Camera.propTypes,
+    barCodeTypes: PropTypes.array,
     renderBottom: PropTypes.func,
     renderTop: PropTypes.func,
     scanLineStyle: ViewPropTypes.style,
-    type: PropTypes.oneOf([Type.qr]),
     windowSize: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
     }),
-    onSuccess: PropTypes.func
+    onBarCodeRead: PropTypes.func
   };
 
   static defaultProps = {
-    type: Type.qr,
+    barCodeTypes: [Type.qr],
     windowSize: {
       width: 270,
       height: 270
     }
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      windowSize: {
+        width: 270,
+        height: 270
+      }
+    };
+  }
+
+  state = {};
 
   /**
    * 扫描图片
@@ -108,19 +120,10 @@ class Barcode extends Component {
    * @param options
    */
   static scanImage(options) {
+    if (Platform.OS === 'ios') {
+      return SitbCameraView.scanImage(options);
+    }
     return SitbBarcodeView.scanImage(options);
-  }
-
-  state = {};
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      windowSize: {
-        width: 270,
-        height: props.type === Type.qr ? 270 : 70
-      }
-    };
   }
 
   componentWillMount() {
@@ -139,13 +142,16 @@ class Barcode extends Component {
     }
   }
 
-
   handleSuccess(data) {
     if (Platform.OS === 'android') {
       DeviceEventEmitter.removeAllListeners(ANDROID_EVENT_NAME);
     }
+    let realData = data;
+    if (Platform.OS === 'ios') {
+      realData = data.nativeEvent;
+    }
     const {onSuccess} = this.props;
-    onSuccess && onSuccess(data);
+    onSuccess && onSuccess(realData);
   }
 
   renderTop(renderTop) {
@@ -164,11 +170,12 @@ class Barcode extends Component {
   }
 
   render() {
-    const {renderTop, renderBottom} = this.props;
+    const {renderTop, renderBottom, barCodeTypes} = this.props;
     let props = {};
     if (Platform.OS === 'ios') {
       props = {
-        onBarCodeRead: this.handleSuccess
+        onBarCodeRead: this.handleSuccess,
+        barCodeTypes
       };
     }
     return (
