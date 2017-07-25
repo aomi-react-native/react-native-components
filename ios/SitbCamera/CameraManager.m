@@ -8,6 +8,9 @@
 
 #import "CameraManager.h"
 #import "CameraView.h"
+#import <Photos/PHAsset.h>
+#import <Photos/PHImageManager.h>
+#import <AssetsLibrary/ALAsset.h>
 
 
 @interface CameraManager ()
@@ -128,6 +131,36 @@ RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
     }];
 }
 
+RCT_EXPORT_METHOD(
+            scanImage:
+            (NSDictionary *) data
+            resolve:
+            (RCTPromiseResolveBlock) resolve
+            reject:
+            (__unused
+        RCTPromiseRejectBlock)reject) {
+    NSString *path = data[@"path"];
+    NSURL *url = [NSURL URLWithString:path];
+
+    PHFetchResult *fetchResult = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
+    PHAsset *asset = fetchResult.firstObject;
+
+    PHImageManager *manager = [PHImageManager defaultManager];
+    [manager requestImageDataForAsset:asset options:nil resultHandler:^(NSData *_Nullable imageData,
+            NSString *_Nullable dataUTI, UIImageOrientation orientation, NSDictionary *_Nullable info) {
+        CIImage *ciImage = [CIImage imageWithData:imageData];
+        CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{CIDetectorAccuracy: CIDetectorAccuracyLow}];
+        NSArray *feature = [detector featuresInImage:ciImage];
+        for (CIQRCodeFeature *result in feature) {
+            resolve(@{
+                    @"format": AVMetadataObjectTypeQRCode,
+                    @"text": result.messageString
+            });
+        }
+    }];
+
+}
+
 /**
  * 初始化 AVCaptureSession
  * 初始化AVCaptureDeviceInput
@@ -215,7 +248,6 @@ RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
             [videoDataOutput setVideoSettings:@{(id) kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA)}];
 
             [self.session addOutput:videoDataOutput];
-            self.videoDataOutput = videoDataOutput;
         }
 
 //        AVCapturePhotoOutput *photoOutput = [[AVCapturePhotoOutput alloc] init];
@@ -233,7 +265,6 @@ RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
             [metadataOutput setMetadataObjectsDelegate:self queue:self.sessionQueue];
             [self.session addOutput:metadataOutput];
             [metadataOutput setMetadataObjectTypes:self.barCodeTypes];
-            self.metadataOutput = metadataOutput;
         }
 
         __weak CameraManager *weakSelf = self;
@@ -258,7 +289,19 @@ RCT_EXPORT_METHOD(checkAudioAuthorizationStatus:
  * stop session
  */
 - (void)stopSession {
+    dispatch_async(self.sessionQueue, ^{
+        self.cameraView = nil;
+        [self.previewLayer removeFromSuperlayer];
+        [self.session commitConfiguration];
+        [self.session stopRunning];
+        for (AVCaptureInput *input in self.session.inputs) {
+            [self.session removeInput:input];
+        }
 
+        for (AVCaptureOutput *output in self.session.outputs) {
+            [self.session removeOutput:output];
+        }
+    });
 }
 
 - (void)stopCapture {
@@ -344,7 +387,12 @@ didOutputMetadataObjects:(NSArray *)metadataObjects
 
 
 - (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position {
-    NSArray *devices = [AVCaptureDevice devicesWithMediaType:mediaType];
+    AVCaptureDeviceDiscoverySession *discoverySession = [
+            AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+                                                                  mediaType:mediaType
+                                                                   position:position
+    ];
+    NSArray *devices = discoverySession.devices;
     AVCaptureDevice *captureDevice = [devices firstObject];
 
     for (AVCaptureDevice *device in devices) {

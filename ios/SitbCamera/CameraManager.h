@@ -8,6 +8,7 @@
 
 #import <React/RCTViewManager.h>
 #import <AVFoundation/AVFoundation.h>
+#import <AssetsLibrary/ALAssetsLibrary.h>
 
 @class CameraView;
 
@@ -23,14 +24,8 @@
 @property(nonatomic, strong) AVCaptureDeviceInput *audioCaptureDeviceInput;
 @property(nonatomic, strong) AVCaptureDeviceInput *videoCaptureDeviceInput;
 
-// output
-@property(nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
-@property(nonatomic, strong) AVCapturePhotoOutput *photoOutput;
-@property(nonatomic, strong) AVCaptureMetadataOutput *metadataOutput;
-
 // settings
 @property(nonatomic, strong) AVCapturePhotoSettings *photoSettings;
-
 
 @property(nonatomic, strong) NSArray *barCodeTypes;
 
@@ -48,9 +43,9 @@
 @property(nonatomic, strong) CameraView *cameraView;
 
 //
-@property(nonatomic, strong) dispatch_queue_t sessionQueue;
-@property(nonatomic, strong) dispatch_queue_t sampleBufferQueue;
-@property(nonatomic, strong) dispatch_queue_t sendEventQueue;
+@property(nonatomic) dispatch_queue_t sessionQueue;
+@property(nonatomic) dispatch_queue_t sampleBufferQueue;
+@property(nonatomic) dispatch_queue_t sendEventQueue;
 
 @property(nonatomic, assign) NSInteger presetCamera;
 

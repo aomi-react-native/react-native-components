@@ -25,6 +25,11 @@
 // 捕获图像事件
 @property(nonatomic, copy) RCTBubblingEventBlock onCaptureOutputBuffer;
 
+// 捕获二维码事件
+@property(nonatomic, copy) RCTBubblingEventBlock onBarCodeRead;
+
+@property(nonatomic, strong) NSArray *barCodeTypes;
+
 - (id)initWithManager:(CameraManager *)manager bridge:(RCTBridge *)bridge;
 
 

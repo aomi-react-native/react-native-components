@@ -136,10 +136,16 @@
     [self.manager setOrientation:(AVCaptureVideoOrientation) orientation];
 }
 
-
 - (void)setOnCaptureOutputBuffer:(RCTBubblingEventBlock)onCaptureOutputBuffer {
     [self.manager setOnCaptureOutputBuffer:onCaptureOutputBuffer];
 }
 
+- (void)setOnBarCodeRead:(RCTBubblingEventBlock)onBarCodeRead {
+    [self.manager setOnBarCodeRead:onBarCodeRead];
+}
+
+- (void)setBarCodeTypes:(NSArray *)barCodeTypes {
+    [self.manager setBarCodeTypes:barCodeTypes];
+}
 
 @end
