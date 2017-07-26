@@ -80,7 +80,8 @@ class ActionSheetComponent extends Component {
     message: PropTypes.string,
 
     // （字符串） - 弹出框顶部的标题
-    title: PropTypes.string
+    title: PropTypes.string,
+    titleTextStyle: Text.propTypes.style
   };
 
   state = {
@@ -133,7 +134,8 @@ class ActionSheetComponent extends Component {
     const {
       options,
       title,
-      cancel
+      cancel,
+      titleTextStyle
     } = this.props;
 
     const {
@@ -153,7 +155,7 @@ class ActionSheetComponent extends Component {
         >
           <View style={[styles.content]}>
             <View style={styles.title}>
-              <Text style={styles.titleText}>{title || 'Action'}</Text>
+              <Text style={[styles.titleText, titleTextStyle]}>{title || 'Action'}</Text>
             </View>
             <ScrollView alwaysBounceVertical={false}
                         style={{maxHeight: height * 0.6}}
@@ -203,7 +205,7 @@ class ActionSheet {
    * @param callback
    */
   static showActionSheetWithOptions(options: Object, callback: Function) {
-    let actionSheet = new RootSiblings(<View />);
+    let actionSheet = new RootSiblings(<View/>);
     actionSheet.update(
       <ActionSheetComponent {...options}
                             manager={actionSheet}
