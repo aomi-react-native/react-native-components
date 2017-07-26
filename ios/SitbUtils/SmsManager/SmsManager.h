@@ -4,7 +4,10 @@
 //
 
 #import <React/RCTBridgeModule.h>
+
 #import <MessageUI/MFMessageComposeViewController.h>
 
 @interface SmsManager : NSObject <RCTBridgeModule, MFMessageComposeViewControllerDelegate>
+@property(nonatomic, copy) RCTPromiseResolveBlock resolve;
+@property(nonatomic, copy) RCTPromiseRejectBlock reject;
 @end

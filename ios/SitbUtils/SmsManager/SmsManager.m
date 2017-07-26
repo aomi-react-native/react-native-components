@@ -3,6 +3,7 @@
 // Copyright (c) 2017 Sitb Software. All rights reserved.
 //
 
+#import <React/RCTLog.h>
 #import "SmsManager.h"
 
 
@@ -20,6 +21,8 @@ RCT_EXPORT_METHOD(sendSms:
             (RCTPromiseResolveBlock) resolve
             reject:
             (RCTPromiseRejectBlock) reject) {
+    self.resolve = resolve;
+    self.reject = reject;
     if ([MFMessageComposeViewController canSendText]) {
         MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
         picker.messageComposeDelegate = self;
@@ -32,7 +35,6 @@ RCT_EXPORT_METHOD(sendSms:
                 root = root.presentedViewController;
             }
             [root presentViewController:picker animated:YES completion:nil];
-            resolve(@(true));
         });
     } else {
         reject(@"EXCEPTION", @"不能发送短信", nil);
@@ -42,7 +44,23 @@ RCT_EXPORT_METHOD(sendSms:
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller
                  didFinishWithResult:(MessageComposeResult)result {
-
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [controller dismissViewControllerAnimated:YES completion:nil];
+        switch (result) {
+            case MessageComposeResultSent:
+                RCTLog(@"信息传送成功");
+                self.resolve(@(true));
+                break;
+            case MessageComposeResultFailed:
+                RCTLog(@"信息传送失败");
+                self.reject(@"FAILURE", @"信息传送失败", nil);
+                break;
+            case MessageComposeResultCancelled:
+                RCTLog(@"信息被用户取消传送");
+                self.reject(@"CANCEL", @"信息被用户取消传送", nil);
+                break;
+        }
+    });
 }
 
 
