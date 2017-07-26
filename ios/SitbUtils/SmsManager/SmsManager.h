@@ -3,8 +3,8 @@
 // Copyright (c) 2017 Sitb Software. All rights reserved.
 //
 
-#import <React/RCTEventEmitter.h>
+#import <React/RCTBridgeModule.h>
 #import <MessageUI/MFMessageComposeViewController.h>
 
-@interface SmsManager : RCTEventEmitter <MFMessageComposeViewControllerDelegate>
+@interface SmsManager : NSObject <RCTBridgeModule, MFMessageComposeViewControllerDelegate>
 @end
