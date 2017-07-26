@@ -2,7 +2,6 @@ import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
 import { Keyboard, Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View, ViewPropTypes } from 'react-native';
-import Icon from './Icon';
 import { Colors, separatorHeight } from './styles';
 
 const styles = {
@@ -92,7 +91,6 @@ class Button extends Component {
       disabled,
       after,
       before,
-      iconProps,
       fontSize,
       children,
       type,
@@ -102,10 +100,6 @@ class Button extends Component {
     } = this.props;
 
     let newChild = [];
-    let iconStyle = {
-      marginRight: 5,
-      marginLeft: 5
-    };
     let textStyle = Object.assign({},
       type === 'default' || type === 'link' ? styles.textDefault : styles.textOther);
     if (disabled) {
@@ -116,18 +110,7 @@ class Button extends Component {
     }
 
     if (before) {
-      if (typeof before === 'string') {
-        newChild.push(
-          <Icon {...iconProps}
-                key="before"
-                name={before}
-                size={iconProps.size || fontSize}
-                style={[iconStyle, textStyle, iconProps.style]}
-          />
-        );
-      } else {
-        newChild.push(before);
-      }
+      newChild.push(before);
     }
     if (children) {
       if (typeof children === 'string' || (Array.isArray(children) && typeof children[0] === 'string')) {
@@ -143,18 +126,7 @@ class Button extends Component {
       }
     }
     if (after) {
-      if (typeof after === 'string') {
-        newChild.push(
-          <Icon {...iconProps}
-                key="after"
-                name={after}
-                size={iconProps.size || fontSize}
-                style={[iconStyle, textStyle, iconProps.style]}
-          />
-        );
-      } else {
-        newChild.push(after);
-      }
+      newChild.push(after);
     }
 
     let temp = [];
@@ -174,7 +146,7 @@ class Button extends Component {
       temp.push(disabledStyle);
     }
 
-    return cloneElement(<View />, {
+    return cloneElement(<View/>, {
       children: newChild,
       style: temp
     });
