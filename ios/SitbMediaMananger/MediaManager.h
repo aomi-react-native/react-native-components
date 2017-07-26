@@ -6,8 +6,8 @@
 //  Copyright © 2016年 Sitb. All rights reserved.
 //
 
-#import "RCTBridgeModule.h"
-#import "RCTLog.h"
+#import <React/RCTBridgeModule.h>
+#import <React/RCTLog.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
