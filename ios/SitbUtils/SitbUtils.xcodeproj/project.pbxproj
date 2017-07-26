@@ -84,8 +84,8 @@
 		14B9C4301F283A56001E251B /* SmsManager */ = {
 			isa = PBXGroup;
 			children = (
-				274219CB1C5D492395D2CED5 /* SmsManager.m */,
 				27421B61598783148A05C03E /* SmsManager.h */,
+				274219CB1C5D492395D2CED5 /* SmsManager.m */,
 			);
 			name = SmsManager;
 			sourceTree = "<group>";
