@@ -133,7 +133,7 @@ class Picker extends AbstractFormComponent {
 
   render() {
 
-    const {children, mode, style} = this.props;
+    const {editable, children, mode, style, ...other} = this.props;
 
     if (Platform.OS === 'android') {
       return (
@@ -147,8 +147,6 @@ class Picker extends AbstractFormComponent {
       );
     }
 
-    const {editable, ...other} = this.props;
-
     const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
     let label = '';
     const childrenArr = Children.toArray(children);
@@ -156,6 +154,7 @@ class Picker extends AbstractFormComponent {
       const child = childrenArr[i];
       if (child.props.value === this.state.selectedValue) {
         label = child.props.label;
+        break;
       }
     }
 
@@ -164,9 +163,10 @@ class Picker extends AbstractFormComponent {
                         onPress={this.handleDialogSwitch}
       >
         <Input {...other}
-               defaultValue={label}
-               editable={false}
-        />
+               style={style}
+        >
+          {label}
+        </Input>
         <Dialog hideAnimation={hideAnimation}
                 onPress={this.handleDialogSwitch}
                 showAnimation={showAnimation}
