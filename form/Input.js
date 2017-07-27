@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
     minHeight: 40,
     marginTop: Platform.OS === 'ios' ? 2 : 0
   },
+  textInput: {
+    fontSize: 18
+  },
   label: {
     justifyContent: 'center'
   }
@@ -59,6 +62,7 @@ const INPUT_PROPS_KEYS = [
   'underlineColorAndroid',
   'name'
 ];
+
 class Input extends AbstractFormComponent {
 
   static propTypes = {
@@ -251,7 +255,7 @@ class Input extends AbstractFormComponent {
   }
 
   render() {
-    let {before, after, style, inputStyle, ...other} = this.props;
+    let {children, before, after, style, inputStyle, ...other} = this.props;
 
     let newInputProps = {};
     let newProps = Object.assign({}, other);
@@ -260,17 +264,33 @@ class Input extends AbstractFormComponent {
       newInputProps[key] = this.props[key];
       newProps[key] && Reflect.deleteProperty(newProps, key);
     });
+    let comp;
+    if (children) {
+      comp = (
+        <View style={{alignItems: 'center'}}>
+          <Text numberOfLines={1}
+                style={[styles.textInput, inputStyle]}
+          >
+            {children}
+          </Text>
+        </View>
+      );
+    } else {
+      comp = (
+        <TextInput {...newInputProps}
+                   onChangeText={this.handleChangeText}
+                   ref={textInput => this.textInput = textInput}
+                   style={[styles.input, inputStyle]}
+        />
+      );
+    }
 
     return (
       <View {...newProps}
             style={[styles.container, style]}
       >
         {this.getComp(before, true)}
-        <TextInput {...newInputProps}
-                   onChangeText={this.handleChangeText}
-                   ref={textInput => this.textInput = textInput}
-                   style={[styles.input, inputStyle]}
-        />
+        {comp}
         {this.getComp(after)}
       </View>
     );
