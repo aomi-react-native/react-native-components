@@ -9,7 +9,7 @@ import { Keyboard, LayoutAnimation, Platform, ScrollView } from 'react-native';
 export default class KeyboardAvoidingView extends Component {
 
   static defaultProps = {
-    keyboardVerticalOffset: 0
+    keyboardBottomOffset: 15
   };
 
   // refs
@@ -31,6 +31,9 @@ export default class KeyboardAvoidingView extends Component {
   }
 
   onKeyboardChange(event) {
+    if (!this.scrollView) {
+      return;
+    }
     if (!event) {
       this.scrollView.scrollTo({
         x: 0,
@@ -65,7 +68,7 @@ export default class KeyboardAvoidingView extends Component {
       return 0;
     }
 
-    const keyboardY = keyboardFrame.screenY - this.props.keyboardVerticalOffset;
+    const keyboardY = keyboardFrame.screenY + keyboardFrame.height - this.props.keyboardBottomOffset;
 
     // Calculate the displacement needed for the view such that it
     // no longer overlaps with the keyboard
