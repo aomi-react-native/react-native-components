@@ -8,6 +8,8 @@
 
 NSString *const ShortcutItemClicked = @"ShortcutItemClicked";
 
+NSString *const EventName = @"quickActionShortcut";
+
 NSDictionary *QuickAction(UIApplicationShortcutItem *item) {
     if (!item) return nil;
     return @{
@@ -20,7 +22,30 @@ NSDictionary *QuickAction(UIApplicationShortcutItem *item) {
 
 @implementation QuickActionManager
 
+@synthesize bridge = _bridge;
+
+- (instancetype)init {
+    if ((self = [super init])) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleQuickActionPress:)
+                                                     name:ShortcutItemClicked
+                                                   object:nil];
+    }
+    return self;
+}
+
 RCT_EXPORT_MODULE(SitbQuickActionManager)
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[EventName];
+}
+
+- (NSDictionary<NSString *, id> *)constantsToExport {
+    return @{
+            @"eventName": EventName
+    };
+}
+
 
 // Map user passed array of UIApplicationShortcutItem
 - (NSArray *)dynamicShortcutItemsForPassedArray:(NSArray *)passedArray {
@@ -93,7 +118,7 @@ RCT_EXPORT_METHOD(setShortcutItems:
 RCT_EXPORT_METHOD(isSupported:
     (RCTResponseSenderBlock) callback) {
     BOOL supported = [[UIApplication sharedApplication].delegate.window.rootViewController.traitCollection forceTouchCapability] == UIForceTouchCapabilityAvailable;
-    callback(@[[NSNull null], @(supported)]);
+    callback(@[@(supported)]);
 }
 
 RCT_EXPORT_METHOD(clearShortcutItems) {
@@ -108,6 +133,10 @@ RCT_EXPORT_METHOD(clearShortcutItems) {
     ];
     completionHandler(YES);
 
+}
+
+- (void)handleQuickActionPress:(NSNotification *)notification {
+    [self sendEventWithName:EventName body:notification.userInfo];
 }
 
 @end
