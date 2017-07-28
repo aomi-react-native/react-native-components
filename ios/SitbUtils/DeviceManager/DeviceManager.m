@@ -28,7 +28,12 @@ RCT_EXPORT_METHOD(
             @"model": [device model],
             @"name": [device name],
             @"localizedModel": [device localizedModel],
-            @"identifier": [[device identifierForVendor] UUIDString]
+            @"identifier": [[device identifierForVendor] UUIDString],
+            @"locale": [NSLocale preferredLanguages][0],
+            @"country": [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],
+            @"bundleId": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
+            @"versionName":[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: [NSNull null],
+            @"versionCode": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]
     });
 
 }
