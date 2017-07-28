@@ -43,8 +43,8 @@
 			isa = PBXGroup;
 			children = (
 				14B9C4551F2B031E001E251B /* Products */,
-				2742158C941381BE6F7540F2 /* QuickActionManager.m */,
 				274213866BAE16A2057BC4BA /* QuickActionManager.h */,
+				2742158C941381BE6F7540F2 /* QuickActionManager.m */,
 			);
 			sourceTree = "<group>";
 		};
@@ -250,6 +250,7 @@
 				14B9C45F1F2B031E001E251B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
