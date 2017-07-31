@@ -1,6 +1,8 @@
-import { NativeModules } from 'react-native';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
 const {SitbQuickActionManager} = NativeModules;
+
+const emitter = new NativeEventEmitter(SitbQuickActionManager);
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -18,6 +20,14 @@ export default class QuickActionManager {
 
   static clearShortcutItems() {
     SitbQuickActionManager.clearShortcutItems();
+  }
+
+  static addQuickActionShortcutListener(callback) {
+    emitter.addListener('quickActionShortcut', callback);
+  }
+
+  static removeQuickActionShortcutListener(callback) {
+    emitter.removeListener('quickActionShortcut', callback);
   }
 
 }
