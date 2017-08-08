@@ -17,7 +17,8 @@ public class UtilsPackage extends DefaultReactPackage {
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
     return Arrays.<NativeModule>asList(
       new VersionManager(reactContext),
-      new DeviceManager(reactContext)
+      new DeviceManager(reactContext),
+      new SmsManager(reactContext)
     );
   }
 }
