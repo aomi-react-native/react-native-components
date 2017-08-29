@@ -166,7 +166,7 @@ class List extends AbstractComponent {
 
     function ItemSeparatorComponent() {
       return (
-        <View style={fullSeparator ? {} : {paddingLeft: 15}}>
+        <View style={fullSeparator ? {} : {paddingLeft: padding}}>
           <View style={[styles.separator, {backgroundColor: separatorColor}]}/>
         </View>
       );
