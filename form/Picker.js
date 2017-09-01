@@ -56,7 +56,7 @@ class Picker extends AbstractFormComponent {
      *
      * @platform android
      */
-    mode: React.PropTypes.oneOf(['dialog', 'dropdown'])
+    mode: PropTypes.oneOf(['dialog', 'dropdown'])
   };
 
   static defaultProps = {
