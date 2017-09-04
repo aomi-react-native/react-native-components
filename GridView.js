@@ -2,6 +2,7 @@ import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, StyleSheet, View, ViewPropTypes } from 'react-native';
 import AbstractComponent from './AbstractComponent';
+import { getWindowSize } from './styles';
 
 const styles = StyleSheet.create({
   row: {
@@ -97,22 +98,22 @@ class GridView extends AbstractComponent {
   }
 
   renderItem({item}) {
-    const {renderCell, horizontalSpacing, verticalSpacing, autoWidth} = this.props;
+    const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, cols} = this.props;
     const style = {
       marginHorizontal: horizontalSpacing / 2
     };
     if (autoWidth) {
-      style.flex = 1;
+      style.width = getWindowSize().width / cols;
     }
 
     const children = item.map((cell, key) => {
       if (cell.empty) {
-        return cloneElement(<View />, {
+        return cloneElement(<View/>, {
           key,
           style
         });
       }
-      return cloneElement(<View />, {
+      return cloneElement(<View/>, {
         key,
         style,
         children: renderCell({
