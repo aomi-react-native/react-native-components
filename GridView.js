@@ -103,7 +103,7 @@ class GridView extends AbstractComponent {
       marginHorizontal: horizontalSpacing / 2
     };
     if (autoWidth) {
-      style.width = getWindowSize().width / cols;
+      style.width = getWindowSize().width / cols - (cols > 0 ? (cols - 1) * horizontalSpacing : 0);
     }
 
     const children = item.map((cell, key) => {
