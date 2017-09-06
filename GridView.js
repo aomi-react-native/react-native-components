@@ -54,7 +54,9 @@ class GridView extends AbstractComponent {
 
   static defaultProps = {
     autoWidth: true,
-    cols: 1
+    cols: 1,
+    horizontalSpacing: 0,
+    verticalSpacing: 0
   };
 
   props: Object;
