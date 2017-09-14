@@ -3,7 +3,7 @@ allprojects {
     version '0.0.1'
 
     repositories {
-        maven { url "http://repo.sitb.software/repository/maven-public/" }
+        maven { url "https://repo.sitb.software/repository/maven-public/" }
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
@@ -14,7 +14,7 @@ allprojects {
 
 buildscript {
     repositories {
-        maven { url "http://repo.sitb.software/repository/maven-public/" }
+        maven { url "https://repo.sitb.software/repository/maven-public/" }
     }
 
     dependencies {
