@@ -387,21 +387,30 @@ didOutputMetadataObjects:(NSArray *)metadataObjects
 
 
 - (AVCaptureDevice *)deviceWithMediaType:(NSString *)mediaType preferringPosition:(AVCaptureDevicePosition)position {
-    AVCaptureDeviceDiscoverySession *discoverySession = [
-            AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
-                                                                  mediaType:mediaType
-                                                                   position:position
-    ];
-    NSArray *devices = discoverySession.devices;
-    AVCaptureDevice *captureDevice = [devices firstObject];
-
-    for (AVCaptureDevice *device in devices) {
-        if ([device position] == position) {
-            captureDevice = device;
-            break;
+    AVCaptureDevice *captureDevice;
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+        AVCaptureDeviceDiscoverySession *discoverySession = [
+                AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+                                                                      mediaType:mediaType
+                                                                       position:position
+        ];
+        NSArray *devices = discoverySession.devices;
+        captureDevice = [devices firstObject];
+        for (AVCaptureDevice *device in devices) {
+            if ([device position] == position) {
+                captureDevice = device;
+                break;
+            }
+        }
+    } else {
+        NSArray *devices = [AVCaptureDevice devicesWithMediaType:mediaType];
+        for (AVCaptureDevice *camera in devices) {
+            if (camera.position == position) {
+                captureDevice = camera;
+                break;
+            }
         }
     }
-
     return captureDevice;
 }
 
