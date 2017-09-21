@@ -1,5 +1,7 @@
 package software.sitb.react.utils;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import com.facebook.react.bridge.*;
 import software.sitb.react.commons.DefaultReactContextBaseJavaModule;
@@ -23,7 +25,18 @@ public class DeviceManager extends DefaultReactContextBaseJavaModule {
 
   @ReactMethod
   public void getDeviceInfo(Promise promise) {
+
     WritableMap response = Arguments.createMap();
+    try {
+      PackageInfo info = getReactApplicationContext().getPackageManager()
+        .getPackageInfo(getReactApplicationContext().getPackageName(), 0);
+      response.putString("packageName", info.packageName);
+      response.putInt("versionCode", info.versionCode);
+      response.putString("versionName", info.versionName);
+    } catch (PackageManager.NameNotFoundException e) {
+      e.printStackTrace();
+    }
+
     response.putString("systemName", "Android");
     response.putString("systemVersion", Build.VERSION.RELEASE);
     response.putString("model", Build.MODEL);
