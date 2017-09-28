@@ -6,10 +6,10 @@
 //  Copyright © 2017年 Sitb Software. All rights reserved.
 //
 
-#import "DeviceManager.h"
+#import "SitbDeviceManager.h"
 #import <UIKit/UIDevice.h>
 
-@implementation DeviceManager
+@implementation SitbDeviceManager
 
 RCT_EXPORT_MODULE(SitbDeviceManager)
 

@@ -8,5 +8,5 @@
 
 #import <React/RCTBridgeModule.h>
 
-@interface DeviceManager : NSObject <RCTBridgeModule>
+@interface SitbDeviceManager : NSObject <RCTBridgeModule>
 @end
