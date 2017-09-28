@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		141119FD1ED960FB00217B58 /* DeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 141119FC1ED960FB00217B58 /* DeviceManager.m */; };
+		141119FD1ED960FB00217B58 /* SitbDeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 141119FC1ED960FB00217B58 /* SitbDeviceManager.m */; };
 		27421AACF76B63B1234E20A1 /* SmsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 274219CB1C5D492395D2CED5 /* SmsManager.m */; };
 /* End PBXBuildFile section */
 
@@ -25,8 +25,8 @@
 
 /* Begin PBXFileReference section */
 		141119E81ED9606A00217B58 /* libSitbUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		141119FB1ED960E300217B58 /* DeviceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DeviceManager.h; path = DeviceManager/DeviceManager.h; sourceTree = "<group>"; };
-		141119FC1ED960FB00217B58 /* DeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeviceManager.m; path = DeviceManager/DeviceManager.m; sourceTree = "<group>"; };
+		141119FB1ED960E300217B58 /* SitbDeviceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SitbDeviceManager.h; path = DeviceManager/SitbDeviceManager.h; sourceTree = "<group>"; };
+		141119FC1ED960FB00217B58 /* SitbDeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SitbDeviceManager.m; path = DeviceManager/SitbDeviceManager.m; sourceTree = "<group>"; };
 		274219CB1C5D492395D2CED5 /* SmsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmsManager.m; path = SmsManager/SmsManager.m; sourceTree = "<group>"; };
 		27421B61598783148A05C03E /* SmsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmsManager.h; path = SmsManager/SmsManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,8 +62,8 @@
 		141119F41ED9608400217B58 /* DeviceManager */ = {
 			isa = PBXGroup;
 			children = (
-				141119FB1ED960E300217B58 /* DeviceManager.h */,
-				141119FC1ED960FB00217B58 /* DeviceManager.m */,
+				141119FB1ED960E300217B58 /* SitbDeviceManager.h */,
+				141119FC1ED960FB00217B58 /* SitbDeviceManager.m */,
 			);
 			name = DeviceManager;
 			sourceTree = "<group>";
@@ -135,7 +135,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				141119FD1ED960FB00217B58 /* DeviceManager.m in Sources */,
+				141119FD1ED960FB00217B58 /* SitbDeviceManager.m in Sources */,
 				27421AACF76B63B1234E20A1 /* SmsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
