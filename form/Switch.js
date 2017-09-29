@@ -17,26 +17,27 @@ class Switch extends AbstractFormComponent {
 
   static displayName = 'Switch';
 
+  state = {
+    value: false
+  };
+
   constructor(props) {
     super(props);
     ['onValueChange'].forEach(f => this[f] = this[f].bind(this));
-    let {name, form} = this.props;
-    name && form && form.putFormValue(name, this.props.value);
-    this.state = {
-      value: this.props.value
-    };
+    this.state.value = props.value;
+    this.putFormValue();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.value !== nextProps.value) {
+    if (typeof nextProps.value === 'boolean') {
+      this.putFormValue();
       this.setState({value: nextProps.value});
     }
   }
 
   onValueChange(value) {
-    this.setState({value});
-    let {onValueChange, form, name} = this.props;
-    form && name && form.putFormValue(name, value);
+    this.putFormValue();
+    let {onValueChange} = this.props;
     onValueChange && onValueChange(value);
   }
 
