@@ -1,4 +1,3 @@
-
 import Component from '../AbstractComponent';
 
 /**
@@ -12,6 +11,11 @@ class AbstractFormComponent extends Component {
   }
 
   valid() {
+  }
+
+  putFormValue() {
+    const {name, form, value} = this.props;
+    name && form && form.putFormValue(name, value);
   }
 }
 
