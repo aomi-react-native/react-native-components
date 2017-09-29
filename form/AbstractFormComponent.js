@@ -13,9 +13,9 @@ class AbstractFormComponent extends Component {
   valid() {
   }
 
-  putFormValue() {
+  putFormValue(currentValue) {
     const {name, form, value} = this.props;
-    name && form && form.putFormValue(name, value);
+    name && form && form.putFormValue(name, currentValue || value);
   }
 }
 
