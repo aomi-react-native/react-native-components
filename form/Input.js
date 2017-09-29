@@ -221,7 +221,6 @@ class Input extends AbstractFormComponent {
           return false;
         }
         name && form && form.deleteErrOrMissField(name);
-        return true;
       }
 
       if (pattern) {
