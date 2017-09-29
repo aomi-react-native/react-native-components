@@ -36,7 +36,13 @@ class Switch extends AbstractFormComponent {
   }
 
   onValueChange(value) {
-    this.putFormValue();
+    if (typeof this.props.value === 'boolean') {
+      this.putFormValue();
+      this.setState({value: this.props.value});
+    } else {
+      this.putFormValue(value);
+      this.setState({value});
+    }
     let {onValueChange} = this.props;
     onValueChange && onValueChange(value);
   }
