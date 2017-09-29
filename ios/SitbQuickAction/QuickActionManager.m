@@ -112,13 +112,17 @@ RCT_EXPORT_MODULE(SitbQuickActionManager)
 RCT_EXPORT_METHOD(setShortcutItems:
     (NSArray *) shortcutItems) {
     NSArray *dynamicShortcuts = [self dynamicShortcutItemsForPassedArray:shortcutItems];
-    [UIApplication sharedApplication].shortcutItems = dynamicShortcuts;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIApplication sharedApplication].shortcutItems = dynamicShortcuts;
+    });
 }
 
 RCT_EXPORT_METHOD(isSupported:
     (RCTResponseSenderBlock) callback) {
-    BOOL supported = [[UIApplication sharedApplication].delegate.window.rootViewController.traitCollection forceTouchCapability] == UIForceTouchCapabilityAvailable;
-    callback(@[@(supported)]);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BOOL supported = [[UIApplication sharedApplication].delegate.window.rootViewController.traitCollection forceTouchCapability] == UIForceTouchCapabilityAvailable;
+        callback(@[@(supported)]);
+    });
 }
 
 RCT_EXPORT_METHOD(clearShortcutItems) {
