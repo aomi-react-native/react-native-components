@@ -8,37 +8,32 @@ import RootSiblings from 'react-native-root-siblings';
  */
 export default function (RooView, props) {
 
+  const manager = new RootSiblings(<View/>);
+
   return class extends Component {
 
     static propTypes = RooView.prototype;
 
-    manager;
-
-    constructor(props) {
-      super(props);
-      this.manager = new RootSiblings(<View/>);
-    }
-
     componentDidMount() {
-      this.manager.update(
+      manager.update(
         <RooView {...props}
                  {...this.props}
-                 manager={this.manager}
+                 manager={manager}
         />
       );
     }
 
     componentDidUpdate() {
-      this.manager.update(
+      manager.update(
         <RooView {...props}
                  {...this.props}
-                 manager={this.manager}
+                 manager={manager}
         />
       );
     }
 
     componentWillUnmount() {
-      this.manager.destroy();
+      manager.destroy();
     }
 
     render() {
