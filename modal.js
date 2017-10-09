@@ -116,35 +116,11 @@ class SceneModal extends Component {
   }
 }
 
-class Manager {
-
-  props;
-  manager;
-
-  constructor(props) {
-    this.props = props;
-    this.manager = createRootView(
-      <SceneModal {...props}/>
-    );
-  }
-
-  update(props) {
-    this.manager.update(
-      <SceneModal {...props}/>
-    );
-  }
-
-  destroy() {
-    this.manager.destroy();
-  }
-
-}
-
 /**
  * 情景模态框
  */
 function sceneModal(props) {
-  return new Manager(props);
+  return createRootView(<SceneModal {...props}/>);
 }
 
 export default (args) => {
