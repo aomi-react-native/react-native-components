@@ -21,6 +21,7 @@ export function createRootView(rootView) {
                       manager={manager}
     />
   );
+  return manager;
 }
 
 /**
