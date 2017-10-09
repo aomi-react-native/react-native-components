@@ -15,6 +15,9 @@ project(':react-native-components:canvas').projectDir = new File(rootProject.pro
 include(':react-native-components:commons')
 project(':react-native-components:commons').projectDir = new File(rootProject.projectDir, './commons')
 
+include(':react-native-components:local-authentication')
+project(':react-native-components:local-authentication').projectDir = new File(rootProject.projectDir, './local-authentication')
+
 include(':react-native-components:media-manager')
 project(':react-native-components:media-manager').projectDir = new File(rootProject.projectDir, './media-manager')
 
