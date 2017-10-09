@@ -17,7 +17,7 @@ const styles = {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/6/16
  */
-class Icon extends Component {
+export default class SvgIcon extends Component {
 
   static propTypes = {
     ...WebView.propTypes,
@@ -82,5 +82,3 @@ class Icon extends Component {
   }
 
 }
-
-export default Icon;
