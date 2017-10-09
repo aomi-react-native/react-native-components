@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
 import { Platform, StyleSheet, Text, ToastAndroid } from 'react-native';
 import { View } from 'react-native-animatable';
-import createRootView from './createRootView';
+import { createRootView } from './createRootNode';
 
 const styles = StyleSheet.create({
   container: {
