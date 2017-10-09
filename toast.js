@@ -6,8 +6,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
 import { Platform, StyleSheet, Text, ToastAndroid } from 'react-native';
-import RootSiblings from 'react-native-root-siblings';
 import { View } from 'react-native-animatable';
+import createRootView from './createRootView';
 
 const styles = StyleSheet.create({
   container: {
@@ -104,35 +104,30 @@ const config = {
   duration: SHORT
 };
 
+/**
+ * 显示一个默认的toast弹框
+ * @param msg 问题消息
+ * @param duration 持续时间
+ */
 export default function show(msg, duration) {
-
   if (Platform.OS === 'android') {
     ToastAndroid.show(msg, duration || config.duration);
     return;
   }
 
   if (Platform.OS === 'ios') {
-    const toast = new RootSiblings(<View/>);
-    toast.update(
-      <ToastIOS duration={duration || config.duration}
-                manager={toast}
-                msg={msg}
-      />
-    );
+    createRootView(ToastIOS, {
+      duration: duration || config.duration,
+      msg
+    });
   }
 
 }
 
-export function setDefaultDuration(duration) {
+/**
+ * 设置关闭时间
+ * @param duration 关闭时间,毫秒
+ */
+export function setDuration(duration) {
   config.duration = duration;
 }
-
-export function toastWithComponent(ToastComponent, props) {
-  const toast = new RootSiblings(<View/>);
-  toast.update(
-    <ToastComponent {...props}
-                    manager={toast}
-    />
-  );
-}
-
