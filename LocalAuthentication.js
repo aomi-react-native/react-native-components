@@ -1,9 +1,11 @@
 import React from 'react';
-import { NativeModules, Platform, Text, View } from 'react-native';
+import { DeviceEventEmitter, NativeModules, Platform, Text, View } from 'react-native';
 import modal from './modal';
 import SvgIcon from './SvgIcon';
 import fingerprint from './assets/svg/fingerprint.svg';
+import toast from './toast';
 
+const EVENT_NAME = 'receiveAuthentication';
 
 const {SitbLocalAuthentication} = NativeModules;
 
@@ -34,44 +36,6 @@ export const Code = {
  */
 export default class LocalAuthentication {
 
-  static createDialog({title, msg}) {
-    return (
-      <View style={styles.content}>
-        <SvgIcon fill="#ff2d2d"
-                 height={50}
-                 source={fingerprint}
-                 width={50}
-
-        />
-        {title && <Text>{'再试一次'}</Text>}
-        {msg && <Text style={styles.msg}>{msg}</Text>}
-      </View>
-    );
-  }
-
-  static handle(resolve, reject, manager) {
-    SitbLocalAuthentication.fingerprintValidate()
-      .then(result => {
-        console.log(result);
-      })
-      .catch(e => {
-        console.info('指纹识别失败', e);
-        switch (e.code) {
-          case '5':
-            manager.props.content = LocalAuthentication.createDialog({
-              title: '再试一次',
-              msg: e.message
-            });
-            manager.update(manager.props);
-            LocalAuthentication.handle(resolve, reject, manager);
-            break;
-          default:
-            console.log('未知识别错误');
-            break;
-        }
-      });
-  }
-
   /**
    * 是否支持生物识别
    */
@@ -81,21 +45,80 @@ export default class LocalAuthentication {
 
   /**
    * 验证指纹
-   * @param msg 提示消息
+   * @param tipMsg 提示消息
+   * @param failedMsg 验证失败消息
    */
-  static fingerprintValidate(msg) {
+  static fingerprintValidate({tipMsg, failedMsg}) {
     if (Platform.OS !== 'android') {
-      return SitbLocalAuthentication.fingerprintValidate(msg);
+      return SitbLocalAuthentication.fingerprintValidate(tipMsg);
     }
 
-    const args = {
-      content: LocalAuthentication.createDialog({msg}),
-      contentStyle: styles.container,
-      onCancel: () => console.log('close'),
-      onDismiss: () => true
-    };
-    const manager = modal(args);
-    return new Promise((resolve, reject) => LocalAuthentication.handle(resolve, reject, manager));
+    return new Promise((resolve, reject) => {
+      let manager;
+
+      function handleReceiveAuthentication(msg) {
+        console.log('Receive Authentication', msg);
+        const {event, code, message} = msg;
+        switch (event) {
+          case 'SUCCESS':
+            resolve();
+            break;
+          case 'HELP':
+          case 'FAILED':
+            manager.props.content = LocalAuthentication.createDialog({
+              title: '再试一次',
+              tipMsg: event === 'FAILED' ? failedMsg : message
+            });
+            console.log(manager.props);
+            manager.update(manager.props);
+            break;
+          case 'ERROR':
+            if (code === 7) {
+              handleCancel();
+              toast(message);
+              reject(msg);
+            }
+            break;
+          default:
+            console.warn(`未知事件: ${event}`);
+            reject(msg);
+            break;
+        }
+      }
+
+      function handleCancel() {
+        SitbLocalAuthentication.cancelFingerprintValidate();
+        DeviceEventEmitter.removeListener(EVENT_NAME, handleReceiveAuthentication);
+        manager && manager.destroy();
+      }
+
+      DeviceEventEmitter.addListener(EVENT_NAME, handleReceiveAuthentication);
+
+      const args = {
+        content: LocalAuthentication.createDialog({tipMsg}),
+        contentStyle: styles.container,
+        onCancel: handleCancel,
+        onDismiss: () => true
+      };
+      manager = modal(args);
+
+      SitbLocalAuthentication.fingerprintValidate();
+    });
+  }
+
+  static createDialog({title, tipMsg}) {
+    return (
+      <View style={styles.content}>
+        <SvgIcon fill="#ff2d2d"
+                 height={50}
+                 source={fingerprint}
+                 width={50}
+
+        />
+        {title && <Text>{title}</Text>}
+        {tipMsg && <Text style={styles.msg}>{tipMsg}</Text>}
+      </View>
+    );
   }
 
 }
