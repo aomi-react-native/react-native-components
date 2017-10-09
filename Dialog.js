@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ActivityIndicator, BackHandler, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewPropTypes } from 'react-native';
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
-import createRootView from './createRootView';
+import createRootNode from './createRootNode';
 import commonStyles from './styles';
 
 const styles = StyleSheet.create({
@@ -180,4 +180,4 @@ export class AbstractDialog extends Component {
 }
 
 // noinspection Eslint
-export default createRootView(AbstractDialog);
+export default createRootNode(AbstractDialog);
