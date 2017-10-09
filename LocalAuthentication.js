@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 const {SitbLocalAuthentication} = NativeModules;
 
@@ -27,6 +27,10 @@ export default class LocalAuthentication {
    * @param msg 提示消息
    */
   static fingerprintValidate(msg) {
+    if (Platform.OS !== 'android') {
+      return SitbLocalAuthentication.fingerprintValidate(msg);
+    }
+
     return SitbLocalAuthentication.fingerprintValidate(msg);
   }
 
