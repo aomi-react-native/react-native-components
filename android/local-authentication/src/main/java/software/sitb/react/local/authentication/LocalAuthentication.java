@@ -1,14 +1,9 @@
 package software.sitb.react.local.authentication;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
@@ -19,7 +14,7 @@ import software.sitb.react.commons.DefaultReactContextBaseJavaModule;
  */
 public class LocalAuthentication extends DefaultReactContextBaseJavaModule {
 
-  private static final String TAG = "SitbLocalAuthentication";
+  private static final String TAG = "SitbLA";
 
   private Handler handler;
 
@@ -53,7 +48,7 @@ public class LocalAuthentication extends DefaultReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void fingerprintValidate(String msg, Promise promise) {
+  public void fingerprintValidate(Promise promise) {
     FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(getReactApplicationContext());
     if (!managerCompat.hasEnrolledFingerprints()) {
       Log.e(TAG, "没有注册指纹");
@@ -80,7 +75,7 @@ public class LocalAuthentication extends DefaultReactContextBaseJavaModule {
     @Override
     public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
       Log.i(TAG, "onAuthenticationHelp. 帮助代码:" + helpMsgId + ",帮助消息:" + helpString);
-      promise.reject("Help", "Help");
+      promise.reject(helpMsgId + "", helpString.toString());
     }
 
     @Override
