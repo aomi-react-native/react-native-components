@@ -1,6 +1,146 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import RootSiblings from 'react-native-root-siblings';
+import { AppRegistry, StyleSheet, View } from 'react-native';
+import StaticContainer from 'static-container';
+
+const EventEmitter = require('EventEmitter');
+
+let rootId = 0;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative'
+  },
+  offStream: {
+    position: 'absolute'
+  }
+});
+
+const CREATE_EVENT = 'ROOT_ELEMENT_CREATE';
+
+const UPDATE_EVENT = 'ROOT_ELEMENT_UPDATE';
+
+let emitter = AppRegistry.rootSiblingsEmitter;
+
+if (!(emitter instanceof EventEmitter)) {
+  emitter = new EventEmitter();
+  // inject modals into app entry component
+  const originRegister = AppRegistry.registerComponent;
+
+  AppRegistry.registerComponent = (appKey, getAppComponent) => {
+    const siblings = new Map();
+    const updates = new Set();
+
+    return originRegister(appKey, () => {
+      const OriginAppComponent = getAppComponent();
+
+      return class extends Component {
+
+        static displayName = `Root(${appKey})`;
+
+        constructor(props) {
+          super(props);
+          this.update = this.update.bind(this);
+          ['update', 'create'].forEach(f => this[f] = this[f].bind(this));
+          emitter.addListener(CREATE_EVENT, this.create);
+          emitter.addListener(UPDATE_EVENT, this.update);
+        }
+
+        componentWillUnmount() {
+          emitter.removeListener(CREATE_EVENT, this.create);
+          emitter.removeListener(UPDATE_EVENT, this.update);
+          siblings.clear();
+          updates.clear();
+        }
+
+        create({id, SiblingComponent, props, callback}) {
+          if (siblings.has(id) && !SiblingComponent) {
+            siblings.delete(id);
+          } else {
+            siblings.set(id, {
+              SiblingComponent,
+              props
+            });
+          }
+          updates.add(id);
+          this.forceUpdate(callback);
+        }
+
+        update({id, props, callback}) {
+          if (siblings.has(id)) {
+            const sibling = siblings.get(id);
+            sibling.props = props;
+            siblings.set(id, sibling);
+          }
+          updates.add(id);
+          this.forceUpdate(callback);
+        }
+
+        render() {
+          const elements = [];
+          siblings.forEach(({SiblingComponent, props}, id) => {
+            elements.push(
+              <StaticContainer
+                key={`root-sibling-${id}`}
+                shouldUpdate={updates.has(id)}
+              >
+                <SiblingComponent {...props}/>
+              </StaticContainer>
+            );
+          });
+          updates.clear();
+
+          return (
+            <View style={styles.container}>
+              <StaticContainer shouldUpdate={false}>
+                <OriginAppComponent {...this.props} />
+              </StaticContainer>
+              {elements}
+            </View>
+          );
+        };
+      };
+    });
+  };
+
+  AppRegistry.rootSiblingsEmitter = emitter;
+}
+
+class RootManager {
+
+  _id = null;
+
+  constructor(SiblingComponent, props) {
+    Reflect.defineProperty(this, '_id', {
+      enumerable: false,
+      configurable: false,
+      writable: false,
+      value: rootId++
+    });
+    emitter.emit(CREATE_EVENT, {
+      id: this._id,
+      SiblingComponent,
+      props
+    });
+  }
+
+  update(props, callback) {
+    emitter.emit(UPDATE_EVENT, {
+      id: this._id,
+      props,
+      callback
+    });
+  }
+
+  destroy(callback) {
+    emitter.emit(CREATE_EVENT, {
+      id: this._id,
+      callback
+    });
+  }
+
+}
+
 
 class AbstractRootView extends Component {
 
@@ -15,13 +155,7 @@ class AbstractRootView extends Component {
 }
 
 export function createRootView(rootView) {
-  const manager = new RootSiblings(<View/>);
-  manager.update(
-    <AbstractRootView children={rootView}
-                      manager={manager}
-    />
-  );
-  return manager;
+  return new RootManager(() => rootView, {});
 }
 
 /**
@@ -30,26 +164,12 @@ export function createRootView(rootView) {
  */
 export default function (RootView, props) {
 
-  const manager = new RootSiblings(<View/>);
+  const manager = new RootManager(RootView, props);
 
   return class extends Component {
 
-    componentDidMount() {
-      manager.update(
-        <RootView {...props}
-                  {...this.props}
-                  manager={manager}
-        />
-      );
-    }
-
-    componentDidUpdate() {
-      manager.update(
-        <RootView {...props}
-                  {...this.props}
-                  manager={manager}
-        />
-      );
+    componentWillUpdate() {
+      manager.update(this.props);
     }
 
     componentWillUnmount() {
