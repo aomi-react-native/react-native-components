@@ -36,7 +36,7 @@ function handleAndroidBackPress() {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/24
  */
-class Dialog extends Component {
+export class AbstractDialog extends Component {
 
   static propTypes = {
     autoDisableAndroidBackPress: PropTypes.bool,
@@ -180,4 +180,4 @@ class Dialog extends Component {
 }
 
 // noinspection Eslint
-export default createRootView(Dialog);
+export default createRootView(AbstractDialog);
