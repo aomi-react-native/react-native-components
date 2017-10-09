@@ -108,6 +108,7 @@ if (!(emitter instanceof EventEmitter)) {
 class RootManager {
 
   _id = null;
+  props;
 
   constructor(SiblingComponent, props) {
     Reflect.defineProperty(this, '_id', {
@@ -116,6 +117,7 @@ class RootManager {
       writable: false,
       value: rootId++
     });
+    this.props = props;
     emitter.emit(CREATE_EVENT, {
       id: this._id,
       SiblingComponent,
@@ -124,6 +126,7 @@ class RootManager {
   }
 
   update(props, callback) {
+    this.props = props;
     emitter.emit(UPDATE_EVENT, {
       id: this._id,
       props,
