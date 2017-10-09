@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
-import RootSiblings from 'react-native-root-siblings';
 import Component from './AbstractComponent';
 import Button from './Button';
 import Dialog from './Dialog';
+import { createRootView } from './createRootNode';
 import { Colors, separatorHeight } from './styles';
 
 const height = 50;
@@ -205,12 +205,11 @@ class ActionSheet {
    * @param callback
    */
   static showActionSheetWithOptions(options: Object, callback: Function) {
-    let actionSheet = new RootSiblings(<View/>);
-    actionSheet.update(
-      <ActionSheetComponent {...options}
-                            manager={actionSheet}
-      />
-    );
+    let actionSheet = createRootView(<ActionSheetComponent {...options}/>);
+    actionSheet.update({
+      ...options,
+      manager: actionSheet
+    });
 
   }
 }
