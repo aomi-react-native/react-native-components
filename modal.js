@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { createRootView } from './createRootNode';
 import { AbstractDialog } from './Dialog';
 import Button from './Button';
+import { Colors } from './styles';
 
 const styles = {
   container: {
@@ -11,15 +12,27 @@ const styles = {
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,.4)'
   },
-  buttonGroup: {}
+  content: {
+    margin: 15,
+    overflow: 'hidden'
+  },
+  buttonGroup: {},
+  button: {
+    borderRadius: 0
+  }
 };
 
 const variables = {
   config: {
     okText: '确定',
     cancelText: '取消',
-    okButtonProps: {},
-    cancelButtonProps: {}
+    okButtonProps: {
+      color: '#0480ff'
+    },
+    cancelButtonProps: {
+      color: Colors.fontColor,
+      containerStyle: styles.button
+    }
   }
 };
 
@@ -54,13 +67,17 @@ class SceneModal extends Component {
   }
 
   render() {
-    const {title, content, onCancel, onOk} = this.props;
+    const {
+      title, content, onCancel, onOk, contentStyle,
+      okButtonProps,
+      cancelButtonProps
+    } = this.props;
     const {
       config: {
         okText,
         cancelText,
-        okButtonProps,
-        cancelButtonProps
+        okButtonProps: defaultOkButtonProps,
+        cancelButtonProps: defaultCancelButtonProps
       }
     } = variables;
     return (
@@ -68,63 +85,77 @@ class SceneModal extends Component {
                       style={styles.container}
                       visible={this.state.visible}
       >
-        {typeof title && (
-          <Text>{title}</Text>
-        )}
-        {typeof content === 'string' ? (
-          <Text>{content}</Text>
-        ) : content}
-        <View style={styles.buttonGroup}>
-          {onCancel && (
-            <Button {...cancelButtonProps}
-                    onPress={this.handleCancelPress}
-            >
-              {cancelText}
-            </Button>
+        <View style={[styles.content, contentStyle]}>
+          {typeof title && (
+            <Text>{title}</Text>
           )}
-          {onOk && (
-            <Button {...okButtonProps}
-                    onPress={this.handleOkPress}
-            >
-              {okText}
-            </Button>
-          )}
+          {typeof content === 'string' ? (
+            <Text>{content}</Text>
+          ) : content}
+          <View style={styles.buttonGroup}>
+            {onCancel && (
+              <Button {...defaultCancelButtonProps}
+                      {...cancelButtonProps}
+                      onPress={this.handleCancelPress}
+              >
+                {cancelText}
+              </Button>
+            )}
+            {onOk && (
+              <Button {...defaultOkButtonProps}
+                      {...okButtonProps}
+                      onPress={this.handleOkPress}
+              >
+                {okText}
+              </Button>
+            )}
+          </View>
         </View>
       </AbstractDialog>
     );
   }
 }
 
+class Manager {
+
+  props;
+  manager;
+
+  constructor(props) {
+    this.props = props;
+    this.manager = createRootView(
+      <SceneModal {...props}/>
+    );
+  }
+
+  update(props) {
+    this.manager.update(
+      <SceneModal {...props}/>
+    );
+  }
+
+  destroy() {
+    this.manager.destroy();
+  }
+
+}
+
 /**
  * 情景模态框
- * @param scene
- * @param title
- * @param content
- * @param onOk
- * @param onCancel
- * @param onDismiss
  */
-function sceneModal({scene, title = '', content, onOk, onCancel, onDismiss} = {}) {
-  createRootView(
-    <SceneModal content={content}
-                onCancel={onCancel}
-                onDismiss={onDismiss}
-                onOk={onOk}
-                scene={scene}
-                title={title}
-    />
-  );
+function sceneModal(props) {
+  return new Manager(props);
 }
 
 export default (args) => {
-  sceneModal(args);
+  return sceneModal(args);
 };
 
 /**
  * 消息模态框
  */
 export function info(args) {
-  sceneModal({
+  return sceneModal({
     ...args,
     scene: 'info'
   });
@@ -134,7 +165,7 @@ export function info(args) {
  * 成功模态框
  */
 export function success(args) {
-  sceneModal({
+  return sceneModal({
     ...args,
     scene: 'success'
   });
@@ -144,7 +175,7 @@ export function success(args) {
  * 错误模态框
  */
 export function error(args) {
-  sceneModal({
+  return sceneModal({
     ...args,
     scene: 'error'
   });
@@ -154,7 +185,7 @@ export function error(args) {
  * 警告模态框
  */
 export function warn(args) {
-  sceneModal({
+  return sceneModal({
     ...args,
     scene: 'warn'
   });
@@ -163,7 +194,7 @@ export function warn(args) {
 /**
  */
 export function confirm(args) {
-  sceneModal({
+  return sceneModal({
     ...args,
     scene: 'confirm'
   });
