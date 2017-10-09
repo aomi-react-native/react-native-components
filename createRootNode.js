@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, View } from 'react-native';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import StaticContainer from 'static-container';
-
-const EventEmitter = require('EventEmitter');
 
 let rootId = 0;
 
@@ -137,19 +136,6 @@ class RootManager {
       id: this._id,
       callback
     });
-  }
-
-}
-
-
-class AbstractRootView extends Component {
-
-  componentWillUnmount() {
-    this.props.manager.destroy();
-  }
-
-  render() {
-    return this.props.children;
   }
 
 }
