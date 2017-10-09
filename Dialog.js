@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActivityIndicator, BackHandler, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewPropTypes } from 'react-native';
+import { ActivityIndicator, BackHandler, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewPropTypes } from 'react-native';
 import Component from './AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 import createRootNode from './createRootNode';
@@ -64,14 +64,12 @@ export class AbstractDialog extends Component {
 
   mounted = true;
 
+  componentWillMount() {
+    this.handleHardwareBackPress();
+  }
+
   componentWillReceiveProps() {
-    if (Platform.OS === 'android') {
-      if (this.state.visible) {
-        BackHandler.addEventListener('hardwareBackPress', handleAndroidBackPress);
-      } else {
-        BackHandler.removeEventListener('hardwareBackPress', handleAndroidBackPress);
-      }
-    }
+    this.handleHardwareBackPress();
   }
 
   shounldComponentUpdate() {
@@ -83,6 +81,14 @@ export class AbstractDialog extends Component {
       StatusBar.setHidden(false);
     }
     this.mounted = false;
+  }
+
+  handleHardwareBackPress() {
+    if (this.state.visible) {
+      BackHandler.addEventListener('hardwareBackPress', handleAndroidBackPress);
+    } else {
+      BackHandler.removeEventListener('hardwareBackPress', handleAndroidBackPress);
+    }
   }
 
   handlePress() {
@@ -152,7 +158,7 @@ export class AbstractDialog extends Component {
     } = this.props;
 
     if (!visible && !this.state.visible) {
-      return <View />;
+      return <View/>;
     }
 
     let animation = visible ? showAnimation : hideAnimation;
