@@ -62,6 +62,7 @@ export default class LocalAuthentication {
         switch (event) {
           case 'SUCCESS':
             resolve(true);
+            handleCancel();
             break;
           case 'HELP':
           case 'FAILED':
