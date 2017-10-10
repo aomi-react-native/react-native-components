@@ -61,8 +61,8 @@ export default class LocalAuthentication {
         const {event, code, message} = msg;
         switch (event) {
           case 'SUCCESS':
-            resolve(true);
             handleCancel();
+            resolve(true);
             break;
           case 'HELP':
           case 'FAILED':
@@ -73,14 +73,15 @@ export default class LocalAuthentication {
             manager.update(manager.props);
             break;
           case 'ERROR':
+            handleCancel();
             if (code === 7) {
-              handleCancel();
               toast(message);
               reject(msg);
             }
             break;
           default:
             console.warn(`未知事件: ${event}`);
+            handleCancel();
             reject(msg);
             break;
         }
