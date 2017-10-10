@@ -120,7 +120,7 @@ class SceneModal extends Component {
  * 情景模态框
  */
 function sceneModal(props) {
-  return createRootView(<SceneModal {...props}/>);
+  return createRootView(SceneModal, props);
 }
 
 export default (args) => {
