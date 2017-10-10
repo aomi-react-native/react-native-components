@@ -109,6 +109,7 @@ class RootManager {
 
   _id = null;
   props;
+  component;
 
   constructor(SiblingComponent, props) {
     Object.defineProperty(this, '_id', {
@@ -117,6 +118,7 @@ class RootManager {
       writable: false,
       value: rootId++
     });
+    this.component = SiblingComponent;
     this.props = props;
     emitter.emit(CREATE_EVENT, {
       id: this._id,
@@ -143,26 +145,30 @@ class RootManager {
 
 }
 
-export function createRootView(rootView) {
-  return new RootManager(() => rootView, {});
+export function createRootView(RootView, props) {
+  return new RootManager(RootView, props);
 }
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/8/11
  */
-export default function (RootView, props) {
-
-  const manager = new RootManager(RootView, props);
+export default function createRootNode(RootView) {
 
   return class extends Component {
 
-    componentWillUpdate() {
-      manager.update(this.props);
+    manager;
+
+    componentWillMount() {
+      this.manager = new RootManager(RootView, this.props);
+    }
+
+    componentWillUpdate(nextProps) {
+      this.manager.update(nextProps);
     }
 
     componentWillUnmount() {
-      manager.destroy();
+      this.manager.destroy();
     }
 
     render() {
