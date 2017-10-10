@@ -48,7 +48,7 @@ export default class LocalAuthentication {
    * @param tipMsg 提示消息
    * @param failedMsg 验证失败消息
    */
-  static fingerprintValidate({tipMsg, failedMsg}) {
+  static fingerprintValidate({tipMsg, failedMsg = '指纹验证失败'}) {
     if (Platform.OS !== 'android') {
       return SitbLocalAuthentication.fingerprintValidate(tipMsg);
     }
@@ -61,7 +61,7 @@ export default class LocalAuthentication {
         const {event, code, message} = msg;
         switch (event) {
           case 'SUCCESS':
-            resolve();
+            resolve(true);
             break;
           case 'HELP':
           case 'FAILED':
