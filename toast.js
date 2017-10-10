@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
 class ToastIOS extends Component {
 
   static propTypes = {
-    duration: PropTypes.number,
     msg: PropTypes.string,
     show: PropTypes.bool
   };
@@ -47,29 +46,7 @@ class ToastIOS extends Component {
     show: true
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: props.show
-    };
-  }
-
   state = {};
-
-  componentDidMount() {
-    this.closeTask = setTimeout(() => {
-      this.setState({show: false});
-      setTimeout(() => {
-        this.props.manager.destroy();
-      }, 600);
-    }, this.props.duration);
-  }
-
-  componentWillUnmount() {
-    this.closeTask && clearTimeout(this.closeTask);
-  }
-
-  closeTask;
 
   showAnimation = {
     animation: 'fadeIn',
@@ -82,8 +59,8 @@ class ToastIOS extends Component {
   };
 
   render() {
-    const {msg} = this.props;
-    let animatable = this.state.show ? this.showAnimation : this.hideAnimation;
+    const {msg, show} = this.props;
+    const animatable = show ? this.showAnimation : this.hideAnimation;
     return (
       <View {...animatable}
             style={styles.container}
@@ -104,6 +81,7 @@ const config = {
   duration: SHORT
 };
 
+
 /**
  * 显示一个默认的toast弹框
  * @param msg 问题消息
@@ -116,10 +94,17 @@ export default function show(msg, duration) {
   }
 
   if (Platform.OS === 'ios') {
-    createRootView(ToastIOS, {
-      duration: duration || config.duration,
-      msg
-    });
+    const manager = createRootView(ToastIOS, {});
+    const args = {
+      msg,
+      manager
+    };
+    manager.update(args);
+    setTimeout(() => {
+      args.show = false;
+      manager.update(args);
+      setTimeout(manager.destroy, 600);
+    }, duration || config.duration);
   }
 
 }
