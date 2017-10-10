@@ -69,7 +69,6 @@ export default class LocalAuthentication {
               title: '再试一次',
               tipMsg: event === 'FAILED' ? failedMsg : message
             });
-            console.log(manager.props);
             manager.update(manager.props);
             break;
           case 'ERROR':
