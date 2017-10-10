@@ -61,8 +61,8 @@ if (!(emitter instanceof EventEmitter)) {
               props
             });
             updates.add(id);
-            this.forceUpdate(callback);
           }
+          this.forceUpdate(callback);
         }
 
         update({id, props, callback}) {
@@ -97,7 +97,7 @@ if (!(emitter instanceof EventEmitter)) {
               {elements}
             </View>
           );
-        };
+        }
       };
     });
   };
