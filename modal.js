@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
-import { Text, View } from 'react-native';
+import { Text, View, ViewPropTypes } from 'react-native';
 import { createRootView } from './createRootNode';
 import { AbstractDialog } from './Dialog';
 import Button from './Button';
@@ -37,6 +38,42 @@ const variables = {
 };
 
 class SceneModal extends Component {
+
+  static propTypes = {
+    /**
+     * 取消按钮属性
+     */
+    cancelButtonProps: PropTypes.object,
+    /**
+     * 内容
+     */
+    content: PropTypes.node,
+    /**
+     * 内容容器样式
+     */
+    contentStyle: ViewPropTypes.style,
+    /**
+     * 确定按钮属性
+     */
+    okButtonProps: PropTypes.object,
+    /**
+     * 取消按钮点击
+     * 如果返回true则不会关闭modal
+     */
+    onCancel: PropTypes.func,
+    /**
+     * 背景层点击
+     */
+    onDismiss: PropTypes.func,
+    /**
+     * 确定按钮点击
+     */
+    onOk: PropTypes.func,
+    /**
+     * 标题
+     */
+    title: PropTypes.string
+  };
 
   state = {
     visible: true
