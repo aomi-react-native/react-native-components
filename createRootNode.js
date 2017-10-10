@@ -55,14 +55,14 @@ if (!(emitter instanceof EventEmitter)) {
         create({id, SiblingComponent, props, callback}) {
           if (siblings.has(id) && !SiblingComponent) {
             siblings.delete(id);
-          } else {
+          } else if (SiblingComponent) {
             siblings.set(id, {
               SiblingComponent,
               props
             });
+            updates.add(id);
+            this.forceUpdate(callback);
           }
-          updates.add(id);
-          this.forceUpdate(callback);
         }
 
         update({id, props, callback}) {
@@ -111,7 +111,7 @@ class RootManager {
   props;
 
   constructor(SiblingComponent, props) {
-    Reflect.defineProperty(this, '_id', {
+    Object.defineProperty(this, '_id', {
       enumerable: false,
       configurable: false,
       writable: false,
