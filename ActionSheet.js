@@ -205,7 +205,7 @@ class ActionSheet {
    * @param callback
    */
   static showActionSheetWithOptions(options: Object, callback: Function) {
-    let actionSheet = createRootView(<ActionSheetComponent {...options}/>);
+    let actionSheet = createRootView(ActionSheetComponent, options);
     actionSheet.update({
       ...options,
       manager: actionSheet
