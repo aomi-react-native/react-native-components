@@ -17,6 +17,8 @@ export const Colors = {
   fontColor: '#1a1a1a'
 };
 
+export const fontSize = 17;
+
 // noinspection JSSuspiciousNameCombination
 export const separatorHeight = StyleSheet.hairlineWidth;
 
