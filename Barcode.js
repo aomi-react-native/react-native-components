@@ -213,6 +213,6 @@ class Barcode extends Component {
 
 }
 
-const RCTBarcode = requireNativeComponent(Platform.OS === 'ios' ? 'SitbCameraView' : 'SitbBarcodeView', Barcode);
+const RCTBarcode = Platform.OS === 'ios' ? Camera : requireNativeComponent('SitbBarcodeView', Barcode);
 
 export default Barcode;
