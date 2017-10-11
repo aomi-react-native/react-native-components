@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList, Image, StyleSheet, Text, TouchableHighlight, View, ViewPropTypes } from 'react-native';
 import AbstractComponent from './AbstractComponent';
 import right from './images/right.png';
-import { Colors, separatorHeight } from './styles';
+import { Colors, fontSize, separatorHeight } from './styles';
 
 const padding = 15;
 
@@ -28,28 +28,30 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   headerText: {
-    color: '#1a1a1a'
+    color: Colors.fontColor,
+    fontSize,
   },
   body: {
     flex: 1
   },
   bodyTextStyle: {
-    color: '#1a1a1a',
-    fontSize: 16
+    color: Colors.fontColor,
+    fontSize
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center'
   },
   footerTextStyle: {
-    color: '#b3b3b3'
+    color: '#b3b3b3',
+    fontSize
   },
   separator: {
     height: separatorHeight
   },
   right: {
-    width: 18,
-    height: 18,
+    width: 19,
+    height: 19,
     resizeMode: Image.resizeMode.contain
   }
 });
@@ -156,15 +158,25 @@ class List extends AbstractComponent {
       onItemPress, itemStyle, disabled: defaultDisabled,
       displayRightArrow: defaultDisplayRightArrow
     } = this.props;
+
+    let tmpDisplayRightArrow = displayRightArrow;
+    if (typeof displayRightArrow === 'undefined') {
+      tmpDisplayRightArrow = defaultDisplayRightArrow;
+    }
+    let tmpDisabled = disabled;
+    if (typeof disabled === 'undefined') {
+      tmpDisabled = defaultDisabled;
+    }
+
     return (
-      <TouchableHighlight disabled={disabled || defaultDisabled}
+      <TouchableHighlight disabled={tmpDisabled}
                           onPress={() => onItemPress && onItemPress(item)}
                           style={styles.rowContainer}
       >
         <View style={[styles.row, style || itemStyle]}>
           {this.renderHeader(header)}
           {this.renderBody(body)}
-          {this.renderFooter(footer, displayRightArrow || defaultDisplayRightArrow)}
+          {this.renderFooter(footer, tmpDisplayRightArrow)}
         </View>
       </TouchableHighlight>
     );
