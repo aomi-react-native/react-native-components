@@ -73,6 +73,14 @@ class List extends AbstractComponent {
   static propTypes = {
     bodyTextStyle: Text.propTypes.style,
     containerStyle: ViewPropTypes.style,
+    /**
+     * 是否禁止点击
+     */
+    disabled: PropTypes.bool,
+    /**
+     * 是否显示右箭头
+     */
+    displayRightArrow: PropTypes.bool,
     footerTextStyle: Text.propTypes.style,
     fullSeparator: PropTypes.bool,
     itemStyle: ViewPropTypes.style,
@@ -85,6 +93,8 @@ class List extends AbstractComponent {
   };
 
   static defaultProps = {
+    disabled: false,
+    displayRightArrow: true,
     alwaysBounceVertical: false,
     fullSeparator: false,
     separatorColor: Colors.separator
@@ -105,7 +115,7 @@ class List extends AbstractComponent {
       );
     }
 
-    return cloneElement(<View />, {
+    return cloneElement(<View/>, {
       style: header && styles.header,
       children: header
     });
@@ -118,7 +128,7 @@ class List extends AbstractComponent {
         <Text style={[styles.body, styles.bodyTextStyle, bodyTextStyle]}>{body || ''}</Text>
       );
     }
-    return cloneElement(<View />, {
+    return cloneElement(<View/>, {
       style: styles.body,
       children: body
     });
@@ -142,16 +152,19 @@ class List extends AbstractComponent {
 
   renderItem({item}) {
     const {header, body, footer, displayRightArrow, disabled, style} = item;
-    const {onItemPress, itemStyle} = this.props;
+    const {
+      onItemPress, itemStyle, disabled: defaultDisabled,
+      displayRightArrow: defaultDisplayRightArrow
+    } = this.props;
     return (
-      <TouchableHighlight disabled={disabled}
+      <TouchableHighlight disabled={disabled || defaultDisabled}
                           onPress={() => onItemPress && onItemPress(item)}
                           style={styles.rowContainer}
       >
         <View style={[styles.row, style || itemStyle]}>
           {this.renderHeader(header)}
           {this.renderBody(body)}
-          {this.renderFooter(footer, displayRightArrow)}
+          {this.renderFooter(footer, displayRightArrow || defaultDisplayRightArrow)}
         </View>
       </TouchableHighlight>
     );
