@@ -6,12 +6,8 @@
 	objectVersion = 48;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		145C38B01F8DE47000200D0A /* SitbLocalAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 144928B11F7E2433007599F6 /* SitbLocalAuthentication.m */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
-		144928AB1F7E2433007599F6 /* CopyFiles */ = {
+		14D0188A1F8DF1D300329BF7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -23,13 +19,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		144928AD1F7E2433007599F6 /* libSitbLocalAuthentication.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbLocalAuthentication.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		144928B01F7E2433007599F6 /* SitbLocalAuthentication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SitbLocalAuthentication.h; sourceTree = "<group>"; };
-		144928B11F7E2433007599F6 /* SitbLocalAuthentication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SitbLocalAuthentication.m; sourceTree = "<group>"; };
+		14D0188C1F8DF1D300329BF7 /* libSitbLocalAuthentication.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbLocalAuthentication.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		14D018B31F8DF26100329BF7 /* SitbLocalAuthentication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SitbLocalAuthentication.h; sourceTree = "<group>"; };
+		14D018B41F8DF26100329BF7 /* SitbLocalAuthentication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SitbLocalAuthentication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		144928AA1F7E2433007599F6 /* Frameworks */ = {
+		14D018891F8DF1D300329BF7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,19 +35,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		144928A41F7E2433007599F6 = {
+		14D018831F8DF1D300329BF7 = {
 			isa = PBXGroup;
 			children = (
-				144928B01F7E2433007599F6 /* SitbLocalAuthentication.h */,
-				144928B11F7E2433007599F6 /* SitbLocalAuthentication.m */,
-				144928AE1F7E2433007599F6 /* Products */,
+				14D018B31F8DF26100329BF7 /* SitbLocalAuthentication.h */,
+				14D018B41F8DF26100329BF7 /* SitbLocalAuthentication.m */,
+				14D0188D1F8DF1D300329BF7 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		144928AE1F7E2433007599F6 /* Products */ = {
+		14D0188D1F8DF1D300329BF7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				144928AD1F7E2433007599F6 /* libSitbLocalAuthentication.a */,
+				14D0188C1F8DF1D300329BF7 /* libSitbLocalAuthentication.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,13 +55,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		144928AC1F7E2433007599F6 /* SitbLocalAuthentication */ = {
+		14D0188B1F8DF1D300329BF7 /* SitbLocalAuthentication */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 144928B61F7E2433007599F6 /* Build configuration list for PBXNativeTarget "SitbLocalAuthentication" */;
+			buildConfigurationList = 14D018951F8DF1D300329BF7 /* Build configuration list for PBXNativeTarget "SitbLocalAuthentication" */;
 			buildPhases = (
-				144928A91F7E2433007599F6 /* Sources */,
-				144928AA1F7E2433007599F6 /* Frameworks */,
-				144928AB1F7E2433007599F6 /* CopyFiles */,
+				14D018881F8DF1D300329BF7 /* Sources */,
+				14D018891F8DF1D300329BF7 /* Frameworks */,
+				14D0188A1F8DF1D300329BF7 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -73,54 +69,53 @@
 			);
 			name = SitbLocalAuthentication;
 			productName = SitbLocalAuthentication;
-			productReference = 144928AD1F7E2433007599F6 /* libSitbLocalAuthentication.a */;
+			productReference = 14D0188C1F8DF1D300329BF7 /* libSitbLocalAuthentication.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		144928A51F7E2433007599F6 /* Project object */ = {
+		14D018841F8DF1D300329BF7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Sitb Software";
 				TargetAttributes = {
-					144928AC1F7E2433007599F6 = {
+					14D0188B1F8DF1D300329BF7 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 144928A81F7E2433007599F6 /* Build configuration list for PBXProject "SitbLocalAuthentication" */;
+			buildConfigurationList = 14D018871F8DF1D300329BF7 /* Build configuration list for PBXProject "SitbLocalAuthentication" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 144928A41F7E2433007599F6;
-			productRefGroup = 144928AE1F7E2433007599F6 /* Products */;
+			mainGroup = 14D018831F8DF1D300329BF7;
+			productRefGroup = 14D0188D1F8DF1D300329BF7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				144928AC1F7E2433007599F6 /* SitbLocalAuthentication */,
+				14D0188B1F8DF1D300329BF7 /* SitbLocalAuthentication */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		144928A91F7E2433007599F6 /* Sources */ = {
+		14D018881F8DF1D300329BF7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				145C38B01F8DE47000200D0A /* SitbLocalAuthentication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		144928B41F7E2433007599F6 /* Debug */ = {
+		14D018931F8DF1D300329BF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -168,14 +163,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		144928B51F7E2433007599F6 /* Release */ = {
+		14D018941F8DF1D300329BF7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -217,14 +212,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		144928B71F7E2433007599F6 /* Debug */ = {
+		14D018961F8DF1D300329BF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -236,7 +231,7 @@
 			};
 			name = Debug;
 		};
-		144928B81F7E2433007599F6 /* Release */ = {
+		14D018971F8DF1D300329BF7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -251,25 +246,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		144928A81F7E2433007599F6 /* Build configuration list for PBXProject "SitbLocalAuthentication" */ = {
+		14D018871F8DF1D300329BF7 /* Build configuration list for PBXProject "SitbLocalAuthentication" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				144928B41F7E2433007599F6 /* Debug */,
-				144928B51F7E2433007599F6 /* Release */,
+				14D018931F8DF1D300329BF7 /* Debug */,
+				14D018941F8DF1D300329BF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		144928B61F7E2433007599F6 /* Build configuration list for PBXNativeTarget "SitbLocalAuthentication" */ = {
+		14D018951F8DF1D300329BF7 /* Build configuration list for PBXNativeTarget "SitbLocalAuthentication" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				144928B71F7E2433007599F6 /* Debug */,
-				144928B81F7E2433007599F6 /* Release */,
+				14D018961F8DF1D300329BF7 /* Debug */,
+				14D018971F8DF1D300329BF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 144928A51F7E2433007599F6 /* Project object */;
+	rootObject = 14D018841F8DF1D300329BF7 /* Project object */;
 }
