@@ -6,6 +6,10 @@
 	objectVersion = 48;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1477060D1F8DF88B00B319CA /* SitbLocalAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 14D018B41F8DF26100329BF7 /* SitbLocalAuthentication.m */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		14D0188A1F8DF1D300329BF7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -109,6 +113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1477060D1F8DF88B00B319CA /* SitbLocalAuthentication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
