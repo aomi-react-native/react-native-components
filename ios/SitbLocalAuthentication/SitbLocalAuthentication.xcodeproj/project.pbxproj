@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		144928B21F7E2433007599F6 /* SitbLocalAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 144928B11F7E2433007599F6 /* SitbLocalAuthentication.m */; };
-		144928B31F7E2433007599F6 /* SitbLocalAuthentication.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 144928B01F7E2433007599F6 /* SitbLocalAuthentication.h */; };
+		145C38B01F8DE47000200D0A /* SitbLocalAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 144928B11F7E2433007599F6 /* SitbLocalAuthentication.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,14 +17,13 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				144928B31F7E2433007599F6 /* SitbLocalAuthentication.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		144928AD1F7E2433007599F6 /* libSitbLocalAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbLocalAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		144928AD1F7E2433007599F6 /* libSitbLocalAuthentication.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbLocalAuthentication.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		144928B01F7E2433007599F6 /* SitbLocalAuthentication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SitbLocalAuthentication.h; sourceTree = "<group>"; };
 		144928B11F7E2433007599F6 /* SitbLocalAuthentication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SitbLocalAuthentication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,7 +51,7 @@
 		144928AE1F7E2433007599F6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				144928AD1F7E2433007599F6 /* libSitbLocalAuth.a */,
+				144928AD1F7E2433007599F6 /* libSitbLocalAuthentication.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,9 +59,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		144928AC1F7E2433007599F6 /* SitbLocalAuth */ = {
+		144928AC1F7E2433007599F6 /* SitbLocalAuthentication */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 144928B61F7E2433007599F6 /* Build configuration list for PBXNativeTarget "SitbLocalAuth" */;
+			buildConfigurationList = 144928B61F7E2433007599F6 /* Build configuration list for PBXNativeTarget "SitbLocalAuthentication" */;
 			buildPhases = (
 				144928A91F7E2433007599F6 /* Sources */,
 				144928AA1F7E2433007599F6 /* Frameworks */,
@@ -73,9 +71,9 @@
 			);
 			dependencies = (
 			);
-			name = SitbLocalAuth;
+			name = SitbLocalAuthentication;
 			productName = SitbLocalAuthentication;
-			productReference = 144928AD1F7E2433007599F6 /* libSitbLocalAuth.a */;
+			productReference = 144928AD1F7E2433007599F6 /* libSitbLocalAuthentication.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -93,7 +91,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 144928A81F7E2433007599F6 /* Build configuration list for PBXProject "SitbLocalAuth" */;
+			buildConfigurationList = 144928A81F7E2433007599F6 /* Build configuration list for PBXProject "SitbLocalAuthentication" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -105,7 +103,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				144928AC1F7E2433007599F6 /* SitbLocalAuth */,
+				144928AC1F7E2433007599F6 /* SitbLocalAuthentication */,
 			);
 		};
 /* End PBXProject section */
@@ -115,7 +113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				144928B21F7E2433007599F6 /* SitbLocalAuthentication.m in Sources */,
+				145C38B01F8DE47000200D0A /* SitbLocalAuthentication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,7 +251,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		144928A81F7E2433007599F6 /* Build configuration list for PBXProject "SitbLocalAuth" */ = {
+		144928A81F7E2433007599F6 /* Build configuration list for PBXProject "SitbLocalAuthentication" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				144928B41F7E2433007599F6 /* Debug */,
@@ -262,7 +260,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		144928B61F7E2433007599F6 /* Build configuration list for PBXNativeTarget "SitbLocalAuth" */ = {
+		144928B61F7E2433007599F6 /* Build configuration list for PBXNativeTarget "SitbLocalAuthentication" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				144928B71F7E2433007599F6 /* Debug */,
