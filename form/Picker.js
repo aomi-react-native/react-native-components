@@ -19,13 +19,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 35,
+    height: 40,
     paddingHorizontal: 15,
     borderBottomWidth: separatorHeight,
     borderColor: Colors.separator,
     backgroundColor: Colors.underlay
   },
-  finish: {}
+  title: {
+    color: '#0977FF',
+    fontSize: 16,
+    maxHeight: 40,
+    minWidth: 10
+  }
 });
 
 
@@ -45,6 +50,7 @@ const hideAnimation = {
 class Picker extends AbstractFormComponent {
 
   static propTypes = {
+    cancelText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     children: PropTypes.node,
     confirmText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     defaultSelected: PropTypes.any,
@@ -56,12 +62,15 @@ class Picker extends AbstractFormComponent {
      *
      * @platform android
      */
-    mode: PropTypes.oneOf(['dialog', 'dropdown'])
+    mode: PropTypes.oneOf(['dialog', 'dropdown']),
+    title: PropTypes.string,
   };
 
   static defaultProps = {
-    confirmText: '完成',
-    mode: 'dialog'
+    cancelText: '取消',
+    confirmText: '确认',
+    mode: 'dialog',
+    title: ''
   };
 
   state = {
@@ -78,6 +87,8 @@ class Picker extends AbstractFormComponent {
     animation: 'fadeOutDownBig',
     duration: 500
   };
+
+  currentSelectedValue;
 
   constructor(props) {
     super(props);
@@ -96,6 +107,16 @@ class Picker extends AbstractFormComponent {
     onValueChange && onValueChange(selectedValue, index);
   }
 
+  handleDialogOpen() {
+    this.currentSelectedValue = this.state.selectedValue;
+    this.handleDialogSwitch();
+  }
+
+  handleCancel() {
+    this.setState({selectedValue: this.currentSelectedValue});
+    this.handleDialogSwitch();
+  }
+
   handleDialogSwitch() {
     this.setState({visible: !this.state.visible});
   }
@@ -109,21 +130,18 @@ class Picker extends AbstractFormComponent {
   }
 
   renderHeader() {
-    const {renderHeader, placeholder, confirmText} = this.props;
+    const {renderHeader, confirmText, cancelText, title} = this.props;
     if (renderHeader) {
       return renderHeader();
     }
     return (
       <View style={styles.header}>
-        <Text>{placeholder}</Text>
-        <TouchableOpacity onPress={this.handleDialogSwitch}
-                          style={styles.finish}
-        >
-          <Text style={{
-            color: '#0977FF',
-            fontSize: 16
-          }}
-          >
+        <TouchableOpacity onPress={this.handleCancel}>
+          <Text style={styles.title}>{cancelText}</Text>
+        </TouchableOpacity>
+        <Text style={[styles.title, {fontSize: 18}]}>{title}</Text>
+        <TouchableOpacity onPress={this.handleDialogSwitch}>
+          <Text style={styles.title}>
             {confirmText}
           </Text>
         </TouchableOpacity>
@@ -160,7 +178,7 @@ class Picker extends AbstractFormComponent {
 
     return (
       <TouchableOpacity disabled={editable}
-                        onPress={this.handleDialogSwitch}
+                        onPress={this.handleDialogOpen}
       >
         <Input {...other}
                style={style}
@@ -168,7 +186,7 @@ class Picker extends AbstractFormComponent {
           {label}
         </Input>
         <Dialog hideAnimation={hideAnimation}
-                onPress={this.handleDialogSwitch}
+                onPress={this.handleCancel}
                 showAnimation={showAnimation}
                 statusBarAutoHidden={false}
                 style={styles.dialogContainer}
