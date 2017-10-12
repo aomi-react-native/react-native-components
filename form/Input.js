@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AbstractFormComponent from './AbstractFormComponent';
 import { Platform, StyleSheet, Text, TextInput, View, ViewPropTypes } from 'react-native';
 import Icon from '../Icon';
-import commonStyle, { Colors, separatorHeight } from '../styles';
+import commonStyle, { Colors, fontSize, separatorHeight } from '../styles';
 
 // noinspection JSSuspiciousNameCombination
 const styles = StyleSheet.create({
@@ -23,10 +23,12 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 2 : 0
   },
   textInput: {
-    fontSize: 18
+    fontSize,
+    color: Colors.fontColor
   },
   label: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginRight: 10
   }
 });
 const INPUT_PROPS_KEYS = [
@@ -175,7 +177,7 @@ class Input extends AbstractFormComponent {
   }
 
   getComp(name, isLabel) {
-    let {iconProps, iconStyle, label, labelProps} = this.props;
+    let {iconProps, iconStyle, label, labelProps = {}} = this.props;
     if (name) {
       if (typeof name === 'string') {
         return (
@@ -191,7 +193,9 @@ class Input extends AbstractFormComponent {
       if (typeof label === 'string') {
         return (
           <View style={styles.label}>
-            <Text {...labelProps}>
+            <Text {...labelProps}
+                  style={[styles.textInput, labelProps.style]}
+            >
               {label}
             </Text>
           </View>
