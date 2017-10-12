@@ -88,6 +88,8 @@ class Picker extends AbstractFormComponent {
     duration: 500
   };
 
+  currentSelectedValue;
+
   constructor(props) {
     super(props);
     this.state.selectedValue = props.defaultSelected || props.selectedValue;
@@ -103,9 +105,19 @@ class Picker extends AbstractFormComponent {
     this.setState({selectedValue});
   }
 
+  handleDialogOpen() {
+    this.currentSelectedValue = this.state.selectedValue;
+    this.handleDialogSwitch();
+  }
+
   handleConfirm() {
     const {onValueChange} = this.props;
     onValueChange && onValueChange(this.state.selectedValue);
+    this.handleDialogSwitch();
+  }
+
+  handleCancel() {
+    this.setState({selectedValue: this.currentSelectedValue});
     this.handleDialogSwitch();
   }
 
@@ -128,7 +140,7 @@ class Picker extends AbstractFormComponent {
     }
     return (
       <View style={styles.header}>
-        <TouchableOpacity onPress={this.handleDialogSwitch}>
+        <TouchableOpacity onPress={this.handleCancel}>
           <Text style={styles.title}>{cancelText}</Text>
         </TouchableOpacity>
         <Text style={[styles.title, {fontSize: 18}]}>{title}</Text>
@@ -170,7 +182,7 @@ class Picker extends AbstractFormComponent {
 
     return (
       <TouchableOpacity disabled={editable}
-                        onPress={this.handleDialogSwitch}
+                        onPress={this.handleDialogOpen}
       >
         <Input {...other}
                style={style}
@@ -178,7 +190,7 @@ class Picker extends AbstractFormComponent {
           {label}
         </Input>
         <Dialog hideAnimation={hideAnimation}
-                onPress={this.handleDialogSwitch}
+                onPress={this.handleCancel}
                 showAnimation={showAnimation}
                 statusBarAutoHidden={false}
                 style={styles.dialogContainer}
