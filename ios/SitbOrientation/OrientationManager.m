@@ -30,6 +30,11 @@ RCT_EXPORT_MODULE(SitbRCTOrientationManager)
     };
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
+
 - (instancetype)init {
     if ((self = [super init])) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];

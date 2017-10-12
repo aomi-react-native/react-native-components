@@ -76,6 +76,11 @@ RCT_EXPORT_MODULE(SitbCameraView)
     };
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
+
 /******************** Component PropTypes **********************/
 // 前置相机或者后置相机
 RCT_EXPORT_VIEW_PROPERTY(cameraFacing, NSInteger);

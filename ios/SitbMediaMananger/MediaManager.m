@@ -50,6 +50,11 @@ RCT_EXPORT_MODULE(SitbRCTMediaManager)
              };
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
+
 
 /*********JavaScript Method************/
 /**

@@ -41,6 +41,9 @@ RCT_EXPORT_MODULE(WeChatManager);
     };
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
 
 RCT_EXPORT_METHOD(
             registerApp:

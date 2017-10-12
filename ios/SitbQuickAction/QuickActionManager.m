@@ -46,6 +46,10 @@ RCT_EXPORT_MODULE(SitbQuickActionManager)
     };
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
 
 // Map user passed array of UIApplicationShortcutItem
 - (NSArray *)dynamicShortcutItemsForPassedArray:(NSArray *)passedArray {
