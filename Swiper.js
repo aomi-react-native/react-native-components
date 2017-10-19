@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 15
+    marginBottom: 10,
+    zIndex: 9999
   },
   dot: {
     width: 8,
