@@ -25,6 +25,11 @@ class GridView extends AbstractComponent {
     cells: PropTypes.array.isRequired,
 
     /**
+     * 容器样式
+     */
+    containerStyle: ViewPropTypes.style,
+
+    /**
      * 渲染Grid Cell
      */
     renderCell: PropTypes.func.isRequired,
@@ -137,18 +142,20 @@ class GridView extends AbstractComponent {
   }
 
   render() {
-    const {style, verticalSpacing, horizontalSpacing, ...other} = this.props;
+    const {style, containerStyle, verticalSpacing, horizontalSpacing, ...other} = this.props;
 
     return (
-      <FlatList {...other}
-                data={this.state.data}
-                keyExtractor={this.keyExtractor}
-                renderItem={this.renderItem}
-                style={[{
-                  marginHorizontal: -horizontalSpacing,
-                  marginVertical: -verticalSpacing
-                }, style]}
-      />
+      <View style={containerStyle}>
+        <FlatList {...other}
+                  data={this.state.data}
+                  keyExtractor={this.keyExtractor}
+                  renderItem={this.renderItem}
+                  style={[{
+                    marginHorizontal: -horizontalSpacing,
+                    marginVertical: -verticalSpacing
+                  }, style]}
+        />
+      </View>
     );
 
   }
