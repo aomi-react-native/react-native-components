@@ -25,11 +25,6 @@ class GridView extends AbstractComponent {
     cells: PropTypes.array.isRequired,
 
     /**
-     * 容器样式
-     */
-    containerStyle: ViewPropTypes.style,
-
-    /**
      * 渲染Grid Cell
      */
     renderCell: PropTypes.func.isRequired,
@@ -44,6 +39,11 @@ class GridView extends AbstractComponent {
      * 列数
      */
     cols: PropTypes.number,
+
+    /**
+     * 容器样式
+     */
+    containerStyle: ViewPropTypes.style,
 
     enableEmptySections: PropTypes.bool,
 
