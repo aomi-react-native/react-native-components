@@ -146,12 +146,13 @@ class Button extends Component {
     if (type === 'link') {
       temp.push(styles.link);
     } else if (type === 'default') {
+      temp.push(styles.button);
       temp.push(styles.containerDefault);
     } else {
+      temp.push(styles.button);
       temp.push({backgroundColor: Colors[type]});
     }
 
-    temp.push(styles.button);
     temp.push(containerStyle);
 
     if (disabled) {
