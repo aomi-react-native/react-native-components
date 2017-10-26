@@ -35,6 +35,7 @@ export default class Marquee extends Component {
 
   constructor(props) {
     super(props);
+    this.alpha = {};
     this.state = {
       left1: new Animated.Value(0),
       left2: new Animated.Value(0),
@@ -64,18 +65,20 @@ export default class Marquee extends Component {
     }
   }
 
-  onLayout(i, e) {
-    this.alpha[i] = e.nativeEvent.layout.width;
-    if (_.size(this.alpha) === this.state.list.length) {
-      this.twidth = _.sum(_.values(this.alpha));
-      this.alpha = {};
-      if (!this.animateEnable) {
-        this.animateEnable = true;
-        until(
-          () => this.width > 0,
-          (cb) => setTimeout(cb, 100),
-          () => this.startMoveFirstLabelHead()
-        );
+  onLayout(i) {
+    return (e) => {
+      this.alpha[i] = e.nativeEvent.layout.width;
+      if (_.size(this.alpha) === this.state.list.length) {
+        this.twidth = _.sum(_.values(this.alpha));
+        this.alpha = {};
+        if (!this.animateEnable) {
+          this.animateEnable = true;
+          until(
+            () => this.width > 0,
+            (cb) => setTimeout(cb, 100),
+            () => this.startMoveFirstLabelHead()
+          );
+        }
       }
     }
   }
@@ -126,7 +129,7 @@ export default class Marquee extends Component {
     Animated.timing(this.state.left1, {
       toValue: -twidth,
       duration: this.spaceWidth * speed,
-      easing: Easing.linear
+      easing: Easing.linear,
     }).start(() => {
       this.animateEnable && this.setState({left1: new Animated.Value(width)});
     });
@@ -172,30 +175,15 @@ export default class Marquee extends Component {
         <Animated.View style={{
           flexDirection: 'row',
           left: left1
-        }}
-        >
-          {list.map((char, i) => (
-            <Text key={i}
-                  onLayout={this.onLayout.bind(null, i)}
-                  style={textStyle}
-            >
-              {char}
-            </Text>
-          ))}
+        }}>
+          {list.map((o, i) => (<Text key={i} onLayout={this.onLayout(i)} style={textStyle}>{o}</Text>))}
         </Animated.View>
         <Animated.View style={{
           flexDirection: 'row',
           position: 'absolute',
           left: left2
-        }}
-        >
-          {list.map((char, i) => (
-            <Text key={i}
-                  style={textStyle}
-            >
-              {char}
-            </Text>
-          ))}
+        }}>
+          {list.map((o, i) => (<Text key={i} style={textStyle}>{o}</Text>))}
         </Animated.View>
       </View>
     );
