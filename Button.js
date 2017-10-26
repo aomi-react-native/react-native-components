@@ -2,7 +2,7 @@ import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Component from './AbstractComponent';
 import { Keyboard, Platform, Text, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, View, ViewPropTypes } from 'react-native';
-import { Colors, separatorHeight } from './styles';
+import { Colors, fontSize, separatorHeight } from './styles';
 
 const styles = {
   button: {
@@ -28,10 +28,12 @@ const styles = {
     backgroundColor: Colors.white
   },
   textDefault: {
-    color: '#333'
+    color: '#333',
+    fontSize
   },
   textOther: {
-    color: '#FFF'
+    color: '#FFF',
+    fontSize
   },
   textDisabled: {
     color: '#bcbcbc'
@@ -64,18 +66,15 @@ class Button extends Component {
     containerStyle: ViewPropTypes.style,
     disabled: PropTypes.bool,
     disabledStyle: ViewPropTypes.style,
-    fontSize: PropTypes.number,
-    iconProps: PropTypes.object,
     type: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link', 'default'])
   };
 
   static defaultProps = {
+    activeOpacity: 0.4,
     autoDismissKeyboard: false,
     disabled: false,
     disabledStyle: styles.disabledStyle,
-    type: 'default',
-    fontSize: 17,
-    iconProps: {}
+    type: 'default'
   };
 
 
@@ -91,23 +90,37 @@ class Button extends Component {
       disabled,
       after,
       before,
-      fontSize,
       children,
       type,
-      color,
       containerStyle,
-      disabledStyle
+      disabledStyle,
+      textStyle,
+      fontSize,
+      color
     } = this.props;
 
     let newChild = [];
-    let textStyle = Object.assign({},
-      type === 'default' || type === 'link' ? styles.textDefault : styles.textOther);
+    const textStyles = [];
+    if (type === 'default' || type === 'link') {
+      textStyles.push(styles.textDefault);
+    } else {
+      textStyles.push(styles.textOther);
+    }
     if (disabled) {
-      textStyle = Object.assign({}, styles.textDisabled);
+      textStyles.push(styles.textDisabled);
     }
+
     if (color) {
-      textStyle.color = color;
+      console.warn('color 属性已经过时,请使用textStyle');
+      textStyles.push({color});
     }
+
+    if (fontSize) {
+      console.warn('fontSize 属性已经过时,请使用textStyle');
+      textStyles.push({fontSize});
+    }
+
+    textStyles.push(textStyle);
 
     if (before) {
       newChild.push(before);
@@ -116,7 +129,7 @@ class Button extends Component {
       if (typeof children === 'string' || (Array.isArray(children) && typeof children[0] === 'string')) {
         newChild.push(
           <Text key="text"
-                style={[{fontSize}, textStyle]}
+                style={textStyles}
           >
             {Array.isArray(children) ? children[0] : children}
           </Text>
@@ -133,13 +146,12 @@ class Button extends Component {
     if (type === 'link') {
       temp.push(styles.link);
     } else if (type === 'default') {
-      temp.push(styles.button);
       temp.push(styles.containerDefault);
     } else {
-      temp.push(styles.button);
       temp.push({backgroundColor: Colors[type]});
     }
 
+    temp.push(styles.button);
     temp.push(containerStyle);
 
     if (disabled) {
