@@ -1,153 +1,211 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as Animatable from 'react-native-animatable';
 import Component from './AbstractComponent';
-import { Text, View, ViewPropTypes } from 'react-native';
+import { Keyboard, Text, View, ViewPropTypes } from 'react-native';
 import { createRootView } from './createRootNode';
 import { AbstractDialog } from './Dialog';
 import Button from './Button';
-import { Colors } from './styles';
+import { Colors, fontSize } from './styles';
 
 const styles = {
-  container: {
+  mask: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,.4)'
   },
-  content: {
-    margin: 15,
+  container: {
+    marginHorizontal: 15,
+    backgroundColor: Colors.white,
+    borderRadius: 10,
+    borderWidth: 0.1,
+    minHeight: 100,
     overflow: 'hidden'
   },
-  buttonGroup: {},
+  content: {
+    paddingHorizontal: 10
+  },
+  title: {
+    textAlign: 'center',
+    fontSize,
+    padding: 15
+  },
+  buttonGroup: {
+    marginTop: 15
+  },
+  twoButton: {
+    flexDirection: 'row'
+  },
+  buttonStyle: {
+    flex: 1
+  },
   button: {
     borderRadius: 0
   }
 };
 
-const variables = {
-  config: {
-    okText: '确定',
-    cancelText: '取消',
-    okButtonProps: {
-      color: '#0480ff'
-    },
-    cancelButtonProps: {
-      color: Colors.fontColor,
-      containerStyle: styles.button
-    }
-  }
+const popupShowAnimation = {
+  animation: 'slideInUp',
+  duration: 300
+};
+
+const popupHideAnimation = {
+  animation: 'slideOutDown',
+  duration: 300
 };
 
 class SceneModal extends Component {
 
   static propTypes = {
     /**
-     * 取消按钮属性
+     * 按钮组,属性参考Button props
      */
-    cancelButtonProps: PropTypes.object,
+    buttons: PropTypes.array,
     /**
      * 内容
      */
-    content: PropTypes.node,
+    content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     /**
      * 内容容器样式
      */
     contentStyle: ViewPropTypes.style,
     /**
-     * 确定按钮属性
+     * 隐藏时候的动画
      */
-    okButtonProps: PropTypes.object,
+    hideAnimation: PropTypes.object,
     /**
-     * 取消按钮点击
-     * 如果返回true则不会关闭modal
+     * 蒙版样式
      */
-    onCancel: PropTypes.func,
+    maskStyle: ViewPropTypes.style,
+    /**
+     * 显示动画
+     */
+    showAnimation: PropTypes.object,
+    /**
+     * 标题
+     */
+    title: PropTypes.string,
     /**
      * 背景层点击
      */
     onDismiss: PropTypes.func,
-    /**
-     * 确定按钮点击
-     */
-    onOk: PropTypes.func,
-    /**
-     * 标题
-     */
-    title: PropTypes.string
   };
 
-  state = {
-    visible: true
+  static defaultProps = {
+    buttons: []
   };
 
-  handleOkPress() {
-    const {onOk} = this.props;
-    const result = onOk && onOk();
-    this.handleClose(result);
+  static childContextTypes = {
+    destroy: PropTypes.func
+  };
+  state = {};
+
+  constructor(props) {
+    super(props);
+    const {showAnimation, scene} = props;
+    let animation = {};
+    switch (scene) {
+      case 'popup':
+        animation = showAnimation || popupShowAnimation;
+        break;
+      default:
+        break;
+    }
+    this.state = {
+      visible: true,
+      isShow: true,
+      animation
+    };
   }
 
-  handleCancelPress() {
-    const {onCancel} = this.props;
-    const result = onCancel && onCancel();
-    this.handleClose(result);
+  getChildContext() {
+    return {
+      destroy: this.handleClose
+    };
+  }
+
+  handlePress(onPress) {
+    return () => {
+      const result = onPress && onPress();
+      this.handleClose(result);
+    };
   }
 
   handleDismiss() {
     const {onDismiss} = this.props;
+    Keyboard.dismiss();
     const result = onDismiss && onDismiss();
     this.handleClose(result);
   }
 
   handleClose(result) {
     if (result !== true) {
+      const {hideAnimation, scene} = this.props;
+      let animation;
+      switch (scene) {
+        case 'popup':
+          animation = hideAnimation || popupHideAnimation;
+          break;
+        default:
+          break;
+      }
+      if (!animation) {
+        this.handleAnimationEnd();
+      }
+      this.setState({
+        animation,
+        isShow: false
+      });
+    }
+  }
+
+  handleAnimationEnd() {
+    if (!this.state.isShow) {
       this.setState({visible: false});
     }
   }
 
   render() {
     const {
-      title, content, onCancel, onOk, contentStyle,
-      okButtonProps,
-      cancelButtonProps
+      maskStyle,
+      containerStyle,
+      contentStyle,
+      title, content,
+      buttons
     } = this.props;
-    const {
-      config: {
-        okText,
-        cancelText,
-        okButtonProps: defaultOkButtonProps,
-        cancelButtonProps: defaultCancelButtonProps
-      }
-    } = variables;
+
+    const {animation, visible} = this.state;
+
     return (
       <AbstractDialog onPress={this.handleDismiss}
-                      style={styles.container}
-                      visible={this.state.visible}
+                      style={[styles.mask, maskStyle]}
+                      visible={visible}
       >
-        <View style={[styles.content, contentStyle]}>
-          {typeof title && (
-            <Text>{title}</Text>
-          )}
-          {typeof content === 'string' ? (
-            <Text>{content}</Text>
-          ) : content}
-          <View style={styles.buttonGroup}>
-            {onCancel && (
-              <Button {...defaultCancelButtonProps}
-                      {...cancelButtonProps}
-                      onPress={this.handleCancelPress}
-              >
-                {cancelText}
-              </Button>
-            )}
-            {onOk && (
-              <Button {...defaultOkButtonProps}
-                      {...okButtonProps}
-                      onPress={this.handleOkPress}
-              >
-                {okText}
-              </Button>
-            )}
+        <Animatable.View {...animation}
+                         onAnimationEnd={this.handleAnimationEnd}
+                         style={[styles.container, containerStyle]}
+        >
+          {typeof title === 'string' ? (
+            <Text style={styles.title}>{title}</Text>
+          ) : title}
+          <View style={[styles.content, contentStyle]}>
+            {typeof content === 'string' ? (
+              <Text>{content}</Text>
+            ) : content}
           </View>
-        </View>
+          {buttons && buttons.length > 0 && (
+            <View style={[styles.buttonGroup, buttons.length === 2 && styles.twoButton]}>
+              {buttons.map(({onPress, containerStyle, style, ...props}, index) => (
+                <Button {...props}
+                        containerStyle={[styles.button, containerStyle]}
+                        key={index}
+                        onPress={this.handlePress(onPress)}
+                        style={[styles.buttonStyle, style]}
+                />
+              ))}
+            </View>
+          )}
+        </Animatable.View>
       </AbstractDialog>
     );
   }
@@ -210,5 +268,12 @@ export function confirm(args) {
   return sceneModal({
     ...args,
     scene: 'confirm'
+  });
+}
+
+export function popup(args) {
+  return sceneModal({
+    ...args,
+    scene: 'popup'
   });
 }
