@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { AppRegistry, StyleSheet, View } from 'react-native';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import StaticContainer from 'static-container';
@@ -111,18 +112,37 @@ class RootManager {
   props;
   component;
 
-  constructor(SiblingComponent, props) {
+  constructor(ElementComponent, props) {
     Object.defineProperty(this, '_id', {
       enumerable: false,
       configurable: false,
       writable: false,
       value: rootId++
     });
-    this.component = SiblingComponent;
+    this.component = ElementComponent;
     this.props = props;
+    const manager = this;
     emitter.emit(CREATE_EVENT, {
       id: this._id,
-      SiblingComponent,
+      SiblingComponent: class SiblingComponent extends Component {
+        static childContextTypes = {
+          manager: PropTypes.object
+        };
+
+        getChildContext() {
+          return {
+            manager
+          };
+        }
+
+        componentWillUnmount() {
+          manager.destroy();
+        }
+
+        render() {
+          return <ElementComponent {...this.props}/>;
+        }
+      },
       props
     });
   }
