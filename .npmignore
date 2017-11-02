@@ -6,3 +6,6 @@ node_modules
 .gitignore
 .flowconfig
 .watchmanconfig
+.tsx
+.ts
+!.d.ts
