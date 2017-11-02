@@ -98,6 +98,13 @@ class SceneModal extends Component {
   static childContextTypes = {
     destroy: PropTypes.func
   };
+
+  getChildContext() {
+    return {
+      destroy: this.handleClose
+    };
+  }
+
   state = {};
 
   constructor(props) {
@@ -118,15 +125,10 @@ class SceneModal extends Component {
     };
   }
 
-  getChildContext() {
-    return {
-      destroy: this.handleClose
-    };
-  }
-
   handlePress(onPress) {
     return () => {
       const result = onPress && onPress();
+      console.log(result, result !== true);
       this.handleClose(result);
     };
   }
@@ -149,13 +151,14 @@ class SceneModal extends Component {
         default:
           break;
       }
-      if (!animation) {
-        this.handleAnimationEnd();
-      }
       this.setState({
         animation,
         isShow: false
       });
+      if (!animation) {
+        this.setState({visible: false});
+      }
+
     }
   }
 
