@@ -1,10 +1,9 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { AppRegistry, StyleSheet, View } from 'react-native';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 import StaticContainer from 'static-container';
+import RootManager from './RootManager';
 
-let rootId = 0;
 
 const styles = StyleSheet.create({
   container: {
@@ -16,9 +15,9 @@ const styles = StyleSheet.create({
   }
 });
 
-const CREATE_EVENT = 'ROOT_ELEMENT_CREATE';
+export const CREATE_EVENT = 'ROOT_ELEMENT_CREATE';
 
-const UPDATE_EVENT = 'ROOT_ELEMENT_UPDATE';
+export const UPDATE_EVENT = 'ROOT_ELEMENT_UPDATE';
 
 let emitter = (AppRegistry as any).rootSiblingsEmitter;
 
@@ -104,66 +103,6 @@ if (!(emitter instanceof EventEmitter)) {
   };
 
   (AppRegistry as any).rootSiblingsEmitter = emitter;
-}
-
-export class RootManager {
-
-  _id = null;
-  props;
-  component;
-
-  constructor(ElementComponent, props) {
-    Object.defineProperty(this, '_id', {
-      enumerable: false,
-      configurable: false,
-      writable: false,
-      value: rootId++
-    });
-    this.component = ElementComponent;
-    this.props = props;
-    const manager = this;
-    emitter.emit(CREATE_EVENT, {
-      id: this._id,
-      SiblingComponent: class SiblingComponent extends React.Component {
-
-        static childContextTypes = {
-          manager: PropTypes.object
-        };
-
-        getChildContext() {
-          return {
-            manager
-          };
-        }
-
-        componentWillUnmount() {
-          manager.destroy();
-        }
-
-        render() {
-          return <ElementComponent {...this.props}/>;
-        }
-      },
-      props
-    });
-  }
-
-  update(props, callback?) {
-    this.props = props;
-    emitter.emit(UPDATE_EVENT, {
-      id: this._id,
-      props,
-      callback
-    });
-  }
-
-  destroy(callback?) {
-    emitter.emit(CREATE_EVENT, {
-      id: this._id,
-      callback
-    });
-  }
-
 }
 
 export function createRootView(RootView, props): RootManager {
