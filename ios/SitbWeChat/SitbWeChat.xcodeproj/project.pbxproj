@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		14676CA81ECBF592002C5ED4 /* WeChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14676CA71ECBF592002C5ED4 /* WeChatManager.m */; };
-		14676CD71ECBF688002C5ED4 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 14676CD21ECBF688002C5ED4 /* libWeChatSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +37,6 @@
 		14676C9A1ECBF563002C5ED4 /* libSitbWeChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbWeChat.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		14676CA61ECBF592002C5ED4 /* WeChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeChatManager.h; sourceTree = "<group>"; };
 		14676CA71ECBF592002C5ED4 /* WeChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeChatManager.m; sourceTree = "<group>"; };
-		14676CD21ECBF688002C5ED4 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWeChatSDK.a; path = SDK/libWeChatSDK.a; sourceTree = "<group>"; };
 		14676CD31ECBF688002C5ED4 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = SDK/README.txt; sourceTree = "<group>"; };
 		14676CD41ECBF688002C5ED4 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WechatAuthSDK.h; path = SDK/WechatAuthSDK.h; sourceTree = "<group>"; };
 		14676CD51ECBF688002C5ED4 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXApi.h; path = SDK/WXApi.h; sourceTree = "<group>"; };
@@ -50,7 +48,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14676CD71ECBF688002C5ED4 /* libWeChatSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,7 +84,6 @@
 		14676CD11ECBF67F002C5ED4 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
-				14676CD21ECBF688002C5ED4 /* libWeChatSDK.a */,
 				14676CD31ECBF688002C5ED4 /* README.txt */,
 				14676CD41ECBF688002C5ED4 /* WechatAuthSDK.h */,
 				14676CD51ECBF688002C5ED4 /* WXApi.h */,
