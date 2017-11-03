@@ -1,21 +1,19 @@
-import {
-  NativeModules,
-  NativeEventEmitter
-} from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 
 const {SitbRCTOrientationManager} = NativeModules;
 
-type OriType = {
-  unknown: Number,
-  portrait: Number,
-  portraitUpsideDown: Number,
-  landscapeLeft: Number,
-  landscapeRight: Number,
-  faceUp: Number,
-  faceDown:Number
-};
+export interface OriType {
+  unknown: number,
+  portrait: number,
+  portraitUpsideDown: number,
+  landscapeLeft: number,
+  landscapeRight: number,
+  faceUp: number,
+  faceDown: number
+}
 
 export const Orientation: OriType = SitbRCTOrientationManager.Orientation;
+
 const emitter = new NativeEventEmitter(SitbRCTOrientationManager);
 
 /**
@@ -23,7 +21,7 @@ const emitter = new NativeEventEmitter(SitbRCTOrientationManager);
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/8/5
  */
-class OrientationManager {
+export default class OrientationManager {
 
   /**
    * 获取当前屏幕方向
@@ -66,5 +64,3 @@ class OrientationManager {
   }
 
 }
-
-export default OrientationManager;
