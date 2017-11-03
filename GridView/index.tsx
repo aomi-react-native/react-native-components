@@ -1,8 +1,9 @@
-import React, { cloneElement } from 'react';
-import PropTypes from 'prop-types';
-import { FlatList, StyleSheet, View, ViewPropTypes } from 'react-native';
-import AbstractComponent from './AbstractComponent';
-import { getWindowSize } from './styles';
+import * as React from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import AbstractComponent from '../AbstractComponent';
+import { getWindowSize } from '../styles';
+
+import Props from './Props';
 
 const styles = StyleSheet.create({
   row: {
@@ -17,45 +18,7 @@ const styles = StyleSheet.create({
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/25
  */
-class GridView extends AbstractComponent {
-  static propTypes = {
-    /**
-     * grid cell 列表数组
-     */
-    cells: PropTypes.array.isRequired,
-
-    /**
-     * 渲染Grid Cell
-     */
-    renderCell: PropTypes.func.isRequired,
-
-    /**
-     * 自动设置宽度
-     */
-    autoWidth: PropTypes.bool,
-
-    cellStyle: ViewPropTypes.style,
-    /**
-     * 列数
-     */
-    cols: PropTypes.number,
-
-    /**
-     * 容器样式
-     */
-    containerStyle: ViewPropTypes.style,
-
-    enableEmptySections: PropTypes.bool,
-
-    /**
-     * 水平间距
-     */
-    horizontalSpacing: PropTypes.number,
-
-    rowHasChanged: PropTypes.func,
-
-    verticalSpacing: PropTypes.number
-  };
+export default class GridView extends AbstractComponent<Props> {
 
   static defaultProps = {
     autoWidth: true,
@@ -64,8 +27,7 @@ class GridView extends AbstractComponent {
     verticalSpacing: 0
   };
 
-  props: Object;
-  state = {};
+  state;
 
   constructor(props) {
     super(props);
@@ -106,7 +68,7 @@ class GridView extends AbstractComponent {
 
   renderItem({item}) {
     const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, cols} = this.props;
-    const style = {
+    const style: any = {
       marginHorizontal: horizontalSpacing / 2
     };
     if (autoWidth) {
@@ -115,12 +77,12 @@ class GridView extends AbstractComponent {
 
     const children = item.map((cell, key) => {
       if (cell.empty) {
-        return cloneElement(<View/>, {
+        return React.cloneElement(<View/>, {
           key,
           style
         });
       }
-      return cloneElement(<View/>, {
+      return React.cloneElement(<View/>, {
         key,
         style,
         children: renderCell({
@@ -160,6 +122,3 @@ class GridView extends AbstractComponent {
 
   }
 }
-
-export default GridView;
-
