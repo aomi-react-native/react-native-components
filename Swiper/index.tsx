@@ -1,8 +1,8 @@
-import React, { Children } from 'react';
-import Component from './AbstractComponent';
-import PropTypes from 'prop-types';
-import { StyleSheet, View, ViewPropTypes } from 'react-native';
+import * as React from 'react';
+import Component from '../AbstractComponent';
+import { StyleSheet, View } from 'react-native';
 import { TabViewAnimated } from 'react-native-tab-view';
+import Props from './Props';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,13 +35,7 @@ const styles = StyleSheet.create({
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/10/18
  */
-export default class Swiper extends Component {
-
-  static propTypes = {
-    autoPlay: PropTypes.bool,
-    containerStyle: ViewPropTypes.style,
-    duration: PropTypes.number
-  };
+export default class Swiper extends Component<Props> {
 
   static defaultProps = {
     autoPlay: false,
@@ -73,7 +67,7 @@ export default class Swiper extends Component {
   updateRoute(children) {
     this.setState({
       index: 0,
-      routes: Children.toArray(children).map((child, index) => ({
+      routes: React.Children.toArray(children).map((child, index) => ({
         key: `${index}`
       }))
     });
@@ -102,7 +96,7 @@ export default class Swiper extends Component {
   renderScene({route}) {
     const {children} = this.props;
     const {key} = route;
-    return Children.toArray(children)[key];
+    return React.Children.toArray(children)[key];
   }
 
   renderPagination() {
