@@ -102,10 +102,10 @@ class ActionSheetComponent extends Component<Props> {
                   };
                 }
                 return (
-                  <Button color={option.textColor || '#0977FF'}
-                          containerStyle={[styles.button, tmp]}
+                  <Button containerStyle={[styles.button, tmp]}
                           key={index}
                           onPress={this.handlePress(option.onPress)}
+                          textStyle={{color: option.textColor || '#0977FF'}}
                   >
                     {option.label}
                   </Button>
