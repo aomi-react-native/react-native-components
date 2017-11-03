@@ -3,7 +3,7 @@
     "module": "commonjs",
     "target": "es2016",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "experimentalDecorators": true,
     "jsx": "react-native",
     "lib": [
