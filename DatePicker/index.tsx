@@ -1,46 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 
 import { DatePickerAndroid, DatePickerIOS, Platform } from 'react-native';
 
-import AbstractFormComponent from './AbstractFormComponent';
-import Input from './Input';
-import Button from '../Button';
+import AbstractFormComponent from '../Form/AbstractFormComponent';
+import Input from '../Input';
+import Button from '../Button/index';
+import Props from './Props';
 
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/9
  */
-class DatePicker extends AbstractFormComponent {
+class DatePicker extends AbstractFormComponent<Props, any> {
 
-  static propTypes = {
-    editable: PropTypes.bool,
-    maxDate: PropTypes.instanceOf(Date),
-    minDate: PropTypes.instanceOf(Date),
-    mode: PropTypes.oneOf(['date', 'time', 'datetime']),
-    name: PropTypes.string,
-    value: PropTypes.instanceOf(Date),
-    onDateChange: PropTypes.func
-  };
 
   static defaultProps = {
     editable: false,
     value: new Date()
   };
 
+  baseProps;
+  state;
+  Comp = null;
+
   constructor(props) {
     super(props);
-    [
-      'showPicker',
-      'onDateChange'
-    ].forEach(f => this[f] = this[f].bind(this));
-    let {name, form, maxDate, minDate, value, date} = this.props;
-    let val = value || date;
+    let {name, form, maxDate, minDate, value} = this.props;
     this.state = {
-      value: val
+      value
     };
-    name && form && form.putFormValue(name, val);
+    name && form && form.putFormValue(name, value);
     switch (Platform.OS) {
       case 'ios':
         this.Comp = DatePickerIOS;
@@ -67,16 +57,11 @@ class DatePicker extends AbstractFormComponent {
     }
   }
 
-  state = {};
-
-  baseProps = {};
-  Comp = null;
-
   getValue() {
     return this.state.value;
   }
 
-  valid() {
+  isValid(): boolean {
     return true;
   }
 
