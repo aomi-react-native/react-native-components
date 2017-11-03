@@ -12,7 +12,7 @@ export interface BaseFormPropTypes {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/8
  */
-export default abstract class AbstractFormComponent<P extends BaseFormPropTypes,S> extends Component<P,S> {
+export default abstract class AbstractFormComponent<P extends BaseFormPropTypes, S> extends Component<P, S> {
 
   /**
    * 获取表单组件的值
