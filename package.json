@@ -1,10 +1,13 @@
 {
   "name": "reactnativecomponents",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "React Native Components",
   "main": "index.js",
   "scripts": {
-    "watch-ts": "tsc -w"
+    "build-ts": "tsc -d",
+    "watch-ts": "tsc -w",
+    "clean": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map",
+    "prepublish": "yarn clean && yarn build-ts"
   },
   "repository": {
     "type": "git",
