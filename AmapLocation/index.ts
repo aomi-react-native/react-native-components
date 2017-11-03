@@ -1,4 +1,4 @@
-import { DeviceEventEmitter, NativeModules, Platform } from 'react-native';
+import { DeviceEventEmitter, GeolocationError, GeoOptions, NativeModules, Platform } from 'react-native';
 
 
 const config = {
@@ -57,7 +57,7 @@ export default class AmapLocation {
    * @param error 失败回调函数
    * @param options 参数
    */
-  static getCurrentPosition(success: Function, error: Function, options) {
+  static getCurrentPosition(success: Function, error?: (error: GeolocationError) => void, options?: GeoOptions) {
     if (Platform.OS === 'android') {
       const onPosition = (payload) => {
         if (payload.success) {
@@ -75,7 +75,7 @@ export default class AmapLocation {
     }
   }
 
-  static watchPosition(success: Function, error?: Function, options) {
+  static watchPosition(success: Function, error?: (error: GeolocationError) => void, options?: GeoOptions) {
     if (Platform.OS === 'android') {
       const onPosition = (payload) => {
         if (payload.success) {
