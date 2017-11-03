@@ -113,9 +113,9 @@ export function createRootView(RootView, props): RootManager {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/8/11
  */
-export default function createRootNode(RootView) {
+export default function createRootNode<P, S>(RootView) {
 
-  return class extends React.Component {
+  return class extends React.Component<P, S> {
 
     manager: RootManager;
 
