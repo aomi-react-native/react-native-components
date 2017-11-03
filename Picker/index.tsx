@@ -1,13 +1,13 @@
-import React, { Children } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import { Picker as RNPicker, PickerIOS, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
-import AbstractFormComponent from './AbstractFormComponent';
-import Dialog from '../Dialog';
-import Input from './Input';
+import AbstractFormComponent from '../Form/AbstractFormComponent';
+import Dialog from '../Dialog/index';
+import Input from '../Input';
 import { Colors, separatorHeight } from '../styles';
+import Props from './Props';
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<any>({
   dialogContainer: {
     backgroundColor: 'rgba(0,0,0,.4)',
     justifyContent: 'flex-end'
@@ -38,6 +38,7 @@ const showAnimation = {
   animation: 'fadeIn',
   duration: 200
 };
+
 const hideAnimation = {
   animation: 'fadeOut',
   duration: 500
@@ -47,24 +48,7 @@ const hideAnimation = {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/8
  */
-class Picker extends AbstractFormComponent {
-
-  static propTypes = {
-    cancelText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    children: PropTypes.node,
-    confirmText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    defaultSelected: PropTypes.any,
-    /**
-     * On Android, specifies how to display the selection items when the user taps on the picker:
-     *
-     *   - 'dialog': Show a modal dialog. This is the default.
-     *   - 'dropdown': Shows a dropdown anchored to the picker view
-     *
-     * @platform android
-     */
-    mode: PropTypes.oneOf(['dialog', 'dropdown']),
-    title: PropTypes.string,
-  };
+class Picker extends AbstractFormComponent<Props, any> {
 
   static defaultProps = {
     cancelText: '取消',
@@ -129,7 +113,7 @@ class Picker extends AbstractFormComponent {
     return this.state.selectedValue;
   }
 
-  valid() {
+  isValid() {
     return true;
   }
 
@@ -171,7 +155,7 @@ class Picker extends AbstractFormComponent {
 
     const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
     let label = '';
-    const childrenArr = Children.toArray(children);
+    const childrenArr = React.Children.toArray(children);
     for (let i = 0; i < childrenArr.length; i++) {
       const child = childrenArr[i];
       if (child.props.value === this.state.selectedValue) {
@@ -214,6 +198,9 @@ class Picker extends AbstractFormComponent {
 
 }
 
-Picker.Item = Platform.OS === 'android' ? RNPicker.Item : PickerIOS.Item;
+export const Item = Platform.select<React.ReactNode>({
+  ios: PickerIOS.Item,
+  android: RNPicker.Item
+});
 
 export default Picker;
