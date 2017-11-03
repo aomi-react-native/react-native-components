@@ -1,29 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import { Switch as RNSwitch } from 'react-native';
-import AbstractFormComponent from './AbstractFormComponent';
+import AbstractFormComponent from '../Form/AbstractFormComponent';
+import Props from './Props';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/7
  */
-class Switch extends AbstractFormComponent {
+export default class Switch extends AbstractFormComponent<Props, any> {
 
-  static propTypes = {
-    form: PropTypes.object,
-    name: PropTypes.string,
-    onValueChange: PropTypes.func
-  };
-
-  static displayName = 'Switch';
-
-  state = {
-    value: false
-  };
+  state;
 
   constructor(props) {
     super(props);
-    ['onValueChange'].forEach(f => this[f] = this[f].bind(this));
     this.state.value = props.value;
     this.putFormValue();
   }
@@ -47,7 +36,11 @@ class Switch extends AbstractFormComponent {
     onValueChange && onValueChange(value);
   }
 
-  valid() {
+  getValue(): any {
+    return this.state.value;
+  }
+
+  isValid() {
     return true;
   }
 
@@ -61,4 +54,3 @@ class Switch extends AbstractFormComponent {
   }
 }
 
-export default Switch;
