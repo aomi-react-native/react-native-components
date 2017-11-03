@@ -1,14 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
-import Component from './AbstractComponent';
-import { Keyboard, Text, View, ViewPropTypes } from 'react-native';
-import { createRootView } from './createRootNode';
-import { AbstractDialog } from './Dialog';
-import Button from './Button';
-import { Colors, fontSize } from './styles';
+import Component from '../AbstractComponent';
+import { Keyboard, Text, View, StyleSheet } from 'react-native';
+import { createRootView, RootManager } from '../createRootNode/index';
+import { AbstractDialog } from '../Dialog/index';
+import Button from '../Button/index';
+import { Colors, fontSize } from '../styles';
+import Props from './Props';
 
-const styles = {
+const styles = StyleSheet.create<any>({
   mask: {
     flex: 1,
     justifyContent: 'center',
@@ -42,7 +43,7 @@ const styles = {
   button: {
     borderRadius: 0
   }
-};
+});
 
 const popupShowAnimation = {
   animation: 'slideInUp',
@@ -54,42 +55,7 @@ const popupHideAnimation = {
   duration: 300
 };
 
-class SceneModal extends Component {
-
-  static propTypes = {
-    /**
-     * 按钮组,属性参考Button props
-     */
-    buttons: PropTypes.array,
-    /**
-     * 内容
-     */
-    content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    /**
-     * 内容容器样式
-     */
-    contentStyle: ViewPropTypes.style,
-    /**
-     * 隐藏时候的动画
-     */
-    hideAnimation: PropTypes.object,
-    /**
-     * 蒙版样式
-     */
-    maskStyle: ViewPropTypes.style,
-    /**
-     * 显示动画
-     */
-    showAnimation: PropTypes.object,
-    /**
-     * 标题
-     */
-    title: PropTypes.string,
-    /**
-     * 背景层点击
-     */
-    onDismiss: PropTypes.func,
-  };
+class SceneModal extends Component<Props> {
 
   static defaultProps = {
     buttons: []
@@ -105,7 +71,7 @@ class SceneModal extends Component {
     };
   }
 
-  state = {};
+  state;
 
   constructor(props) {
     super(props);
@@ -221,7 +187,7 @@ function sceneModal(props) {
   return createRootView(SceneModal, props);
 }
 
-export default (args) => {
+export default (args: Props) => {
   return sceneModal(args);
 };
 
