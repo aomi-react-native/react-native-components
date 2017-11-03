@@ -155,4 +155,4 @@ export class AbstractDialog extends Component<Props> {
   }
 }
 
-export default createRootNode(AbstractDialog);
+export default createRootNode<Props, any>(AbstractDialog);
