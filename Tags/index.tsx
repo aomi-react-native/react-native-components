@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { Colors } from './styles';
+import * as React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Colors } from '../styles';
 
-const styles = {
+const styles = StyleSheet.create<any>({
   tags: {
     flexDirection: 'row',
     marginHorizontal: -5
@@ -17,13 +17,13 @@ const styles = {
     fontSize: 12,
     color: Colors.white
   }
-};
+});
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/10/18
  */
-export class Tag extends Component {
+export class Tag extends React.Component<any> {
 
   static defaultProps = {
     color: '#666'
@@ -49,7 +49,7 @@ export class Tag extends Component {
 
 }
 
-export default class Tags extends Component {
+export default class Tags extends React.Component<any> {
 
   render() {
     const {children} = this.props;
