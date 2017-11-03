@@ -7,19 +7,19 @@ import { NativeModules } from 'react-native';
 
 const {SitbDeviceManager} = NativeModules;
 
-export type Device = {
-  bundleId: String,
-  country: String,
-  identifier: String,
-  locale: String,
-  localizedModel: String,
-  model: String,
-  name: String,
-  systemName: String,
-  systemVersion: String,
-  versionCode: String,
-  versionName: String
-};
+export interface Device {
+  bundleId: string,
+  country: string,
+  identifier: string,
+  locale: string,
+  localizedModel: string,
+  model: string,
+  name: string,
+  systemName: string,
+  systemVersion: string,
+  versionCode: string,
+  versionName: string
+}
 
 class DeviceManager {
 
