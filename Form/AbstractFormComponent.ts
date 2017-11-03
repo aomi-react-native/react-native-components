@@ -24,7 +24,7 @@ export default abstract class AbstractFormComponent<P extends BaseFormPropTypes,
    */
   abstract isValid(): boolean;
 
-  putFormValue(currentValue): void {
+  putFormValue(currentValue?): void {
     const {name, form, value} = this.props;
     name && form && form.putFormValue(name, currentValue || value);
   }
