@@ -1,9 +1,11 @@
-import React, { cloneElement } from 'react';
-import PropTypes from 'prop-types';
-import { FlatList, Image, StyleSheet, Text, TouchableHighlight, View, ViewPropTypes } from 'react-native';
-import AbstractComponent from './AbstractComponent';
-import right from './images/right.png';
-import { Colors, fontSize, separatorHeight } from './styles';
+import * as React from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import AbstractComponent from '../AbstractComponent';
+
+import { Colors, fontSize, separatorHeight } from '../styles';
+import Props from './Props';
+
+const right = require('../images/right.png');
 
 const padding = 15;
 
@@ -52,47 +54,15 @@ const styles = StyleSheet.create({
   right: {
     width: 19,
     height: 19,
-    resizeMode: Image.resizeMode.contain
+    resizeMode: 'contain'
   }
 });
-
-
-export const Row = {
-  header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
-  footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  displayRightArrow: PropTypes.bool,
-  disabled: PropTypes.bool,
-  style: ViewPropTypes.style
-};
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/25
  */
-class List extends AbstractComponent {
-
-  static propTypes = {
-    bodyTextStyle: Text.propTypes.style,
-    containerStyle: ViewPropTypes.style,
-    /**
-     * 是否禁止点击
-     */
-    disabled: PropTypes.bool,
-    /**
-     * 是否显示右箭头
-     */
-    displayRightArrow: PropTypes.bool,
-    footerTextStyle: Text.propTypes.style,
-    fullSeparator: PropTypes.bool,
-    itemStyle: ViewPropTypes.style,
-    /**
-     * 过时,请使用data
-     */
-    items: PropTypes.array,
-    separatorColor: PropTypes.string,
-    onItemPress: PropTypes.func
-  };
+class List extends AbstractComponent<Props> {
 
   static defaultProps = {
     disabled: false,
@@ -101,12 +71,6 @@ class List extends AbstractComponent {
     fullSeparator: false,
     separatorColor: Colors.separator
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.items !== nextProps.items) {
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(nextProps.items)});
-    }
-  }
 
   renderHeader(header) {
     const {headerTextStyle} = this.props;
@@ -117,7 +81,7 @@ class List extends AbstractComponent {
       );
     }
 
-    return cloneElement(<View/>, {
+    return React.cloneElement(<View/>, {
       style: header && styles.header,
       children: header
     });
@@ -130,7 +94,7 @@ class List extends AbstractComponent {
         <Text style={[styles.body, styles.bodyTextStyle, bodyTextStyle]}>{body || ''}</Text>
       );
     }
-    return cloneElement(<View/>, {
+    return React.cloneElement(<View/>, {
       style: styles.body,
       children: body
     });
