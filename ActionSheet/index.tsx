@@ -1,88 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { Dimensions, ScrollView, Text, View } from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
-import Component from './AbstractComponent';
-import Button from './Button';
-import Dialog from './Dialog';
-import { createRootView } from './createRootNode';
-import { Colors, separatorHeight } from './styles';
+import Component from '../AbstractComponent';
+import Button from '../Button';
+import Dialog from '../Dialog';
+import { createRootView } from '../createRootNode';
 
-const height = 50;
+import Props from './Props';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,.4)',
-    justifyContent: 'flex-end'
-  },
-  contentContainer: {
-    margin: 10
-  },
-  content: {
-    backgroundColor: '#FFF',
-    borderRadius: 10
-  },
-  title: {
-    height,
-    justifyContent: 'center',
-    borderColor: Colors.separator,
-    borderBottomWidth: separatorHeight
-  },
-  titleText: {
-    color: '#8F8F91',
-    textAlign: 'center',
-    fontSize: 16
-  },
-  button: {
-    borderRadius: 0,
-    height,
-    borderColor: Colors.separator,
-    borderBottomWidth: separatorHeight
-  },
-  cancel: {
-    marginTop: 10,
-    height,
-    justifyContent: 'center',
-    borderWidth: 0
-  },
-  cancelText: {
-    fontWeight: '700',
-    color: '#0977FF',
-    fontSize: 18
-  }
-});
+import styles from './styles';
 
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/12
  */
-class ActionSheetComponent extends Component {
-
-  static propTypes = {
-    /**
-     * （字符串数组） - 一组按钮的标题（必选）
-     */
-    options: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      textColor: PropTypes.string,
-      onPress: PropTypes.func
-    })).isRequired,
-
-    cancel: PropTypes.string,
-    cancelPress: PropTypes.func,
-
-    manager: PropTypes.object,
-    /**
-     * （字符串） - 弹出框顶部标题下方的信息
-     */
-    message: PropTypes.string,
-
-    // （字符串） - 弹出框顶部的标题
-    title: PropTypes.string,
-    titleTextStyle: Text.propTypes.style
-  };
+class ActionSheetComponent extends Component<Props> {
 
   state = {
     open: true
@@ -194,7 +127,7 @@ class ActionSheetComponent extends Component {
 
 }
 
-class ActionSheet {
+export default class ActionSheet {
   /**
    * @param options
    * options (对象数组) - 一组按钮的选项（必选）{label: '按钮标题', onPress: ()=>console.log('press')}
@@ -214,4 +147,3 @@ class ActionSheet {
   }
 }
 
-export default ActionSheet;
