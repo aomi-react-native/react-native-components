@@ -1,32 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AbstractFormComponent from './AbstractFormComponent';
+import * as React from 'react';
+import AbstractFormComponent from '../Form/AbstractFormComponent';
 
 import { Slider as RNSlider } from 'react-native';
+import Props from './Props';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/7
  */
-class Slider extends AbstractFormComponent {
-
-  static propTypes = {
-    form: PropTypes.object,
-    name: PropTypes.string,
-    onValueChange: PropTypes.func,
-    value: PropTypes.number
-  };
+export default class Slider extends AbstractFormComponent<Props, any> {
 
   static defaultProps = {
     value: 0
   };
-
-  static displayName = 'Slider';
-
-  constructor(props) {
-    super(props);
-    ['onValueChange'].forEach(f => this[f] = this[f].bind(this));
-  }
 
   state = {
     value: this.props.value
@@ -36,7 +22,7 @@ class Slider extends AbstractFormComponent {
     return this.state.value;
   }
 
-  valid() {
+  isValid() {
     return false;
   }
 
@@ -58,5 +44,3 @@ class Slider extends AbstractFormComponent {
   }
 
 }
-
-export default Slider;
