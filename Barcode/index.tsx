@@ -1,92 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Component from './AbstractComponent';
-import { DeviceEventEmitter, NativeModules, Platform, requireNativeComponent, StyleSheet, UIManager, View, ViewPropTypes } from 'react-native';
-import Camera from './Camera';
-import common from './styles';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
+import Component from '../AbstractComponent';
+import {
+  DeviceEventEmitter, NativeModules, Platform, requireNativeComponent,
+  UIManager, View
+} from 'react-native';
+import Camera from '../Camera';
+
+import styles from './styles';
+import Props from './Props';
 
 const {SitbBarcodeView, SitbCameraView} = NativeModules;
 
+const {SitbCameraView: UISitbCameraView} = (UIManager as any);
+
 const ANDROID_EVENT_NAME = 'onSuccess';
 
-export const Type = Platform.OS === 'ios' ? UIManager.SitbCameraView.Constants.BarCodeType : {
+export const Type = Platform.OS === 'ios' ? UISitbCameraView.Constants.BarCodeType : {
   qr: 'QR'
 };
-
-const borderStyle = {
-  position: 'absolute',
-  width: 40,
-  height: 40,
-  borderColor: '#46b8da'
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative'
-  },
-  captureWindow: {
-    ...common.fullScreenAbsolute
-  },
-  cell: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
-  },
-  cellBg: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
-  },
-  window: {
-    backgroundColor: 'transparent',
-    position: 'relative'
-  },
-  windowStyle: {
-    ...common.fullScreenAbsolute,
-    borderWidth: 5,
-    borderColor: 'rgba(0, 0, 0, 0.5)'
-  },
-  top: {
-    ...borderStyle,
-    top: 1,
-    left: 1,
-    borderTopWidth: 5,
-    borderLeftWidth: 5
-  },
-  right: {
-    ...borderStyle,
-    top: 1,
-    right: 1,
-    borderTopWidth: 5,
-    borderRightWidth: 5
-  },
-  bottom: {
-    ...borderStyle,
-    bottom: 1,
-    right: 1,
-    borderBottomWidth: 5,
-    borderRightWidth: 5
-  },
-  left: {
-    ...borderStyle,
-    bottom: 1,
-    left: 1,
-    borderBottomWidth: 5,
-    borderLeftWidth: 5
-  }
-});
 
 /**
  * 条形码组件
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/7/19
  */
-class Barcode extends Component {
+class Barcode extends Component<Props> {
 
   static propTypes = {
     ...Camera.propTypes,
     barCodeTypes: PropTypes.array,
     renderBottom: PropTypes.func,
     renderTop: PropTypes.func,
-    scanLineStyle: ViewPropTypes.style,
+    scanLineStyle: PropTypes.any,
     windowSize: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
@@ -102,6 +48,8 @@ class Barcode extends Component {
     }
   };
 
+  state;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -111,8 +59,6 @@ class Barcode extends Component {
       }
     };
   }
-
-  state = {};
 
   /**
    * 扫描图片
