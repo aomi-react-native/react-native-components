@@ -92,7 +92,7 @@ const config = {
  * @param msg 问题消息
  * @param duration 持续时间
  */
-export default function show(msg, duration) {
+export default function show(msg, duration?) {
   if (Platform.OS === 'android') {
     ToastAndroid.show(msg, duration || config.duration);
     return;
