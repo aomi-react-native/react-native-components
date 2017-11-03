@@ -1,34 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import Component from './AbstractComponent';
-import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager, ViewPropTypes } from 'react-native';
-
-type OrientationType = {
-  auto: Number,
-  landscapeLeft: Number,
-  landscapeRight: Number,
-  portrait: Number,
-  portraitUpsideDown: Number
-};
-
-type QualityType = {
-  high: String,
-  medium: String,
-  low: String,
-  vga: String,
-  hd720: String,
-  hd1080: String,
-  photo: String
-};
+import Component from '../AbstractComponent';
+import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager } from 'react-native';
+import Props, { OrientationType, QualityType } from './Props';
 
 let CameraManager = NativeModules.SitbCameraView || NativeModules.SitbCamera2Module;
-let RCTCamera;
-if (UIManager.SitbCameraView) {
-  RCTCamera = requireNativeComponent('SitbCameraView', Camera);
-} else if (UIManager.SitbCamera2Module) {
-  RCTCamera = requireNativeComponent('SitbCamera2View', Camera);
-}
-let constants = (UIManager.SitbCameraView || UIManager.SitbCamera2View).Constants;
+
+const {SitbCameraView, SitbCamera2View, SitbCamera2Module} = UIManager as any;
+
+let constants = (SitbCameraView || SitbCamera2View).Constants;
 
 let CameraFacing = constants.CameraFacing;
 let Orientation: OrientationType = constants.Orientation;
@@ -46,11 +26,11 @@ let event = new NativeEventEmitter(CameraManager);
 export function setCameraVersion(cameraVersion) {
   if (cameraVersion === 4) {
     CameraManager = NativeModules.SitbCameraView;
-    constants = UIManager.SitbCameraView.Constants;
+    constants = SitbCameraView.Constants;
     RCTCamera = requireNativeComponent('SitbCameraView', Camera);
   } else if (cameraVersion === 5) {
     CameraManager = NativeModules.SitbCamera2View;
-    constants = UIManager.SitbCamera2View.Constants;
+    constants = SitbCamera2View.Constants;
     RCTCamera = requireNativeComponent('SitbCamera2View', Camera);
   }
   CameraFacing = constants.CameraFacin;
@@ -63,10 +43,9 @@ export function setCameraVersion(cameraVersion) {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/22
  */
-class Camera extends Component {
+class Camera extends Component<Props> {
 
   static propTypes = {
-    ...ViewPropTypes,
     /**
      * 前置相机还是后置相机
      * CameraFacing.back
@@ -106,6 +85,22 @@ class Camera extends Component {
     quality: Quality.high
   };
 
+  /**
+   * 检查是否有相机权限
+   * ios only
+   */
+  static checkVideoAuthorizationStatus = Platform.select<any>({
+    ios: CameraManager.checkVideoAuthorizationStatus
+  });
+  /**
+   * 检查是否有麦克风权限
+   * ios only
+   */
+  static checkAudioAuthorizationStatus = Platform.select<any>({
+    ios: CameraManager.checkAudioAuthorizationStatus
+  });
+
+
   componentDidMount() {
     if (Platform.OS === 'android') {
       event.addListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
@@ -139,18 +134,12 @@ class Camera extends Component {
 
 }
 
-if (Platform.OS === 'ios') {
-  /**
-   * 检查是否有相机权限
-   * ios only
-   */
-  Camera.checkVideoAuthorizationStatus = CameraManager.checkVideoAuthorizationStatus;
 
-  /**
-   * 检查是否有麦克风权限
-   * ios only
-   */
-  Camera.checkAudioAuthorizationStatus = CameraManager.checkAudioAuthorizationStatus;
+let RCTCamera;
+if (SitbCameraView) {
+  RCTCamera = requireNativeComponent('SitbCameraView', Camera);
+} else if (SitbCamera2Module) {
+  RCTCamera = requireNativeComponent('SitbCamera2View', Camera);
 }
 
 export {
