@@ -12,13 +12,13 @@ const {
 } = NativeModules;
 
 
-type Options = {
-  sourceType: SourceType,
-  mediaType: MediaType,
-  allowsEditing: Boolean,
-  cameraType: CameraType,
-  quality: Quality
-};
+export interface Options {
+  sourceType?: string,
+  mediaType?: string,
+  allowsEditing?: boolean,
+  cameraType?: string,
+  quality?: number
+}
 
 const DEFAULT_LIBRARY_OPTIONS = {
   sourceType: SourceType.savedPhotosAlbum,
@@ -34,16 +34,16 @@ const DEFAULT_CAMERA_OPTIONS = {
   quality: Quality.high
 };
 
-type PhotoAlbum = {
+export interface PhotoAlbum {
   // 编辑后的图片
-  edited: {
-    path: String
+  edited?: {
+    path?: string
   },
   // 原图
-  reference: {
-    path: String
+  reference?: {
+    path?: string
   }
-};
+}
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -61,7 +61,7 @@ class MediaManager {
     return launchImageLibrary(newOptions);
   }
 
-  static launchCamera(options = DEFAULT_CAMERA_OPTIONS): Promise {
+  static launchCamera(options = DEFAULT_CAMERA_OPTIONS): Promise<PhotoAlbum> {
     const newOptions = Object.assign({}, DEFAULT_CAMERA_OPTIONS, options);
     if (Platform.OS === 'android' && newOptions.allowsEditing) {
       return new Promise((resolve, reject) => {
