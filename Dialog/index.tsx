@@ -2,7 +2,8 @@ import * as React from 'react';
 import { ActivityIndicator, BackHandler, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import Component from '../AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
-import createRootNode, { RootManager } from '../createRootNode/index';
+import createRootNode from '../createRootNode/index';
+import RootManager from '../createRootNode/RootManager';
 import Props from './Props';
 
 import styles from './styles';
