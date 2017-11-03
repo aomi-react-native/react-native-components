@@ -1,7 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import Component from './AbstractComponent';
-import { NativeModules, PanResponder, PixelRatio, Platform, requireNativeComponent, View } from 'react-native';
+import Component from '../AbstractComponent';
+import { NativeModules, PanResponder, PixelRatio, Platform, requireNativeComponent } from 'react-native';
+import Props from './Props';
 
 const ratio = PixelRatio.get();
 
@@ -16,10 +17,9 @@ const {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/7/14
  */
-class Canvas extends Component {
+class Canvas extends Component<Props> {
 
   static propTypes = {
-    ...View.propTypes,
     lineWidth: PropTypes.number,
     lines: PropTypes.array,
     strokeColor: PropTypes.string
@@ -34,8 +34,10 @@ class Canvas extends Component {
   canvas;
 
   panResponder;
-  points: Array;
+  points = [];
   lines = [];
+
+  state;
 
   constructor(props) {
     super(props);
@@ -120,6 +122,10 @@ class Canvas extends Component {
   clearScreen() {
     this.lines = [];
     this.setNativeProps({lines: []});
+  }
+
+  handleChange() {
+    // do something...
   }
 
   render() {
