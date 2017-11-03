@@ -13,16 +13,12 @@ const SitbRNFileManager = NativeModules.SitbRNFileManager;
  * @date 16/6/6
  */
 
-class RNFileManager {
+export default class FileManager {
 
-  static getPhotoFromCameraRoll(uri:String) {
+  static getPhotoFromCameraRoll(uri: string) {
     if (Platform.OS === 'android') {
       return SitbRNFileManager.getPhotoByContentUri(uri);
     }
   }
 
 }
-
-
-export default RNFileManager;
-
