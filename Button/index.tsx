@@ -97,7 +97,6 @@ class Button extends Component<Props> {
 
   render() {
     const {
-      activeOpacity,
       Comp,
       ...props
     } = this.props;
@@ -109,7 +108,6 @@ class Button extends Component<Props> {
 
     return (
       <ButtonComp {...props}
-                  activeOpacity={activeOpacity}
                   onPress={this.handlePress}
       >
         {this.renderContent()}
