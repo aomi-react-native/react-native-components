@@ -3,29 +3,29 @@ import { NativeModules } from 'react-native';
 const {WeChatManager} = NativeModules;
 
 
-type TypeProps = {
+export interface TypeProps {
   // 文本分享
-  text: Number,
+  text: number,
   // 图片分享
-  image: Number,
+  image: number,
   // 音乐分享
-  music: Number,
+  music: number,
   // 视频分享
-  video: Number,
+  video: number,
   // 网页分享
-  webPage: Number
-};
+  webPage: number
+}
 
-type SceneProps = {
+export interface SceneProps {
   // 微信会话
-  session: Number,
+  session: number,
   // 朋友圈
-  timeLine: Number,
+  timeLine: number,
   // 收藏
-  favorite: Number
-};
+  favorite: number
+}
 
-type Options = {
+export interface Options {
   scene: SceneProps,
   type: TypeProps,
   text: String,
@@ -36,7 +36,7 @@ type Options = {
   image: String,
   thumbImageSize: Number,
   webPageUrl: String
-};
+}
 
 export const Scene: SceneProps = WeChatManager.scene;
 
