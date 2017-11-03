@@ -1,32 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ActivityIndicator, BackHandler, StatusBar, StyleSheet, Text, TouchableOpacity, View, ViewPropTypes } from 'react-native';
-import Component from './AbstractComponent';
+import * as React from 'react';
+import { ActivityIndicator, BackHandler, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import Component from '../AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
-import createRootNode from './createRootNode';
-import commonStyles from './styles';
+import createRootNode, { RootManager } from '../createRootNode/index';
+import Props from './Props';
 
-const styles = StyleSheet.create({
-  container: {
-    ...commonStyles.fullScreenAbsolute
-  },
-  loadingStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,.4)'
-  },
-  content: {
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.7)'
-  },
-  text: {
-    marginTop: 5,
-    color: '#FFF'
-  }
-});
+import styles from './styles';
+
 
 function handleAndroidBackPress() {
   return true;
@@ -36,19 +16,7 @@ function handleAndroidBackPress() {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/24
  */
-export class AbstractDialog extends Component {
-
-  static propTypes = {
-    autoDisableAndroidBackPress: PropTypes.bool,
-    hideAnimation: PropTypes.object,
-    loadingDialog: PropTypes.bool,
-    loadingProps: PropTypes.object,
-    showAnimation: PropTypes.object,
-    statusBarAutoHidden: PropTypes.bool,
-    style: ViewPropTypes.style,
-    visible: PropTypes.bool,
-    onPress: PropTypes.func
-  };
+export class AbstractDialog extends Component<Props> {
 
   static defaultProps = {
     autoDisableAndroidBackPress: true,
@@ -63,6 +31,7 @@ export class AbstractDialog extends Component {
   };
 
   mounted = true;
+  statusBarHidden = false;
 
   componentWillMount() {
     this.handleHardwareBackPress();
@@ -185,5 +154,4 @@ export class AbstractDialog extends Component {
   }
 }
 
-// noinspection Eslint
 export default createRootNode(AbstractDialog);
