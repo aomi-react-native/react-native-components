@@ -10,7 +10,7 @@ const emitter = new NativeEventEmitter(SitbQuickActionManager);
  */
 export default class QuickActionManager {
 
-  static setShortcutItems(shortcutItems: Array) {
+  static setShortcutItems(shortcutItems) {
     return SitbQuickActionManager.setShortcutItems(shortcutItems);
   }
 
