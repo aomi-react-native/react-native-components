@@ -1,12 +1,12 @@
 {
   "name": "reactnativecomponents",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React Native Components",
   "main": "index.js",
   "scripts": {
     "build-ts": "tsc -d",
     "watch-ts": "tsc -w",
-    "clean": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map",
+    "clean": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map **/*/build",
     "prepare": "npm run clean && npm run build-ts"
   },
   "repository": {
