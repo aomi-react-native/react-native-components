@@ -40,6 +40,8 @@ _site/
 activemq-data
 log
 
+*.d.ts
+*.js
 *.js.map
 *.iml
 *.ipr
