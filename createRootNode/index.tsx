@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { AppRegistry, StyleSheet, View } from 'react-native';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
@@ -20,7 +20,7 @@ const CREATE_EVENT = 'ROOT_ELEMENT_CREATE';
 
 const UPDATE_EVENT = 'ROOT_ELEMENT_UPDATE';
 
-let emitter = AppRegistry.rootSiblingsEmitter;
+let emitter = (AppRegistry as any).rootSiblingsEmitter;
 
 if (!(emitter instanceof EventEmitter)) {
   emitter = new EventEmitter();
@@ -34,7 +34,7 @@ if (!(emitter instanceof EventEmitter)) {
     return originRegister(appKey, () => {
       const OriginAppComponent = getAppComponent();
 
-      return class extends Component {
+      return class extends React.Component {
 
         static displayName = `Root(${appKey})`;
 
@@ -103,10 +103,10 @@ if (!(emitter instanceof EventEmitter)) {
     });
   };
 
-  AppRegistry.rootSiblingsEmitter = emitter;
+  (AppRegistry as any).rootSiblingsEmitter = emitter;
 }
 
-class RootManager {
+export class RootManager {
 
   _id = null;
   props;
@@ -124,7 +124,8 @@ class RootManager {
     const manager = this;
     emitter.emit(CREATE_EVENT, {
       id: this._id,
-      SiblingComponent: class SiblingComponent extends Component {
+      SiblingComponent: class SiblingComponent extends React.Component {
+
         static childContextTypes = {
           manager: PropTypes.object
         };
@@ -147,7 +148,7 @@ class RootManager {
     });
   }
 
-  update(props, callback) {
+  update(props, callback?) {
     this.props = props;
     emitter.emit(UPDATE_EVENT, {
       id: this._id,
@@ -156,7 +157,7 @@ class RootManager {
     });
   }
 
-  destroy(callback) {
+  destroy(callback?) {
     emitter.emit(CREATE_EVENT, {
       id: this._id,
       callback
@@ -165,7 +166,7 @@ class RootManager {
 
 }
 
-export function createRootView(RootView, props) {
+export function createRootView(RootView, props): RootManager {
   return new RootManager(RootView, props);
 }
 
@@ -175,9 +176,9 @@ export function createRootView(RootView, props) {
  */
 export default function createRootNode(RootView) {
 
-  return class extends Component {
+  return class extends React.Component {
 
-    manager;
+    manager: RootManager;
 
     componentWillMount() {
       this.manager = new RootManager(RootView, this.props);
