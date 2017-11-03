@@ -4,7 +4,7 @@ import { CameraRoll as RNCameraRoll, NativeModules, Platform } from 'react-nativ
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/4/18
  */
-class CameraRoll {
+export default class CameraRoll {
 
   /**
    * Saves the photo or video to the camera roll / gallery.
@@ -26,5 +26,3 @@ class CameraRoll {
   }
 
 }
-
-export default CameraRoll;
