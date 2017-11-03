@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { DeviceEventEmitter, NativeModules, Platform, Text, View, StyleSheet } from 'react-native';
 import modal from '../modal';
-import SvgIcon from '../SvgIcon';
 
 import toast from '../toast';
-
-const fingerprint = require('../assets/svg/fingerprint.svg');
 
 const EVENT_NAME = 'receiveAuthentication';
 
@@ -112,12 +109,6 @@ export default class LocalAuthentication {
   static createDialog({title, tipMsg}: any) {
     return (
       <View style={styles.content}>
-        <SvgIcon fill="#ff2d2d"
-                 height={50}
-                 source={fingerprint}
-                 width={50}
-
-        />
         {title && <Text>{title}</Text>}
         {tipMsg && <Text style={styles.msg}>{tipMsg}</Text>}
       </View>
