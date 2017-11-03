@@ -1,12 +1,13 @@
-import React from 'react';
-import Component from './AbstractComponent';
+import * as React from 'react';
+import Component from '../AbstractComponent';
 import { Keyboard, LayoutAnimation, Platform, ScrollView } from 'react-native';
+import Props from './Props';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/7/27
  */
-export default class KeyboardAvoidingView extends Component {
+export default class KeyboardAvoidingView extends Component<Props> {
 
   static defaultProps = {
     keyboardBottomOffset: 15
@@ -15,7 +16,8 @@ export default class KeyboardAvoidingView extends Component {
   // refs
   scrollView;
 
-  subscriptions: Array;
+  subscriptions = [];
+  frame;
 
   componentWillMount() {
     if (Platform.OS === 'ios') {
