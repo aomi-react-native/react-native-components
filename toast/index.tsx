@@ -2,12 +2,12 @@
  * @author Sean sean.snow@live.com
  */
 
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import Component from './AbstractComponent';
+import Component from '../AbstractComponent';
 import { Platform, StyleSheet, Text, ToastAndroid } from 'react-native';
 import { View } from 'react-native-animatable';
-import { createRootView } from './createRootNode';
+import { createRootView } from '../createRootNode/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +34,12 @@ const styles = StyleSheet.create({
   }
 });
 
-class ToastIOS extends Component {
+export interface ToastProps {
+  msg?: string;
+  show?: boolean;
+}
+
+class ToastIOS extends Component<ToastProps> {
 
   static propTypes = {
     msg: PropTypes.string,
@@ -95,7 +100,7 @@ export default function show(msg, duration) {
 
   if (Platform.OS === 'ios') {
     const manager = createRootView(ToastIOS, {});
-    const args = {
+    const args: any = {
       msg,
       manager
     };
