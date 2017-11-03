@@ -19,9 +19,9 @@ const excludeFunc = [
  *
  * @author Sean sean.snow@live.com
  */
-export default class AbstractComponent<P = {}, S = {}> extends Component<any, any> {
+export default class AbstractComponent<P = {}, S = {}> extends Component<P, S> {
 
-  constructor(props: P, content: S) {
+  constructor(props?: P, content?: any) {
     super(props, content);
     const propertyNames = Reflect.ownKeys(Reflect.getPrototypeOf(this));
     propertyNames.forEach((func: string) => {

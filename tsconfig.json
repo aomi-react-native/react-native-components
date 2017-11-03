@@ -5,9 +5,8 @@
     "moduleResolution": "node",
     "declaration": true,
     "sourceMap": true,
-    "allowJs": true,
     "experimentalDecorators": true,
-    "jsx": "react",
+    "jsx": "react-native",
     "lib": [
       "es2015",
       "es2015.promise",

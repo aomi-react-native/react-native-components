@@ -6,6 +6,6 @@ import { Component } from 'react';
  *
  * @author Sean sean.snow@live.com
  */
-export default class AbstractComponent<P = {}, S = {}> extends Component<any, any> {
-    constructor(props: P, content: S);
+export default class AbstractComponent<P = {}, S = {}> extends Component<P, S> {
+    constructor(props?: P, content?: any);
 }
