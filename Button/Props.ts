@@ -16,4 +16,5 @@ export default interface Props extends BaseProps {
   textStyle?: StyleProp<TextStyle>;
   type?: 'primary' | 'success' | 'info' | 'warn' | 'danger' | 'link' | 'default';
   onPress?: (event: GestureResponderEvent) => void;
+  style?: StyleProp<ViewStyle>;
 }
