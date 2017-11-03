@@ -1,8 +1,8 @@
-import React from 'react';
-import Component from './AbstractComponent';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import Component from '../AbstractComponent';
 import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 import _ from 'lodash';
+import Props from './Props';
 
 function until(test, iterator, callback) {
   if (test()) {
@@ -20,18 +20,19 @@ function until(test, iterator, callback) {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/10/24
  */
-export default class Marquee extends Component {
-
-  static propTypes = {
-    children: PropTypes.string.isRequired,
-    spaceRatio: PropTypes.number,
-    speed: PropTypes.number
-  };
+export default class Marquee extends Component<Props> {
 
   static defaultProps = {
     speed: 30,
     spaceRatio: 0.5
   };
+
+  state;
+  alpha;
+  animateEnable;
+  width;
+  twidth;
+  spaceWidth;
 
   constructor(props) {
     super(props);
@@ -93,7 +94,7 @@ export default class Marquee extends Component {
   }
 
   startMoveFirstLabelHead() {
-    const {width, twidth, props} = this;
+    const {twidth, props} = this;
     const {speed} = props;
     Animated.timing(this.state.left1, {
       toValue: -twidth + this.spaceWidth,
@@ -101,25 +102,25 @@ export default class Marquee extends Component {
       easing: Easing.linear,
       delay: 500,
     }).start(() => {
-      this.animateEnable && Animated.parallel(
-        this.moveFirstLabelTail(),
-        this.moveSecondLabelHead(),
-      );
+      if (this.animateEnable) {
+        this.moveFirstLabelTail();
+        this.moveSecondLabelHead();
+      }
     });
   }
 
   moveFirstLabelHead() {
-    const {width, twidth, props} = this;
+    const {twidth, props} = this;
     const {speed} = props;
     Animated.timing(this.state.left1, {
       toValue: -twidth + this.spaceWidth,
       duration: (twidth + this.spaceWidth) * speed,
       easing: Easing.linear,
     }).start(() => {
-      this.animateEnable && Animated.parallel(
-        this.moveFirstLabelTail(),
-        this.moveSecondLabelHead(),
-      );
+      if (this.animateEnable) {
+        this.moveFirstLabelTail();
+        this.moveSecondLabelHead();
+      }
     });
   }
 
@@ -136,22 +137,22 @@ export default class Marquee extends Component {
   }
 
   moveSecondLabelHead() {
-    const {width, twidth, props} = this;
+    const {twidth, props} = this;
     const {speed} = props;
     Animated.timing(this.state.left2, {
       toValue: -twidth + this.spaceWidth,
       duration: (twidth + this.spaceWidth) * speed,
       easing: Easing.linear,
     }).start(() => {
-      this.animateEnable && Animated.parallel(
-        this.moveFirstLabelHead(),
-        this.moveSecondLabelTail(),
-      );
+      if (this.animateEnable) {
+        this.moveFirstLabelHead();
+        this.moveSecondLabelTail();
+      }
     });
   }
 
   moveSecondLabelTail() {
-    const {width, twidth, props} = this;
+    const { twidth, props} = this;
     const {speed} = props;
     Animated.timing(this.state.left2, {
       toValue: -twidth,
