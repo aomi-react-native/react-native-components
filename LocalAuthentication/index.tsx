@@ -1,15 +1,17 @@
-import React from 'react';
-import { DeviceEventEmitter, NativeModules, Platform, Text, View } from 'react-native';
-import modal from './modal';
-import SvgIcon from './SvgIcon';
-import fingerprint from './assets/svg/fingerprint.svg';
-import toast from './toast';
+import * as React from 'react';
+import { DeviceEventEmitter, NativeModules, Platform, Text, View, StyleSheet } from 'react-native';
+import modal from '../modal';
+import SvgIcon from '../SvgIcon';
+
+import toast from '../toast';
+
+const fingerprint = require('../assets/svg/fingerprint.svg');
 
 const EVENT_NAME = 'receiveAuthentication';
 
 const {SitbLocalAuthentication} = NativeModules;
 
-const styles = {
+const styles = StyleSheet.create<any>({
   container: {
     backgroundColor: '#FFF'
   },
@@ -21,7 +23,7 @@ const styles = {
   msg: {
     color: '#1a1a1a'
   }
-};
+});
 
 export const Code = {
   systemCancel: 'SystemCancel',
@@ -107,7 +109,7 @@ export default class LocalAuthentication {
     });
   }
 
-  static createDialog({title, tipMsg}) {
+  static createDialog({title, tipMsg}: any) {
     return (
       <View style={styles.content}>
         <SvgIcon fill="#ff2d2d"
