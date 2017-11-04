@@ -4,16 +4,24 @@ const DEFAULT_BUTTON = {
   text: '确定'
 };
 
+export interface AlertArgs {
+  title?: string
+  message?: string
+  button?: Array<any> | object
+  onOk?: () => void
+  options?: any
+}
+
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/3/22
  */
-export default function ({title, message, button, onOk, options}) {
+export default function ({title, message, button, onOk, options}: AlertArgs) {
   let buttons;
   if (Array.isArray(button)) {
     buttons = button;
   } else {
-    let tmp = button || {...DEFAULT_BUTTON};
+    let tmp: any = button || {...DEFAULT_BUTTON};
     if (!tmp.onPress && onOk) {
       tmp.onPress = onOk;
     }
