@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { AppRegistry, StyleSheet, View } from 'react-native';
-import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
+
 import StaticContainer from 'static-container';
 import RootManager from './RootManager';
+
+const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
 
 
 const styles = StyleSheet.create({
