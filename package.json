@@ -1,13 +1,14 @@
 {
   "name": "reactnativecomponents",
-  "version": "0.0.2",
+  "version": "0.0.3-alpha.2",
   "description": "React Native Components",
   "main": "index.js",
   "scripts": {
+    "build": "npm run build-ts",
     "build-ts": "tsc -d",
     "watch-ts": "tsc -w",
     "clean": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map **/*/build",
-    "prepare": "npm run clean && npm run build-ts"
+    "prepare": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,9 @@
     "url": "https://github.com/sitb-software/ReactNativeComponents/issues"
   },
   "homepage": "https://github.com/sitb-software/ReactNativeComponents#readme",
+  "dependencies": {
+    "static-container": "^1.2.0"
+  },
   "devDependencies": {
     "@types/react": "^16.0.19",
     "@types/react-native": "^0.49.5",
@@ -45,7 +49,9 @@
     "react-native-overlay": "^0.5.0",
     "react-native-tab-view": "^0.0.69",
     "react-native-vector-icons": "^4.4.2",
-    "static-container": "^1.2.0",
     "typescript": "^2.6.1"
+  },
+  "optionalDependencies": {
+    "react-native-svg": "^5.4.2"
   }
 }
