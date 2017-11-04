@@ -26,7 +26,7 @@ class DeviceManager {
   /**
    * 获取设备信息
    */
-  static getDeviceInfo(): Device {
+  static getDeviceInfo(): Promise<Device> {
     return SitbDeviceManager.getDeviceInfo();
   }
 
