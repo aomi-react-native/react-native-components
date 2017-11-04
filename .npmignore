@@ -63,4 +63,5 @@ Examples
 *.ts
 *.tsx
 *.js.map
+!*.d.ts
 
