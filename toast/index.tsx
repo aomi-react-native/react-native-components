@@ -3,7 +3,6 @@
  */
 
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Component from '../AbstractComponent';
 import { Platform, StyleSheet, Text, ToastAndroid } from 'react-native';
 import { View } from 'react-native-animatable';
@@ -40,11 +39,6 @@ export interface ToastProps {
 }
 
 class ToastIOS extends Component<ToastProps> {
-
-  static propTypes = {
-    msg: PropTypes.string,
-    show: PropTypes.bool
-  };
 
   static defaultProps = {
     msg: '',
