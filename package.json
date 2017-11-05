@@ -1,6 +1,6 @@
 {
   "name": "reactnativecomponents",
-  "version": "0.0.3-alpha.7",
+  "version": "0.0.3-alpha.8",
   "description": "React Native Components",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "watch": "npm run build && npm run watch-ts",
     "watch-ts": " tsc -w",
     "clear": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map **/*/build",
-    "prepare": "npm run clean && npm run build"
+    "prepare": "npm run clear && npm run build"
   },
   "repository": {
     "type": "git",
