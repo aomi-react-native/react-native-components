@@ -1,6 +1,7 @@
 import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
+import { Svg, Path } from 'react-native-svg';
 import IconProps from './IconProps';
+
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
