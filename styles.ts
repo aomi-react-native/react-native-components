@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -22,6 +22,10 @@ export const fontSize = 17;
 // noinspection JSSuspiciousNameCombination
 export const separatorHeight = StyleSheet.hairlineWidth;
 
+export const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+export const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
+
+export const HEADER_HEIGHT = APPBAR_HEIGHT + STATUSBAR_HEIGHT;
 
 export function getWindowSize() {
   const {
