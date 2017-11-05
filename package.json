@@ -1,13 +1,14 @@
 {
   "name": "reactnativecomponents",
-  "version": "0.0.3-alpha.5",
+  "version": "0.0.3-alpha.7",
   "description": "React Native Components",
   "main": "index.js",
   "scripts": {
     "build": "npm run build-ts",
     "build-ts": "tsc -d",
-    "watch-ts": "tsc -w",
-    "clean": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map **/*/build",
+    "watch": "npm run build && npm run watch-ts",
+    "watch-ts": " tsc -w",
+    "clear": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map **/*/build",
     "prepare": "npm run clean && npm run build"
   },
   "repository": {
