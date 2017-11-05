@@ -242,7 +242,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDK",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -261,7 +261,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDK",
 				);
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
