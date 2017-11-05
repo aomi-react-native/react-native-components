@@ -10,16 +10,6 @@
 		14676CA81ECBF592002C5ED4 /* WeChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14676CA71ECBF592002C5ED4 /* WeChatManager.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		144928BD1F7E245A007599F6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 144928B91F7E245A007599F6 /* SitbLocalAuthentication.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 144928AD1F7E2433007599F6;
-			remoteInfo = SitbLocalAuthentication;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		14676C981ECBF563002C5ED4 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -33,7 +23,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		144928B91F7E245A007599F6 /* SitbLocalAuthentication.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SitbLocalAuthentication.xcodeproj; path = ../SitbLocalAuthentication/SitbLocalAuthentication.xcodeproj; sourceTree = "<group>"; };
 		14676C9A1ECBF563002C5ED4 /* libSitbWeChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbWeChat.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		14676CA61ECBF592002C5ED4 /* WeChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeChatManager.h; sourceTree = "<group>"; };
 		14676CA71ECBF592002C5ED4 /* WeChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeChatManager.m; sourceTree = "<group>"; };
@@ -54,18 +43,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		144928BA1F7E245A007599F6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				144928BE1F7E245A007599F6 /* libSitbLocalAuthentication.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		14676C911ECBF563002C5ED4 = {
 			isa = PBXGroup;
 			children = (
-				144928B91F7E245A007599F6 /* SitbLocalAuthentication.xcodeproj */,
 				14676CD11ECBF67F002C5ED4 /* SDK */,
 				14676CA61ECBF592002C5ED4 /* WeChatManager.h */,
 				14676CA71ECBF592002C5ED4 /* WeChatManager.m */,
@@ -138,28 +118,12 @@
 			mainGroup = 14676C911ECBF563002C5ED4;
 			productRefGroup = 14676C9B1ECBF563002C5ED4 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 144928BA1F7E245A007599F6 /* Products */;
-					ProjectRef = 144928B91F7E245A007599F6 /* SitbLocalAuthentication.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				14676C991ECBF563002C5ED4 /* SitbWeChat */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		144928BE1F7E245A007599F6 /* libSitbLocalAuthentication.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSitbLocalAuthentication.a;
-			remoteRef = 144928BD1F7E245A007599F6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		14676C961ECBF563002C5ED4 /* Sources */ = {

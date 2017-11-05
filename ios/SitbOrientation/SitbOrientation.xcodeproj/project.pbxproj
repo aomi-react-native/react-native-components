@@ -10,16 +10,6 @@
 		27421071C9E9D777966376CD /* OrientationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27421749B2F38FBCB42A12E8 /* OrientationManager.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		14B9C4A11F2B2E6C001E251B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 14B9C49D1F2B2E6C001E251B /* SitbQuickAction.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 14B9C4541F2B031E001E251B;
-			remoteInfo = SitbQuickAction;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		14120F151D54699D0060E8E7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -34,7 +24,6 @@
 
 /* Begin PBXFileReference section */
 		14120F171D54699D0060E8E7 /* libSitbOrientation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbOrientation.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		14B9C49D1F2B2E6C001E251B /* SitbQuickAction.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SitbQuickAction.xcodeproj; path = ../SitbQuickAction/SitbQuickAction.xcodeproj; sourceTree = "<group>"; };
 		27421442FB7577D71B797124 /* OrientationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrientationManager.h; sourceTree = "<group>"; };
 		27421749B2F38FBCB42A12E8 /* OrientationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrientationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,7 +42,6 @@
 		14120F0E1D54699D0060E8E7 = {
 			isa = PBXGroup;
 			children = (
-				14B9C49D1F2B2E6C001E251B /* SitbQuickAction.xcodeproj */,
 				14120F181D54699D0060E8E7 /* Products */,
 				27421749B2F38FBCB42A12E8 /* OrientationManager.m */,
 				27421442FB7577D71B797124 /* OrientationManager.h */,
@@ -64,14 +52,6 @@
 			isa = PBXGroup;
 			children = (
 				14120F171D54699D0060E8E7 /* libSitbOrientation.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		14B9C49E1F2B2E6C001E251B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				14B9C4A21F2B2E6C001E251B /* libSitbQuickAction.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -120,28 +100,12 @@
 			mainGroup = 14120F0E1D54699D0060E8E7;
 			productRefGroup = 14120F181D54699D0060E8E7 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 14B9C49E1F2B2E6C001E251B /* Products */;
-					ProjectRef = 14B9C49D1F2B2E6C001E251B /* SitbQuickAction.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				14120F161D54699D0060E8E7 /* SitbOrientation */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		14B9C4A21F2B2E6C001E251B /* libSitbQuickAction.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSitbQuickAction.a;
-			remoteRef = 14B9C4A11F2B2E6C001E251B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		14120F131D54699D0060E8E7 /* Sources */ = {
