@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import Component from '../AbstractComponent';
 import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager } from 'react-native';
 import Props, { OrientationType, QualityType } from './Props';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import Component from '../AbstractComponent';
 import { Keyboard, Text, View, StyleSheet } from 'react-native';

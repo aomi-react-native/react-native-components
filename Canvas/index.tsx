@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import Component from '../AbstractComponent';
 import { NativeModules, PanResponder, PixelRatio, Platform, requireNativeComponent } from 'react-native';
 import Props from './Props';

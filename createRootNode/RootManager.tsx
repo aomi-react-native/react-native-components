@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { AppRegistry } from 'react-native';
 import { CREATE_EVENT, UPDATE_EVENT } from './index';
 
