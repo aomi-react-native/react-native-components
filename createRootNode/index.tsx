@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppRegistry, StyleSheet, View } from 'react-native';
-import * as EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
+import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 import StaticContainer from 'static-container';
 import RootManager from './RootManager';
