@@ -16,6 +16,7 @@ export default class RootManager {
   emitter;
 
   constructor(ElementComponent, props) {
+    ['update', 'destroy'].forEach(f => this[f] = this[f].bind(this));
     this.emitter = (AppRegistry as any).rootSiblingsEmitter;
     Object.defineProperty(this, '_id', {
       enumerable: false,
