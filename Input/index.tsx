@@ -160,7 +160,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
   }
 
   render() {
-    let {style, inputStyle, ...other} = this.props;
+    const {after, before, style, inputStyle, ...other} = this.props;
 
     let newInputProps = {};
     let newProps = {...other};
@@ -174,11 +174,13 @@ export default class Input extends AbstractFormComponent<Props, any> {
       <View {...newProps}
             style={[styles.container, style]}
       >
+        {before}
         <TextInput {...newInputProps}
                    onChangeText={this.handleChangeText}
                    ref={textInput => this.textInput = textInput}
                    style={[styles.input, inputStyle]}
         />
+        {after}
       </View>
     );
   }

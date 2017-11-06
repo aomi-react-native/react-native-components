@@ -1,10 +1,15 @@
 import { BaseFormPropTypes } from "../Form/AbstractFormComponent";
 import { TextInputProperties } from 'react-native';
+import { ReactNode } from 'react';
 
 /**
  * @author Sean sean.snow@live.com createAt 2017/11/3
  */
 export default interface PropTypes extends BaseFormPropTypes, TextInputProperties {
+
+  after?: ReactNode;
+
+  before?: ReactNode;
 
   /**
    * input 默认值
