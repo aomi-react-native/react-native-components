@@ -87,6 +87,10 @@ class Picker extends AbstractFormComponent<Props, any> {
 
   handleValueChange(selectedValue) {
     this.setState({selectedValue});
+    if (Platform.OS === 'android') {
+      const {onValueChange} = this.props;
+      onValueChange && onValueChange(selectedValue)
+    }
   }
 
   handleDialogOpen() {
