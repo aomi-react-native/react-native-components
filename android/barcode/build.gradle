@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-components:commons')
-    compile project(':react-native-components:camera')
+    compile project(':reactnativecomponents:commons')
+    compile project(':reactnativecomponents:camera')
     compile 'com.google.zxing:core:3.2.1'
 }

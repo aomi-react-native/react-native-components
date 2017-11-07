@@ -17,5 +17,5 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-components:commons')
+    compile project(':reactnativecomponents:commons')
 }
