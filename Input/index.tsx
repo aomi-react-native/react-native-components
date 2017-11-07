@@ -160,7 +160,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
   }
 
   render() {
-    const {after, before, style, inputStyle, ...other} = this.props;
+    const {after, before, style, inputStyle, children, ...other} = this.props;
 
     let newInputProps = {};
     let newProps = {...other};
@@ -170,16 +170,33 @@ export default class Input extends AbstractFormComponent<Props, any> {
       newProps[key] && Reflect.deleteProperty(newProps, key);
     });
 
-    return (
-      <View {...newProps}
-            style={[styles.container, style]}
-      >
-        {before}
+    let textInput;
+    if (children) {
+      textInput = (
+        <View style={{alignItems: 'center'}}>
+          <Text numberOfLines={1}
+                style={[styles.textInput, inputStyle]}
+          >
+            {children}
+          </Text>
+        </View>
+      );
+    } else {
+      textInput = (
         <TextInput {...newInputProps}
                    onChangeText={this.handleChangeText}
                    ref={textInput => this.textInput = textInput}
                    style={[styles.input, inputStyle]}
         />
+      );
+    }
+
+    return (
+      <View {...newProps}
+            style={[styles.container, style]}
+      >
+        {before}
+        {textInput}
         {after}
       </View>
     );
