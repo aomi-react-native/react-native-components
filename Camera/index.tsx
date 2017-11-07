@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Component from '../AbstractComponent';
 import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager } from 'react-native';
+import ViewPropTypes from 'react-native/Libraries/Components/View/ViewPropTypes';
 import Props, { OrientationType, QualityType } from './Props';
 
 let CameraManager = NativeModules.SitbCameraView || NativeModules.SitbCamera2Module;
@@ -46,6 +47,7 @@ export function setCameraVersion(cameraVersion) {
 class Camera extends Component<Props> {
 
   static propTypes = {
+    ...ViewPropTypes,
     /**
      * 前置相机还是后置相机
      * CameraFacing.back
