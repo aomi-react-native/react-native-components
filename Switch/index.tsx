@@ -13,7 +13,9 @@ export default class Switch extends AbstractFormComponent<Props, any> {
 
   constructor(props) {
     super(props);
-    this.state.value = props.value;
+    this.state = {
+      value: props.value
+    };
     this.putFormValue();
   }
 
