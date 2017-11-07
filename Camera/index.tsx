@@ -48,6 +48,9 @@ class Camera extends Component<Props> {
 
   static propTypes = {
     ...ViewPropTypes,
+
+    barCodeTypes: PropTypes.array,
+
     /**
      * 前置相机还是后置相机
      * CameraFacing.back
@@ -78,7 +81,9 @@ class Camera extends Component<Props> {
      * 一个回调函数
      * 当需要实时获取预览的图片数据
      */
-    onCaptureOutputBuffer: PropTypes.func
+    onCaptureOutputBuffer: PropTypes.func,
+
+    onBarCodeRead: PropTypes.func
   };
 
   static defaultProps = {
