@@ -74,7 +74,7 @@ class ToastIOS extends Component<ToastProps> {
 }
 
 export const SHORT = Platform.OS === 'android' ? ToastAndroid.SHORT : 2500;
-export const LONG = Platform.OS === 'android' ? ToastAndroid.LONG : 5000;
+export const LONG = Platform.OS === 'android' ? ToastAndroid.LONG : 3500;
 
 const config = {
   duration: SHORT
