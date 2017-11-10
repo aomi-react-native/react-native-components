@@ -76,7 +76,7 @@ export default class Form extends Component<Props> {
    */
   isValid() {
     Object.keys(this.formFields).forEach(field => {
-      this.formFields[field].valid && this.formFields[field].valid();
+      this.formFields[field].isValid && this.formFields[field].isValid();
     });
 
     let miss = Object.keys(this.missFields).filter(key => this.missFields[key] !== null);
