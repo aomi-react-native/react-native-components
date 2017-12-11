@@ -39,7 +39,7 @@ class Button extends Component<Props> {
       textStyle
     } = this.props;
 
-    let newChild = [];
+    let newChild = children;
     const textStyles = [];
     if (type === 'default' || type === 'link') {
       textStyles.push(styles.textDefault);
@@ -52,28 +52,16 @@ class Button extends Component<Props> {
 
     textStyles.push(textStyle);
 
-    if (before) {
-      newChild.push(React.cloneElement(before, {key: 'before'}));
-    }
     if (children) {
       if (typeof children === 'string' || (Array.isArray(children) && typeof children[0] === 'string')) {
-        newChild.push(
+        newChild = (
           <Text key="text"
                 style={textStyles}
           >
             {Array.isArray(children) ? children[0] : children}
           </Text>
         );
-      } else {
-        newChild.push(React.cloneElement((children as any), {
-          key: 'children'
-        }));
       }
-    }
-    if (after) {
-      newChild.push(React.cloneElement(after, {
-        key: 'after'
-      }));
     }
 
     let temp = [];
@@ -93,10 +81,13 @@ class Button extends Component<Props> {
       temp.push(disabledStyle);
     }
 
-    return React.cloneElement(<View/>, {
-      children: newChild,
-      style: temp
-    });
+    return (
+      <View style={temp}>
+        {before}
+        {newChild}
+        {after}
+      </View>
+    );
   }
 
   render() {
