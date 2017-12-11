@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { BaseProps } from '../Global';
 
@@ -7,9 +7,9 @@ import { BaseProps } from '../Global';
  */
 export default interface Props extends BaseProps {
   Comp?: any;
-  after?: ReactNode;
+  after?: ReactElement<any>;
   autoDismissKeyboard?: boolean;
-  before?: ReactNode;
+  before?: ReactElement<any>;
   containerStyle?: StyleProp<ViewStyle>;
   disabled?: boolean;
   disabledStyle?: StyleProp<ViewStyle>;

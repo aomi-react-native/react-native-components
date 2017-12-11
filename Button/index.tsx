@@ -53,7 +53,7 @@ class Button extends Component<Props> {
     textStyles.push(textStyle);
 
     if (before) {
-      newChild.push(before);
+      newChild.push(React.cloneElement(before, {key: 'before'}));
     }
     if (children) {
       if (typeof children === 'string' || (Array.isArray(children) && typeof children[0] === 'string')) {
@@ -65,11 +65,15 @@ class Button extends Component<Props> {
           </Text>
         );
       } else {
-        newChild.push(children);
+        newChild.push(React.cloneElement((children as any), {
+          key: 'children'
+        }));
       }
     }
     if (after) {
-      newChild.push(after);
+      newChild.push(React.cloneElement(after, {
+        key: 'after'
+      }));
     }
 
     let temp = [];
