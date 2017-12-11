@@ -43,12 +43,11 @@ class DatePicker extends AbstractFormComponent<Props, any> {
         this.Comp = Input;
         this.baseProps.editable = false;
         this.baseProps.after = (
-          <Button before="calendar"
-                  containerStyle={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: 30
-                  }}
+          <Button containerStyle={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 30
+          }}
                   onPress={this.showPicker}
                   type="link"
           />
