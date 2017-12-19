@@ -9,7 +9,7 @@ export interface Row {
   header?: ReactNode;
   body: ReactNode;
   footer?: ReactNode;
-  displayRightArrow?: boolean;
+  rightArrow?: boolean;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 }
@@ -18,7 +18,7 @@ export default interface Props {
   data: Array<Row>;
   containerStyle?: StyleProp<ViewStyle>;
   disabled?: boolean;
-  displayRightArrow?: boolean;
+  rightArrow?: ReactNode;
 
   fullSeparator?: boolean;
   separatorColor?: string;

@@ -69,7 +69,12 @@ class List extends AbstractComponent<Props> {
     displayRightArrow: true,
     alwaysBounceVertical: false,
     fullSeparator: false,
-    separatorColor: Colors.separator
+    separatorColor: Colors.separator,
+    rightArrow: (
+      <Image source={right}
+             style={styles.right}
+      />
+    )
   };
 
   renderHeader(header) {
@@ -100,32 +105,28 @@ class List extends AbstractComponent<Props> {
     });
   }
 
-  renderFooter(footer, displayRightArrow = true) {
+  renderFooter(footer, rightArrow) {
     const {footerTextStyle} = this.props;
     return (
       <View style={styles.footer}>
         {typeof footer === 'string' ? (
           <Text style={[styles.footerTextStyle, footerTextStyle]}>{footer}</Text>
         ) : footer}
-        {displayRightArrow && (
-          <Image source={right}
-                 style={styles.right}
-          />
-        )}
+        {rightArrow}
       </View>
     );
   }
 
   renderItem({item}) {
-    const {header, body, footer, displayRightArrow, disabled, style} = item;
+    const {header, body, footer, rightArrow, disabled, style} = item;
     const {
       onItemPress, itemStyle, disabled: defaultDisabled,
-      displayRightArrow: defaultDisplayRightArrow
+      rightArrow: defaultRightArrow
     } = this.props;
 
-    let tmpDisplayRightArrow = displayRightArrow;
-    if (typeof displayRightArrow === 'undefined') {
-      tmpDisplayRightArrow = defaultDisplayRightArrow;
+    let tmpDisplayRightArrow = rightArrow;
+    if (!rightArrow) {
+      tmpDisplayRightArrow = defaultRightArrow;
     }
     let tmpDisabled = disabled;
     if (typeof disabled === 'undefined') {
