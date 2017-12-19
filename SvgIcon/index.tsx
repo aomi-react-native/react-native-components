@@ -18,10 +18,11 @@ export default class SvgIcon extends React.Component<IconProps> {
     let props = path;
     if (typeof path === 'string') {
       props = {
-        d: path
+        d: path,
+        fill: this.props.fill
       };
     }
-    if (!props.fill) {
+    if (this.props.fill && this.props.fill !== props.fill) {
       props.fill = this.props.fill
     }
     return props;
