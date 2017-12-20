@@ -3,6 +3,7 @@ import Component from '../AbstractComponent';
 import { StyleSheet, View } from 'react-native';
 import { TabViewAnimated } from 'react-native-tab-view';
 import Props from './Props';
+import { getWindowSize } from '../styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -96,7 +97,11 @@ export default class Swiper extends Component<Props> {
   renderScene({route}) {
     const {children} = this.props;
     const {key} = route;
-    return React.Children.toArray(children)[key];
+    return (
+      <View style={{flex: 1, width: getWindowSize().width}}>
+        {React.Children.toArray(children)[key]}
+      </View>
+    );
   }
 
   renderPagination() {
