@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { FlatListProperties, StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
@@ -14,8 +14,7 @@ export interface Row {
   style?: StyleProp<ViewStyle>;
 }
 
-export default interface Props {
-  data: Array<Row>;
+export default interface Props extends FlatListProperties<Row> {
   containerStyle?: StyleProp<ViewStyle>;
   disabled?: boolean;
   rightArrow?: ReactNode;

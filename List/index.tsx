@@ -152,9 +152,9 @@ class List extends AbstractComponent<Props> {
   }
 
   render() {
-    const {containerStyle, fullSeparator, separatorColor, ...other} = this.props;
+    const {containerStyle, fullSeparator, separatorColor, ItemSeparatorComponent, ...other} = this.props;
 
-    function ItemSeparatorComponent() {
+    function DefItemSeparatorComponent() {
       return (
         <View style={fullSeparator ? {} : {paddingLeft: padding}}>
           <View style={[styles.separator, {backgroundColor: separatorColor}]}/>
@@ -165,7 +165,7 @@ class List extends AbstractComponent<Props> {
     return (
       <View style={[styles.container, {borderColor: separatorColor}, containerStyle]}>
         <FlatList {...other}
-                  ItemSeparatorComponent={ItemSeparatorComponent}
+                  ItemSeparatorComponent={ItemSeparatorComponent || DefItemSeparatorComponent}
                   keyExtractor={this.keyExtractor}
                   renderItem={this.renderItem}
         />
