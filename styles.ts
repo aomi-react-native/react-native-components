@@ -23,7 +23,11 @@ export const fontSize = 17;
 export const separatorHeight = StyleSheet.hairlineWidth;
 
 export const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
-export const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
+
+export const STATUSBAR_HEIGHT = Platform.select({
+  ios: getWindowSize().height === 812 ? 44 : 20,
+  android: 0
+});
 
 export const HEADER_HEIGHT = APPBAR_HEIGHT + STATUSBAR_HEIGHT;
 
