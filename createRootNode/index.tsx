@@ -2,8 +2,8 @@ import * as React from 'react';
 import { AppRegistry, StyleSheet, View } from 'react-native';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
-import StaticContainer from 'static-container';
 import RootManager from './RootManager';
+import { StaticContainer } from '../StaticContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -79,9 +79,8 @@ if (!(emitter instanceof EventEmitter)) {
           const elements = [];
           siblings.forEach(({SiblingComponent, props}, id) => {
             elements.push(
-              <StaticContainer
-                key={`root-sibling-${id}`}
-                shouldUpdate={updates.has(id)}
+              <StaticContainer key={`root-sibling-${id}`}
+                               shouldUpdate={updates.has(id)}
               >
                 <SiblingComponent {...props}/>
               </StaticContainer>

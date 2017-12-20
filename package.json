@@ -1,6 +1,6 @@
 {
   "name": "reactnativecomponents",
-  "version": "0.0.3-alpha.21",
+  "version": "0.0.3-alpha.22",
   "description": "React Native Components",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/sitb-software/ReactNativeComponents#readme",
   "dependencies": {
-    "static-container": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^16.0.19",
