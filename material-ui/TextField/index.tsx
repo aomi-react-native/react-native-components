@@ -88,11 +88,12 @@ export default class TextField extends AbstractComponent<Props> {
   render() {
 
     const {
+      containerStyle,
       ...props
     } = this.props;
 
     return (
-      <View style={getStyles().container}>
+      <View style={[getStyles().container, containerStyle]}>
         <Input {...props}
                onBlur={this.handleBlur}
                onFocus={this.handleFocus}

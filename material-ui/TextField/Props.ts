@@ -6,6 +6,10 @@ import { StyleProp, ViewStyle } from 'react-native';
  */
 export interface Props extends InputProps {
   /**
+   * root View style
+   */
+  containerStyle?: StyleProp<ViewStyle>
+  /**
    * Override the inline-styles of the TextField's underline element when disabled.
    */
   underlineDisabledStyle?: StyleProp<ViewStyle>
