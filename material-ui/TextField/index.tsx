@@ -42,7 +42,7 @@ export default class TextField extends AbstractComponent<Props> {
     if (underlineShow) {
       this.setState({focus: true}, () => Animated.timing(this.state.borderValue, {
         toValue: this.getBorderEndValue()
-      }).start(() => console.log(this.state.borderValue)));
+      }).start());
     }
     onFocus && onFocus();
   }
@@ -58,7 +58,7 @@ export default class TextField extends AbstractComponent<Props> {
   }
 
   renderUnderline() {
-    const {underlineShow} = this.props;
+    const {underlineShow, underlineStyle} = this.props;
     if (!underlineShow) {
       return null;
     }
@@ -70,6 +70,7 @@ export default class TextField extends AbstractComponent<Props> {
     } = this.props;
 
     style.push(getStyles().underline);
+    style.push(underlineStyle);
     if (editable && !editable) {
       style.push(getStyles().underlineDisabled);
       style.push(underlineDisabledStyle);
