@@ -63,7 +63,7 @@ class SceneModal extends Component<Props> {
   };
 
   static contextTypes = {
-    manager: PropTypes.func
+    manager: PropTypes.object
   };
 
   static childContextTypes = {
