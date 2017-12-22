@@ -62,6 +62,10 @@ class SceneModal extends Component<Props> {
     buttons: []
   };
 
+  static contextTypes = {
+    manager: PropTypes.func
+  };
+
   static childContextTypes = {
     destroy: PropTypes.func
   };
@@ -122,8 +126,9 @@ class SceneModal extends Component<Props> {
         animation,
         isShow: false
       });
+      // 如果不存在关闭动画，直接销毁组件
       if (!animation) {
-        this.setState({visible: false});
+        this.destroy();
       }
 
     }
@@ -131,8 +136,13 @@ class SceneModal extends Component<Props> {
 
   handleAnimationEnd() {
     if (!this.state.isShow) {
-      this.setState({visible: false});
+      this.destroy();
     }
+  }
+
+  destroy() {
+    this.setState({visible: false});
+    this.context.manager.destroy();
   }
 
   render() {
