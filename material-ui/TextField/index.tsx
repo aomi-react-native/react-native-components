@@ -18,6 +18,9 @@ export default class TextField extends AbstractComponent<Props> {
 
   state;
 
+  // refs
+  input;
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -25,6 +28,10 @@ export default class TextField extends AbstractComponent<Props> {
       this.state.focus = props.autoFocus;
       this.state.borderValue = new Animated.Value(this.getBorderStartValue());
     }
+  }
+
+  focus() {
+    this.input && this.input.focus();
   }
 
   getBorderStartValue() {
@@ -95,6 +102,7 @@ export default class TextField extends AbstractComponent<Props> {
     return (
       <View style={[getStyles().container, containerStyle]}>
         <Input {...props}
+               ref={input => this.input = input}
                onBlur={this.handleBlur}
                onFocus={this.handleFocus}
                style={getStyles().input}
