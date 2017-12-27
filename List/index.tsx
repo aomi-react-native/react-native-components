@@ -125,11 +125,11 @@ class List extends AbstractComponent<Props> {
     } = this.props;
 
     let tmpDisplayRightArrow = rightArrow;
-    if (!rightArrow) {
+    if (null === rightArrow || undefined === rightArrow) {
       tmpDisplayRightArrow = defaultRightArrow;
     }
     let tmpDisabled = disabled;
-    if (typeof disabled === 'undefined') {
+    if (disabled === undefined) {
       tmpDisabled = defaultDisabled;
     }
 
