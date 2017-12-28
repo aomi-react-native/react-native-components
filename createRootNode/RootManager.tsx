@@ -54,10 +54,13 @@ export default class RootManager {
   }
 
   update(props, callback?) {
-    this.props = props;
+    this.props = {
+      ...this.props,
+      props
+    };
     this.emitter.emit(UPDATE_EVENT, {
       id: this._id,
-      props,
+      props: this.props,
       callback
     });
   }
