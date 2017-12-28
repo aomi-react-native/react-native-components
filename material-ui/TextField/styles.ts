@@ -7,7 +7,8 @@ import { cyan } from '../colors/cyan';
 const store = {
   styles: StyleSheet.create<any>({
     container: {
-      position: 'relative'
+      position: 'relative',
+      paddingBottom: 10
     },
     input: {
       borderWidth: 0,
@@ -33,6 +34,12 @@ const store = {
     underlineFocus: {
       borderColor: cyan['500'],
       borderWidth: 1
+    },
+    floatingLabel: {
+      color: 'rgba(0, 0, 0, 0.3)'
+    },
+    floatingLabelFocus: {
+      color: cyan['500']
     }
   })
 };

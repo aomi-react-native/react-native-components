@@ -64,6 +64,28 @@ export default class TextField extends AbstractComponent<Props> {
     onBlur && onBlur();
   }
 
+  renderFloatingLabel() {
+    const {
+      floatingLabelText,
+      floatingLabelStyle,
+      floatingLabelFocusStyle
+    } = this.props;
+    const style = [];
+    style.push(getStyles().floatingLabel);
+    style.push(floatingLabelStyle);
+
+    if (this.state.focus) {
+      style.push(getStyles().floatingLabelFocus);
+      style.push(floatingLabelFocusStyle);
+    }
+
+    return (
+      <Animated.Text style={style}>
+        {floatingLabelText}
+      </Animated.Text>
+    )
+  }
+
   renderUnderline() {
     const {underlineShow, underlineStyle} = this.props;
     if (!underlineShow) {
@@ -101,6 +123,7 @@ export default class TextField extends AbstractComponent<Props> {
 
     return (
       <View style={[getStyles().container, containerStyle]}>
+        {this.renderFloatingLabel()}
         <Input {...props}
                ref={input => this.input = input}
                onBlur={this.handleBlur}
