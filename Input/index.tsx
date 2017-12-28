@@ -19,7 +19,6 @@ const styles = StyleSheet.create<any>({
   },
   input: {
     flex: 1,
-    minHeight: 40,
     marginTop: Platform.OS === 'ios' ? 2 : 0
   },
   textInput: {
