@@ -15,6 +15,7 @@ export interface Row {
 }
 
 export default interface Props extends FlatListProperties<Row> {
+  header?: ReactNode
   containerStyle?: StyleProp<ViewStyle>;
   disabled?: boolean;
   rightArrow?: ReactNode;
