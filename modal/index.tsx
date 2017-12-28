@@ -34,9 +34,6 @@ const styles = StyleSheet.create<any>({
   },
   buttonGroup: {
     marginTop: 15,
-    minHeight: 44
-  },
-  twoButton: {
     flexDirection: 'row'
   },
   buttonStyle: {
@@ -174,18 +171,16 @@ class SceneModal extends Component<Props> {
               <Text>{content}</Text>
             ) : content}
           </View>
-          {buttons && buttons.length > 0 && (
-            <View style={[styles.buttonGroup, buttons.length === 2 && styles.twoButton]}>
-              {buttons.map(({onPress, containerStyle, style, ...props}, index) => (
-                <Button {...props}
-                        containerStyle={[styles.button, containerStyle]}
-                        key={index}
-                        onPress={this.handlePress(onPress)}
-                        style={[styles.buttonStyle, style]}
-                />
-              ))}
-            </View>
-          )}
+          <View style={[styles.buttonGroup]}>
+            {buttons.map(({onPress, containerStyle, style, ...props}, index) => (
+              <Button {...props}
+                      containerStyle={[styles.button, containerStyle]}
+                      key={index}
+                      onPress={this.handlePress(onPress)}
+                      style={[styles.buttonStyle, style]}
+              />
+            ))}
+          </View>
         </Animatable.View>
       </AbstractDialog>
     );
@@ -250,10 +245,11 @@ export function warn(args) {
  * @param {{}} args 其他参数
  * @returns {RootManager}
  */
-export function alert({ok = '确定', onOk, ...args}: any = {}) {
+export function alert({ok = '确定', onOk, button, ...args}: any = {}) {
   const buttons = [{
     onPress: onOk,
-    children: ok
+    children: ok,
+    ...button
   }];
   return sceneModal({
     ...args,
@@ -268,16 +264,20 @@ export function confirm({
                           cancel = '取消',
                           ok = '确定',
                           onOk,
+                          okButton,
                           onCancel,
+                          cancelButton,
                           ...args
                         }: any = {}) {
 
   const buttons = [{
     children: cancel,
-    onPress: onCancel
+    onPress: onCancel,
+    ...cancelButton
   }, {
     children: ok,
-    onPress: onOk
+    onPress: onOk,
+    ...okButton
   }];
 
   return sceneModal({
