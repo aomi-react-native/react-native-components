@@ -33,7 +33,8 @@ const styles = StyleSheet.create<any>({
     padding: 15
   },
   buttonGroup: {
-    marginTop: 15
+    marginTop: 15,
+    minHeight: 44
   },
   twoButton: {
     flexDirection: 'row'
@@ -243,11 +244,46 @@ export function warn(args) {
 }
 
 /**
+ * 弹出框，默认有一个确定按钮
+ * @param {any} ok 按钮children 内容，默认为"确定"
+ * @param {any} onOk 按钮onPress事件
+ * @param {{}} args 其他参数
+ * @returns {RootManager}
  */
-export function confirm(args) {
+export function alert({ok = '确定', onOk, ...args}: any = {}) {
+  const buttons = [{
+    onPress: onOk,
+    children: ok
+  }];
   return sceneModal({
     ...args,
-    scene: 'confirm'
+    scene: 'alert',
+    buttons
+  });
+}
+
+/**
+ */
+export function confirm({
+                          cancel = '取消',
+                          ok = '确定',
+                          onOk,
+                          onCancel,
+                          ...args
+                        }: any = {}) {
+
+  const buttons = [{
+    children: cancel,
+    onPress: onCancel
+  }, {
+    children: ok,
+    onPress: onOk
+  }];
+
+  return sceneModal({
+    ...args,
+    scene: 'confirm',
+    buttons
   });
 }
 
