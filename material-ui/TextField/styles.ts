@@ -7,8 +7,7 @@ import { cyan } from '../colors/cyan';
 const store = {
   styles: StyleSheet.create<any>({
     container: {
-      position: 'relative',
-      paddingBottom: 10
+      position: 'relative'
     },
     input: {
       borderWidth: 0,
