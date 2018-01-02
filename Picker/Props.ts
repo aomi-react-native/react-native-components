@@ -4,9 +4,9 @@
 import { ReactNode } from 'react';
 import { ReactNodeFunction } from '../Global';
 import { StyleProp, ViewStyle } from 'react-native';
-import { BaseFormPropTypes } from '../Form/AbstractFormComponent';
+import InputProps from '../Input/Props';
 
-export default interface Props extends BaseFormPropTypes {
+export default interface Props extends InputProps {
   editable?: boolean;
   cancelText?: ReactNode;
   confirmText?: ReactNode;
