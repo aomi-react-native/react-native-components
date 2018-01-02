@@ -50,5 +50,7 @@ export interface Props extends InputProps {
   /**
    * If true, shows the underline for the text field.
    */
-  underlineShow?: boolean
+  underlineShow?: boolean,
+
+  type?: string
 }
