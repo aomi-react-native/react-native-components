@@ -158,7 +158,7 @@ class Picker extends AbstractFormComponent<Props, any> {
     }
 
     const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
-    let label = '';
+    let label = '   ';
     const childrenArr: Array<any> = React.Children.toArray(children);
     for (let i = 0; i < childrenArr.length; i++) {
       const child = childrenArr[i];
