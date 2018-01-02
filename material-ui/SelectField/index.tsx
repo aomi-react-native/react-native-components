@@ -1,6 +1,9 @@
 import * as React from 'react';
 import TextInput from '../TextField';
 import { Props } from '../TextField/Props';
+import { Item } from '../../Picker';
+
+export { Item };
 
 /**
  *
