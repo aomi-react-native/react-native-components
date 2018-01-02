@@ -1,7 +1,8 @@
 import * as React from 'react';
 import AbstractComponent from '../../AbstractComponent';
 import { View, Animated, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import Input from '../../Input/index';
+import Input from '../../Input';
+import Picker from '../../Picker';
 
 import { Props } from './Props';
 import { getStyles } from './styles';
@@ -118,18 +119,34 @@ export default class TextField extends AbstractComponent<Props> {
 
     const {
       containerStyle,
+      type,
+      children,
       ...props
     } = this.props;
+
+    let comp = (
+      <Input {...props}
+             children={children}
+             ref={input => this.input = input}
+             onBlur={this.handleBlur}
+             onFocus={this.handleFocus}
+             style={getStyles().input}
+      />
+    );
+    if (type === 'select') {
+      comp = (
+        <Picker {...props}
+                style={getStyles().input}
+        >
+          {children}
+        </Picker>
+      );
+    }
 
     return (
       <View style={[getStyles().container, containerStyle]}>
         {this.renderFloatingLabel()}
-        <Input {...props}
-               ref={input => this.input = input}
-               onBlur={this.handleBlur}
-               onFocus={this.handleFocus}
-               style={getStyles().input}
-        />
+        {comp}
         {this.renderUnderline()}
       </View>
     );
