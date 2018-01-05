@@ -12,6 +12,7 @@ const store = {
       backgroundColor: 'transparent'
     },
     underline: {
+      marginTop: 3,
       height: 0.5,
       backgroundColor: '#e0e0e0',
     },
