@@ -124,7 +124,7 @@ export default class TextField extends AbstractComponent<Props> {
       ...props
     } = this.props;
 
-    let comp = (
+    let comp: any = (
       <Input {...props}
              children={children}
              ref={input => this.input = input}
@@ -141,6 +141,8 @@ export default class TextField extends AbstractComponent<Props> {
           {children}
         </Picker>
       );
+    } else if (children) {
+      comp = children;
     }
 
     return (
