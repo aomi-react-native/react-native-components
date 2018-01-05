@@ -6,29 +6,20 @@ import { cyan } from '../colors/cyan';
  */
 const store = {
   styles: StyleSheet.create<any>({
-    container: {
-    },
+    container: {},
     input: {
+      flex: 1,
       borderWidth: 0,
       backgroundColor: 'transparent'
     },
     underline: {
-      marginTop: 10,
-      borderWidth: 0.5,
-      borderColor: '#e0e0e0',
-      ...Platform.select({
-        ios: {
-          bottom: 4
-        },
-        android: {
-          bottom: 7
-        }
-      })
+      height: 0.5,
+      backgroundColor: '#e0e0e0',
     },
     underlineDisabled: {},
     underlineFocus: {
-      borderColor: cyan['500'],
-      borderWidth: 1
+      backgroundColor: cyan['500'],
+      height: 1
     },
     floatingLabel: {
       color: 'rgba(0, 0, 0, 0.3)'

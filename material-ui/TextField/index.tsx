@@ -27,7 +27,7 @@ export default class TextField extends AbstractComponent<Props> {
     this.state = {};
     if (props.underlineShow) {
       this.state.focus = props.autoFocus;
-      this.state.borderValue = new Animated.Value(this.getBorderStartValue());
+      this.state.height = new Animated.Value(this.getHeightStartValue());
     }
   }
 
@@ -35,21 +35,21 @@ export default class TextField extends AbstractComponent<Props> {
     this.input && this.input.focus();
   }
 
-  getBorderStartValue() {
+  getHeightStartValue(): any {
     const style: StyleProp<ViewStyle> = [getStyles().underline, this.props.underlineStyle];
-    return StyleSheet.flatten(style).borderWidth || 0.5;
+    return StyleSheet.flatten(style).height || 0.5;
   }
 
-  getBorderEndValue() {
+  getHeightEndValue() {
     const style: StyleProp<ViewStyle> = [getStyles().underlineFocus, this.props.underlineFocusStyle];
-    return StyleSheet.flatten(style).borderWidth || 1;
+    return StyleSheet.flatten(style).height || 1;
   }
 
   handleFocus() {
     const {onFocus, underlineShow} = this.props;
     if (underlineShow) {
-      this.setState({focus: true}, () => Animated.timing(this.state.borderValue, {
-        toValue: this.getBorderEndValue()
+      this.setState({focus: true}, () => Animated.timing(this.state.height, {
+        toValue: this.getHeightEndValue()
       }).start());
     }
     onFocus && onFocus();
@@ -58,8 +58,8 @@ export default class TextField extends AbstractComponent<Props> {
   handleBlur() {
     const {onBlur, underlineShow} = this.props;
     if (underlineShow) {
-      this.setState({focus: false}, () => Animated.timing(this.state.borderValue, {
-        toValue: this.getBorderStartValue()
+      this.setState({focus: false}, () => Animated.timing(this.state.height, {
+        toValue: this.getHeightStartValue()
       }).start());
     }
     onBlur && onBlur();
@@ -111,7 +111,7 @@ export default class TextField extends AbstractComponent<Props> {
       style.push(underlineFocusStyle);
     }
     return (
-      <Animated.View style={[style, {borderWidth: this.state.borderValue}]}/>
+      <Animated.View style={[style, {height: this.state.height}]}/>
     )
   }
 
