@@ -7,17 +7,13 @@ import { cyan } from '../colors/cyan';
 const store = {
   styles: StyleSheet.create<any>({
     container: {
-      position: 'relative'
     },
     input: {
       borderWidth: 0,
       backgroundColor: 'transparent'
     },
     underline: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 7,
+      marginTop: 10,
       borderWidth: 0.5,
       borderColor: '#e0e0e0',
       ...Platform.select({
