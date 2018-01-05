@@ -8,7 +8,6 @@ const store = {
   styles: StyleSheet.create<any>({
     container: {},
     input: {
-      flex: 1,
       borderWidth: 0,
       backgroundColor: 'transparent'
     },
