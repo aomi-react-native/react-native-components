@@ -175,7 +175,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
       textInput = (
         <View style={[styles.input, {justifyContent: 'center'}]}>
           <Text numberOfLines={1}
-                style={[styles.input, styles.textInput, inputStyle]}
+                style={[styles.textInput, inputStyle]}
           >
             {children}
           </Text>
