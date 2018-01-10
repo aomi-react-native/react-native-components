@@ -104,14 +104,19 @@ RCT_EXPORT_METHOD(getPhotoAlbumAuthorizationStatus:
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     if (status == PHAuthorizationStatusDenied) {
         RCTLogInfo(@"用户拒绝当前应用访问相册,我们需要提醒用户打开访问开关");
+        resolve(@(status));
     } else if (status == PHAuthorizationStatusRestricted) {
         RCTLogInfo(@"家长控制,不允许访问");
+        resolve(@(status));
     } else if (status == PHAuthorizationStatusNotDetermined) {
         RCTLogInfo(@"用户还没有做出选择");
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus reqStatus) { //弹出访问权限提示框
+            resolve(@(reqStatus));
+        }];
     } else if (status == PHAuthorizationStatusAuthorized) {
         RCTLogInfo(@"用户允许当前应用访问相册");
+        resolve(@(status));
     }
-    resolve(@(status));
 }
 
 
