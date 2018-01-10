@@ -61,7 +61,7 @@ export interface PhotoAlbum {
     path?: string
   },
   // 原图
-  reference?: {
+  original?: {
     path?: string
   }
 }
