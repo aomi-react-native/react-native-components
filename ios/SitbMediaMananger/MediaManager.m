@@ -282,21 +282,28 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
     image = [UIImage imageWithCGImage:rotatedCGImage];
 
-    __block NSString *assetId = nil;
+    __block NSString *localId = nil;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-        assetId = [PHAssetCreationRequest creationRequestForAssetFromImage:image].placeholderForCreatedAsset.localIdentifier;
+        localId = [PHAssetCreationRequest creationRequestForAssetFromImage:image].placeholderForCreatedAsset.localIdentifier;
     }                                 completionHandler:^(BOOL success, NSError *_Nullable error) {
         if (error) {
             self.reject(@"ERROR", @"保存图片失败", error);
         } else {
-            self.resolve(@{
-                    @"original": @{
-                            @"path": assetId
-                    },
-                    @"edited": @{
-                            @"path": editPath
-                    }
-            });
+            PHFetchResult *assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
+            PHAsset *asset = [assetResult firstObject];
+            [[PHImageManager defaultManager] requestImageDataForAsset:asset
+                                                              options:nil
+                                                        resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+                                                            NSURL *url = info[@"PHImageFileURLKey"];
+                                                            self.resolve(@{
+                                                                    @"original": @{
+                                                                            @"path": url.path
+                                                                    },
+                                                                    @"edited": @{
+                                                                            @"path": editPath
+                                                                    }
+                                                            });
+                                                        }];
         }
     }];
 }
