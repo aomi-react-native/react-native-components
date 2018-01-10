@@ -46,6 +46,12 @@ RCT_EXPORT_MODULE(SitbRCTMediaManager)
                     @"VGA1280x720": @(UIImagePickerControllerQualityTypeIFrame1280x720),
                     @"VGA960x540": @(UIImagePickerControllerQualityTypeIFrame960x540)
 
+            },
+            @"PhotoAlbumAuthorizationStatus": @{
+                    @"denied": @(PHAuthorizationStatusDenied),
+                    @"restricted": @(PHAuthorizationStatusRestricted),
+                    @"notDetermined": @(PHAuthorizationStatusNotDetermined),
+                    @"authorized": @(PHAuthorizationStatusAuthorized)
             }
     };
 }
@@ -88,6 +94,24 @@ RCT_EXPORT_METHOD(
     self.reject = reject;
     self.options = options;
     [self launchWithOptions:options];
+}
+
+RCT_EXPORT_METHOD(getPhotoAlbumAuthorizationStatus:
+    (RCTPromiseResolveBlock) resolve
+            reject:
+            (RCTPromiseRejectBlock) reject) {
+    // 0.判断状态
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if (status == PHAuthorizationStatusDenied) {
+        RCTLogInfo(@"用户拒绝当前应用访问相册,我们需要提醒用户打开访问开关");
+    } else if (status == PHAuthorizationStatusRestricted) {
+        RCTLogInfo(@"家长控制,不允许访问");
+    } else if (status == PHAuthorizationStatusNotDetermined) {
+        RCTLogInfo(@"用户还没有做出选择");
+    } else if (status == PHAuthorizationStatusAuthorized) {
+        RCTLogInfo(@"用户允许当前应用访问相册");
+    }
+    resolve(@(status));
 }
 
 
@@ -175,7 +199,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     }];
 }
 
-#pragma mark - 保存图片信息,处理图片的大小,旋转和meta信息
+#pragma mark - 保存图片信息, 处理图片的大小, 旋转和meta信息
 
 - (void)handleCaptureImageWithInfo:(NSDictionary *)info {
 
