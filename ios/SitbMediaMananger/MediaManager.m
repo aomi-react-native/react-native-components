@@ -245,7 +245,15 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
             break;
     }
 
-    NSData *imageData = UIImageJPEGRepresentation(image, qualityFloat);
+
+    NSData *imageData;
+    bool isPng = self.options[@"imageType"] == @"png";
+    if (isPng) {
+        imageData = UIImagePNGRepresentation(image);
+    } else {
+        imageData = UIImageJPEGRepresentation(image, qualityFloat);
+    }
+
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) imageData, NULL);
     NSMutableDictionary *imageMetadata = [(NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source, 0, NULL)) mutableCopy];
     CGImageRef CGImage = CGImageSourceCreateImageAtIndex(source, 0, NULL);
@@ -289,21 +297,23 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         if (error) {
             self.reject(@"ERROR", @"保存图片失败", error);
         } else {
-            PHFetchResult *assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
-            PHAsset *asset = [assetResult firstObject];
-            [[PHImageManager defaultManager] requestImageDataForAsset:asset
-                                                              options:nil
-                                                        resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
-                                                            NSURL *url = info[@"PHImageFileURLKey"];
-                                                            self.resolve(@{
-                                                                    @"original": @{
-                                                                            @"path": url.path
-                                                                    },
-                                                                    @"edited": @{
-                                                                            @"path": editPath
-                                                                    }
-                                                            });
-                                                        }];
+
+            NSRange range = NSMakeRange(0, localId.length);
+
+            NSString *assetId = [localId stringByReplacingOccurrencesOfString:@"/.*"
+                                                                   withString:@""
+                                                                      options:NSRegularExpressionSearch
+                                                                        range:range];
+            NSString *ext = isPng ? @"png" : @"jpeg";
+            NSString *assetURLStr = [NSString stringWithFormat:@"assets-library://asset/asset.%@?id=%@&ext=%@", ext, assetId, ext];
+            self.resolve(@{
+                    @"original": @{
+                            @"path": assetURLStr
+                    },
+                    @"edited": @{
+                            @"path": editPath
+                    }
+            });
         }
     }];
 }
