@@ -96,7 +96,7 @@ public class MediaManager extends DefaultReactContextBaseJavaModule {
             } else {
               WritableMap reference = new WritableNativeMap();
               reference.putString("path", data.getData().toString());
-              response.putMap("reference", reference);
+              response.putMap("original", reference);
             }
             promise.resolve(response);
           } else {

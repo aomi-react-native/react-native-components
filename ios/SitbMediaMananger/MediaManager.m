@@ -181,7 +181,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
             }
         } else {
             RCTLog(@"相册获取成功");
-            response[@"reference"] = @{
+            response[@"original"] = @{
                     @"path": ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
             };
 
