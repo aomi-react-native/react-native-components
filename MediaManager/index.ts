@@ -6,8 +6,10 @@ const {
     MediaType,
     CameraType,
     Quality,
+    PhotoAlbumAuthorizationStatus,
     launchImageLibrary,
-    launchCamera
+    launchCamera,
+    getPhotoAlbumAuthorizationStatus
   }
 } = NativeModules;
 
@@ -18,6 +20,25 @@ export interface Options {
   allowsEditing?: boolean,
   cameraType?: string,
   quality?: number
+}
+
+export enum PhotoAlbumAuthorizationStatusType {
+  /**
+   * 拒绝
+   */
+  denied,
+  /**
+   * 家长控制
+   */
+  restricted,
+  /**
+   * 用户未做出选择
+   */
+  notDetermined,
+  /**
+   * 已授权
+   */
+  authorized
 }
 
 const DEFAULT_LIBRARY_OPTIONS = {
@@ -80,13 +101,21 @@ class MediaManager {
     return launchCamera(newOptions);
   }
 
-}
+  /**
+   * 获取相册授权状态
+   * ios
+   */
+  static getPhotoAlbumAuthorizationStatus(): Promise<PhotoAlbumAuthorizationStatusType> {
+    return getPhotoAlbumAuthorizationStatus();
+  }
 
+}
 
 export {
   MediaManager as default,
   SourceType,
   MediaType,
   CameraType,
-  Quality
+  Quality,
+  PhotoAlbumAuthorizationStatus
 };
