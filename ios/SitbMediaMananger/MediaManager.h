@@ -8,7 +8,7 @@
 
 #import <React/RCTBridgeModule.h>
 #import <React/RCTLog.h>
-#import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, MediaType) {

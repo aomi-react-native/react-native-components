@@ -25,29 +25,29 @@ RCT_EXPORT_MODULE(SitbRCTMediaManager)
 /** 常量 */
 - (NSDictionary<NSString *, id> *)constantsToExport {
     return @{
-             @"SourceType" : @{
-                     @"photoLibrary" : @(UIImagePickerControllerSourceTypePhotoLibrary),
-                     @"savedPhotosAlbum" : @(UIImagePickerControllerSourceTypeSavedPhotosAlbum),
-                     @"camera" : @(UIImagePickerControllerSourceTypeCamera)
-                     },
-             @"MediaType" : @{
-                     @"image" : @(MediaTypeImage),
-                     @"video" : @(MediaTypeVideo)
-                     },
-             @"CameraType" : @{
-                     @"front" : @(UIImagePickerControllerCameraDeviceFront),
-                     @"back" : @(UIImagePickerControllerCameraDeviceRear)
-                     },
-             @"Quality" : @{
-                     @"high" : @(UIImagePickerControllerQualityTypeHigh),
-                     @"medium" : @(UIImagePickerControllerQualityTypeMedium),
-                     @"low" : @(UIImagePickerControllerQualityTypeLow),
-                     @"VGA640x480" : @(UIImagePickerControllerQualityType640x480),
-                     @"VGA1280x720" : @(UIImagePickerControllerQualityTypeIFrame1280x720),
-                     @"VGA960x540" : @(UIImagePickerControllerQualityTypeIFrame960x540)
+            @"SourceType": @{
+                    @"photoLibrary": @(UIImagePickerControllerSourceTypePhotoLibrary),
+                    @"savedPhotosAlbum": @(UIImagePickerControllerSourceTypeSavedPhotosAlbum),
+                    @"camera": @(UIImagePickerControllerSourceTypeCamera)
+            },
+            @"MediaType": @{
+                    @"image": @(MediaTypeImage),
+                    @"video": @(MediaTypeVideo)
+            },
+            @"CameraType": @{
+                    @"front": @(UIImagePickerControllerCameraDeviceFront),
+                    @"back": @(UIImagePickerControllerCameraDeviceRear)
+            },
+            @"Quality": @{
+                    @"high": @(UIImagePickerControllerQualityTypeHigh),
+                    @"medium": @(UIImagePickerControllerQualityTypeMedium),
+                    @"low": @(UIImagePickerControllerQualityTypeLow),
+                    @"VGA640x480": @(UIImagePickerControllerQualityType640x480),
+                    @"VGA1280x720": @(UIImagePickerControllerQualityTypeIFrame1280x720),
+                    @"VGA960x540": @(UIImagePickerControllerQualityTypeIFrame960x540)
 
-                     }
-             };
+            }
+    };
 }
 
 + (BOOL)requiresMainQueueSetup {
@@ -61,13 +61,13 @@ RCT_EXPORT_MODULE(SitbRCTMediaManager)
  * 启动手机图库浏览器
  */
 RCT_EXPORT_METHOD(
-                  launchImageLibrary:
-                  (NSDictionary *) options
-                  resolver:
-                  (RCTPromiseResolveBlock) resolve
-                  reject:
-                  (RCTPromiseRejectBlock) reject
-                  ) {
+            launchImageLibrary:
+            (NSDictionary *) options
+            resolver:
+            (RCTPromiseResolveBlock) resolve
+            reject:
+            (RCTPromiseRejectBlock) reject
+) {
     self.resolve = resolve;
     self.reject = reject;
     [self launchWithOptions:options];
@@ -77,13 +77,13 @@ RCT_EXPORT_METHOD(
  * 启动系统相机
  */
 RCT_EXPORT_METHOD(
-                  launchCamera:
-                  (NSDictionary *) options
-                  resolver:
-                  (RCTPromiseResolveBlock) resolve
-                  reject:
-                  (RCTPromiseRejectBlock) reject
-                  ) {
+            launchCamera:
+            (NSDictionary *) options
+            resolver:
+            (RCTPromiseResolveBlock) resolve
+            reject:
+            (RCTPromiseRejectBlock) reject
+) {
     self.resolve = resolve;
     self.reject = reject;
     self.options = options;
@@ -153,8 +153,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         } else {
             RCTLog(@"相册获取成功");
             response[@"reference"] = @{
-                                       @"path" : ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
-                                       };
+                    @"path": ((NSURL *) info[@"UIImagePickerControllerReferenceURL"]).absoluteString
+            };
 
             NSString *editedImageTempFile = @"";
             if (self.pickerController.allowsEditing) {
@@ -162,8 +162,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
                 editedImageTempFile = [self saveTempImage:editedImage];
             }
             response[@"edited"] = @{
-                                    @"path" : editedImageTempFile
-                                    };
+                    @"path": editedImageTempFile
+            };
             self.resolve(response);
         }
     }];
@@ -175,6 +175,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     }];
 }
 
+#pragma mark - 保存图片信息,处理图片的大小,旋转和meta信息
 
 - (void)handleCaptureImageWithInfo:(NSDictionary *)info {
 
@@ -250,24 +251,25 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     CGImageDestinationFinalize(destination);
     CFRelease(destination);
 
-    // It's unclear if writeImageToSavedPhotosAlbum is thread-safe
-    dispatch_async(dispatch_get_main_queue(), ^{
-        ALAssetsLibrary *assets = [[ALAssetsLibrary alloc] init];
-        [assets writeImageToSavedPhotosAlbum:rotatedCGImage metadata:imageMetadata completionBlock:^(NSURL *assetURL, NSError *saveError) {
-            if (saveError) {
-                self.reject(@"ERROR", @"保存图片失败", saveError);
-            } else {
-                self.resolve(@{
-                               @"original" : @{
-                                       @"path" : assetURL.absoluteString
-                                       },
-                               @"edited" : @{
-                                       @"path" : editPath
-                                       }
-                               });
-            }
-        }];
-    });
+    image = [UIImage imageWithCGImage:rotatedCGImage];
+
+    __block NSString *assetId = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        assetId = [PHAssetCreationRequest creationRequestForAssetFromImage:image].placeholderForCreatedAsset.localIdentifier;
+    }                                 completionHandler:^(BOOL success, NSError *_Nullable error) {
+        if (error) {
+            self.reject(@"ERROR", @"保存图片失败", error);
+        } else {
+            self.resolve(@{
+                    @"original": @{
+                            @"path": assetId
+                    },
+                    @"edited": @{
+                            @"path": editPath
+                    }
+            });
+        }
+    }];
 }
 
 /**
