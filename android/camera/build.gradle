@@ -3,7 +3,7 @@ description = 'camera'
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 23
     buildToolsVersion "25.0.3"
 
     defaultConfig {
