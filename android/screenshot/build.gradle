@@ -18,4 +18,4 @@ android {
 }
 
 dependencies {
-    compile project(':reactnativecomponents:commons')}
+    implementation project(':reactnativecomponents:commons')}
