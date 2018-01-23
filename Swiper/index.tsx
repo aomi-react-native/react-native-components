@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
   }
 });
 
+const initialLayout = {
+  height: 1,
+  width: getWindowSize().width
+};
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/10/18
@@ -120,12 +124,13 @@ export default class Swiper extends Component<Props> {
   render() {
     const {containerStyle, style} = this.props;
     return (
-      <View style={[styles.container, containerStyle]}>
+      <View style={[styles.container, style]}>
         <TabViewAnimated navigationState={this.state}
                          onIndexChange={this.handleIndexChange}
                          renderHeader={this.renderPagination}
                          renderScene={this.renderScene}
-                         style={style}
+                         initialLayout={initialLayout}
+                         style={[{flex: 1}, containerStyle]}
         />
       </View>
     );
