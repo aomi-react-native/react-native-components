@@ -105,7 +105,11 @@ class Button extends Component<Props> {
       <ButtonComp {...props}
                   onPress={this.handlePress}
       >
-        {this.renderContent()}
+        {ButtonComp === TouchableNativeFeedback ? (
+          <View style={this.props.style}>
+            {this.renderContent()}
+          </View>
+        ) : this.renderContent()}
       </ButtonComp>
     );
   }
