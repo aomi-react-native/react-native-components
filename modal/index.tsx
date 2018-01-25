@@ -18,7 +18,6 @@ const styles = StyleSheet.create<any>({
   },
   container: {
     marginHorizontal: 15,
-    backgroundColor: Colors.white,
     borderRadius: 10,
     borderWidth: 0.1,
     minHeight: 100,
@@ -171,16 +170,18 @@ class SceneModal extends Component<Props> {
               <Text>{content}</Text>
             ) : content}
           </View>
-          <View style={[styles.buttonGroup]}>
-            {buttons.map(({onPress, containerStyle, style, ...props}, index) => (
-              <Button {...props}
-                      containerStyle={[styles.button, containerStyle]}
-                      key={index}
-                      onPress={this.handlePress(onPress)}
-                      style={[styles.buttonStyle, style]}
-              />
-            ))}
-          </View>
+          {buttons && buttons.length > 0 && (
+            <View style={[styles.buttonGroup]}>
+              {buttons.map(({onPress, containerStyle, style, ...props}, index) => (
+                <Button {...props}
+                        containerStyle={[styles.button, containerStyle]}
+                        key={index}
+                        onPress={this.handlePress(onPress)}
+                        style={[styles.buttonStyle, style]}
+                />
+              ))}
+            </View>
+          )}
         </Animatable.View>
       </AbstractDialog>
     );
