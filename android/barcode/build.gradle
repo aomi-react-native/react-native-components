@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    api project(':reactnativecomponents:commons')
-    api project(':reactnativecomponents:camera')
+    api project(':sitbrn-commons')
+    api project(':sitbrn-camera')
     api 'com.google.zxing:core:3.2.1'
 }

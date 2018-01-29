@@ -25,6 +25,6 @@ android {
 }
 
 dependencies {
-    api project(':reactnativecomponents:commons')
+    api project(':sitbrn-commons')
     api fileTree(include: ['*.jar'], dir: 'libs')
 }

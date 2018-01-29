@@ -1,34 +1,34 @@
 rootProject.name = 'react-native-android-components'
 
-include(':reactnativecomponents:amap')
-project(':reactnativecomponents:amap').projectDir = new File(rootProject.projectDir, './amap')
+include(':sitbrn-amap')
+project(':sitbrn-amap').projectDir = new File(rootProject.projectDir, './amap')
 
-include(':reactnativecomponents:barcode')
-project(':reactnativecomponents:barcode').projectDir = new File(rootProject.projectDir, './barcode')
+include(':sitbrn-barcode')
+project(':sitbrn-barcode').projectDir = new File(rootProject.projectDir, './barcode')
 
-include(':reactnativecomponents:camera')
-project(':reactnativecomponents:camera').projectDir = new File(rootProject.projectDir, './camera')
+include(':sitbrn-camera')
+project(':sitbrn-camera').projectDir = new File(rootProject.projectDir, './camera')
 
-include(':reactnativecomponents:canvas')
-project(':reactnativecomponents:canvas').projectDir = new File(rootProject.projectDir, './canvas')
+include(':sitbrn-canvas')
+project(':sitbrn-canvas').projectDir = new File(rootProject.projectDir, './canvas')
 
-include(':reactnativecomponents:commons')
-project(':reactnativecomponents:commons').projectDir = new File(rootProject.projectDir, './commons')
+include(':sitbrn-commons')
+project(':sitbrn-commons').projectDir = new File(rootProject.projectDir, './commons')
 
-include(':reactnativecomponents:local-authentication')
-project(':reactnativecomponents:local-authentication').projectDir = new File(rootProject.projectDir, './local-authentication')
+include(':sitbrn-local-authentication')
+project(':sitbrn-local-authentication').projectDir = new File(rootProject.projectDir, './local-authentication')
 
-include(':reactnativecomponents:media-manager')
-project(':reactnativecomponents:media-manager').projectDir = new File(rootProject.projectDir, './media-manager')
+include(':sitbrn-media-manager')
+project(':sitbrn-media-manager').projectDir = new File(rootProject.projectDir, './media-manager')
 
-include(':reactnativecomponents:orientation')
-project(':reactnativecomponents:orientation').projectDir = new File(rootProject.projectDir, './orientation')
+include(':sitbrn-orientation')
+project(':sitbrn-orientation').projectDir = new File(rootProject.projectDir, './orientation')
 
-include(':reactnativecomponents:screenshot')
-project(':reactnativecomponents:screenshot').projectDir = new File(rootProject.projectDir, './screenshot')
+include(':sitbrn-screenshot')
+project(':sitbrn-screenshot').projectDir = new File(rootProject.projectDir, './screenshot')
 
-include(':reactnativecomponents:utils')
-project(':reactnativecomponents:utils').projectDir = new File(rootProject.projectDir, './utils')
+include(':sitbrn-utils')
+project(':sitbrn-utils').projectDir = new File(rootProject.projectDir, './utils')
 
-include(':reactnativecomponents:wechat')
-project(':reactnativecomponents:wechat').projectDir = new File(rootProject.projectDir, './wechat')
+include(':sitbrn-wechat')
+project(':sitbrn-wechat').projectDir = new File(rootProject.projectDir, './wechat')

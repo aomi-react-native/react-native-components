@@ -18,4 +18,4 @@ android {
 }
 
 dependencies {
-    api project(':reactnativecomponents:commons')}
+    api project(':sitbrn-commons')}
