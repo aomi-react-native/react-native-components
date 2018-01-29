@@ -8,6 +8,8 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+        jcenter()
+        google()
     }
 
 }
@@ -15,6 +17,8 @@ allprojects {
 buildscript {
     repositories {
         maven { url "https://repo.sitb.software/repository/maven-public/" }
+        jcenter()
+        google()
     }
 
     dependencies {
