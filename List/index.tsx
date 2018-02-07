@@ -148,7 +148,7 @@ class List extends AbstractComponent<Props> {
   }
 
   keyExtractor(item, index) {
-    return index;
+    return `${index}`;
   }
 
   render() {
