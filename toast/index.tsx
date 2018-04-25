@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import Component from '../AbstractComponent';
-import { Platform, StyleSheet, Text, ToastAndroid } from 'react-native';
+import { Platform, StyleProp, StyleSheet, Text, ToastAndroid, ViewStyle } from 'react-native';
 import { View } from 'react-native-animatable';
 import { createRootView } from '../createRootNode/index';
 
@@ -34,14 +34,16 @@ const styles = StyleSheet.create({
 });
 
 export interface ToastProps {
-  msg?: string;
-  show?: boolean;
+  msg?: string
+  show?: boolean
+  containerStyle?: StyleProp<ViewStyle>
+  contentStyle?: StyleProp<ViewStyle>
 }
 
-class ToastIOS extends Component<ToastProps> {
+export class Toast extends Component<ToastProps> {
 
   static defaultProps = {
-    msg: '',
+    children: '',
     show: true
   };
 
@@ -58,14 +60,20 @@ class ToastIOS extends Component<ToastProps> {
   };
 
   render() {
-    const {msg, show} = this.props;
+    const {children, show, containerStyle, contentStyle} = this.props;
     const animatable = show ? this.showAnimation : this.hideAnimation;
+    let newChildren = children;
+    if (typeof children === 'string') {
+      newChildren = (
+        <Text style={styles.msg}>{children}</Text>
+      );
+    }
     return (
       <View {...animatable}
-            style={styles.container}
+            style={[styles.container, containerStyle]}
       >
-        <View style={styles.content}>
-          <Text style={styles.msg}>{msg}</Text>
+        <View style={[styles.content, contentStyle]}>
+          {newChildren}
         </View>
       </View>
     );
@@ -93,19 +101,26 @@ export default function show(msg, duration?) {
   }
 
   if (Platform.OS === 'ios') {
-    const manager = createRootView(ToastIOS, {});
-    const args: any = {
-      msg,
-      manager
-    };
-    manager.update(args);
-    setTimeout(() => {
-      args.show = false;
-      manager.update(args);
-      setTimeout(manager.destroy, 600);
-    }, duration || config.duration);
+    toast({children: msg, duration});
   }
 
+}
+
+/**
+ * 使用自定义UI的toast
+ */
+export function toast({duration, ...props}: any = {}) {
+  const manager = createRootView(Toast, {});
+  const args: any = {
+    ...props,
+    manager
+  };
+  manager.update(args);
+  setTimeout(() => {
+    args.show = false;
+    manager.update(args);
+    setTimeout(manager.destroy, 600);
+  }, duration || config.duration);
 }
 
 /**
