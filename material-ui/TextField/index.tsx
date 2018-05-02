@@ -40,7 +40,7 @@ export default class TextField extends AbstractComponent<Props> {
     return StyleSheet.flatten(style).height || 0.5;
   }
 
-  getHeightEndValue() {
+  getHeightEndValue(): any {
     const style: StyleProp<ViewStyle> = [getStyles().underlineFocus, this.props.underlineFocusStyle];
     return StyleSheet.flatten(style).height || 1;
   }
