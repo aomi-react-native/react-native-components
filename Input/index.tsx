@@ -2,6 +2,7 @@ import * as React from 'react';
 import AbstractFormComponent from '../Form/AbstractFormComponent';
 import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import commonStyle, { Colors, fontSize, separatorHeight } from '../styles';
+import field from '../Form/field';
 
 import Props from './Props';
 
@@ -66,8 +67,8 @@ const INPUT_PROPS_KEYS = [
   'name'
 ];
 
+@field
 export default class Input extends AbstractFormComponent<Props, any> {
-
 
   static defaultProps = {
     defaultValue: '',
