@@ -1,6 +1,6 @@
 {
   "name": "reactnativecomponents",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0-alpha.1",
   "description": "React Native Components",
   "main": "index.js",
   "scripts": {
