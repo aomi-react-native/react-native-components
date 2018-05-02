@@ -3,6 +3,9 @@ import Component from '../AbstractComponent';
 import { View } from 'react-native';
 import { Props } from './Props';
 
+
+export const FormContext = React.createContext({});
+
 /**
  * Form 表单组件
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -86,11 +89,13 @@ export default class Form extends Component<Props> {
   }
 
   render() {
-    const {renderChildren, ...other} = this.props;
+    const {children, ...props} = this.props;
     return (
-      <View {...other}>
-        {renderChildren && renderChildren(this)}
-      </View>
+      <FormContext.Provider value={this}>
+        <View {...props}>
+          {children}
+        </View>
+      </FormContext.Provider>
     );
   }
 }
