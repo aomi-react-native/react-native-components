@@ -116,7 +116,11 @@ class Barcode extends Component<Props> {
   }
 
   render() {
-    const {renderTop, renderBottom, barCodeTypes} = this.props;
+    const {
+      windowBorderStyle,
+      topStyle, rightStyle, bottomStyle, leftStyle,
+      renderTop, renderBottom, barCodeTypes
+    } = this.props;
     let props = {};
     if (Platform.OS === 'ios') {
       props = {
@@ -135,17 +139,17 @@ class Barcode extends Component<Props> {
             <View style={styles.cell}/>
             <View style={[styles.window, this.state.windowSize]}>
               <View style={styles.windowStyle}>
-                <View style={{
+                <View style={[{
                   flex: 1,
                   borderWidth: 1,
                   borderColor: 'white'
-                }}
+                }, windowBorderStyle]}
                 />
               </View>
-              <View style={[styles.top]}/>
-              <View style={[styles.right]}/>
-              <View style={[styles.bottom]}/>
-              <View style={[styles.left]}/>
+              <View style={[styles.top, topStyle]}/>
+              <View style={[styles.right, rightStyle]}/>
+              <View style={[styles.bottom, bottomStyle]}/>
+              <View style={[styles.left, leftStyle]}/>
             </View>
             <View style={styles.cell}/>
           </View>

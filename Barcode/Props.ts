@@ -10,5 +10,10 @@ export default interface Props {
   renderTop?: ReactNodeFunction;
   scanLineStyle?: StyleProp<ViewStyle>;
   windowSize?: Size;
-  onSuccess?: (data:any) => void;
+  windowBorderStyle?: StyleProp<ViewStyle>
+  topStyle?: StyleProp<ViewStyle>
+  rightStyle?: StyleProp<ViewStyle>
+  bottomStyle?: StyleProp<ViewStyle>
+  leftStyle?: StyleProp<ViewStyle>
+  onSuccess?: (data: any) => void;
 }
