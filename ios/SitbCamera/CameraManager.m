@@ -361,31 +361,33 @@ didOutputMetadataObjects:(NSArray *)metadataObjects
     if (!self.onBarCodeRead) {
         return;
     }
-    for (AVMetadataMachineReadableCodeObject *metadata in metadataObjects) {
-        for (id barcodeType in self.barCodeTypes) {
-            if ([metadata.type isEqualToString:barcodeType]) {
-                // Transform the meta-data coordinates to screen coords
-                AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *) [_previewLayer transformedMetadataObjectForMetadataObject:metadata];
+    AVMetadataMachineReadableCodeObject *metadata = [metadataObjects lastObject];
 
-                NSDictionary *event = @{
-                        @"format": metadata.type,
-                        @"text": metadata.stringValue,
-                        @"bounds": @{
-                                @"origin": @{
-                                        @"x": [NSString stringWithFormat:@"%f", transformed.bounds.origin.x],
-                                        @"y": [NSString stringWithFormat:@"%f", transformed.bounds.origin.y]
-                                },
-                                @"size": @{
-                                        @"height": [NSString stringWithFormat:@"%f", transformed.bounds.size.height],
-                                        @"width": [NSString stringWithFormat:@"%f", transformed.bounds.size.width],
-                                }
-                        }
-                };
-                dispatch_async(self.sendEventQueue, ^{
-                    self.onBarCodeRead(event);
-                });
-            }
+    for (id barcodeType in self.barCodeTypes) {
+        if ([metadata.type isEqualToString:barcodeType]) {
+            // Transform the meta-data coordinates to screen coords
+            AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *) [_previewLayer transformedMetadataObjectForMetadataObject:metadata];
+
+            NSDictionary *event = @{
+                    @"format": metadata.type,
+                    @"text": metadata.stringValue,
+                    @"bounds": @{
+                            @"origin": @{
+                                    @"x": [NSString stringWithFormat:@"%f", transformed.bounds.origin.x],
+                                    @"y": [NSString stringWithFormat:@"%f", transformed.bounds.origin.y]
+                            },
+                            @"size": @{
+                                    @"height": [NSString stringWithFormat:@"%f", transformed.bounds.size.height],
+                                    @"width": [NSString stringWithFormat:@"%f", transformed.bounds.size.width],
+                            }
+                    }
+            };
+            [self stopSession];
+            dispatch_async(self.sendEventQueue, ^{
+                self.onBarCodeRead(event);
+            });
         }
+
     }
 
 }
