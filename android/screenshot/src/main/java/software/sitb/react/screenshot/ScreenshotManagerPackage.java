@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * @author Sean sean.snow@live.com createAt 2017/7/14
  */
-public class ScreenshotListenerPackage extends DefaultReactPackage {
+public class ScreenshotManagerPackage extends DefaultReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Collections.<NativeModule>singletonList(new ScreenshotListenerModule(reactContext));
+        return Collections.<NativeModule>singletonList(new ScreenshotManager(reactContext));
     }
 }

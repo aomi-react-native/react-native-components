@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "sourceMap": false,
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "jsx": "react-native",
     "lib": [
       "es2015",

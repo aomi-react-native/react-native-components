@@ -13,19 +13,19 @@ import software.sitb.react.commons.DefaultReactContextBaseJavaModule;
 /**
  * @author Sean sean.snow@live.com createAt 2017/7/14
  */
-public class ScreenshotListenerModule extends DefaultReactContextBaseJavaModule {
+public class ScreenshotManager extends DefaultReactContextBaseJavaModule {
 
-    private static final String TAG = "ScreenshotListener";
+    private static final String TAG = "ScreenshotManager";
 
     private ServiceConnection serviceConnection;
 
-    public ScreenshotListenerModule(ReactApplicationContext reactContext) {
+    public ScreenshotManager(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public String getName() {
-        return "SitbScreenshotListenerModule";
+        return "SitbScreenshotManager";
     }
 
     @ReactMethod
@@ -33,16 +33,16 @@ public class ScreenshotListenerModule extends DefaultReactContextBaseJavaModule 
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                Log.d(TAG, "ScreenshotListenerService Connected");
+                Log.d(TAG, "ScreenshotManager Connected");
             }
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
-                Log.d(TAG, "ScreenshotListenerService Disconnected");
+                Log.d(TAG, "ScreenshotManager Disconnected");
             }
         };
-        Intent intent = new Intent(getReactApplicationContext().getCurrentActivity(), ScreenshotListenerService.class);
-        intent.setAction(ScreenshotListenerService.class.getName());
+        Intent intent = new Intent(getReactApplicationContext().getCurrentActivity(), ScreenshotManagerService.class);
+        intent.setAction(ScreenshotManagerService.class.getName());
         getReactApplicationContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

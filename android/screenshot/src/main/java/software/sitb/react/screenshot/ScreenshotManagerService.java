@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 /**
  * @author Sean sean.snow@live.com createAt 2017/7/14
  */
-public class ScreenshotListenerService extends HeadlessJsTaskService {
+public class ScreenshotManagerService extends HeadlessJsTaskService {
 
     private static final String[] KEYWORDS = {
             "screenshot", "screen_shot", "screen-shot", "screen shot",
