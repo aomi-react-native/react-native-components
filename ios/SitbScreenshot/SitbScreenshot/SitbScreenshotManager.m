@@ -35,4 +35,8 @@ RCT_EXPORT_MODULE(SitbScreenshotManager)
     ];
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
 @end
