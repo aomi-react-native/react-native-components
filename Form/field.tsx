@@ -7,6 +7,6 @@ import { FormContext } from './index';
  */
 export default (ComposedComponent): any => (props: any) => (
   <FormContext.Consumer>
-    {form => <ComposedComponent {...props} form={form}/>}
+    {({form}: any) => <ComposedComponent {...props} form={form}/>}
   </FormContext.Consumer>
 );

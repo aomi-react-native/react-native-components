@@ -91,7 +91,7 @@ export default class Form extends Component<Props> {
   render() {
     const {children, ...props} = this.props;
     return (
-      <FormContext.Provider value={this}>
+      <FormContext.Provider value={{form: this}}>
         <View {...props}>
           {children}
         </View>
