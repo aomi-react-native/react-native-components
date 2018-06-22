@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		14548CE720CCCF1500429BFB /* SitbScreenshotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14548CE620CCCF1500429BFB /* SitbScreenshotManager.m */; };
-		14548CE820CCCF1500429BFB /* SitbScreenshotManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 14548CE520CCCF1500429BFB /* SitbScreenshotManager.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +17,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				14548CE820CCCF1500429BFB /* SitbScreenshotManager.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
