@@ -7,29 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14548CE720CCCF1500429BFB /* SitbScreenshotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14548CE620CCCF1500429BFB /* SitbScreenshotManager.m */; };
+		145057CC20DCDD6C00C13AE8 /* ScreenshotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 145057CB20DCDD6C00C13AE8 /* ScreenshotManager.m */; };
+		145057CD20DCDD6C00C13AE8 /* ScreenshotManager.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 145057CA20DCDD6C00C13AE8 /* ScreenshotManager.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		14548CE020CCCF1500429BFB /* CopyFiles */ = {
+		145057C520DCDD6C00C13AE8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				145057CD20DCDD6C00C13AE8 /* ScreenshotManager.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14548CE220CCCF1500429BFB /* libSitbScreenshot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbScreenshot.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		14548CE520CCCF1500429BFB /* SitbScreenshotManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SitbScreenshotManager.h; sourceTree = "<group>"; };
-		14548CE620CCCF1500429BFB /* SitbScreenshotManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SitbScreenshotManager.m; sourceTree = "<group>"; };
+		145057C720DCDD6C00C13AE8 /* libSitbScreenshot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSitbScreenshot.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		145057CA20DCDD6C00C13AE8 /* ScreenshotManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenshotManager.h; sourceTree = "<group>"; };
+		145057CB20DCDD6C00C13AE8 /* ScreenshotManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenshotManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		14548CDF20CCCF1500429BFB /* Frameworks */ = {
+		145057C420DCDD6C00C13AE8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,41 +41,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		14548CD920CCCF1500429BFB = {
+		145057BE20DCDD6C00C13AE8 = {
 			isa = PBXGroup;
 			children = (
-				14548CE420CCCF1500429BFB /* SitbScreenshot */,
-				14548CE320CCCF1500429BFB /* Products */,
+				145057CA20DCDD6C00C13AE8 /* ScreenshotManager.h */,
+				145057CB20DCDD6C00C13AE8 /* ScreenshotManager.m */,
+				145057C820DCDD6C00C13AE8 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		14548CE320CCCF1500429BFB /* Products */ = {
+		145057C820DCDD6C00C13AE8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				14548CE220CCCF1500429BFB /* libSitbScreenshot.a */,
+				145057C720DCDD6C00C13AE8 /* libSitbScreenshot.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		14548CE420CCCF1500429BFB /* SitbScreenshot */ = {
-			isa = PBXGroup;
-			children = (
-				14548CE520CCCF1500429BFB /* SitbScreenshotManager.h */,
-				14548CE620CCCF1500429BFB /* SitbScreenshotManager.m */,
-			);
-			path = SitbScreenshot;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		14548CE120CCCF1500429BFB /* SitbScreenshot */ = {
+		145057C620DCDD6C00C13AE8 /* SitbScreenshot */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14548CEB20CCCF1500429BFB /* Build configuration list for PBXNativeTarget "SitbScreenshot" */;
+			buildConfigurationList = 145057D020DCDD6C00C13AE8 /* Build configuration list for PBXNativeTarget "SitbScreenshot" */;
 			buildPhases = (
-				14548CDE20CCCF1500429BFB /* Sources */,
-				14548CDF20CCCF1500429BFB /* Frameworks */,
-				14548CE020CCCF1500429BFB /* CopyFiles */,
+				145057C320DCDD6C00C13AE8 /* Sources */,
+				145057C420DCDD6C00C13AE8 /* Frameworks */,
+				145057C520DCDD6C00C13AE8 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -81,53 +75,53 @@
 			);
 			name = SitbScreenshot;
 			productName = SitbScreenshot;
-			productReference = 14548CE220CCCF1500429BFB /* libSitbScreenshot.a */;
+			productReference = 145057C720DCDD6C00C13AE8 /* libSitbScreenshot.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		14548CDA20CCCF1500429BFB /* Project object */ = {
+		145057BF20DCDD6C00C13AE8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Sitb Software";
 				TargetAttributes = {
-					14548CE120CCCF1500429BFB = {
-						CreatedOnToolsVersion = 9.4;
+					145057C620DCDD6C00C13AE8 = {
+						CreatedOnToolsVersion = 9.4.1;
 					};
 				};
 			};
-			buildConfigurationList = 14548CDD20CCCF1500429BFB /* Build configuration list for PBXProject "SitbScreenshot" */;
+			buildConfigurationList = 145057C220DCDD6C00C13AE8 /* Build configuration list for PBXProject "SitbScreenshot" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 14548CD920CCCF1500429BFB;
-			productRefGroup = 14548CE320CCCF1500429BFB /* Products */;
+			mainGroup = 145057BE20DCDD6C00C13AE8;
+			productRefGroup = 145057C820DCDD6C00C13AE8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				14548CE120CCCF1500429BFB /* SitbScreenshot */,
+				145057C620DCDD6C00C13AE8 /* SitbScreenshot */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		14548CDE20CCCF1500429BFB /* Sources */ = {
+		145057C320DCDD6C00C13AE8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14548CE720CCCF1500429BFB /* SitbScreenshotManager.m in Sources */,
+				145057CC20DCDD6C00C13AE8 /* ScreenshotManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		14548CE920CCCF1500429BFB /* Debug */ = {
+		145057CE20DCDD6C00C13AE8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -185,7 +179,7 @@
 			};
 			name = Debug;
 		};
-		14548CEA20CCCF1500429BFB /* Release */ = {
+		145057CF20DCDD6C00C13AE8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -237,7 +231,7 @@
 			};
 			name = Release;
 		};
-		14548CEC20CCCF1500429BFB /* Debug */ = {
+		145057D120DCDD6C00C13AE8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -249,7 +243,7 @@
 			};
 			name = Debug;
 		};
-		14548CED20CCCF1500429BFB /* Release */ = {
+		145057D220DCDD6C00C13AE8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -264,25 +258,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14548CDD20CCCF1500429BFB /* Build configuration list for PBXProject "SitbScreenshot" */ = {
+		145057C220DCDD6C00C13AE8 /* Build configuration list for PBXProject "SitbScreenshot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				14548CE920CCCF1500429BFB /* Debug */,
-				14548CEA20CCCF1500429BFB /* Release */,
+				145057CE20DCDD6C00C13AE8 /* Debug */,
+				145057CF20DCDD6C00C13AE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14548CEB20CCCF1500429BFB /* Build configuration list for PBXNativeTarget "SitbScreenshot" */ = {
+		145057D020DCDD6C00C13AE8 /* Build configuration list for PBXNativeTarget "SitbScreenshot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				14548CEC20CCCF1500429BFB /* Debug */,
-				14548CED20CCCF1500429BFB /* Release */,
+				145057D120DCDD6C00C13AE8 /* Debug */,
+				145057D220DCDD6C00C13AE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 14548CDA20CCCF1500429BFB /* Project object */;
+	rootObject = 145057BF20DCDD6C00C13AE8 /* Project object */;
 }
