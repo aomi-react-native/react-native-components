@@ -45,24 +45,24 @@ export default class TextField extends AbstractComponent<Props> {
     return StyleSheet.flatten(style).height || 1;
   }
 
-  handleFocus() {
+  handleFocus(e) {
     const {onFocus, underlineShow} = this.props;
     if (underlineShow) {
       this.setState({focus: true}, () => Animated.timing(this.state.height, {
         toValue: this.getHeightEndValue()
       }).start());
     }
-    onFocus && onFocus();
+    onFocus && onFocus(e);
   }
 
-  handleBlur() {
+  handleBlur(e) {
     const {onBlur, underlineShow} = this.props;
     if (underlineShow) {
       this.setState({focus: false}, () => Animated.timing(this.state.height, {
         toValue: this.getHeightStartValue()
       }).start());
     }
-    onBlur && onBlur();
+    onBlur && onBlur(e);
   }
 
   renderFloatingLabel() {
@@ -84,7 +84,7 @@ export default class TextField extends AbstractComponent<Props> {
       <Animated.Text style={style}>
         {floatingLabelText}
       </Animated.Text>
-    )
+    );
   }
 
   renderUnderline() {

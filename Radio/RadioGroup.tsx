@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { View } from 'react-native';
-import PropTypes from 'prop-types';
 import AbstractFormComponent from '../Form/AbstractFormComponent';
 import { RadioGroupProps } from './Props';
 

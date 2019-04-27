@@ -1,7 +1,7 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import AbstractFormComponent from '../Form/AbstractFormComponent';
-import PropTypes from 'prop-types';
 import { RadioProps } from './Props';
 import Button from '../Button/index';
 import { styles } from './styles';

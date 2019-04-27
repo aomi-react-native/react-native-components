@@ -65,15 +65,15 @@ class DatePicker extends AbstractFormComponent<Props, any> {
   }
 
   async showPicker() {
-    let {minDate, maxDate} = this.props;
-    const {action, year, month, day} = await DatePickerAndroid.open({
+    const {minDate, maxDate} = this.props;
+    const result: any = await DatePickerAndroid.open({
       date: this.state.value,
       minDate,
       maxDate
     });
 
-    if (action === DatePickerAndroid.dateSetAction) {
-      this.onDateChange(new Date(year, month, day));
+    if (result.action === DatePickerAndroid.dateSetAction) {
+      this.onDateChange(new Date(result.year, result.month, result.day));
     }
   }
 

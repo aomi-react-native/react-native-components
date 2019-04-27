@@ -8,8 +8,4 @@ import { Radio } from './Radio';
 export {
   RadioGroup,
   Radio
-}
-
-
-
-
+};

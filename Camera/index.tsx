@@ -7,7 +7,7 @@ import Props, { OrientationType, QualityType } from './Props';
 
 let CameraManager = NativeModules.SitbCameraView || NativeModules.SitbCamera2Module;
 
-const {SitbCameraView, SitbCamera2View, SitbCamera2Module} = UIManager as any;
+const {SitbCameraView, SitbCamera2View, SitbCamera2Module}: any = UIManager;
 
 let constants = (SitbCameraView || SitbCamera2View).Constants;
 
@@ -16,6 +16,7 @@ let Orientation: OrientationType = constants.Orientation;
 let Quality: QualityType = constants.Quality;
 
 let event = new NativeEventEmitter(CameraManager);
+let RCTCamera;
 
 /**
  * 安卓相机版本
@@ -28,11 +29,11 @@ export function setCameraVersion(cameraVersion) {
   if (cameraVersion === 4) {
     CameraManager = NativeModules.SitbCameraView;
     constants = SitbCameraView.Constants;
-    RCTCamera = requireNativeComponent('SitbCameraView', Camera);
+    RCTCamera = requireNativeComponent('SitbCameraView');
   } else if (cameraVersion === 5) {
     CameraManager = NativeModules.SitbCamera2View;
     constants = SitbCamera2View.Constants;
-    RCTCamera = requireNativeComponent('SitbCamera2View', Camera);
+    RCTCamera = requireNativeComponent('SitbCamera2View');
   }
   CameraFacing = constants.CameraFacin;
   Orientation = constants.Orientation;
@@ -77,13 +78,13 @@ class Camera extends Component<Props> {
      */
     quality: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
+    onBarCodeRead: PropTypes.func,
+
     /**
      * 一个回调函数
      * 当需要实时获取预览的图片数据
      */
-    onCaptureOutputBuffer: PropTypes.func,
-
-    onBarCodeRead: PropTypes.func
+    onCaptureOutputBuffer: PropTypes.func
   };
 
   static defaultProps = {
@@ -142,11 +143,10 @@ class Camera extends Component<Props> {
 }
 
 
-let RCTCamera;
 if (SitbCameraView) {
-  RCTCamera = requireNativeComponent('SitbCameraView', Camera);
+  RCTCamera = requireNativeComponent('SitbCameraView');
 } else if (SitbCamera2Module) {
-  RCTCamera = requireNativeComponent('SitbCamera2View', Camera);
+  RCTCamera = requireNativeComponent('SitbCamera2View');
 }
 
 export {

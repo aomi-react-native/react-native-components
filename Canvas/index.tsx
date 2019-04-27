@@ -141,10 +141,6 @@ class Canvas extends Component<Props> {
 
 }
 
-const RCTCanvas = requireNativeComponent('SitbRCTCanvasView', Canvas, {
-  nativeOnly: {
-    onChange: true
-  }
-});
+const RCTCanvas = requireNativeComponent('SitbRCTCanvasView');
 
 export default Canvas;
