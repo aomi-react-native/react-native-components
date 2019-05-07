@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Component from '../AbstractComponent';
 import { StyleSheet, View } from 'react-native';
-import { TabViewAnimated } from 'react-native-tab-view';
-import Props from './Props';
+import { TabView } from 'react-native-tab-view';
+import { Props } from './Props';
 import { getWindowSize } from '../styles';
 
 const styles = StyleSheet.create({
@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: 'rgba(0,0,0,.2)',
     marginHorizontal: 3
   },
   activeDot: {
@@ -36,11 +35,12 @@ const initialLayout = {
   height: 1,
   width: getWindowSize().width
 };
+
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/10/18
  */
-export default class Swiper extends Component<Props> {
+export class Swiper extends Component<Props> {
 
   static defaultProps = {
     autoPlay: false,
@@ -108,13 +108,14 @@ export default class Swiper extends Component<Props> {
     );
   }
 
-  renderPagination() {
-    const {index, routes} = this.state;
+  renderPagination({navigationState}) {
+    const {index, routes} = navigationState;
+    const {activeColor = '#007aff', inactiveColor = 'rgba(0,0,0,.2)'} = this.props;
     return (
       <View style={styles.dotContainer}>
         {routes.map(({key}) => (
           <View key={key}
-                style={[styles.dot, `${index}` === key ? styles.activeDot : null]}
+                style={[styles.dot, {backgroundColor: `${index}` === key ? activeColor : inactiveColor}]}
           />
         ))}
       </View>
@@ -124,13 +125,15 @@ export default class Swiper extends Component<Props> {
   render() {
     const {containerStyle, style} = this.props;
     return (
-      <View style={[styles.container, style]}>
-        <TabViewAnimated navigationState={this.state}
-                         onIndexChange={this.handleIndexChange}
-                         renderHeader={this.renderPagination}
-                         renderScene={this.renderScene}
-                         initialLayout={initialLayout}
-                         style={[{flex: 1}, containerStyle]}
+      <View style={[styles.container, containerStyle]}>
+        <TabView initialLayout={initialLayout}
+                 navigationState={this.state}
+                 onIndexChange={this.handleIndexChange}
+                 renderScene={this.renderScene}
+                 renderTabBar={this.renderPagination}
+                 scrollEnabled
+                 style={[{flex: 1}, style]}
+                 tabBarPosition="bottom"
         />
       </View>
     );

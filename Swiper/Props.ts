@@ -4,10 +4,12 @@
 import { StyleProp, ViewStyle } from 'react-native';
 import { ReactNode } from 'react';
 
-export default interface Props {
+export interface Props {
   autoPlay?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   duration?: number,
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
+  inactiveColor?: string;
+  activeColor?: string;
 }
