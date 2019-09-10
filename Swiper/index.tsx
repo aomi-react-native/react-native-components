@@ -94,7 +94,7 @@ export class Swiper extends Component<Props> {
     }
   }
 
-  handleIndexChange(index) {
+  handleIndexChange(index: number) {
     this.setState({index});
   }
 
@@ -131,7 +131,6 @@ export class Swiper extends Component<Props> {
                  onIndexChange={this.handleIndexChange}
                  renderScene={this.renderScene}
                  renderTabBar={this.renderPagination}
-                 scrollEnabled
                  style={[{flex: 1}, style]}
                  tabBarPosition="bottom"
         />
