@@ -1,0 +1,6 @@
+description = 'barcode'
+
+dependencies {
+    api project(':camera')
+    api 'com.google.zxing:core:3.2.1'
+}

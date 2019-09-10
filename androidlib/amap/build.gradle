@@ -1,0 +1,9 @@
+description = 'amap'
+
+android {
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}

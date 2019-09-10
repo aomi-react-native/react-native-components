@@ -1,0 +1,61 @@
+allprojects {
+    group 'tech.aomi.react'
+    version '1.0.0'
+
+    repositories {
+        maven { url "https://repo.aomi.cloud/repository/maven-public/" }
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+        jcenter()
+        google()
+    }
+
+}
+
+subprojects {
+    apply plugin: 'com.android.library'
+
+
+    dependencies {
+        api "com.facebook.react:react-native:+"
+        api fileTree(include: ['*.jar'], dir: 'libs')
+    }
+}
+
+buildscript {
+    repositories {
+        maven { url "https://repo.aomi.cloud/repository/maven-public/" }
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+    }
+}
+
+[
+        'amap',
+        'barcode',
+        'camera',
+        'canvas',
+        'local-authentication',
+        'media-manager',
+        'orientation',
+        'screenshot',
+        'utils',
+        'wechat'
+].forEach { name ->
+
+    project(":$name") {
+        apply from: "${rootDir}/android.gradle"
+
+        dependencies {
+            api project(':commons')
+        }
+    }
+
+
+}
