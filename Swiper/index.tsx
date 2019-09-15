@@ -48,13 +48,6 @@ export class Swiper extends Component<Props> {
     horizontal: true
   };
 
-  state = {
-    index: 0,
-    routes: []
-  };
-
-  autoPlayTask;
-
   static getDerivedStateFromProps(props) {
     return {
       index: 0,
@@ -64,23 +57,26 @@ export class Swiper extends Component<Props> {
     };
   }
 
-  componentWillMount() {
-    const {children} = this.props;
-    this.updateRoute(children);
+  state = {
+    index: 0,
+    routes: []
+  };
+
+  autoPlayTask;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+      routes: React.Children.toArray(props.children).map((child, index) => ({
+        key: `${index}`
+      }))
+    };
     this.autoPlay();
   }
 
   componentWillUnmount() {
     this.autoPlayTask && clearInterval(this.autoPlayTask);
-  }
-
-  updateRoute(children) {
-    this.setState({
-      index: 0,
-      routes: React.Children.toArray(children).map((child, index) => ({
-        key: `${index}`
-      }))
-    });
   }
 
   autoPlay() {
