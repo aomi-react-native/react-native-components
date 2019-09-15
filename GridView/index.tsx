@@ -11,6 +11,24 @@ const styles = StyleSheet.create({
   }
 });
 
+function handleCellData(cells, cols) {
+  let data = [];
+  let size = Math.ceil(cells.length / cols);
+
+  for (let i = 0; i < size; i++) {
+    let group = [];
+    for (let j = 0; j < cols; j++) {
+      if (cells[i * cols + j]) {
+        group.push(cells[i * cols + j]);
+      } else {
+        group.push({empty: true});
+      }
+    }
+    data.push(group);
+  }
+  return data;
+}
+
 /**
  * GridView
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -30,38 +48,18 @@ export default class GridView extends AbstractComponent<Props> {
   constructor(props) {
     super(props);
     const {cols, cells} = this.props;
-    const data = this.handleCellData(cells, cols);
+    const data = handleCellData(cells, cols);
     this.state = {
       cellHeight: 0,
       data
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.cells !== nextProps.cells || this.props.cols !== nextProps.cols) {
-      const data = this.handleCellData(nextProps.cells, nextProps.cols);
-      this.setState({
-        data
-      });
-    }
-  }
-
-  handleCellData(cells, cols) {
-    let data = [];
-    let size = Math.ceil(cells.length / cols);
-
-    for (let i = 0; i < size; i++) {
-      let group = [];
-      for (let j = 0; j < cols; j++) {
-        if (cells[i * cols + j]) {
-          group.push(cells[i * cols + j]);
-        } else {
-          group.push({empty: true});
-        }
-      }
-      data.push(group);
-    }
-    return data;
+  static getDerivedStateFromProps(props) {
+    const data = handleCellData(props.cells, props.cols);
+    return {
+      data
+    };
   }
 
   renderItem({item}) {

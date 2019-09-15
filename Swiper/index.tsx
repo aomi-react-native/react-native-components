@@ -55,14 +55,19 @@ export class Swiper extends Component<Props> {
 
   autoPlayTask;
 
+  static getDerivedStateFromProps(props) {
+    return {
+      index: 0,
+      routes: React.Children.toArray(props.children).map((child, index) => ({
+        key: `${index}`
+      }))
+    };
+  }
+
   componentWillMount() {
     const {children} = this.props;
     this.updateRoute(children);
     this.autoPlay();
-  }
-
-  componentWillReceiveProps({children}) {
-    this.updateRoute(children);
   }
 
   componentWillUnmount() {
