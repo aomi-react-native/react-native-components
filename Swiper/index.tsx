@@ -50,7 +50,6 @@ export class Swiper extends Component<Props> {
 
   static getDerivedStateFromProps(props) {
     return {
-      index: 0,
       routes: React.Children.toArray(props.children).map((child, index) => ({
         key: `${index}`
       }))
