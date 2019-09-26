@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import AbstractComponent from '../AbstractComponent';
 import { getWindowSize } from '../styles';
 
 import Props from './Props';
+import { autoBind } from 'jsdk/autoBind';
 
 const styles = StyleSheet.create({
   row: {
@@ -34,7 +34,8 @@ function handleCellData(cells, cols) {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/25
  */
-export default class GridView extends AbstractComponent<Props> {
+@autoBind
+export class GridView extends React.Component<Props> {
 
   static defaultProps = {
     autoWidth: true,
@@ -51,7 +52,8 @@ export default class GridView extends AbstractComponent<Props> {
     const data = handleCellData(cells, cols);
     this.state = {
       cellHeight: 0,
-      data
+      data,
+      width: getWindowSize().width
     };
   }
 
@@ -62,13 +64,21 @@ export default class GridView extends AbstractComponent<Props> {
     };
   }
 
+  handleLayout(event) {
+    const {width} = event.nativeEvent.layout;
+    this.setState({
+      width
+    });
+  }
+
   renderItem({item}) {
     const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, cols} = this.props;
+    const {width} = this.state;
     const style: any = {
       marginHorizontal: horizontalSpacing / 2
     };
     if (autoWidth) {
-      style.width = getWindowSize().width / cols - (cols > 0 ? (cols - 1) * horizontalSpacing : 0);
+      style.width = width / cols - (cols > 0 ? (cols - 1) * horizontalSpacing : 0);
     }
 
     const children = item.map((cell, key) => {
@@ -103,7 +113,9 @@ export default class GridView extends AbstractComponent<Props> {
     const {style, containerStyle, verticalSpacing, horizontalSpacing, ...other} = this.props;
 
     return (
-      <View style={containerStyle}>
+      <View style={containerStyle}
+            onLayout={this.handleLayout}
+      >
         <FlatList {...other}
                   data={this.state.data}
                   keyExtractor={this.keyExtractor}
