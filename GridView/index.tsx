@@ -71,26 +71,30 @@ export class GridView extends React.Component<Props> {
     });
   }
 
-  renderItem({item}) {
+  renderItem({item, index}) {
     const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, cols} = this.props;
-    const {width} = this.state;
+    const {width, data} = this.state;
     const style: any = {
-      marginHorizontal: horizontalSpacing / 2
+      marginRight: horizontalSpacing
     };
     if (autoWidth) {
-      style.width = width / cols - (cols > 0 ? (cols - 1) * horizontalSpacing : 0);
+      style.width = (width - (cols > 0 ? (cols - 1) * horizontalSpacing : 0)) / cols;
     }
 
     const children = item.map((cell, key) => {
+      const newStyle = {...style};
+      if (key === item.length - 1) {
+        newStyle.marginRight = 0;
+      }
       if (cell.empty) {
         return React.cloneElement(<View/>, {
           key,
-          style
+          style: newStyle
         });
       }
       return React.cloneElement(<View/>, {
         key,
-        style,
+        style: newStyle,
         children: renderCell({
           cell,
           cellId: key
@@ -98,7 +102,7 @@ export class GridView extends React.Component<Props> {
       });
     });
     return (
-      <View style={[styles.row, {marginVertical: verticalSpacing / 2}]}>
+      <View style={[styles.row, {marginBottom: index === data.length - 1 ? 0 : verticalSpacing}]}>
         {children}
       </View>
     );
@@ -110,20 +114,15 @@ export class GridView extends React.Component<Props> {
   }
 
   render() {
-    const {style, containerStyle, verticalSpacing, horizontalSpacing, ...other} = this.props;
+    const {containerStyle, verticalSpacing, horizontalSpacing, ...other} = this.props;
 
     return (
-      <View style={containerStyle}
-            onLayout={this.handleLayout}
-      >
+      <View style={containerStyle}>
         <FlatList {...other}
                   data={this.state.data}
                   keyExtractor={this.keyExtractor}
                   renderItem={this.renderItem}
-                  style={[{
-                    marginHorizontal: -horizontalSpacing,
-                    marginVertical: -verticalSpacing
-                  }, style]}
+                  onLayout={this.handleLayout}
         />
       </View>
     );
