@@ -5,6 +5,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { ReactNode } from 'react';
 
 export interface Props {
+  showDot?: boolean;
   autoPlay?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   duration?: number,

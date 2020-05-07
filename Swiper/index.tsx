@@ -110,7 +110,10 @@ export class Swiper extends Component<Props> {
 
   renderPagination({navigationState}) {
     const {index, routes} = navigationState;
-    const {activeColor = '#007aff', inactiveColor = 'rgba(0,0,0,.2)'} = this.props;
+    const {showDot = false, activeColor = '#007aff', inactiveColor = 'rgba(0,0,0,.2)'} = this.props;
+    if (!showDot) {
+      return null;
+    }
     return (
       <View style={styles.dotContainer}>
         {routes.map(({key}) => (
