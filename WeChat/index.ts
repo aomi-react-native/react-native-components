@@ -1,41 +1,40 @@
 import { NativeModules } from 'react-native';
 
-const {WeChatManager} = NativeModules;
-
+const { WeChatManager } = NativeModules;
 
 export interface TypeProps {
   // 文本分享
-  text: number,
+  text: number;
   // 图片分享
-  image: number,
+  image: number;
   // 音乐分享
-  music: number,
+  music: number;
   // 视频分享
-  video: number,
+  video: number;
   // 网页分享
-  webPage: number
+  webPage: number;
 }
 
 export interface SceneProps {
   // 微信会话
-  session: number,
+  session: number;
   // 朋友圈
-  timeLine: number,
+  timeLine: number;
   // 收藏
-  favorite: number
+  favorite: number;
 }
 
 export interface Options {
-  scene: SceneProps,
-  type: TypeProps,
-  text: String,
-  description: String,
-  mediaTagName: String,
-  messageAction: String,
-  messageExt: String,
-  image: String,
-  thumbImageSize: Number,
-  webPageUrl: String
+  scene: SceneProps;
+  type: TypeProps;
+  text: String;
+  description: String;
+  mediaTagName: String;
+  messageAction: String;
+  messageExt: String;
+  image: String;
+  thumbImageSize: Number;
+  webPageUrl: String;
 }
 
 export const Scene: SceneProps = WeChatManager.scene;
@@ -47,7 +46,6 @@ export const Type: TypeProps = WeChatManager.type;
  * @date 2017/5/17
  */
 class WeChat {
-
   /**
    * 向微信注册
    * @param appId appId
@@ -63,7 +61,6 @@ class WeChat {
   static share(options: Options) {
     return WeChatManager.share(options);
   }
-
 }
 
 export default WeChat;

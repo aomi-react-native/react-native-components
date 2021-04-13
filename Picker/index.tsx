@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Picker as RNPicker, PickerIOS, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Picker as RNPicker,
+  PickerIOS,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
 import AbstractFormComponent from '../Form/AbstractFormComponent';
 import Dialog from '../Dialog/index';
@@ -10,10 +18,10 @@ import Props from './Props';
 const styles = StyleSheet.create<any>({
   dialogContainer: {
     backgroundColor: 'rgba(0,0,0,.4)',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   picker: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
@@ -23,25 +31,24 @@ const styles = StyleSheet.create<any>({
     paddingHorizontal: 15,
     borderBottomWidth: separatorHeight,
     borderColor: Colors.separator,
-    backgroundColor: Colors.underlay
+    backgroundColor: Colors.underlay,
   },
   title: {
     color: '#0977FF',
     fontSize: 16,
     maxHeight: 40,
-    minWidth: 10
-  }
+    minWidth: 10,
+  },
 });
-
 
 const showAnimation = {
   animation: 'fadeIn',
-  duration: 200
+  duration: 200,
 };
 
 const hideAnimation = {
   animation: 'fadeOut',
-  duration: 500
+  duration: 500,
 };
 
 /**
@@ -49,27 +56,26 @@ const hideAnimation = {
  * @date 16/5/8
  */
 class Picker extends AbstractFormComponent<Props, any> {
-
   static defaultProps = {
     cancelText: '取消',
     confirmText: '确认',
     mode: 'dialog',
-    title: ''
+    title: '',
   };
 
   state = {
     visible: false,
-    selectedValue: null
+    selectedValue: null,
   };
 
   contentShowAnimation = {
     animation: 'fadeInUpBig',
-    duration: 500
+    duration: 500,
   };
 
   contentHideAnimation = {
     animation: 'fadeOutDownBig',
-    duration: 500
+    duration: 500,
   };
 
   currentSelectedValue;
@@ -79,17 +85,17 @@ class Picker extends AbstractFormComponent<Props, any> {
     this.state.selectedValue = props.defaultSelected || props.selectedValue;
   }
 
-  componentWillReceiveProps({selectedValue}) {
+  componentWillReceiveProps({ selectedValue }) {
     if (this.props.selectedValue !== selectedValue) {
-      this.setState({selectedValue});
+      this.setState({ selectedValue });
     }
   }
 
   handleValueChange(selectedValue) {
-    this.setState({selectedValue});
+    this.setState({ selectedValue });
     if (Platform.OS === 'android') {
-      const {onValueChange} = this.props;
-      onValueChange && onValueChange(selectedValue)
+      const { onValueChange } = this.props;
+      onValueChange && onValueChange(selectedValue);
     }
   }
 
@@ -99,18 +105,18 @@ class Picker extends AbstractFormComponent<Props, any> {
   }
 
   handleConfirm() {
-    const {onValueChange} = this.props;
+    const { onValueChange } = this.props;
     onValueChange && onValueChange(this.state.selectedValue);
     this.handleDialogSwitch();
   }
 
   handleCancel() {
-    this.setState({selectedValue: this.currentSelectedValue});
+    this.setState({ selectedValue: this.currentSelectedValue });
     this.handleDialogSwitch();
   }
 
   handleDialogSwitch() {
-    this.setState({visible: !this.state.visible});
+    this.setState({ visible: !this.state.visible });
   }
 
   getValue() {
@@ -122,7 +128,7 @@ class Picker extends AbstractFormComponent<Props, any> {
   }
 
   renderHeader() {
-    const {renderHeader, confirmText, cancelText, title} = this.props;
+    const { renderHeader, confirmText, cancelText, title } = this.props;
     if (renderHeader) {
       return renderHeader();
     }
@@ -131,33 +137,32 @@ class Picker extends AbstractFormComponent<Props, any> {
         <TouchableOpacity onPress={this.handleCancel}>
           <Text style={styles.title}>{cancelText}</Text>
         </TouchableOpacity>
-        <Text style={[styles.title, {fontSize: 18}]}>{title}</Text>
+        <Text style={[styles.title, { fontSize: 18 }]}>{title}</Text>
         <TouchableOpacity onPress={this.handleConfirm}>
-          <Text style={styles.title}>
-            {confirmText}
-          </Text>
+          <Text style={styles.title}>{confirmText}</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
   render() {
-
-    const {editable, children, mode, style, ...other} = this.props;
+    const { editable, children, mode, style, ...other } = this.props;
 
     if (Platform.OS === 'android') {
       return (
-        <RNPicker mode={mode}
-                  onValueChange={this.handleValueChange}
-                  selectedValue={this.state.selectedValue}
-                  style={style}
-        >
+        <RNPicker
+          mode={mode}
+          onValueChange={this.handleValueChange}
+          selectedValue={this.state.selectedValue}
+          style={style}>
           {children}
         </RNPicker>
       );
     }
 
-    const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
+    const props = this.state.visible
+      ? this.contentShowAnimation
+      : this.contentHideAnimation;
     let label = '   ';
     const childrenArr: Array<any> = React.Children.toArray(children);
     for (let i = 0; i < childrenArr.length; i++) {
@@ -169,28 +174,22 @@ class Picker extends AbstractFormComponent<Props, any> {
     }
 
     return (
-      <TouchableOpacity disabled={editable}
-                        onPress={this.handleDialogOpen}
-      >
-        <Input {...other}
-               style={style}
-        >
+      <TouchableOpacity disabled={editable} onPress={this.handleDialogOpen}>
+        <Input {...other} style={style}>
           {label}
         </Input>
-        <Dialog hideAnimation={hideAnimation}
-                onPress={this.handleCancel}
-                showAnimation={showAnimation}
-                statusBarAutoHidden={false}
-                style={styles.dialogContainer}
-                visible={this.state.visible}
-        >
-          <AnimatableView {...props}
-                          style={styles.picker}
-          >
+        <Dialog
+          hideAnimation={hideAnimation}
+          onPress={this.handleCancel}
+          showAnimation={showAnimation}
+          statusBarAutoHidden={false}
+          style={styles.dialogContainer}
+          visible={this.state.visible}>
+          <AnimatableView {...props} style={styles.picker}>
             {this.renderHeader()}
-            <PickerIOS onValueChange={this.handleValueChange}
-                       selectedValue={this.state.selectedValue}
-            >
+            <PickerIOS
+              onValueChange={this.handleValueChange}
+              selectedValue={this.state.selectedValue}>
               {children}
             </PickerIOS>
           </AnimatableView>
@@ -198,13 +197,11 @@ class Picker extends AbstractFormComponent<Props, any> {
       </TouchableOpacity>
     );
   }
-
-
 }
 
 export const Item = Platform.select<React.ReactNode>({
   ios: PickerIOS.Item,
-  android: RNPicker.Item
+  android: RNPicker.Item,
 });
 
 export default Picker;

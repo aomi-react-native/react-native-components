@@ -6,7 +6,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 export default interface Props {
   cells: Array<any>;
 
-  renderCell?: (data: { cell: any, cellId: number }) => void;
+  renderCell?: (data: { cell: any; cellId: number }) => void;
 
   autoWidth?: boolean;
 

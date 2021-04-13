@@ -11,8 +11,8 @@ const styles: any = {
     borderWidth: separatorHeight,
     borderColor: Colors.separator,
     borderRadius: 7,
-    backgroundColor: '#FFF'
-  }
+    backgroundColor: '#FFF',
+  },
 };
 
 /**
@@ -20,16 +20,12 @@ const styles: any = {
  * @date 2017/3/30
  */
 export default class Card extends Component<CardProps> {
-
   render() {
-    const {style, children, ...other} = this.props;
+    const { style, children, ...other } = this.props;
     return (
-      <View {...other}
-            style={[styles.container, style]}
-      >
+      <View {...other} style={[styles.container, style]}>
         {children}
       </View>
     );
   }
-
 }

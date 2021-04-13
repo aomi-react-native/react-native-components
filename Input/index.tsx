@@ -12,25 +12,25 @@ const styles = StyleSheet.create<any>({
     flexDirection: 'row',
     borderWidth: separatorHeight,
     borderColor: Colors.separator,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   icon: {
     ...commonStyle.center,
-    width: 25
+    width: 25,
   },
   input: {
     flex: 1,
     minHeight: 40,
-    marginTop: Platform.OS === 'ios' ? 2 : 0
+    marginTop: Platform.OS === 'ios' ? 2 : 0,
   },
   textInput: {
     fontSize,
-    color: Colors.fontColor
+    color: Colors.fontColor,
   },
   label: {
     justifyContent: 'center',
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 });
 
 const INPUT_PROPS_KEYS = [
@@ -64,16 +64,15 @@ const INPUT_PROPS_KEYS = [
   'selectionState',
   'textAlign',
   'underlineColorAndroid',
-  'name'
+  'name',
 ];
 
 @field
 export default class Input extends AbstractFormComponent<Props, any> {
-
   static defaultProps = {
     defaultValue: '',
     underlineColorAndroid: 'transparent',
-    validate: true
+    validate: true,
   };
 
   state;
@@ -84,10 +83,10 @@ export default class Input extends AbstractFormComponent<Props, any> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      value: props.defaultValue || ''
+      value: props.defaultValue || '',
     };
 
-    const {name, form} = this.props;
+    const { name, form } = this.props;
     name && form && form.putFormValue(name, this.props.defaultValue);
     this.putFormField();
   }
@@ -103,7 +102,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
   }
 
   putFormField() {
-    const {name, form} = this.props;
+    const { name, form } = this.props;
     if (name && form) {
       form.formFields[name] = this;
     }
@@ -114,7 +113,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
   }
 
   isValid(): boolean {
-    let {validate, valid, pattern, required, name, form} = this.props;
+    let { validate, valid, pattern, required, name, form } = this.props;
     if (validate) {
       if (valid) {
         let result = valid(this.state.value);
@@ -141,7 +140,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
   }
 
   setFormFieldInfo(result) {
-    const {name, form} = this.props;
+    const { name, form } = this.props;
     if (result) {
       name && form && form.deleteErrOrMissField(name);
     } else {
@@ -150,8 +149,8 @@ export default class Input extends AbstractFormComponent<Props, any> {
   }
 
   handleChangeText(value) {
-    this.setState({value});
-    const {onChangeText, name, form} = this.props;
+    this.setState({ value });
+    const { onChangeText, name, form } = this.props;
     name && form && form.putFormValue(name, value);
     onChangeText && onChangeText(value);
   }
@@ -161,10 +160,10 @@ export default class Input extends AbstractFormComponent<Props, any> {
   }
 
   render() {
-    const {after, before, style, inputStyle, children, ...other} = this.props;
+    const { after, before, style, inputStyle, children, ...other } = this.props;
 
     let newInputProps = {};
-    let newProps = {...other};
+    let newProps = { ...other };
 
     INPUT_PROPS_KEYS.forEach(key => {
       newInputProps[key] = this.props[key];
@@ -174,33 +173,29 @@ export default class Input extends AbstractFormComponent<Props, any> {
     let textInput;
     if (children) {
       textInput = (
-        <View style={[styles.input, {justifyContent: 'center'}]}>
-          <Text numberOfLines={1}
-                style={[styles.textInput, inputStyle]}
-          >
+        <View style={[styles.input, { justifyContent: 'center' }]}>
+          <Text numberOfLines={1} style={[styles.textInput, inputStyle]}>
             {children}
           </Text>
         </View>
       );
     } else {
       textInput = (
-        <TextInput {...newInputProps}
-                   onChangeText={this.handleChangeText}
-                   ref={textInput => this.textInput = textInput}
-                   style={[styles.input, inputStyle]}
+        <TextInput
+          {...newInputProps}
+          onChangeText={this.handleChangeText}
+          ref={textInput => (this.textInput = textInput)}
+          style={[styles.input, inputStyle]}
         />
       );
     }
 
     return (
-      <View {...newProps}
-            style={[styles.container, style]}
-      >
+      <View {...newProps} style={[styles.container, style]}>
         {before}
         {textInput}
         {after}
       </View>
     );
   }
-
 }

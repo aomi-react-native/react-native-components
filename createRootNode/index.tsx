@@ -8,11 +8,11 @@ import { StaticContainer } from '../StaticContainer';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative'
+    position: 'relative',
   },
   offStream: {
-    position: 'absolute'
-  }
+    position: 'absolute',
+  },
 });
 
 export const CREATE_EVENT = 'ROOT_ELEMENT_CREATE';
@@ -34,13 +34,12 @@ if (!(emitter instanceof EventEmitter)) {
       const OriginAppComponent = getAppComponent();
 
       return class extends React.Component {
-
         static displayName = `Root(${appKey})`;
 
         constructor(props) {
           super(props);
           this.update = this.update.bind(this);
-          ['update', 'create'].forEach(f => this[f] = this[f].bind(this));
+          ['update', 'create'].forEach(f => (this[f] = this[f].bind(this)));
           emitter.addListener(CREATE_EVENT, this.create);
           emitter.addListener(UPDATE_EVENT, this.update);
         }
@@ -52,20 +51,20 @@ if (!(emitter instanceof EventEmitter)) {
           updates.clear();
         }
 
-        create({id, SiblingComponent, props, callback}) {
+        create({ id, SiblingComponent, props, callback }) {
           if (siblings.has(id) && !SiblingComponent) {
             siblings.delete(id);
           } else if (SiblingComponent) {
             siblings.set(id, {
               SiblingComponent,
-              props
+              props,
             });
             updates.add(id);
           }
           this.forceUpdate(callback);
         }
 
-        update({id, props, callback}) {
+        update({ id, props, callback }) {
           if (siblings.has(id)) {
             const sibling = siblings.get(id);
             sibling.props = props;
@@ -77,12 +76,12 @@ if (!(emitter instanceof EventEmitter)) {
 
         render() {
           const elements = [];
-          siblings.forEach(({SiblingComponent, props}, id) => {
+          siblings.forEach(({ SiblingComponent, props }, id) => {
             elements.push(
-              <StaticContainer key={`root-sibling-${id}`}
-                               shouldUpdate={updates.has(id)}
-              >
-                <SiblingComponent {...props}/>
+              <StaticContainer
+                key={`root-sibling-${id}`}
+                shouldUpdate={updates.has(id)}>
+                <SiblingComponent {...props} />
               </StaticContainer>
             );
           });
@@ -113,9 +112,7 @@ export function createRootView(RootView, props): RootManager {
  * @date 16/8/11
  */
 export default function createRootNode<P, S>(RootView) {
-
   return class extends React.Component<P, S> {
-
     manager: RootManager;
 
     componentWillMount() {
@@ -131,7 +128,7 @@ export default function createRootNode<P, S>(RootView) {
     }
 
     render() {
-      return <View/>;
+      return <View />;
     }
   };
 }

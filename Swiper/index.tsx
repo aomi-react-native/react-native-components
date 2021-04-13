@@ -7,7 +7,7 @@ import { getWindowSize } from '../styles';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative'
+    position: 'relative',
   },
   dotContainer: {
     position: 'absolute',
@@ -18,22 +18,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 10,
-    zIndex: 9999
+    zIndex: 9999,
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
   activeDot: {
-    backgroundColor: '#007aff'
-  }
+    backgroundColor: '#007aff',
+  },
 });
 
 const initialLayout = {
   height: 1,
-  width: getWindowSize().width
+  width: getWindowSize().width,
 };
 
 /**
@@ -41,24 +41,23 @@ const initialLayout = {
  * @date 2017/10/18
  */
 export class Swiper extends Component<Props> {
-
   static defaultProps = {
     autoPlay: false,
     duration: 2500,
-    horizontal: true
+    horizontal: true,
   };
 
   static getDerivedStateFromProps(props) {
     return {
       routes: React.Children.toArray(props.children).map((child, index) => ({
-        key: `${index}`
-      }))
+        key: `${index}`,
+      })),
     };
   }
 
   state = {
     index: 0,
-    routes: []
+    routes: [],
   };
 
   autoPlayTask;
@@ -68,8 +67,8 @@ export class Swiper extends Component<Props> {
     this.state = {
       index: 0,
       routes: React.Children.toArray(props.children).map((child, index) => ({
-        key: `${index}`
-      }))
+        key: `${index}`,
+      })),
     };
     this.autoPlay();
   }
@@ -79,15 +78,15 @@ export class Swiper extends Component<Props> {
   }
 
   autoPlay() {
-    const {autoPlay, duration} = this.props;
+    const { autoPlay, duration } = this.props;
     if (autoPlay) {
       this.autoPlayTask = setInterval(() => {
-        const {index, routes} = this.state;
+        const { index, routes } = this.state;
         let next = index + 1;
         if (!routes[next]) {
           next = 0;
         }
-        this.setState({index: next});
+        this.setState({ index: next });
       }, duration);
     } else {
       this.autoPlayTask && clearInterval(this.autoPlayTask);
@@ -95,30 +94,41 @@ export class Swiper extends Component<Props> {
   }
 
   handleIndexChange(index: number) {
-    this.setState({index});
+    this.setState({ index });
   }
 
-  renderScene({route}) {
-    const {children} = this.props;
-    const {key} = route;
+  renderScene({ route }) {
+    const { children } = this.props;
+    const { key } = route;
     return (
-      <View style={{flex: 1, width: getWindowSize().width}}>
+      <View style={{ flex: 1, width: getWindowSize().width }}>
         {React.Children.toArray(children)[key]}
       </View>
     );
   }
 
-  renderPagination({navigationState}) {
-    const {index, routes} = navigationState;
-    const {showDot = false, activeColor = '#007aff', inactiveColor = 'rgba(0,0,0,.2)'} = this.props;
+  renderPagination({ navigationState }) {
+    const { index, routes } = navigationState;
+    const {
+      showDot = false,
+      activeColor = '#007aff',
+      inactiveColor = 'rgba(0,0,0,.2)',
+    } = this.props;
     if (!showDot) {
       return null;
     }
     return (
       <View style={styles.dotContainer}>
-        {routes.map(({key}) => (
-          <View key={key}
-                style={[styles.dot, {backgroundColor: `${index}` === key ? activeColor : inactiveColor}]}
+        {routes.map(({ key }) => (
+          <View
+            key={key}
+            style={[
+              styles.dot,
+              {
+                backgroundColor:
+                  `${index}` === key ? activeColor : inactiveColor,
+              },
+            ]}
           />
         ))}
       </View>
@@ -126,19 +136,19 @@ export class Swiper extends Component<Props> {
   }
 
   render() {
-    const {containerStyle, style} = this.props;
+    const { containerStyle, style } = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
-        <TabView initialLayout={initialLayout}
-                 navigationState={this.state}
-                 onIndexChange={this.handleIndexChange}
-                 renderScene={this.renderScene}
-                 renderTabBar={this.renderPagination}
-                 style={[{flex: 1}, style]}
-                 tabBarPosition="bottom"
+        <TabView
+          initialLayout={initialLayout}
+          navigationState={this.state}
+          onIndexChange={this.handleIndexChange}
+          renderScene={this.renderScene}
+          renderTabBar={this.renderPagination}
+          style={[{ flex: 1 }, style]}
+          tabBarPosition="bottom"
         />
       </View>
     );
   }
-
 }

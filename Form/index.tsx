@@ -3,7 +3,6 @@ import Component from '../AbstractComponent';
 import { View } from 'react-native';
 import { Props } from './Props';
 
-
 export const FormContext = React.createContext({});
 
 /**
@@ -12,7 +11,6 @@ export const FormContext = React.createContext({});
  * @date 16/5/5
  */
 export default class Form extends Component<Props> {
-
   /**
    * 错误字段
    * @type {Array}
@@ -68,8 +66,12 @@ export default class Form extends Component<Props> {
    */
   getErrorFields() {
     return {
-      miss: Object.keys(this.missFields).filter(key => this.missFields[key] !== null),
-      error: Object.keys(this.errorFields).filter(key => this.errorFields[key] !== null)
+      miss: Object.keys(this.missFields).filter(
+        key => this.missFields[key] !== null
+      ),
+      error: Object.keys(this.errorFields).filter(
+        key => this.errorFields[key] !== null
+      ),
     };
   }
 
@@ -82,19 +84,21 @@ export default class Form extends Component<Props> {
       this.formFields[field].isValid && this.formFields[field].isValid();
     });
 
-    let miss = Object.keys(this.missFields).filter(key => this.missFields[key] !== null);
-    let error = Object.keys(this.errorFields).filter(key => this.errorFields[key] !== null);
+    let miss = Object.keys(this.missFields).filter(
+      key => this.missFields[key] !== null
+    );
+    let error = Object.keys(this.errorFields).filter(
+      key => this.errorFields[key] !== null
+    );
 
     return miss.length === 0 && error.length === 0;
   }
 
   render() {
-    const {children, ...props} = this.props;
+    const { children, ...props } = this.props;
     return (
-      <FormContext.Provider value={{form: this}}>
-        <View {...props}>
-          {children}
-        </View>
+      <FormContext.Provider value={{ form: this }}>
+        <View {...props}>{children}</View>
       </FormContext.Provider>
     );
   }

@@ -19,7 +19,6 @@ const URL_PATTERN = /(http|ftp|https):\/\/.*/;
  * @date 2017/2/21
  */
 export default class HttpUtils {
-
   static isUrl(url) {
     return URL_PATTERN.test(url);
   }
@@ -57,5 +56,4 @@ export default class HttpUtils {
       })
       .join('&');
   }
-
 }

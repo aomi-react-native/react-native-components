@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { ActivityIndicator, BackHandler, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  BackHandler,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Component from '../AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
 import createRootNode from '../createRootNode/index';
@@ -7,7 +14,6 @@ import RootManager from '../createRootNode/RootManager';
 import Props from './Props';
 
 import styles from './styles';
-
 
 function handleAndroidBackPress() {
   return true;
@@ -18,17 +24,16 @@ function handleAndroidBackPress() {
  * @date 16/5/24
  */
 export class AbstractDialog extends Component<Props> {
-
   static defaultProps = {
     autoDisableAndroidBackPress: true,
     activeOpacity: 1,
     visible: false,
-    statusBarAutoHidden: true
+    statusBarAutoHidden: true,
   };
 
   state = {
     animating: false,
-    visible: false
+    visible: false,
   };
 
   mounted = true;
@@ -57,27 +62,27 @@ export class AbstractDialog extends Component<Props> {
     if (this.state.visible) {
       BackHandler.addEventListener('hardwareBackPress', handleAndroidBackPress);
     } else {
-      BackHandler.removeEventListener('hardwareBackPress', handleAndroidBackPress);
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleAndroidBackPress
+      );
     }
   }
 
   handlePress() {
-    let {onPress} = this.props;
+    let { onPress } = this.props;
     onPress && onPress();
   }
 
   handleAnimationBegin() {
-    this.setState({animating: true});
+    this.setState({ animating: true });
   }
 
   handleAnimationEnd() {
     if (!this.mounted) {
       return;
     }
-    let {
-      visible,
-      statusBarAutoHidden
-    } = this.props;
+    let { visible, statusBarAutoHidden } = this.props;
 
     if (visible) {
       if (statusBarAutoHidden) {
@@ -91,12 +96,11 @@ export class AbstractDialog extends Component<Props> {
 
     this.setState({
       visible,
-      animating: false
+      animating: false,
     });
-
   }
 
-  renderLoading({children, loadingProps}) {
+  renderLoading({ children, loadingProps }) {
     let child;
     if (typeof children === 'string') {
       child = <Text style={styles.text}>{children}</Text>;
@@ -107,15 +111,13 @@ export class AbstractDialog extends Component<Props> {
     }
     return (
       <View style={styles.content}>
-        <ActivityIndicator {...loadingProps}/>
+        <ActivityIndicator {...loadingProps} />
         {child}
       </View>
     );
   }
 
-
   render() {
-
     let {
       children,
       activeOpacity,
@@ -124,11 +126,11 @@ export class AbstractDialog extends Component<Props> {
       showAnimation,
       hideAnimation,
       loadingDialog,
-      loadingProps
+      loadingProps,
     } = this.props;
 
     if (!visible && !this.state.visible) {
-      return <View/>;
+      return <View />;
     }
 
     let animation = visible ? showAnimation : hideAnimation;
@@ -136,20 +138,22 @@ export class AbstractDialog extends Component<Props> {
     let tmp = loadingDialog ? styles.loadingStyle : null;
 
     return (
-      <AnimatableView {...animation}
-                      onAnimationBegin={this.handleAnimationBegin}
-                      onAnimationEnd={this.handleAnimationEnd}
-                      style={[styles.container, tmp, style]}
-      >
+      <AnimatableView
+        {...animation}
+        onAnimationBegin={this.handleAnimationBegin}
+        onAnimationEnd={this.handleAnimationEnd}
+        style={[styles.container, tmp, style]}>
         <TouchableOpacity
           activeOpacity={activeOpacity}
           onPress={this.handlePress}
           style={styles.container}
         />
-        {loadingDialog ? this.renderLoading({
-          children,
-          loadingProps
-        }) : children}
+        {loadingDialog
+          ? this.renderLoading({
+              children,
+              loadingProps,
+            })
+          : children}
       </AnimatableView>
     );
   }

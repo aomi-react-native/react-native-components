@@ -1,13 +1,12 @@
 import * as React from 'react';
 
 export interface Props {
-  shouldUpdate: boolean
+  shouldUpdate: boolean;
 }
 
 export class StaticContainer extends React.Component<Props> {
-
   static defaultProps: {
-    shouldUpdate: boolean
+    shouldUpdate: boolean;
   };
 
   shouldComponentUpdate(nextProps) {
@@ -16,7 +15,8 @@ export class StaticContainer extends React.Component<Props> {
 
   render() {
     const child = this.props.children;
-    return (child === null || child === false) ? null : React.Children.only(child);
+    return child === null || child === false
+      ? null
+      : React.Children.only(child);
   }
-
 }

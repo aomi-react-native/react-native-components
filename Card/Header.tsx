@@ -7,28 +7,28 @@ const styles: any = {
   container: {
     flexDirection: 'row',
     paddingHorizontal: 15,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   content: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 7
+    paddingHorizontal: 7,
   },
   titleContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   titleText: {
     fontSize: 17,
-    color: '#333333'
+    color: '#333333',
   },
   subtitleText: {
     color: '#acacac',
-    fontSize: 14
+    fontSize: 14,
   },
   extra: {},
-  extraText: {}
+  extraText: {},
 };
 
 /**
@@ -36,17 +36,16 @@ const styles: any = {
  * @date 2017/3/30
  */
 export default class Header extends Component<HeaderProps> {
-
   renderThumb() {
-    const {thumb} = this.props;
+    const { thumb } = this.props;
     if (typeof thumb === 'string') {
-      return <Image source={{uri: thumb}}/>;
+      return <Image source={{ uri: thumb }} />;
     }
     return thumb;
   }
 
   renderTitle() {
-    const {title} = this.props;
+    const { title } = this.props;
     if (typeof title === 'string') {
       return <Text style={styles.titleText}>{title}</Text>;
     }
@@ -54,7 +53,7 @@ export default class Header extends Component<HeaderProps> {
   }
 
   renderExtra() {
-    const {extra} = this.props;
+    const { extra } = this.props;
     if (typeof extra === 'string') {
       return <Text style={styles.extraText}>{extra}</Text>;
     }
@@ -62,12 +61,10 @@ export default class Header extends Component<HeaderProps> {
   }
 
   renderSubtitle() {
-    const {subtitle} = this.props;
+    const { subtitle } = this.props;
     if (typeof subtitle === 'string') {
       return (
-        <Text numberOfLines={9999}
-              style={styles.subtitleText}
-        >
+        <Text numberOfLines={9999} style={styles.subtitleText}>
           {subtitle}
         </Text>
       );
@@ -76,25 +73,18 @@ export default class Header extends Component<HeaderProps> {
   }
 
   render() {
-    const {style, ...props} = this.props;
+    const { style, ...props } = this.props;
     return (
-      <View {...props}
-            style={[styles.container, style]}
-      >
-        <View style={styles.thumb}>
-          {this.renderThumb()}
-        </View>
+      <View {...props} style={[styles.container, style]}>
+        <View style={styles.thumb}>{this.renderThumb()}</View>
         <View style={styles.content}>
           <View style={styles.titleContainer}>
             {this.renderTitle()}
             {this.renderSubtitle()}
           </View>
-          <View style={styles.extra}>
-            {this.renderExtra()}
-          </View>
+          <View style={styles.extra}>{this.renderExtra()}</View>
         </View>
       </View>
     );
   }
-
 }

@@ -12,7 +12,6 @@ const excludeFunc = [
   'componentWillUnmount'
 ];
 
-
 /**
  * 1、实现自动绑定
  * 2、简易判断数据是否改动
@@ -20,7 +19,6 @@ const excludeFunc = [
  * @author Sean sean.snow@live.com
  */
 export default class AbstractComponent<P = {}, S = {}> extends Component<P, S> {
-
   constructor(props?: P, content?: any) {
     super(props, content);
     const propertyNames = Reflect.ownKeys(Reflect.getPrototypeOf(this));
@@ -30,5 +28,4 @@ export default class AbstractComponent<P = {}, S = {}> extends Component<P, S> {
       }
     });
   }
-
 }

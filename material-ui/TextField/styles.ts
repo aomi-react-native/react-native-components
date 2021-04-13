@@ -9,7 +9,7 @@ const store = {
     container: {},
     input: {
       borderWidth: 0,
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     },
     underline: {
       marginTop: 3,
@@ -19,15 +19,15 @@ const store = {
     underlineDisabled: {},
     underlineFocus: {
       backgroundColor: cyan['500'],
-      height: 1
+      height: 1,
     },
     floatingLabel: {
-      color: 'rgba(0, 0, 0, 0.3)'
+      color: 'rgba(0, 0, 0, 0.3)',
     },
     floatingLabelFocus: {
-      color: cyan['500']
-    }
-  })
+      color: cyan['500'],
+    },
+  }),
 };
 
 export function getStyles() {
@@ -37,6 +37,6 @@ export function getStyles() {
 export function setStyles(styles) {
   store.styles = {
     ...store.styles,
-    ...styles
+    ...styles,
   };
 }

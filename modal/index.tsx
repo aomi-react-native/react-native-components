@@ -14,62 +14,61 @@ const styles = StyleSheet.create<any>({
   mask: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,.4)'
+    backgroundColor: 'rgba(0,0,0,.4)',
   },
   container: {
     marginHorizontal: 15,
     borderRadius: 10,
     borderWidth: 0.1,
     minHeight: 100,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   content: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   title: {
     textAlign: 'center',
     fontSize,
-    padding: 15
+    padding: 15,
   },
   buttonGroup: {
     marginTop: 15,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   buttonStyle: {
-    flex: 1
+    flex: 1,
   },
   button: {
-    borderRadius: 0
-  }
+    borderRadius: 0,
+  },
 });
 
 const popupShowAnimation = {
   animation: 'slideInUp',
-  duration: 300
+  duration: 300,
 };
 
 const popupHideAnimation = {
   animation: 'slideOutDown',
-  duration: 300
+  duration: 300,
 };
 
 class SceneModal extends Component<Props> {
-
   static defaultProps = {
-    buttons: []
+    buttons: [],
   };
 
   static contextTypes = {
-    manager: PropTypes.object
+    manager: PropTypes.object,
   };
 
   static childContextTypes = {
-    destroy: PropTypes.func
+    destroy: PropTypes.func,
   };
 
   getChildContext() {
     return {
-      destroy: this.handleClose
+      destroy: this.handleClose,
     };
   }
 
@@ -77,7 +76,7 @@ class SceneModal extends Component<Props> {
 
   constructor(props) {
     super(props);
-    const {showAnimation, scene} = props;
+    const { showAnimation, scene } = props;
     let animation = {};
     switch (scene) {
       case 'popup':
@@ -89,7 +88,7 @@ class SceneModal extends Component<Props> {
     this.state = {
       visible: true,
       isShow: true,
-      animation
+      animation,
     };
   }
 
@@ -102,7 +101,7 @@ class SceneModal extends Component<Props> {
   }
 
   handleDismiss() {
-    const {onDismiss} = this.props;
+    const { onDismiss } = this.props;
     Keyboard.dismiss();
     const result = onDismiss && onDismiss();
     this.handleClose(result);
@@ -110,7 +109,7 @@ class SceneModal extends Component<Props> {
 
   handleClose(result) {
     if (result !== true) {
-      const {hideAnimation, scene} = this.props;
+      const { hideAnimation, scene } = this.props;
       let animation;
       switch (scene) {
         case 'popup':
@@ -121,13 +120,12 @@ class SceneModal extends Component<Props> {
       }
       this.setState({
         animation,
-        isShow: false
+        isShow: false,
       });
       // 如果不存在关闭动画，直接销毁组件
       if (!animation) {
         this.destroy();
       }
-
     }
   }
 
@@ -138,7 +136,7 @@ class SceneModal extends Component<Props> {
   }
 
   destroy() {
-    this.setState({visible: false});
+    this.setState({ visible: false });
     this.context.manager.destroy();
   }
 
@@ -147,39 +145,43 @@ class SceneModal extends Component<Props> {
       maskStyle,
       containerStyle,
       contentStyle,
-      title, content,
-      buttons
+      title,
+      content,
+      buttons,
     } = this.props;
 
-    const {animation, visible} = this.state;
+    const { animation, visible } = this.state;
 
     return (
-      <AbstractDialog onPress={this.handleDismiss}
-                      style={[styles.mask, maskStyle]}
-                      visible={visible}
-      >
-        <Animatable.View {...animation}
-                         onAnimationEnd={this.handleAnimationEnd}
-                         style={[styles.container, containerStyle]}
-        >
+      <AbstractDialog
+        onPress={this.handleDismiss}
+        style={[styles.mask, maskStyle]}
+        visible={visible}>
+        <Animatable.View
+          {...animation}
+          onAnimationEnd={this.handleAnimationEnd}
+          style={[styles.container, containerStyle]}>
           {typeof title === 'string' ? (
             <Text style={styles.title}>{title}</Text>
-          ) : title}
+          ) : (
+            title
+          )}
           <View style={[styles.content, contentStyle]}>
-            {typeof content === 'string' ? (
-              <Text>{content}</Text>
-            ) : content}
+            {typeof content === 'string' ? <Text>{content}</Text> : content}
           </View>
           {buttons && buttons.length > 0 && (
             <View style={[styles.buttonGroup]}>
-              {buttons.map(({onPress, containerStyle, style, ...props}, index) => (
-                <Button {...props}
-                        containerStyle={[styles.button, containerStyle]}
-                        key={index}
-                        onPress={this.handlePress(onPress)}
-                        style={[styles.buttonStyle, style]}
-                />
-              ))}
+              {buttons.map(
+                ({ onPress, containerStyle, style, ...props }, index) => (
+                  <Button
+                    {...props}
+                    containerStyle={[styles.button, containerStyle]}
+                    key={index}
+                    onPress={this.handlePress(onPress)}
+                    style={[styles.buttonStyle, style]}
+                  />
+                )
+              )}
             </View>
           )}
         </Animatable.View>
@@ -205,7 +207,7 @@ export default (args: Props) => {
 export function info(args) {
   return sceneModal({
     ...args,
-    scene: 'info'
+    scene: 'info',
   });
 }
 
@@ -215,7 +217,7 @@ export function info(args) {
 export function success(args) {
   return sceneModal({
     ...args,
-    scene: 'success'
+    scene: 'success',
   });
 }
 
@@ -225,7 +227,7 @@ export function success(args) {
 export function error(args) {
   return sceneModal({
     ...args,
-    scene: 'error'
+    scene: 'error',
   });
 }
 
@@ -235,7 +237,7 @@ export function error(args) {
 export function warn(args) {
   return sceneModal({
     ...args,
-    scene: 'warn'
+    scene: 'warn',
   });
 }
 
@@ -246,51 +248,55 @@ export function warn(args) {
  * @param {{}} args 其他参数
  * @returns {RootManager}
  */
-export function alert({ok = '确定', onOk, button, ...args}: any = {}) {
-  const buttons = [{
-    onPress: onOk,
-    children: ok,
-    ...button
-  }];
+export function alert({ ok = '确定', onOk, button, ...args }: any = {}) {
+  const buttons = [
+    {
+      onPress: onOk,
+      children: ok,
+      ...button,
+    },
+  ];
   return sceneModal({
     ...args,
     scene: 'alert',
-    buttons
+    buttons,
   });
 }
 
 /**
  */
 export function confirm({
-                          cancel = '取消',
-                          ok = '确定',
-                          onOk,
-                          okButton,
-                          onCancel,
-                          cancelButton,
-                          ...args
-                        }: any = {}) {
-
-  const buttons = [{
-    children: cancel,
-    onPress: onCancel,
-    ...cancelButton
-  }, {
-    children: ok,
-    onPress: onOk,
-    ...okButton
-  }];
+  cancel = '取消',
+  ok = '确定',
+  onOk,
+  okButton,
+  onCancel,
+  cancelButton,
+  ...args
+}: any = {}) {
+  const buttons = [
+    {
+      children: cancel,
+      onPress: onCancel,
+      ...cancelButton,
+    },
+    {
+      children: ok,
+      onPress: onOk,
+      ...okButton,
+    },
+  ];
 
   return sceneModal({
     ...args,
     scene: 'confirm',
-    buttons
+    buttons,
   });
 }
 
 export function popup(args) {
   return sceneModal({
     ...args,
-    scene: 'popup'
+    scene: 'popup',
   });
 }

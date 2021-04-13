@@ -6,8 +6,8 @@ import { FooterProps } from './Props';
 const styles = {
   container: {
     paddingHorizontal: 15,
-    paddingVertical: 10
-  }
+    paddingVertical: 10,
+  },
 };
 
 /**
@@ -15,14 +15,8 @@ const styles = {
  * @date 2017/3/30
  */
 export default class Footer extends Component<FooterProps> {
-
   render() {
-    const {children} = this.props;
-    return (
-      <View style={styles.container}>
-        {children}
-      </View>
-    );
+    const { children } = this.props;
+    return <View style={styles.container}>{children}</View>;
   }
-
 }

@@ -1,15 +1,15 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
 
-const {SitbRCTOrientationManager} = NativeModules;
+const { SitbRCTOrientationManager } = NativeModules;
 
 export interface OriType {
-  unknown: number,
-  portrait: number,
-  portraitUpsideDown: number,
-  landscapeLeft: number,
-  landscapeRight: number,
-  faceUp: number,
-  faceDown: number
+  unknown: number;
+  portrait: number;
+  portraitUpsideDown: number;
+  landscapeLeft: number;
+  landscapeRight: number;
+  faceUp: number;
+  faceDown: number;
 }
 
 export const Orientation: OriType = SitbRCTOrientationManager.Orientation;
@@ -22,7 +22,6 @@ const emitter = new NativeEventEmitter(SitbRCTOrientationManager);
  * @date 16/8/5
  */
 export default class OrientationManager {
-
   /**
    * 获取当前屏幕方向
    * @return {*}
@@ -62,5 +61,4 @@ export default class OrientationManager {
   static removeDeviceOrientationDidChangeListener(callback) {
     emitter.removeListener('deviceOrientationDidChange', callback);
   }
-
 }

@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { FlatList, Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import AbstractComponent from '../AbstractComponent';
 
 import { Colors, fontSize, separatorHeight } from '../styles';
@@ -13,10 +20,10 @@ const styles = StyleSheet.create({
   container: {
     borderBottomWidth: separatorHeight,
     borderTopWidth: separatorHeight,
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
   rowContainer: {
-    backgroundColor: '#b3b3b3'
+    backgroundColor: '#b3b3b3',
   },
   row: {
     flex: 1,
@@ -24,38 +31,38 @@ const styles = StyleSheet.create({
     minHeight: 45,
     alignItems: 'center',
     backgroundColor: '#FFF',
-    paddingHorizontal: padding
+    paddingHorizontal: padding,
   },
   header: {
-    marginRight: 10
+    marginRight: 10,
   },
   headerText: {
     color: Colors.fontColor,
     fontSize,
   },
   body: {
-    flex: 1
+    flex: 1,
   },
   bodyTextStyle: {
     color: Colors.fontColor,
-    fontSize
+    fontSize,
   },
   footer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   footerTextStyle: {
     color: '#b3b3b3',
-    fontSize
+    fontSize,
   },
   separator: {
-    height: separatorHeight
+    height: separatorHeight,
   },
   right: {
     width: 19,
     height: 19,
-    resizeMode: 'contain'
-  }
+    resizeMode: 'contain',
+  },
 });
 
 /**
@@ -63,69 +70,74 @@ const styles = StyleSheet.create({
  * @date 16/5/25
  */
 class List extends AbstractComponent<Props> {
-
   static defaultProps = {
     disabled: false,
     displayRightArrow: true,
     alwaysBounceVertical: false,
     fullSeparator: false,
     separatorColor: Colors.separator,
-    rightArrow: (
-      <Image source={right}
-             style={styles.right}
-      />
-    )
+    rightArrow: <Image source={right} style={styles.right} />,
   };
 
   renderHeader(header) {
-    const {headerTextStyle} = this.props;
+    const { headerTextStyle } = this.props;
 
     if (typeof header === 'string') {
       return (
-        <Text style={[styles.header, styles.headerText, headerTextStyle]}>{header}</Text>
+        <Text style={[styles.header, styles.headerText, headerTextStyle]}>
+          {header}
+        </Text>
       );
     }
 
-    return React.cloneElement(<View/>, {
+    return React.cloneElement(<View />, {
       style: header && styles.header,
-      children: header
+      children: header,
     });
   }
 
   renderBody(body) {
-    const {bodyTextStyle} = this.props;
+    const { bodyTextStyle } = this.props;
     if (!body || typeof body === 'string') {
       return (
-        <Text style={[styles.body, styles.bodyTextStyle, bodyTextStyle]}>{body || ''}</Text>
+        <Text style={[styles.body, styles.bodyTextStyle, bodyTextStyle]}>
+          {body || ''}
+        </Text>
       );
     }
-    return React.cloneElement(<View/>, {
+    return React.cloneElement(<View />, {
       style: styles.body,
-      children: body
+      children: body,
     });
   }
 
   renderFooter(footer, rightArrow) {
-    const {footerTextStyle} = this.props;
+    const { footerTextStyle } = this.props;
     return (
       <View style={styles.footer}>
         {typeof footer === 'string' ? (
-          <Text style={[styles.footerTextStyle, footerTextStyle]}>{footer}</Text>
-        ) : footer}
+          <Text style={[styles.footerTextStyle, footerTextStyle]}>
+            {footer}
+          </Text>
+        ) : (
+          footer
+        )}
         {rightArrow}
       </View>
     );
   }
 
-  renderItem({item}) {
-    const {header, body, footer, rightArrow, disabled, style} = item;
+  renderItem({ item }) {
+    const { header, body, footer, rightArrow, disabled, style } = item;
     const {
-      onItemPress, itemStyle, disabled: defaultDisabled,
-      rightArrow: defaultRightArrow
+      onItemPress,
+      itemStyle,
+      disabled: defaultDisabled,
+      rightArrow: defaultRightArrow,
     } = this.props;
 
     let tmpDisplayRightArrow = rightArrow;
-    if (null === rightArrow || undefined === rightArrow) {
+    if (rightArrow === null || undefined === rightArrow) {
       tmpDisplayRightArrow = defaultRightArrow;
     }
     let tmpDisabled = disabled;
@@ -134,10 +146,10 @@ class List extends AbstractComponent<Props> {
     }
 
     return (
-      <TouchableHighlight disabled={tmpDisabled}
-                          onPress={() => onItemPress && onItemPress(item)}
-                          style={styles.rowContainer}
-      >
+      <TouchableHighlight
+        disabled={tmpDisabled}
+        onPress={() => onItemPress && onItemPress(item)}
+        style={styles.rowContainer}>
         <View style={[styles.row, style || itemStyle]}>
           {this.renderHeader(header)}
           {this.renderBody(body)}
@@ -163,24 +175,33 @@ class List extends AbstractComponent<Props> {
 
     function DefItemSeparatorComponent() {
       return (
-        <View style={fullSeparator ? {} : {paddingLeft: padding}}>
-          <View style={[styles.separator, {backgroundColor: separatorColor}]}/>
+        <View style={fullSeparator ? {} : { paddingLeft: padding }}>
+          <View
+            style={[styles.separator, { backgroundColor: separatorColor }]}
+          />
         </View>
       );
     }
 
     return (
-      <View style={[styles.container, {borderColor: separatorColor}, containerStyle]}>
+      <View
+        style={[
+          styles.container,
+          { borderColor: separatorColor },
+          containerStyle,
+        ]}>
         {header}
-        <FlatList {...other}
-                  ItemSeparatorComponent={ItemSeparatorComponent || DefItemSeparatorComponent}
-                  keyExtractor={this.keyExtractor}
-                  renderItem={this.renderItem}
+        <FlatList
+          {...other}
+          ItemSeparatorComponent={
+            ItemSeparatorComponent || DefItemSeparatorComponent
+          }
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
         />
       </View>
     );
   }
-
 }
 
 export default List;

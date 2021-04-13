@@ -1,20 +1,13 @@
-import React, {
-  Component,
-  PropTypes
-} from 'react';
+import React, { Component, PropTypes } from 'react';
 
-import {
-  Text,
-  View,
-  StyleSheet
-} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import Form, {
   Input,
   Switch,
   Slider,
   Picker,
-  DatePicker
+  DatePicker,
 } from 'react-native-components/form';
 import Button from 'react-native-components/bootstrap/Button';
 
@@ -26,8 +19,8 @@ let styles = StyleSheet.create({
     left: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)'
-  }
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  },
 });
 
 /**
@@ -36,25 +29,26 @@ let styles = StyleSheet.create({
  * @date 16/5/5
  */
 class FormExamples extends Component {
-
   constructor(props) {
     super(props);
-    ['getFormData'].forEach(f => this[f] = this[f].bind(this));
+    ['getFormData'].forEach(f => (this[f] = this[f].bind(this)));
   }
 
   state = {
     formData: '',
-    modalVisible: false
+    modalVisible: false,
   };
 
   form = {};
 
   getFormData() {
-    this.setState({formData: JSON.stringify(this.form.getFormData()), modalVisible: true});
+    this.setState({
+      formData: JSON.stringify(this.form.getFormData()),
+      modalVisible: true,
+    });
   }
 
   render() {
-
     let style = {
       top: 0,
       right: 0,
@@ -63,34 +57,32 @@ class FormExamples extends Component {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.2)',
-      transform: [{
-        translateX: 0,
-        translateY: 200,
-      }]
+      transform: [
+        {
+          translateX: 0,
+          translateY: 200,
+        },
+      ],
     };
 
     return (
-      <View style={{flex: 1}}>
-        <Form ref={(form):Object => this.form = form}
-              style={{flex: 1,padding: 15}}>
-          <Input name="name"/>
-          <Switch name="switch"
-                  value={true}
-          />
-          <Slider name="slider"/>
+      <View style={{ flex: 1 }}>
+        <Form
+          ref={(form): Object => (this.form = form)}
+          style={{ flex: 1, padding: 15 }}>
+          <Input name="name" />
+          <Switch name="switch" value={true} />
+          <Slider name="slider" />
           <Picker name="picker">
-            <Picker.Item label="Java"
-                         value="java"
-            />
-            <Picker.Item label="JavaScript"
-                         value="js"
-            />
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
           </Picker>
-          <DatePicker name="datePicker"/>
+          <DatePicker name="datePicker" />
 
-          <Button bsStyle="primary"
-                  onPress={this.getFormData}
-                  style={{marginTop: 20}}>
+          <Button
+            bsStyle="primary"
+            onPress={this.getFormData}
+            style={{ marginTop: 20 }}>
             Get Form Data
           </Button>
           <View style={style}>

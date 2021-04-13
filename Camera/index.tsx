@@ -1,13 +1,20 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Component from '../AbstractComponent';
-import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent, UIManager } from 'react-native';
+import {
+  NativeEventEmitter,
+  NativeModules,
+  Platform,
+  requireNativeComponent,
+  UIManager,
+} from 'react-native';
 import ViewPropTypes from 'react-native/Libraries/Components/View/ViewPropTypes';
 import Props, { OrientationType, QualityType } from './Props';
 
-let CameraManager = NativeModules.SitbCameraView || NativeModules.SitbCamera2Module;
+let CameraManager =
+  NativeModules.SitbCameraView || NativeModules.SitbCamera2Module;
 
-const {SitbCameraView, SitbCamera2View, SitbCamera2Module}: any = UIManager;
+const { SitbCameraView, SitbCamera2View, SitbCamera2Module }: any = UIManager;
 
 let constants = (SitbCameraView || SitbCamera2View).Constants;
 
@@ -46,7 +53,6 @@ export function setCameraVersion(cameraVersion) {
  * @date 16/6/22
  */
 class Camera extends Component<Props> {
-
   static propTypes = {
     ...ViewPropTypes,
 
@@ -84,13 +90,13 @@ class Camera extends Component<Props> {
      * 一个回调函数
      * 当需要实时获取预览的图片数据
      */
-    onCaptureOutputBuffer: PropTypes.func
+    onCaptureOutputBuffer: PropTypes.func,
   };
 
   static defaultProps = {
     cameraFacing: CameraFacing.back,
     orientation: Orientation.auto,
-    quality: Quality.high
+    quality: Quality.high,
   };
 
   /**
@@ -98,16 +104,15 @@ class Camera extends Component<Props> {
    * ios only
    */
   static checkVideoAuthorizationStatus = Platform.select<any>({
-    ios: CameraManager.checkVideoAuthorizationStatus
+    ios: CameraManager.checkVideoAuthorizationStatus,
   });
   /**
    * 检查是否有麦克风权限
    * ios only
    */
   static checkAudioAuthorizationStatus = Platform.select<any>({
-    ios: CameraManager.checkAudioAuthorizationStatus
+    ios: CameraManager.checkAudioAuthorizationStatus,
   });
-
 
   componentDidMount() {
     if (Platform.OS === 'android') {
@@ -117,7 +122,10 @@ class Camera extends Component<Props> {
 
   componentWillUnmount() {
     if (Platform.OS === 'android') {
-      event.removeListener('captureOutputBuffer', this.handleCaptureOutputBuffer);
+      event.removeListener(
+        'captureOutputBuffer',
+        this.handleCaptureOutputBuffer
+      );
     }
   }
 
@@ -125,23 +133,24 @@ class Camera extends Component<Props> {
     // return capture(option);
   }
 
-
   handleCaptureOutputBuffer(event) {
-    this.props.onCaptureOutputBuffer && this.props.onCaptureOutputBuffer(event.nativeEvent.buffer);
+    this.props.onCaptureOutputBuffer &&
+      this.props.onCaptureOutputBuffer(event.nativeEvent.buffer);
   }
 
   render() {
-    const {onCaptureOutputBuffer, ...other} = this.props;
+    const { onCaptureOutputBuffer, ...other } = this.props;
     return (
-      <RCTCamera {...other}
-                 needCaptureOutputBuffer={!!onCaptureOutputBuffer}
-                 onCaptureOutputBuffer={onCaptureOutputBuffer ? this.handleCaptureOutputBuffer : null}
+      <RCTCamera
+        {...other}
+        needCaptureOutputBuffer={!!onCaptureOutputBuffer}
+        onCaptureOutputBuffer={
+          onCaptureOutputBuffer ? this.handleCaptureOutputBuffer : null
+        }
       />
     );
   }
-
 }
-
 
 if (SitbCameraView) {
   RCTCamera = requireNativeComponent('SitbCameraView');
@@ -149,9 +158,4 @@ if (SitbCameraView) {
   RCTCamera = requireNativeComponent('SitbCamera2View');
 }
 
-export {
-  Camera as default,
-  Orientation,
-  CameraFacing,
-  Quality
-};
+export { Camera as default, Orientation, CameraFacing, Quality };

@@ -7,9 +7,4 @@ import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
 
-export {
-  Card as default,
-  Header,
-  Body,
-  Footer
-};
+export { Card as default, Header, Body, Footer };

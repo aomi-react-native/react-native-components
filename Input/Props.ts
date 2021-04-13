@@ -1,4 +1,4 @@
-import { BaseFormPropTypes } from "../Form/AbstractFormComponent";
+import { BaseFormPropTypes } from '../Form/AbstractFormComponent';
 import { TextInputProps } from 'react-native';
 import { ReactNode } from 'react';
 
@@ -6,7 +6,6 @@ import { ReactNode } from 'react';
  * @author Sean sean.snow@live.com createAt 2017/11/3
  */
 export default interface PropTypes extends BaseFormPropTypes, TextInputProps {
-
   after?: ReactNode;
 
   before?: ReactNode;
@@ -38,5 +37,5 @@ export default interface PropTypes extends BaseFormPropTypes, TextInputProps {
 
   style?: any;
 
-  onChangeText?: (text: string) => void
+  onChangeText?: (text: string) => void;
 }

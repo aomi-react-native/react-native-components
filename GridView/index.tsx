@@ -7,8 +7,8 @@ import { autoBind } from 'jsdk/autoBind';
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 });
 
 function handleCellData(cells, cols) {
@@ -21,7 +21,7 @@ function handleCellData(cells, cols) {
       if (cells[i * cols + j]) {
         group.push(cells[i * cols + j]);
       } else {
-        group.push({empty: true});
+        group.push({ empty: true });
       }
     }
     data.push(group);
@@ -36,96 +36,110 @@ function handleCellData(cells, cols) {
  */
 @autoBind
 export class GridView extends React.Component<Props> {
-
   static defaultProps = {
     autoWidth: true,
     cols: 1,
     horizontalSpacing: 0,
-    verticalSpacing: 0
+    verticalSpacing: 0,
   };
 
   state;
 
   constructor(props) {
     super(props);
-    const {cols, cells} = this.props;
+    const { cols, cells } = this.props;
     const data = handleCellData(cells, cols);
     this.state = {
       cellHeight: 0,
       data,
-      width: getWindowSize().width
+      width: getWindowSize().width,
     };
   }
 
   static getDerivedStateFromProps(props) {
     const data = handleCellData(props.cells, props.cols);
     return {
-      data
+      data,
     };
   }
 
   handleLayout(event) {
-    const {width} = event.nativeEvent.layout;
+    const { width } = event.nativeEvent.layout;
     this.setState({
-      width
+      width,
     });
   }
 
-  renderItem({item, index}) {
-    const {renderCell, horizontalSpacing, verticalSpacing, autoWidth, cols} = this.props;
-    const {width, data} = this.state;
+  renderItem({ item, index }) {
+    const {
+      renderCell,
+      horizontalSpacing,
+      verticalSpacing,
+      autoWidth,
+      cols,
+    } = this.props;
+    const { width, data } = this.state;
     const style: any = {
-      marginRight: horizontalSpacing
+      marginRight: horizontalSpacing,
     };
     if (autoWidth) {
-      style.width = (width - (cols > 0 ? (cols - 1) * horizontalSpacing : 0)) / cols;
+      style.width =
+        (width - (cols > 0 ? (cols - 1) * horizontalSpacing : 0)) / cols;
     }
 
     const children = item.map((cell, key) => {
-      const newStyle = {...style};
+      const newStyle = { ...style };
       if (key === item.length - 1) {
         newStyle.marginRight = 0;
       }
       if (cell.empty) {
-        return React.cloneElement(<View/>, {
+        return React.cloneElement(<View />, {
           key,
-          style: newStyle
+          style: newStyle,
         });
       }
-      return React.cloneElement(<View/>, {
+      return React.cloneElement(<View />, {
         key,
         style: newStyle,
         children: renderCell({
           cell,
-          cellId: key
-        })
+          cellId: key,
+        }),
       });
     });
     return (
-      <View style={[styles.row, {marginBottom: index === data.length - 1 ? 0 : verticalSpacing}]}>
+      <View
+        style={[
+          styles.row,
+          { marginBottom: index === data.length - 1 ? 0 : verticalSpacing },
+        ]}>
         {children}
       </View>
     );
   }
-
 
   keyExtractor(item, index) {
     return `${index}`;
   }
 
   render() {
-    const {containerStyle, verticalSpacing, horizontalSpacing, ...other} = this.props;
+    const {
+      containerStyle,
+      verticalSpacing,
+      horizontalSpacing,
+      ...other
+    } = this.props;
 
     return (
       <View style={containerStyle}>
-        <FlatList {...other}
-                  data={this.state.data}
-                  keyExtractor={this.keyExtractor}
-                  renderItem={this.renderItem}
-                  onLayout={this.handleLayout}
+        <FlatList
+          {...other}
+          data={this.state.data}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+          onLayout={this.handleLayout}
         />
       </View>
     );
-
   }
 }

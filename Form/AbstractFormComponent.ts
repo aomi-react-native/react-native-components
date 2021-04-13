@@ -12,8 +12,10 @@ export interface BaseFormPropTypes {
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/8
  */
-export default abstract class AbstractFormComponent<P extends BaseFormPropTypes, S> extends Component<P, S> {
-
+export default abstract class AbstractFormComponent<
+  P extends BaseFormPropTypes,
+  S
+> extends Component<P, S> {
   /**
    * 获取表单组件的值
    */
@@ -25,8 +27,7 @@ export default abstract class AbstractFormComponent<P extends BaseFormPropTypes,
   abstract isValid(): boolean;
 
   putFormValue(currentValue?): void {
-    const {name, form, value} = this.props;
+    const { name, form, value } = this.props;
     name && form && form.putFormValue(name, currentValue || value);
   }
 }
-

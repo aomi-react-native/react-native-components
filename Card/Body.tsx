@@ -1,4 +1,4 @@
-import * as  React from 'react';
+import * as React from 'react';
 import Component from '../AbstractComponent';
 import { View } from 'react-native';
 import { BodyProps } from './Props';
@@ -9,8 +9,8 @@ const styles = {
     borderTopWidth: 0.5,
     borderTopColor: '#ddd',
     paddingHorizontal: 10,
-    paddingTop: 15
-  }
+    paddingTop: 15,
+  },
 };
 
 /**
@@ -18,14 +18,8 @@ const styles = {
  * @date 2017/3/30
  */
 export default class Body extends Component<BodyProps> {
-
   render() {
-    const {style, children} = this.props;
-    return (
-      <View style={[styles.container, style]}>
-        {children}
-      </View>
-    );
+    const { style, children } = this.props;
+    return <View style={[styles.container, style]}>{children}</View>;
   }
-
 }

@@ -1,33 +1,35 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Component from '../AbstractComponent';
-import { NativeModules, PanResponder, PixelRatio, Platform, requireNativeComponent } from 'react-native';
+import {
+  NativeModules,
+  PanResponder,
+  PixelRatio,
+  Platform,
+  requireNativeComponent,
+} from 'react-native';
 import Props from './Props';
 
 const ratio = PixelRatio.get();
 
-
 // UIManager.dispatchViewManagerCommand
 
-const {
-  SitbRCTCanvasView
-} = NativeModules;
+const { SitbRCTCanvasView } = NativeModules;
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/7/14
  */
 class Canvas extends Component<Props> {
-
   static propTypes = {
     lineWidth: PropTypes.number,
     lines: PropTypes.array,
-    strokeColor: PropTypes.string
+    strokeColor: PropTypes.string,
   };
 
   static defaultProps = {
     lineWidth: 2,
-    strokeColor: 'black'
+    strokeColor: 'black',
   };
 
   // refs
@@ -42,7 +44,7 @@ class Canvas extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      lineWidth: this.getLineWidth(props.lineWidth)
+      lineWidth: this.getLineWidth(props.lineWidth),
     };
   }
 
@@ -54,13 +56,12 @@ class Canvas extends Component<Props> {
       onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: this.handlePanResponderGrant,
       onPanResponderMove: this.handlePanResponderMove,
-      onPanResponderRelease: () => {
-      }
+      onPanResponderRelease: () => {},
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({lineWidth: this.getLineWidth(nextProps.lineWidth)});
+    this.setState({ lineWidth: this.getLineWidth(nextProps.lineWidth) });
   }
 
   getLineWidth(width) {
@@ -72,41 +73,41 @@ class Canvas extends Component<Props> {
   }
 
   handlePanResponderGrant(event, gestureState) {
-    const {touchStart} = this.props;
+    const { touchStart } = this.props;
     if (touchStart) {
       touchStart(event, gestureState);
     } else {
       this.points = [];
       this.lines.push(this.points);
       this.points.push(this.handlePoint(event, gestureState));
-      this.setNativeProps({lines: this.lines});
+      this.setNativeProps({ lines: this.lines });
     }
   }
 
   handlePanResponderMove(event, gestureState) {
-    const {touchMove} = this.props;
+    const { touchMove } = this.props;
     if (touchMove) {
       touchMove(event, gestureState);
     } else {
       this.points.push(this.handlePoint(event, gestureState));
-      this.setNativeProps({lines: this.lines});
+      this.setNativeProps({ lines: this.lines });
     }
   }
 
   handlePoint(event, gestureState) {
-    const {dx, dy} = gestureState;
-    const {locationX, locationY} = event.nativeEvent;
+    const { dx, dy } = gestureState;
+    const { locationX, locationY } = event.nativeEvent;
 
     if (Platform.OS === 'android') {
       return {
         x: (locationX + dx) * PixelRatio.get(),
-        y: (locationY + dy) * PixelRatio.get()
+        y: (locationY + dy) * PixelRatio.get(),
       };
     }
 
     return {
       x: locationX,
-      y: locationY
+      y: locationY,
     };
   }
 
@@ -121,7 +122,7 @@ class Canvas extends Component<Props> {
 
   clearScreen() {
     this.lines = [];
-    this.setNativeProps({lines: []});
+    this.setNativeProps({ lines: [] });
   }
 
   handleChange() {
@@ -130,15 +131,15 @@ class Canvas extends Component<Props> {
 
   render() {
     return (
-      <RCTCanvas {...this.props}
-                 {...this.panResponder.panHandlers}
-                 lineWidth={this.state.lineWidth}
-                 onChange={this.handleChange}
-                 ref={ref => this.canvas = ref}
+      <RCTCanvas
+        {...this.props}
+        {...this.panResponder.panHandlers}
+        lineWidth={this.state.lineWidth}
+        onChange={this.handleChange}
+        ref={ref => (this.canvas = ref)}
       />
     );
   }
-
 }
 
 const RCTCanvas = requireNativeComponent('SitbRCTCanvasView');

@@ -8,7 +8,7 @@ export interface Props {
   showDot?: boolean;
   autoPlay?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
-  duration?: number,
+  duration?: number;
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
   inactiveColor?: string;

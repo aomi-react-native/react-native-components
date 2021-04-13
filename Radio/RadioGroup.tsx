@@ -8,15 +8,14 @@ import { RadioGroupProps } from './Props';
  * @author 田尘殇Sean(sean.snow@live.com) create at 2018/3/2
  */
 export class RadioGroup extends AbstractFormComponent<RadioGroupProps, any> {
-
   static childContextTypes = {
     onChange: PropTypes.func,
     labelPosition: PropTypes.oneOf(['left', 'right']),
-    checked: PropTypes.any
+    checked: PropTypes.any,
   };
 
   static defaultProps = {
-    labelPosition: 'right'
+    labelPosition: 'right',
   };
 
   state;
@@ -24,7 +23,7 @@ export class RadioGroup extends AbstractFormComponent<RadioGroupProps, any> {
   constructor(props) {
     super(props);
     this.state = {
-      checked: props.defaultChecked || props.checked
+      checked: props.defaultChecked || props.checked,
     };
   }
 
@@ -32,19 +31,19 @@ export class RadioGroup extends AbstractFormComponent<RadioGroupProps, any> {
     return {
       onChange: this.handleChange,
       labelPosition: this.props.labelPosition,
-      checked: this.state.checked
+      checked: this.state.checked,
     };
   }
 
-  componentWillReceiveProps({checked}) {
+  componentWillReceiveProps({ checked }) {
     if (this.props.checked !== checked) {
-      this.setState({checked});
+      this.setState({ checked });
     }
   }
 
   handleChange(checked) {
-    this.setState({checked});
-    const {onChange} = this.props;
+    this.setState({ checked });
+    const { onChange } = this.props;
     onChange && onChange(checked);
   }
 
@@ -57,12 +56,7 @@ export class RadioGroup extends AbstractFormComponent<RadioGroupProps, any> {
   }
 
   render() {
-    const {children, ...props} = this.props;
-    return (
-      <View {...props}>
-        {children}
-      </View>
-    );
+    const { children, ...props } = this.props;
+    return <View {...props}>{children}</View>;
   }
-
 }

@@ -13,7 +13,7 @@ export default StyleSheet.create<any>({
     paddingTop: radius2x,
     paddingRight: radius2x,
     paddingBottom: radius,
-    paddingLeft: radius
+    paddingLeft: radius,
   },
   badgeContainer: {
     justifyContent: 'center',
@@ -24,11 +24,11 @@ export default StyleSheet.create<any>({
     width: radius2x,
     height: radius2x,
     borderRadius: 50,
-    backgroundColor: 'rgb(255, 64, 129)'
+    backgroundColor: 'rgb(255, 64, 129)',
   },
   badgeStyle: {
     color: '#FFF',
     fontWeight: '500',
-    fontSize: radius
-  }
+    fontSize: radius,
+  },
 });

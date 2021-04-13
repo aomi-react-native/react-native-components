@@ -1,11 +1,14 @@
-import { CameraRoll as RNCameraRoll, NativeModules, Platform } from 'react-native';
+import {
+  CameraRoll as RNCameraRoll,
+  NativeModules,
+  Platform,
+} from 'react-native';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 2017/4/18
  */
 export default class CameraRoll {
-
   /**
    * Saves the photo or video to the camera roll / gallery.
    *
@@ -18,11 +21,13 @@ export default class CameraRoll {
    *
    * Returns a Promise which will resolve with the new URI.
    */
-  static saveToCameraRoll(tag: string, type?: 'photo' | 'video'): Promise<Object> {
+  static saveToCameraRoll(
+    tag: string,
+    type?: 'photo' | 'video'
+  ): Promise<Object> {
     if (Platform.OS === 'android') {
       return NativeModules.SitbCameraRollManager.saveToCameraRoll(tag, type);
     }
     return RNCameraRoll.saveToCameraRoll(tag, type);
   }
-
 }

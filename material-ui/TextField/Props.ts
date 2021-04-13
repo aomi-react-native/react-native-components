@@ -8,49 +8,49 @@ export interface Props extends InputProps {
   /**
    * root View style
    */
-  containerStyle?: StyleProp<ViewStyle>
+  containerStyle?: StyleProp<ViewStyle>;
 
   /**
    * If true, the floating label will float even when there is no value.
    */
-  floatingLabelFixed?: boolean
+  floatingLabelFixed?: boolean;
 
   /**
    * The style object to use to override floating label styles when focused.
    */
-  floatingLabelFocusStyle?: StyleProp<ViewStyle>
+  floatingLabelFocusStyle?: StyleProp<ViewStyle>;
 
   /**
    * The style object to use to override floating label styles when shrunk.
    */
-  floatingLabelShrinkStyle?: StyleProp<ViewStyle>
+  floatingLabelShrinkStyle?: StyleProp<ViewStyle>;
 
   /**
    * The style object to use to override floating label styles.
    */
-  floatingLabelStyle?: StyleProp<ViewStyle>
+  floatingLabelStyle?: StyleProp<ViewStyle>;
 
   /**
    * The content to use for the floating label element.
    */
-  floatingLabelText?: string
+  floatingLabelText?: string;
 
   /**
    * Override the inline-styles of the TextField's underline element when disabled.
    */
-  underlineDisabledStyle?: StyleProp<ViewStyle>
+  underlineDisabledStyle?: StyleProp<ViewStyle>;
   /**
    * Override the inline-styles of the TextField's underline element when focussed.
    */
-  underlineFocusStyle?: StyleProp<ViewStyle>
+  underlineFocusStyle?: StyleProp<ViewStyle>;
   /**
    * Override the inline-styles of the TextField's underline element.
    */
-  underlineStyle?: StyleProp<ViewStyle>,
+  underlineStyle?: StyleProp<ViewStyle>;
   /**
    * If true, shows the underline for the text field.
    */
-  underlineShow?: boolean,
+  underlineShow?: boolean;
 
-  type?: string
+  type?: string;
 }

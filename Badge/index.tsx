@@ -5,16 +5,12 @@ import { Text, View } from 'react-native';
 import Props from './Props';
 import styles from './styles';
 
-
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/13
  */
 export class Badge extends Component<Props> {
-
-
   renderBadge(badgeContent, badgeContainerStyle, badgeStyle) {
-
     if (!badgeContent || badgeContent === 0) {
       return null;
     }
@@ -24,9 +20,7 @@ export class Badge extends Component<Props> {
       children = badgeContent;
     } else {
       children = (
-        <Text style={[styles.badgeStyle, badgeStyle]}>
-          {badgeContent}
-        </Text>
+        <Text style={[styles.badgeStyle, badgeStyle]}>{badgeContent}</Text>
       );
     }
     return (
@@ -37,7 +31,6 @@ export class Badge extends Component<Props> {
   }
 
   render() {
-
     const {
       badgeContainerStyle,
       badgeContent,
@@ -48,13 +41,10 @@ export class Badge extends Component<Props> {
     } = this.props;
 
     return (
-      <View {...other}
-            style={[styles.container, style]}
-      >
+      <View {...other} style={[styles.container, style]}>
         {children}
         {this.renderBadge(badgeContent, badgeContainerStyle, badgeStyle)}
       </View>
     );
   }
 }
-

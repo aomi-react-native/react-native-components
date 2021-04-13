@@ -10,38 +10,36 @@ import Props from './Props';
 
 import styles from './styles';
 
-
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/6/12
  */
 class ActionSheetComponent extends Component<Props> {
-
   state = {
-    open: true
+    open: true,
   };
 
   showAnimation = {
     animation: 'fadeIn',
-    duration: 500
+    duration: 500,
   };
 
   hideAnimation = {
     animation: 'fadeOut',
-    duration: 500
+    duration: 500,
   };
 
   contentShowAnimation = {
     animation: 'fadeInUpBig',
-    duration: 500
+    duration: 500,
   };
   contentHideAnimation = {
     animation: 'fadeOutDownBig',
-    duration: 500
+    duration: 500,
   };
 
   handleCancelPress() {
-    const {cancelPress} = this.props;
+    const { cancelPress } = this.props;
     this.close(cancelPress);
   }
 
@@ -52,7 +50,7 @@ class ActionSheetComponent extends Component<Props> {
   }
 
   close(onPress) {
-    this.setState({open: false}, () => {
+    this.setState({ open: false }, () => {
       setTimeout(() => {
         onPress && onPress();
         this.props.manager.destroy();
@@ -61,70 +59,61 @@ class ActionSheetComponent extends Component<Props> {
   }
 
   render() {
+    const props = this.state.open
+      ? this.contentShowAnimation
+      : this.contentHideAnimation;
 
-    const props = this.state.open ? this.contentShowAnimation : this.contentHideAnimation;
+    const { options, title, cancel, titleTextStyle } = this.props;
 
-    const {
-      options,
-      title,
-      cancel,
-      titleTextStyle
-    } = this.props;
-
-    const {
-      height
-    } = Dimensions.get('window');
+    const { height } = Dimensions.get('window');
 
     return (
-      <Dialog hideAnimation={this.hideAnimation}
-              onPress={this.handleCancelPress}
-              showAnimation={this.showAnimation}
-              statusBarAutoHidden={false}
-              style={styles.container}
-              visible={this.state.open}
-      >
-        <AnimatableView {...props}
-                        style={styles.contentContainer}
-        >
+      <Dialog
+        hideAnimation={this.hideAnimation}
+        onPress={this.handleCancelPress}
+        showAnimation={this.showAnimation}
+        statusBarAutoHidden={false}
+        style={styles.container}
+        visible={this.state.open}>
+        <AnimatableView {...props} style={styles.contentContainer}>
           <View style={[styles.content]}>
             <View style={styles.title}>
-              <Text style={[styles.titleText, titleTextStyle]}>{title || 'Action'}</Text>
+              <Text style={[styles.titleText, titleTextStyle]}>
+                {title || 'Action'}
+              </Text>
             </View>
-            <ScrollView alwaysBounceVertical={false}
-                        style={{maxHeight: height * 0.6}}
-            >
+            <ScrollView
+              alwaysBounceVertical={false}
+              style={{ maxHeight: height * 0.6 }}>
               {options.map((option, index) => {
                 let tmp = null;
                 if (options.length - 1 === index) {
                   tmp = {
                     borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10
+                    borderBottomRightRadius: 10,
                   };
                 }
                 return (
-                  <Button containerStyle={[styles.button, tmp]}
-                          key={index}
-                          onPress={this.handlePress(option.onPress)}
-                          textStyle={{color: option.textColor || '#0977FF'}}
-                  >
+                  <Button
+                    containerStyle={[styles.button, tmp]}
+                    key={index}
+                    onPress={this.handlePress(option.onPress)}
+                    textStyle={{ color: option.textColor || '#0977FF' }}>
                     {option.label}
                   </Button>
                 );
               })}
             </ScrollView>
           </View>
-          <Button containerStyle={[styles.content, styles.cancel]}
-                  onPress={this.handleCancelPress}
-          >
-            <Text style={styles.cancelText}>
-              {cancel || 'Cancel'}
-            </Text>
+          <Button
+            containerStyle={[styles.content, styles.cancel]}
+            onPress={this.handleCancelPress}>
+            <Text style={styles.cancelText}>{cancel || 'Cancel'}</Text>
           </Button>
         </AnimatableView>
       </Dialog>
     );
   }
-
 }
 
 export default class ActionSheet {
@@ -141,9 +130,7 @@ export default class ActionSheet {
     let actionSheet = createRootView(ActionSheetComponent, options);
     actionSheet.update({
       ...options,
-      manager: actionSheet
+      manager: actionSheet,
     });
-
   }
 }
-

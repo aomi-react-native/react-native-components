@@ -4,6 +4,12 @@
 import { GestureResponderEvent, PanResponderGestureState } from 'react-native';
 
 export default interface Props {
-  touchStart?: (e: GestureResponderEvent, gestureState: PanResponderGestureState) => void;
-  touchMove?: (e: GestureResponderEvent, gestureState: PanResponderGestureState) => void;
+  touchStart?: (
+    e: GestureResponderEvent,
+    gestureState: PanResponderGestureState
+  ) => void;
+  touchMove?: (
+    e: GestureResponderEvent,
+    gestureState: PanResponderGestureState
+  ) => void;
 }

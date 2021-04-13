@@ -5,6 +5,6 @@ import { StyleProp, ViewStyle } from 'react-native';
 
 export default interface Props {
   spaceRatio?: number;
-  speed?: number,
-  style?: StyleProp<ViewStyle>
+  speed?: number;
+  style?: StyleProp<ViewStyle>;
 }

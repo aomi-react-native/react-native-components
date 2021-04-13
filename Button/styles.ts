@@ -15,29 +15,29 @@ export default {
     justifyContent: 'center',
     paddingLeft: 12,
     paddingRight: 12,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   link: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   containerDefault: {
     borderColor: Colors.separator,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   textDefault: {
     color: '#333',
-    fontSize
+    fontSize,
   },
   textOther: {
     color: '#FFF',
-    fontSize
+    fontSize,
   },
   textDisabled: {
-    color: '#bcbcbc'
+    color: '#bcbcbc',
   },
   disabledStyle: {
-    backgroundColor: '#dddddd'
-  }
+    backgroundColor: '#dddddd',
+  },
 };

@@ -9,13 +9,12 @@ import Props from './Props';
  * @date 16/5/7
  */
 export default class Slider extends AbstractFormComponent<Props, any> {
-
   static defaultProps = {
-    value: 0
+    value: 0,
   };
 
   state = {
-    value: this.props.value
+    value: this.props.value,
   };
 
   getValue() {
@@ -27,20 +26,15 @@ export default class Slider extends AbstractFormComponent<Props, any> {
   }
 
   onValueChange(value) {
-    this.setState({value});
-    let {onValueChange, name, form} = this.props;
+    this.setState({ value });
+    let { onValueChange, name, form } = this.props;
     name && form && form.putFormValue(name, value);
     onValueChange && onValueChange(value);
   }
 
   render() {
-    let {name, form, ...other} = this.props;
+    let { name, form, ...other } = this.props;
     name && form && form.putFormValue(name, this.state.value);
-    return (
-      <RNSlider {...other}
-                onValueChange={this.onValueChange}
-      />
-    );
+    return <RNSlider {...other} onValueChange={this.onValueChange} />;
   }
-
 }

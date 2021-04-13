@@ -1,5 +1,10 @@
 import { ReactElement } from 'react';
-import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { BaseProps } from '../Global';
 
 /**
@@ -14,7 +19,14 @@ export default interface Props extends BaseProps {
   disabled?: boolean;
   disabledStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  type?: 'primary' | 'success' | 'info' | 'warn' | 'danger' | 'link' | 'default';
+  type?:
+    | 'primary'
+    | 'success'
+    | 'info'
+    | 'warn'
+    | 'danger'
+    | 'link'
+    | 'default';
   onPress?: (event: GestureResponderEvent) => void;
   style?: StyleProp<ViewStyle>;
 }

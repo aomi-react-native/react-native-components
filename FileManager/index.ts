@@ -1,11 +1,6 @@
-import {
-  NativeModules,
-  Platform
-} from 'react-native';
-
+import { NativeModules, Platform } from 'react-native';
 
 const SitbRNFileManager = NativeModules.SitbRNFileManager;
-
 
 /**
  * file manger
@@ -14,11 +9,9 @@ const SitbRNFileManager = NativeModules.SitbRNFileManager;
  */
 
 export default class FileManager {
-
   static getPhotoFromCameraRoll(uri: string) {
     if (Platform.OS === 'android') {
       return SitbRNFileManager.getPhotoByContentUri(uri);
     }
   }
-
 }

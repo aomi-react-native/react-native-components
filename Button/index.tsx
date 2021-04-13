@@ -1,6 +1,13 @@
 import * as React from 'react';
 import Component from '../AbstractComponent';
-import { Keyboard, Platform, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+import {
+  Keyboard,
+  Platform,
+  Text,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Colors } from '../styles';
 import Props from './Props';
 
@@ -11,21 +18,19 @@ import styles from './styles';
  * @date 16/5/5
  */
 class Button extends Component<Props> {
-
   static defaultProps = {
     activeOpacity: 0.4,
     autoDismissKeyboard: false,
     disabled: false,
     disabledStyle: styles.disabledStyle,
-    type: 'default'
+    type: 'default',
   };
 
   handlePress(event) {
-    const {onPress, autoDismissKeyboard} = this.props;
+    const { onPress, autoDismissKeyboard } = this.props;
     autoDismissKeyboard && Keyboard.dismiss();
     onPress && onPress(event);
   }
-
 
   renderContent() {
     const {
@@ -36,7 +41,7 @@ class Button extends Component<Props> {
       type,
       containerStyle,
       disabledStyle,
-      textStyle
+      textStyle,
     } = this.props;
 
     let newChild = children;
@@ -53,11 +58,12 @@ class Button extends Component<Props> {
     textStyles.push(textStyle);
 
     if (children) {
-      if (typeof children === 'string' || (Array.isArray(children) && typeof children[0] === 'string')) {
+      if (
+        typeof children === 'string' ||
+        (Array.isArray(children) && typeof children[0] === 'string')
+      ) {
         newChild = (
-          <Text key="text"
-                style={textStyles}
-          >
+          <Text key="text" style={textStyles}>
             {Array.isArray(children) ? children[0] : children}
           </Text>
         );
@@ -72,7 +78,7 @@ class Button extends Component<Props> {
       temp.push(styles.containerDefault);
     } else {
       temp.push(styles.button);
-      temp.push({backgroundColor: Colors[type]});
+      temp.push({ backgroundColor: Colors[type] });
     }
 
     temp.push(containerStyle);
@@ -91,29 +97,25 @@ class Button extends Component<Props> {
   }
 
   render() {
-    const {
-      Comp,
-      ...props
-    } = this.props;
+    const { Comp, ...props } = this.props;
 
-    const ButtonComp = Comp || Platform.select<any>({
-      ios: TouchableOpacity,
-      android: TouchableNativeFeedback
-    });
+    const ButtonComp =
+      Comp ||
+      Platform.select<any>({
+        ios: TouchableOpacity,
+        android: TouchableNativeFeedback,
+      });
 
     return (
-      <ButtonComp {...props}
-                  onPress={this.handlePress}
-      >
+      <ButtonComp {...props} onPress={this.handlePress}>
         {ButtonComp === TouchableNativeFeedback ? (
-          <View style={this.props.style}>
-            {this.renderContent()}
-          </View>
-        ) : this.renderContent()}
+          <View style={this.props.style}>{this.renderContent()}</View>
+        ) : (
+          this.renderContent()
+        )}
       </ButtonComp>
     );
   }
-
 }
 
 export default Button;

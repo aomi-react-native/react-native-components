@@ -8,9 +8,8 @@ import Props from './Props';
  * @date 2017/7/27
  */
 export default class KeyboardAvoidingView extends Component<Props> {
-
   static defaultProps = {
-    keyboardBottomOffset: 15
+    keyboardBottomOffset: 15,
   };
 
   // refs
@@ -22,12 +21,12 @@ export default class KeyboardAvoidingView extends Component<Props> {
   componentWillMount() {
     if (Platform.OS === 'ios') {
       this.subscriptions = [
-        Keyboard.addListener('keyboardWillChangeFrame', this.onKeyboardChange)
+        Keyboard.addListener('keyboardWillChangeFrame', this.onKeyboardChange),
       ];
     } else {
       this.subscriptions = [
         Keyboard.addListener('keyboardDidHide', this.onKeyboardChange),
-        Keyboard.addListener('keyboardDidShow', this.onKeyboardChange)
+        Keyboard.addListener('keyboardDidShow', this.onKeyboardChange),
       ];
     }
   }
@@ -40,12 +39,12 @@ export default class KeyboardAvoidingView extends Component<Props> {
       this.scrollView.scrollTo({
         x: 0,
         y: 0,
-        animated: true
+        animated: true,
       });
       return;
     }
 
-    const {duration, easing, endCoordinates} = event;
+    const { duration, easing, endCoordinates } = event;
     const height = this.relativeKeyboardHeight(endCoordinates);
 
     if (duration && easing) {
@@ -53,14 +52,14 @@ export default class KeyboardAvoidingView extends Component<Props> {
         duration,
         update: {
           duration,
-          type: LayoutAnimation.Types[easing] || 'keyboard'
-        }
+          type: LayoutAnimation.Types[easing] || 'keyboard',
+        },
       });
     }
     this.scrollView.scrollTo({
       x: 0,
       y: height,
-      animated: true
+      animated: true,
     });
   }
 
@@ -70,7 +69,10 @@ export default class KeyboardAvoidingView extends Component<Props> {
       return 0;
     }
 
-    const keyboardY = keyboardFrame.screenY + keyboardFrame.height - this.props.keyboardBottomOffset;
+    const keyboardY =
+      keyboardFrame.screenY +
+      keyboardFrame.height -
+      this.props.keyboardBottomOffset;
 
     // Calculate the displacement needed for the view such that it
     // no longer overlaps with the keyboard
@@ -82,15 +84,14 @@ export default class KeyboardAvoidingView extends Component<Props> {
   }
 
   render() {
-    const {children, ...props} = this.props;
+    const { children, ...props } = this.props;
     return (
-      <ScrollView {...props}
-                  onLayout={this.onLayout}
-                  ref={scrollView => this.scrollView = scrollView}
-      >
+      <ScrollView
+        {...props}
+        onLayout={this.onLayout}
+        ref={scrollView => (this.scrollView = scrollView)}>
         {children}
       </ScrollView>
     );
   }
-
 }

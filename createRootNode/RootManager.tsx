@@ -9,20 +9,19 @@ let rootId = 0;
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
  */
 export default class RootManager {
-
   _id = null;
   props;
   component;
   emitter;
 
   constructor(ElementComponent, props) {
-    ['update', 'destroy'].forEach(f => this[f] = this[f].bind(this));
+    ['update', 'destroy'].forEach(f => (this[f] = this[f].bind(this)));
     this.emitter = (AppRegistry as any).rootSiblingsEmitter;
     Object.defineProperty(this, '_id', {
       enumerable: false,
       configurable: false,
       writable: false,
-      value: rootId++
+      value: rootId++,
     });
     this.component = ElementComponent;
     this.props = props;
@@ -30,14 +29,13 @@ export default class RootManager {
     this.emitter.emit(CREATE_EVENT, {
       id: this._id,
       SiblingComponent: class SiblingComponent extends React.Component {
-
         static childContextTypes = {
-          manager: PropTypes.object
+          manager: PropTypes.object,
         };
 
         getChildContext() {
           return {
-            manager
+            manager,
           };
         }
 
@@ -46,10 +44,10 @@ export default class RootManager {
         }
 
         render() {
-          return <ElementComponent {...this.props}/>;
+          return <ElementComponent {...this.props} />;
         }
       },
-      props
+      props,
     });
   }
 
@@ -58,15 +56,14 @@ export default class RootManager {
     this.emitter.emit(UPDATE_EVENT, {
       id: this._id,
       props,
-      callback
+      callback,
     });
   }
 
   destroy(callback?) {
     this.emitter.emit(CREATE_EVENT, {
       id: this._id,
-      callback
+      callback,
     });
   }
-
 }

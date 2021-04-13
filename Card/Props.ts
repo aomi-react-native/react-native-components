@@ -4,18 +4,15 @@
 import { ViewProperties } from 'react-native';
 import { ReactNode } from 'react';
 
-export interface CardProps extends ViewProperties {
-}
+export interface CardProps extends ViewProperties {}
 
-export interface BodyProps extends ViewProperties {
-}
+export interface BodyProps extends ViewProperties {}
 
-export interface FooterProps extends ViewProperties {
-}
+export interface FooterProps extends ViewProperties {}
 
 export interface HeaderProps extends ViewProperties {
-  extra?: ReactNode
-  subtitle?: ReactNode
-  thumb?: ReactNode
-  title?: ReactNode
+  extra?: ReactNode;
+  subtitle?: ReactNode;
+  thumb?: ReactNode;
+  title?: ReactNode;
 }

@@ -4,7 +4,14 @@
 
 import * as React from 'react';
 import Component from '../AbstractComponent';
-import { Platform, StyleProp, StyleSheet, Text, ToastAndroid, ViewStyle } from 'react-native';
+import {
+  Platform,
+  StyleProp,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  ViewStyle,
+} from 'react-native';
 import { View } from 'react-native-animatable';
 import { createRootView } from '../createRootNode/index';
 
@@ -15,7 +22,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   content: {
     minHeight: 40,
@@ -24,70 +31,61 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#3A3A3A',
     borderRadius: 25,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   msg: {
     color: '#FFF',
     textAlign: 'center',
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });
 
 export interface ToastProps {
-  msg?: string
-  show?: boolean
-  containerStyle?: StyleProp<ViewStyle>
-  contentStyle?: StyleProp<ViewStyle>
+  msg?: string;
+  show?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
+  contentStyle?: StyleProp<ViewStyle>;
 }
 
 export class Toast extends Component<ToastProps> {
-
   static defaultProps = {
     children: '',
-    show: true
+    show: true,
   };
 
   state = {};
 
   showAnimation = {
     animation: 'fadeIn',
-    duration: 500
+    duration: 500,
   };
 
   hideAnimation = {
     animation: 'fadeOut',
-    duration: 500
+    duration: 500,
   };
 
   render() {
-    const {children, show, containerStyle, contentStyle} = this.props;
+    const { children, show, containerStyle, contentStyle } = this.props;
     const animatable = show ? this.showAnimation : this.hideAnimation;
     let newChildren = children;
     if (typeof children === 'string') {
-      newChildren = (
-        <Text style={styles.msg}>{children}</Text>
-      );
+      newChildren = <Text style={styles.msg}>{children}</Text>;
     }
     return (
-      <View {...animatable}
-            style={[styles.container, containerStyle]}
-      >
-        <View style={[styles.content, contentStyle]}>
-          {newChildren}
-        </View>
+      <View {...animatable} style={[styles.container, containerStyle]}>
+        <View style={[styles.content, contentStyle]}>{newChildren}</View>
       </View>
     );
   }
-
 }
 
 export const SHORT = Platform.OS === 'android' ? ToastAndroid.SHORT : 2500;
 export const LONG = Platform.OS === 'android' ? ToastAndroid.LONG : 3500;
 
 const config = {
-  duration: SHORT
+  duration: SHORT,
 };
-
 
 /**
  * 显示一个默认的toast弹框
@@ -101,19 +99,18 @@ export default function show(msg, duration?) {
   }
 
   if (Platform.OS === 'ios') {
-    toast({children: msg, duration});
+    toast({ children: msg, duration });
   }
-
 }
 
 /**
  * 使用自定义UI的toast
  */
-export function toast({duration, ...props}: any = {}) {
+export function toast({ duration, ...props }: any = {}) {
   const manager = createRootView(Toast, {});
   const args: any = {
     ...props,
-    manager
+    manager,
   };
   manager.update(args);
   setTimeout(() => {

@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-const {SitbRootManager} = NativeModules;
+const { SitbRootManager } = NativeModules;
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2018/6/11

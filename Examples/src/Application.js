@@ -4,7 +4,7 @@ import {
   StatusBar,
   Navigator,
   View,
-  AppRegistry
+  AppRegistry,
 } from 'react-native';
 
 import Header from './components/Header';
@@ -14,19 +14,18 @@ import BootstrapButtonExamples from './components/BootstrapButtonExamples';
 import FormExamples from './components/FormExamples';
 import InputExamples from './components/InputExamples';
 
-
 const routes = {
   Home,
   IconExamples,
   BootstrapButtonExamples,
   FormExamples,
-  InputExamples
+  InputExamples,
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 /**
@@ -34,15 +33,14 @@ const styles = StyleSheet.create({
  * @date 16/4/23
  */
 class Application extends Component {
-
   constructor(props) {
     super(props);
-    ['renderScene'].forEach(func => this[func] = this[func].bind(this));
+    ['renderScene'].forEach(func => (this[func] = this[func].bind(this)));
   }
 
   initialRoute = {
     name: 'Home',
-    title: 'AppFramework'
+    title: 'AppFramework',
   };
 
   configureScene() {
@@ -50,15 +48,13 @@ class Application extends Component {
   }
 
   renderScene(route, navigator) {
-    let ComposedComponent = routes[route.name] || routes[this.initialRoute.name];
+    let ComposedComponent =
+      routes[route.name] || routes[this.initialRoute.name];
 
     return (
       <View style={styles.container}>
-        <Header title={route.title}/>
-        <ComposedComponent
-          {...route.params}
-          navigator={navigator}
-        />
+        <Header title={route.title} />
+        <ComposedComponent {...route.params} navigator={navigator} />
       </View>
     );
   }
@@ -66,13 +62,15 @@ class Application extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#5E001B"
-                   barStyle="light-content"
-                   translucent
+        <StatusBar
+          backgroundColor="#5E001B"
+          barStyle="light-content"
+          translucent
         />
-        <Navigator configureScene={this.configureScene}
-                   initialRoute={this.initialRoute}
-                   renderScene={this.renderScene}
+        <Navigator
+          configureScene={this.configureScene}
+          initialRoute={this.initialRoute}
+          renderScene={this.renderScene}
         />
       </View>
     );

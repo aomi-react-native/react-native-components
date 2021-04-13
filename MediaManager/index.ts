@@ -13,13 +13,12 @@ const {
   }
 } = NativeModules;
 
-
 export interface Options {
-  sourceType?: string,
-  mediaType?: string,
-  allowsEditing?: boolean,
-  cameraType?: string,
-  quality?: number
+  sourceType?: string;
+  mediaType?: string;
+  allowsEditing?: boolean;
+  cameraType?: string;
+  quality?: number;
 }
 
 export enum PhotoAlbumAuthorizationStatusType {
@@ -58,12 +57,12 @@ const DEFAULT_CAMERA_OPTIONS = {
 export interface PhotoAlbum {
   // 编辑后的图片
   edited?: {
-    path?: string
-  },
+    path?: string;
+  };
   // 原图
   original?: {
-    path?: string
-  }
+    path?: string;
+  };
 }
 
 /**
@@ -71,13 +70,14 @@ export interface PhotoAlbum {
  * @date 16/6/29
  */
 class MediaManager {
-
   /**
    *
    * @param options
    * @returns {*}
    */
-  static launchImageLibrary(options: Options = DEFAULT_LIBRARY_OPTIONS): Promise<PhotoAlbum> {
+  static launchImageLibrary(
+    options: Options = DEFAULT_LIBRARY_OPTIONS
+  ): Promise<PhotoAlbum> {
     const newOptions = Object.assign({}, DEFAULT_LIBRARY_OPTIONS, options);
     return launchImageLibrary(newOptions);
   }
@@ -86,15 +86,18 @@ class MediaManager {
     const newOptions = Object.assign({}, DEFAULT_CAMERA_OPTIONS, options);
     if (Platform.OS === 'android' && newOptions.allowsEditing) {
       return new Promise((resolve, reject) => {
-        launchCamera(newOptions).then(image => {
-          setTimeout(() => {
-            NativeModules.SitbRCTMediaManager.launchEditing(image.original.path)
-              .then(edited => {
-                resolve(Object.assign({}, image, edited));
-              })
-              .catch(err => reject(err));
-          }, 1);
-        })
+        launchCamera(newOptions)
+          .then(image => {
+            setTimeout(() => {
+              NativeModules.SitbRCTMediaManager.launchEditing(
+                image.original.path
+              )
+                .then(edited => {
+                  resolve(Object.assign({}, image, edited));
+                })
+                .catch(err => reject(err));
+            }, 1);
+          })
           .catch(err => reject(err));
       });
     }
@@ -108,7 +111,6 @@ class MediaManager {
   static getPhotoAlbumAuthorizationStatus(): Promise<PhotoAlbumAuthorizationStatusType> {
     return getPhotoAlbumAuthorizationStatus();
   }
-
 }
 
 export {

@@ -1,13 +1,13 @@
 import { DeviceEventEmitter, NativeModules, Platform } from 'react-native';
 
-
 const config = {
   webApiKey: '',
   iosApiKey: '',
-  androidApiKey: ''
+  androidApiKey: '',
 };
 
-const convertUrl = 'http://restapi.amap.com/v3/assistant/coordinate/convert?coordsys=gps&key=';
+const convertUrl =
+  'http://restapi.amap.com/v3/assistant/coordinate/convert?coordsys=gps&key=';
 
 const ANDROID_EVENT = 'amapWatchPosition';
 
@@ -15,22 +15,25 @@ let watchId = 0;
 const watchFunc = {};
 
 function gpsToAmap(position, success, error) {
-  fetch(`${convertUrl}${config.webApiKey}&locations=${position.coords.longitude},${position.coords.latitude}`)
+  fetch(
+    `${convertUrl}${config.webApiKey}&locations=${position.coords.longitude},${position.coords.latitude}`
+  )
     .then(res => res.json())
     .then(res => {
       if (res.status === '1') {
         const tmp = res.locations.split(',');
         const result = {
-          ...position
+          ...position,
         };
         result.coords.longitude = tmp[0];
         result.coords.latitude = tmp[1];
         success && success(result);
       } else {
-        error && error({
-          code: res.infocode,
-          message: res.info
-        });
+        error &&
+          error({
+            code: res.infocode,
+            message: res.info,
+          });
       }
     })
     .catch(err => error && error(err));
@@ -41,8 +44,7 @@ function gpsToAmap(position, success, error) {
  * @date 2017/4/6
  */
 export default class AmapLocation {
-
-  static setApiKey({webApiKey, androidApiKey}) {
+  static setApiKey({ webApiKey, androidApiKey }) {
     config.webApiKey = webApiKey;
     config.androidApiKey = androidApiKey;
     if (Platform.OS === 'android') {
@@ -50,16 +52,19 @@ export default class AmapLocation {
     }
   }
 
-
   /**
    * 高德定位SDK获取当前的地理位置
    * @param success 成功回调函数
    * @param error 失败回调函数
    * @param options 参数
    */
-  static getCurrentPosition(success: Function, error?: (error: any) => void, options?) {
+  static getCurrentPosition(
+    success: Function,
+    error?: (error: any) => void,
+    options?
+  ) {
     if (Platform.OS === 'android') {
-      const onPosition = (payload) => {
+      const onPosition = payload => {
         if (payload.success) {
           success && success(payload);
         } else {
@@ -71,13 +76,21 @@ export default class AmapLocation {
       DeviceEventEmitter.addListener(ANDROID_EVENT, onPosition);
       NativeModules.AmapLocation.getCurrentPosition(options);
     } else {
-      navigator.geolocation.getCurrentPosition(position => gpsToAmap(position, success, error), error, options);
+      navigator.geolocation.getCurrentPosition(
+        position => gpsToAmap(position, success, error),
+        error,
+        options
+      );
     }
   }
 
-  static watchPosition(success: Function, error?: (error: any) => void, options?) {
+  static watchPosition(
+    success: Function,
+    error?: (error: any) => void,
+    options?
+  ) {
     if (Platform.OS === 'android') {
-      const onPosition = (payload) => {
+      const onPosition = payload => {
         if (payload.success) {
           success && success(payload);
         } else {
@@ -93,7 +106,11 @@ export default class AmapLocation {
       NativeModules.AmapLocation.watchPosition(options, watchId);
       return watchId;
     }
-    return navigator.geolocation.watchPosition(position => gpsToAmap(position, success, error), error, options);
+    return navigator.geolocation.watchPosition(
+      position => gpsToAmap(position, success, error),
+      error,
+      options
+    );
   }
 
   static clearWatch(id) {
@@ -107,5 +124,4 @@ export default class AmapLocation {
       navigator.geolocation.clearWatch(id);
     }
   }
-
 }

@@ -15,7 +15,7 @@ export default interface Props {
    */
   options: Array<Option>;
   cancel?: string;
-  cancelPress?: EmptyFunction
+  cancelPress?: EmptyFunction;
   manager: any;
   /**
    * （字符串） - 弹出框顶部标题下方的信息

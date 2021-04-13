@@ -13,11 +13,10 @@ const on = require('./on.png');
  * @author 田尘殇Sean(sean.snow@live.com) create at 2018/3/2
  */
 export class Radio extends AbstractFormComponent<RadioProps, any> {
-
   static contextTypes = {
     onChange: PropTypes.func,
     labelPosition: PropTypes.oneOf(['left', 'right']),
-    checked: PropTypes.any
+    checked: PropTypes.any,
   };
 
   getValue(): any {
@@ -29,7 +28,7 @@ export class Radio extends AbstractFormComponent<RadioProps, any> {
   }
 
   handlePress() {
-    const {value} = this.props;
+    const { value } = this.props;
     this.context && this.context.onChange && this.context.onChange(value);
   }
 
@@ -39,19 +38,16 @@ export class Radio extends AbstractFormComponent<RadioProps, any> {
       checkedIconStyle,
       uncheckedIcon,
       uncheckedIconStyle,
-      value, label
+      value,
+      label,
     } = this.props;
 
     const defaultCheckedIcon = (
-      <Image source={on}
-             style={[styles.icon, checkedIconStyle]}
-      />
+      <Image source={on} style={[styles.icon, checkedIconStyle]} />
     );
 
     const defaultUncheckedIcon = (
-      <Image source={off}
-             style={[styles.icon, uncheckedIconStyle]}
-      />
+      <Image source={off} style={[styles.icon, uncheckedIconStyle]} />
     );
 
     let after, before;
@@ -72,16 +68,14 @@ export class Radio extends AbstractFormComponent<RadioProps, any> {
     }
 
     return (
-      <Button after={after}
-              before={before}
-              containerStyle={styles.btn}
-              onPress={this.handlePress}
-              type="link"
-      >
+      <Button
+        after={after}
+        before={before}
+        containerStyle={styles.btn}
+        onPress={this.handlePress}
+        type="link">
         {label}
       </Button>
     );
-
   }
-
 }

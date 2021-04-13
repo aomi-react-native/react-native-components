@@ -4,8 +4,6 @@
 import { BaseFormPropTypes } from '../Form/AbstractFormComponent';
 
 export default interface Props extends BaseFormPropTypes {
-
   onValueChange?: (value: number) => void;
   value?: number;
-
 }

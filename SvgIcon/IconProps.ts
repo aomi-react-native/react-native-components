@@ -11,5 +11,5 @@ export interface Path {
 
 export default interface IconProps extends SvgProps {
   fill?: string;
-  path: string | string[] | Path
+  path: string | string[] | Path;
 }

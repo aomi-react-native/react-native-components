@@ -6,7 +6,6 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { EmptyFunction } from '../Global';
 import Button from '../Button/Props';
 
-
 export default interface Props {
   /**
    * 按钮组,属性参考Button props
@@ -45,5 +44,4 @@ export default interface Props {
   onDismiss?: EmptyFunction;
 
   scene?: string;
-
 }

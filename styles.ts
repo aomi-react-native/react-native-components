@@ -14,7 +14,7 @@ export const Colors = {
   info: '#5bc0de',
   warning: '#f0ad4e',
   danger: '#d9534f',
-  fontColor: '#1a1a1a'
+  fontColor: '#1a1a1a',
 };
 
 export const fontSize = 17;
@@ -26,19 +26,16 @@ export const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 
 export const STATUSBAR_HEIGHT = Platform.select({
   ios: getWindowSize().height === 812 ? 44 : 20,
-  android: 0
+  android: 0,
 });
 
 export const HEADER_HEIGHT = APPBAR_HEIGHT + STATUSBAR_HEIGHT;
 
 export function getWindowSize() {
-  const {
-    width,
-    height
-  } = Dimensions.get('window');
+  const { width, height } = Dimensions.get('window');
   return {
     width,
-    height
+    height,
   };
 }
 
@@ -48,18 +45,18 @@ export default {
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   center: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   flexRow: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   flexColumn: {
     flex: 1,
-    flexDirection: 'column'
-  }
+    flexDirection: 'column',
+  },
 };

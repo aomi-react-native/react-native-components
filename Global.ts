@@ -9,7 +9,7 @@ export type ReactNodeFunction = () => ReactNode;
 
 export interface Size {
   width?: number;
-  height?: number
+  height?: number;
 }
 
 export interface BaseProps {

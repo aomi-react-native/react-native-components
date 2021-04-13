@@ -7,9 +7,9 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create<any>({
   icon: {
     width: 20,
-    height: 20
+    height: 20,
   },
   btn: {
-    justifyContent: 'flex-start'
-  }
+    justifyContent: 'flex-start',
+  },
 });
