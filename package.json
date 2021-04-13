@@ -1,6 +1,6 @@
 {
   "name": "@aomi/react-native-components",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.1",
   "description": "React Native Components",
   "main": "index.js",
   "private": false,
@@ -8,6 +8,7 @@
     "build": "tsc -d",
     "watch": "tsc -d && tsc -w",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepublishOnly": "tsc -d",
     "clear": "rm -rf *.d.ts *.js *.js.map **/*.d.ts **/*.js **/*.js.map **/*/build"
   },
   "repository": {
