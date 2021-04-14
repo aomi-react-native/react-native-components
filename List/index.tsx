@@ -208,7 +208,7 @@
 //
 // export default List;
 
-import { List } from './List';
-import { ListItem } from './ListItem';
+import { List, ListProps } from './List';
+import { ListItem, ListItemProps } from './ListItem';
 
-export { List as default, ListItem };
+export { List as default, List, ListProps, ListItem, ListItemProps };
