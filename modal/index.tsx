@@ -7,7 +7,7 @@ import { createRootView } from '../createRootNode/index';
 import RootManager from '../createRootNode/RootManager';
 import { AbstractDialog } from '../Dialog/index';
 import Button from '../Button/index';
-import { Colors, fontSize } from '../styles';
+// import { Colors, fontSize } from '../styles';
 import Props from './Props';
 
 const styles = StyleSheet.create<any>({
@@ -28,7 +28,7 @@ const styles = StyleSheet.create<any>({
   },
   title: {
     textAlign: 'center',
-    fontSize,
+    // fontSize,
     padding: 15
   },
   buttonGroup: {
@@ -141,47 +141,20 @@ class SceneModal extends Component<Props> {
   }
 
   render() {
-    const {
-      maskStyle,
-      containerStyle,
-      contentStyle,
-      title,
-      content,
-      buttons
-    } = this.props;
+    const { maskStyle, containerStyle, contentStyle, title, content, buttons } = this.props;
 
     const { animation, visible } = this.state;
 
     return (
-      <AbstractDialog
-        onPress={this.handleDismiss}
-        style={[styles.mask, maskStyle]}
-        visible={visible}>
-        <Animatable.View
-          {...animation}
-          onAnimationEnd={this.handleAnimationEnd}
-          style={[styles.container, containerStyle]}>
-          {typeof title === 'string' ? (
-            <Text style={styles.title}>{title}</Text>
-          ) : (
-            title
-          )}
-          <View style={[styles.content, contentStyle]}>
-            {typeof content === 'string' ? <Text>{content}</Text> : content}
-          </View>
+      <AbstractDialog onPress={this.handleDismiss} style={[styles.mask, maskStyle]} visible={visible}>
+        <Animatable.View {...animation} onAnimationEnd={this.handleAnimationEnd} style={[styles.container, containerStyle]}>
+          {typeof title === 'string' ? <Text style={styles.title}>{title}</Text> : title}
+          <View style={[styles.content, contentStyle]}>{typeof content === 'string' ? <Text>{content}</Text> : content}</View>
           {buttons && buttons.length > 0 && (
             <View style={[styles.buttonGroup]}>
-              {buttons.map(
-                ({ onPress, containerStyle, style, ...props }, index) => (
-                  <Button
-                    {...props}
-                    containerStyle={[styles.button, containerStyle]}
-                    key={index}
-                    onPress={this.handlePress(onPress)}
-                    style={[styles.buttonStyle, style]}
-                  />
-                )
-              )}
+              {buttons.map(({ onPress, containerStyle, style, ...props }, index) => (
+                <Button {...props} containerStyle={[styles.button, containerStyle]} key={index} onPress={this.handlePress(onPress)} style={[styles.buttonStyle, style]} />
+              ))}
             </View>
           )}
         </Animatable.View>
@@ -265,15 +238,7 @@ export function alert({ ok = '确定', onOk, button, ...args }: any = {}) {
 
 /**
  */
-export function confirm({
-  cancel = '取消',
-  ok = '确定',
-  onOk,
-  okButton,
-  onCancel,
-  cancelButton,
-  ...args
-}: any = {}) {
+export function confirm({ cancel = '取消', ok = '确定', onOk, okButton, onCancel, cancelButton, ...args }: any = {}) {
   const buttons = [
     {
       children: cancel,
