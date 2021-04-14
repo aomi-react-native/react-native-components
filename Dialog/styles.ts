@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import commonStyles from '../styles';
+import { style } from '../styles/style';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
@@ -7,7 +7,7 @@ import commonStyles from '../styles';
 
 export default StyleSheet.create<any>({
   container: {
-    ...commonStyles.fullScreenAbsolute
+    ...style.fullScreenAbsolute
   },
   loadingStyle: {
     flex: 1,

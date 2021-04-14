@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../styles';
+import { Colors } from '../styles/color';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2018/1/31

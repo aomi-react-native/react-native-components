@@ -1,10 +1,13 @@
 import * as React from 'react';
 import AbstractFormComponent from '../Form/AbstractFormComponent';
 import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-import commonStyle, { Colors, fontSize, separatorHeight } from '../styles';
+// import commonStyle, { Colors, fontSize, separatorHeight } from '../styles';
 import field from '../Form/field';
 
 import Props from './Props';
+import { Colors } from '../styles/color';
+import { separatorHeight } from '../styles/util';
+import { style } from '../styles/style';
 
 // noinspection JSSuspiciousNameCombination
 const styles = StyleSheet.create<any>({
@@ -15,7 +18,7 @@ const styles = StyleSheet.create<any>({
     backgroundColor: Colors.white
   },
   icon: {
-    ...commonStyle.center,
+    ...style.center,
     width: 25
   },
   input: {
@@ -24,7 +27,7 @@ const styles = StyleSheet.create<any>({
     marginTop: Platform.OS === 'ios' ? 2 : 0
   },
   textInput: {
-    fontSize,
+    // fontSize,
     color: Colors.fontColor
   },
   label: {

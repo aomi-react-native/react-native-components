@@ -1,8 +1,9 @@
-import { Colors, fontSize, separatorHeight } from '../styles';
-
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
  */
+import { separatorHeight } from '../styles/util';
+import { Colors } from '../styles/color';
+
 export default {
   button: {
     borderRadius: 5,
@@ -27,12 +28,12 @@ export default {
     backgroundColor: Colors.white
   },
   textDefault: {
-    color: '#333',
-    fontSize
+    color: '#333'
+    // fontSize
   },
   textOther: {
-    color: '#FFF',
-    fontSize
+    color: '#FFF'
+    // fontSize
   },
   textDisabled: {
     color: '#bcbcbc'

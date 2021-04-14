@@ -7,10 +7,16 @@ export interface SubtitleProps extends TextProps {}
 /**
  * 子标题
  */
-export const Subtitle = forwardRef<any, SubtitleProps>(function Subtitle(inProps, ref) {
-  const { theme, children, style, ...props } = useThemeProps({ props: inProps, name: 'AMSubtitle' });
+export const Subtitle = forwardRef<any, SubtitleProps>(function Subtitle(
+  inProps,
+  ref
+) {
+  const { theme, children, style, ...props } = useThemeProps({
+    props: inProps,
+    name: 'AMSubtitle'
+  });
   return (
-    <Text ref={ref} style={[theme.Subtitle, style]} {...props}>
+    <Text ref={ref} style={[theme.subtitle, style]} {...props}>
       {children}
     </Text>
   );

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import common from '../styles';
+import { style } from '../styles/style';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
@@ -17,7 +17,7 @@ export default StyleSheet.create<any>({
     position: 'relative'
   },
   captureWindow: {
-    ...common.fullScreenAbsolute
+    ...style.fullScreenAbsolute
   },
   cell: {
     flex: 1,
@@ -31,7 +31,7 @@ export default StyleSheet.create<any>({
     position: 'relative'
   },
   windowStyle: {
-    ...common.fullScreenAbsolute,
+    ...style.fullScreenAbsolute,
     borderWidth: 5,
     borderColor: 'rgba(0, 0, 0, 0.5)'
   },

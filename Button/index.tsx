@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { Colors } from '../styles';
 import Props from './Props';
 
 import styles from './styles';
+import { Colors } from '../styles/color';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)

@@ -8,9 +8,12 @@ export interface TitleProps extends TextProps {}
  * 标题
  */
 export const Title = forwardRef<any, TitleProps>(function Title(inProps, ref) {
-  const { theme, children, style, ...props } = useThemeProps({ props: inProps, name: 'AMTitle' });
+  const { theme, children, style, ...props } = useThemeProps({
+    props: inProps,
+    name: 'AMTitle'
+  });
   return (
-    <Text ref={ref} style={[theme.Title, style]} {...props}>
+    <Text ref={ref} style={[theme.title, style]} {...props}>
       {children}
     </Text>
   );

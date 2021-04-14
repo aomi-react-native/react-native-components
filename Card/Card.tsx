@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Component from '../AbstractComponent';
 import { View } from 'react-native';
-import { Colors, separatorHeight } from '../styles';
 import { CardProps } from './Props';
+import { separatorHeight } from '../styles/util';
+import { Colors } from '../styles/color';
 
 // noinspection JSSuspiciousNameCombination
 const styles: any = {

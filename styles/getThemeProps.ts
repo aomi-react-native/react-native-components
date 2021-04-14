@@ -1,9 +1,24 @@
+import { ThemedProps, ThemeWithProps } from './theme';
+
 /* eslint-disable no-restricted-syntax */
-export function getThemeProps(params) {
+export function getThemeProps<
+  Theme extends ThemeWithProps<any>,
+  Props,
+  Name extends keyof any
+>(params: {
+  props: Props;
+  name: Name;
+  theme?: Theme;
+}): Props & ThemedProps<Theme, Name> {
   const { theme, name, props } = params;
 
-  if (!theme || !theme.components || !theme.components[name] || !theme.components[name].defaultProps) {
-    return props;
+  if (
+    !theme ||
+    !theme.components ||
+    !theme.components[name] ||
+    !theme.components[name].defaultProps
+  ) {
+    return props as any;
   }
 
   const output = { ...props };
@@ -19,5 +34,5 @@ export function getThemeProps(params) {
     }
   }
 
-  return output;
+  return output as any;
 }
