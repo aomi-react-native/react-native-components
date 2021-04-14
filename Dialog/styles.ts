@@ -7,22 +7,22 @@ import commonStyles from '../styles';
 
 export default StyleSheet.create<any>({
   container: {
-    ...commonStyles.fullScreenAbsolute,
+    ...commonStyles.fullScreenAbsolute
   },
   loadingStyle: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,.4)',
+    backgroundColor: 'rgba(0,0,0,.4)'
   },
   content: {
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'rgba(0,0,0,0.7)'
   },
   text: {
     marginTop: 5,
-    color: '#FFF',
-  },
+    color: '#FFF'
+  }
 });

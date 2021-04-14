@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  View,
+  View
 } from 'react-native';
 import AbstractComponent from '../AbstractComponent';
 
@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
   container: {
     borderBottomWidth: separatorHeight,
     borderTopWidth: separatorHeight,
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFF'
   },
   rowContainer: {
-    backgroundColor: '#b3b3b3',
+    backgroundColor: '#b3b3b3'
   },
   row: {
     flex: 1,
@@ -31,38 +31,38 @@ const styles = StyleSheet.create({
     minHeight: 45,
     alignItems: 'center',
     backgroundColor: '#FFF',
-    paddingHorizontal: padding,
+    paddingHorizontal: padding
   },
   header: {
-    marginRight: 10,
+    marginRight: 10
   },
   headerText: {
     color: Colors.fontColor,
-    fontSize,
+    fontSize
   },
   body: {
-    flex: 1,
+    flex: 1
   },
   bodyTextStyle: {
     color: Colors.fontColor,
-    fontSize,
+    fontSize
   },
   footer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   footerTextStyle: {
     color: '#b3b3b3',
-    fontSize,
+    fontSize
   },
   separator: {
-    height: separatorHeight,
+    height: separatorHeight
   },
   right: {
     width: 19,
     height: 19,
-    resizeMode: 'contain',
-  },
+    resizeMode: 'contain'
+  }
 });
 
 /**
@@ -76,7 +76,7 @@ class List extends AbstractComponent<Props> {
     alwaysBounceVertical: false,
     fullSeparator: false,
     separatorColor: Colors.separator,
-    rightArrow: <Image source={right} style={styles.right} />,
+    rightArrow: <Image source={right} style={styles.right} />
   };
 
   renderHeader(header) {
@@ -92,7 +92,7 @@ class List extends AbstractComponent<Props> {
 
     return React.cloneElement(<View />, {
       style: header && styles.header,
-      children: header,
+      children: header
     });
   }
 
@@ -107,7 +107,7 @@ class List extends AbstractComponent<Props> {
     }
     return React.cloneElement(<View />, {
       style: styles.body,
-      children: body,
+      children: body
     });
   }
 
@@ -133,7 +133,7 @@ class List extends AbstractComponent<Props> {
       onItemPress,
       itemStyle,
       disabled: defaultDisabled,
-      rightArrow: defaultRightArrow,
+      rightArrow: defaultRightArrow
     } = this.props;
 
     let tmpDisplayRightArrow = rightArrow;
@@ -188,7 +188,7 @@ class List extends AbstractComponent<Props> {
         style={[
           styles.container,
           { borderColor: separatorColor },
-          containerStyle,
+          containerStyle
         ]}>
         {header}
         <FlatList

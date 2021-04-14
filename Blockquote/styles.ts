@@ -6,19 +6,19 @@ import { Colors } from '../styles';
  */
 
 export const primary = {
-  borderLeftColor: Colors.primary,
+  borderLeftColor: Colors.primary
 };
 export const success = {
-  borderLeftColor: Colors.success,
+  borderLeftColor: Colors.success
 };
 export const info = {
-  borderLeftColor: Colors.info,
+  borderLeftColor: Colors.info
 };
 export const warn = {
-  borderLeftColor: Colors.warning,
+  borderLeftColor: Colors.warning
 };
 export const danger = {
-  borderLeftColor: Colors.danger,
+  borderLeftColor: Colors.danger
 };
 
 export const container = {
@@ -28,11 +28,11 @@ export const container = {
   borderColor: '#eee',
   borderLeftColor: Colors.separator,
   paddingVertical: 10,
-  paddingHorizontal: 15,
+  paddingHorizontal: 15
 };
 
 export const titleText: any = {
   fontSize: 16,
   fontWeight: '500',
-  marginBottom: 5,
+  marginBottom: 5
 };

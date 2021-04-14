@@ -32,6 +32,10 @@
     "url": "https://github.com/sitb-software/react-native-components/issues"
   },
   "homepage": "https://github.com/sitb-software/react-native-components#readme",
+  "dependencies": {
+    "@aomi/utils": "^1.0.0",
+    "hoist-non-react-statics": "^3.3.2"
+  },
   "optionalDependencies": {
     "jsdk": "^0.0.14-Alpha",
     "prop-types": "^15.7.2",

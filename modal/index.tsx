@@ -14,61 +14,61 @@ const styles = StyleSheet.create<any>({
   mask: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,.4)',
+    backgroundColor: 'rgba(0,0,0,.4)'
   },
   container: {
     marginHorizontal: 15,
     borderRadius: 10,
     borderWidth: 0.1,
     minHeight: 100,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   content: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 10
   },
   title: {
     textAlign: 'center',
     fontSize,
-    padding: 15,
+    padding: 15
   },
   buttonGroup: {
     marginTop: 15,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   buttonStyle: {
-    flex: 1,
+    flex: 1
   },
   button: {
-    borderRadius: 0,
-  },
+    borderRadius: 0
+  }
 });
 
 const popupShowAnimation = {
   animation: 'slideInUp',
-  duration: 300,
+  duration: 300
 };
 
 const popupHideAnimation = {
   animation: 'slideOutDown',
-  duration: 300,
+  duration: 300
 };
 
 class SceneModal extends Component<Props> {
   static defaultProps = {
-    buttons: [],
+    buttons: []
   };
 
   static contextTypes = {
-    manager: PropTypes.object,
+    manager: PropTypes.object
   };
 
   static childContextTypes = {
-    destroy: PropTypes.func,
+    destroy: PropTypes.func
   };
 
   getChildContext() {
     return {
-      destroy: this.handleClose,
+      destroy: this.handleClose
     };
   }
 
@@ -88,7 +88,7 @@ class SceneModal extends Component<Props> {
     this.state = {
       visible: true,
       isShow: true,
-      animation,
+      animation
     };
   }
 
@@ -120,7 +120,7 @@ class SceneModal extends Component<Props> {
       }
       this.setState({
         animation,
-        isShow: false,
+        isShow: false
       });
       // 如果不存在关闭动画，直接销毁组件
       if (!animation) {
@@ -147,7 +147,7 @@ class SceneModal extends Component<Props> {
       contentStyle,
       title,
       content,
-      buttons,
+      buttons
     } = this.props;
 
     const { animation, visible } = this.state;
@@ -207,7 +207,7 @@ export default (args: Props) => {
 export function info(args) {
   return sceneModal({
     ...args,
-    scene: 'info',
+    scene: 'info'
   });
 }
 
@@ -217,7 +217,7 @@ export function info(args) {
 export function success(args) {
   return sceneModal({
     ...args,
-    scene: 'success',
+    scene: 'success'
   });
 }
 
@@ -227,7 +227,7 @@ export function success(args) {
 export function error(args) {
   return sceneModal({
     ...args,
-    scene: 'error',
+    scene: 'error'
   });
 }
 
@@ -237,7 +237,7 @@ export function error(args) {
 export function warn(args) {
   return sceneModal({
     ...args,
-    scene: 'warn',
+    scene: 'warn'
   });
 }
 
@@ -253,13 +253,13 @@ export function alert({ ok = '确定', onOk, button, ...args }: any = {}) {
     {
       onPress: onOk,
       children: ok,
-      ...button,
-    },
+      ...button
+    }
   ];
   return sceneModal({
     ...args,
     scene: 'alert',
-    buttons,
+    buttons
   });
 }
 
@@ -278,25 +278,25 @@ export function confirm({
     {
       children: cancel,
       onPress: onCancel,
-      ...cancelButton,
+      ...cancelButton
     },
     {
       children: ok,
       onPress: onOk,
-      ...okButton,
-    },
+      ...okButton
+    }
   ];
 
   return sceneModal({
     ...args,
     scene: 'confirm',
-    buttons,
+    buttons
   });
 }
 
 export function popup(args) {
   return sceneModal({
     ...args,
-    scene: 'popup',
+    scene: 'popup'
   });
 }

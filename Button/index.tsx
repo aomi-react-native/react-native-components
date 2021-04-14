@@ -6,7 +6,7 @@ import {
   Text,
   TouchableNativeFeedback,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { Colors } from '../styles';
 import Props from './Props';
@@ -23,7 +23,7 @@ class Button extends Component<Props> {
     autoDismissKeyboard: false,
     disabled: false,
     disabledStyle: styles.disabledStyle,
-    type: 'default',
+    type: 'default'
   };
 
   handlePress(event) {
@@ -41,7 +41,7 @@ class Button extends Component<Props> {
       type,
       containerStyle,
       disabledStyle,
-      textStyle,
+      textStyle
     } = this.props;
 
     let newChild = children;
@@ -103,7 +103,7 @@ class Button extends Component<Props> {
       Comp ||
       Platform.select<any>({
         ios: TouchableOpacity,
-        android: TouchableNativeFeedback,
+        android: TouchableNativeFeedback
       });
 
     return (

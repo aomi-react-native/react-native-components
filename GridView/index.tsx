@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { getWindowSize } from '../styles';
-
-import Props from './Props';
 import { autoBind } from 'jsdk/autoBind';
+
+import { getWindowSize } from '../styles/util';
+import Props from './Props';
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-  },
+    flexDirection: 'row'
+  }
 });
 
 function handleCellData(cells, cols) {
@@ -40,7 +40,7 @@ export class GridView extends React.Component<Props> {
     autoWidth: true,
     cols: 1,
     horizontalSpacing: 0,
-    verticalSpacing: 0,
+    verticalSpacing: 0
   };
 
   state;
@@ -52,39 +52,32 @@ export class GridView extends React.Component<Props> {
     this.state = {
       cellHeight: 0,
       data,
-      width: getWindowSize().width,
+      width: getWindowSize().width
     };
   }
 
   static getDerivedStateFromProps(props) {
     const data = handleCellData(props.cells, props.cols);
     return {
-      data,
+      data
     };
   }
 
   handleLayout(event) {
     const { width } = event.nativeEvent.layout;
     this.setState({
-      width,
+      width
     });
   }
 
   renderItem({ item, index }) {
-    const {
-      renderCell,
-      horizontalSpacing,
-      verticalSpacing,
-      autoWidth,
-      cols,
-    } = this.props;
+    const { renderCell, horizontalSpacing, verticalSpacing, autoWidth, cols } = this.props;
     const { width, data } = this.state;
     const style: any = {
-      marginRight: horizontalSpacing,
+      marginRight: horizontalSpacing
     };
     if (autoWidth) {
-      style.width =
-        (width - (cols > 0 ? (cols - 1) * horizontalSpacing : 0)) / cols;
+      style.width = (width - (cols > 0 ? (cols - 1) * horizontalSpacing : 0)) / cols;
     }
 
     const children = item.map((cell, key) => {
@@ -95,7 +88,7 @@ export class GridView extends React.Component<Props> {
       if (cell.empty) {
         return React.cloneElement(<View />, {
           key,
-          style: newStyle,
+          style: newStyle
         });
       }
       return React.cloneElement(<View />, {
@@ -103,19 +96,11 @@ export class GridView extends React.Component<Props> {
         style: newStyle,
         children: renderCell({
           cell,
-          cellId: key,
-        }),
+          cellId: key
+        })
       });
     });
-    return (
-      <View
-        style={[
-          styles.row,
-          { marginBottom: index === data.length - 1 ? 0 : verticalSpacing },
-        ]}>
-        {children}
-      </View>
-    );
+    return <View style={[styles.row, { marginBottom: index === data.length - 1 ? 0 : verticalSpacing }]}>{children}</View>;
   }
 
   keyExtractor(item, index) {
@@ -123,22 +108,11 @@ export class GridView extends React.Component<Props> {
   }
 
   render() {
-    const {
-      containerStyle,
-      verticalSpacing,
-      horizontalSpacing,
-      ...other
-    } = this.props;
+    const { containerStyle, verticalSpacing, horizontalSpacing, ...other } = this.props;
 
     return (
       <View style={containerStyle}>
-        <FlatList
-          {...other}
-          data={this.state.data}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          onLayout={this.handleLayout}
-        />
+        <FlatList {...other} data={this.state.data} keyExtractor={this.keyExtractor} renderItem={this.renderItem} onLayout={this.handleLayout} />
       </View>
     );
   }

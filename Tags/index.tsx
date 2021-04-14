@@ -1,22 +1,22 @@
 import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Colors } from '../styles';
+import { Colors } from '../styles/color';
 
 const styles = StyleSheet.create<any>({
   tags: {
     flexDirection: 'row',
-    marginHorizontal: -5,
+    marginHorizontal: -5
   },
   container: {
     borderRadius: 50,
     padding: 5,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   tag: {
     fontSize: 12,
-    color: Colors.white,
-  },
+    color: Colors.white
+  }
 });
 
 /**
@@ -25,14 +25,14 @@ const styles = StyleSheet.create<any>({
  */
 export class Tag extends React.Component<any> {
   static defaultProps = {
-    color: '#666',
+    color: '#666'
   };
 
   render() {
     const { children, color, style, ...props } = this.props;
 
     const fontColor = {
-      color,
+      color
     };
 
     return (

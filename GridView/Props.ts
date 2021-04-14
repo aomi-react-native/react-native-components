@@ -10,8 +10,6 @@ export default interface Props {
 
   autoWidth?: boolean;
 
-  cellStyle?: StyleProp<ViewStyle>;
-
   cols?: number;
 
   containerStyle?: StyleProp<ViewStyle>;

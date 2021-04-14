@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Colors, separatorHeight } from '../styles';
+import { Colors } from '../styles/color';
+import { separatorHeight } from '../styles/util';
+// import { Colors, separatorHeight } from '../styles';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
@@ -11,41 +13,41 @@ export default StyleSheet.create<any>({
   container: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,.4)',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   contentContainer: {
-    margin: 10,
+    margin: 10
   },
   content: {
     backgroundColor: '#FFF',
-    borderRadius: 10,
+    borderRadius: 10
   },
   title: {
     height,
     justifyContent: 'center',
     borderColor: Colors.separator,
-    borderBottomWidth: separatorHeight,
+    borderBottomWidth: separatorHeight
   },
   titleText: {
     color: '#8F8F91',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 16
   },
   button: {
     borderRadius: 0,
     height,
     borderColor: Colors.separator,
-    borderBottomWidth: separatorHeight,
+    borderBottomWidth: separatorHeight
   },
   cancel: {
     marginTop: 10,
     height,
     justifyContent: 'center',
-    borderWidth: 0,
+    borderWidth: 0
   },
   cancelText: {
     fontWeight: '700',
     color: '#0977FF',
-    fontSize: 18,
-  },
+    fontSize: 18
+  }
 });

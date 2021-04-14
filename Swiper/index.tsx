@@ -3,11 +3,11 @@ import Component from '../AbstractComponent';
 import { StyleSheet, View } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import { Props } from './Props';
-import { getWindowSize } from '../styles';
+import { getWindowSize } from '../styles/util';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
+    position: 'relative'
   },
   dotContainer: {
     position: 'absolute',
@@ -18,22 +18,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 10,
-    zIndex: 9999,
+    zIndex: 9999
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginHorizontal: 3,
+    marginHorizontal: 3
   },
   activeDot: {
-    backgroundColor: '#007aff',
-  },
+    backgroundColor: '#007aff'
+  }
 });
 
 const initialLayout = {
   height: 1,
-  width: getWindowSize().width,
+  width: getWindowSize().width
 };
 
 /**
@@ -44,20 +44,20 @@ export class Swiper extends Component<Props> {
   static defaultProps = {
     autoPlay: false,
     duration: 2500,
-    horizontal: true,
+    horizontal: true
   };
 
   static getDerivedStateFromProps(props) {
     return {
       routes: React.Children.toArray(props.children).map((child, index) => ({
-        key: `${index}`,
-      })),
+        key: `${index}`
+      }))
     };
   }
 
   state = {
     index: 0,
-    routes: [],
+    routes: []
   };
 
   autoPlayTask;
@@ -67,8 +67,8 @@ export class Swiper extends Component<Props> {
     this.state = {
       index: 0,
       routes: React.Children.toArray(props.children).map((child, index) => ({
-        key: `${index}`,
-      })),
+        key: `${index}`
+      }))
     };
     this.autoPlay();
   }
@@ -100,20 +100,12 @@ export class Swiper extends Component<Props> {
   renderScene({ route }) {
     const { children } = this.props;
     const { key } = route;
-    return (
-      <View style={{ flex: 1, width: getWindowSize().width }}>
-        {React.Children.toArray(children)[key]}
-      </View>
-    );
+    return <View style={{ flex: 1, width: getWindowSize().width }}>{React.Children.toArray(children)[key]}</View>;
   }
 
   renderPagination({ navigationState }) {
     const { index, routes } = navigationState;
-    const {
-      showDot = false,
-      activeColor = '#007aff',
-      inactiveColor = 'rgba(0,0,0,.2)',
-    } = this.props;
+    const { showDot = false, activeColor = '#007aff', inactiveColor = 'rgba(0,0,0,.2)' } = this.props;
     if (!showDot) {
       return null;
     }
@@ -125,9 +117,8 @@ export class Swiper extends Component<Props> {
             style={[
               styles.dot,
               {
-                backgroundColor:
-                  `${index}` === key ? activeColor : inactiveColor,
-              },
+                backgroundColor: `${index}` === key ? activeColor : inactiveColor
+              }
             ]}
           />
         ))}

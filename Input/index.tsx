@@ -12,25 +12,25 @@ const styles = StyleSheet.create<any>({
     flexDirection: 'row',
     borderWidth: separatorHeight,
     borderColor: Colors.separator,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.white
   },
   icon: {
     ...commonStyle.center,
-    width: 25,
+    width: 25
   },
   input: {
     flex: 1,
     minHeight: 40,
-    marginTop: Platform.OS === 'ios' ? 2 : 0,
+    marginTop: Platform.OS === 'ios' ? 2 : 0
   },
   textInput: {
     fontSize,
-    color: Colors.fontColor,
+    color: Colors.fontColor
   },
   label: {
     justifyContent: 'center',
-    marginRight: 10,
-  },
+    marginRight: 10
+  }
 });
 
 const INPUT_PROPS_KEYS = [
@@ -64,7 +64,7 @@ const INPUT_PROPS_KEYS = [
   'selectionState',
   'textAlign',
   'underlineColorAndroid',
-  'name',
+  'name'
 ];
 
 @field
@@ -72,7 +72,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
   static defaultProps = {
     defaultValue: '',
     underlineColorAndroid: 'transparent',
-    validate: true,
+    validate: true
   };
 
   state;
@@ -83,7 +83,7 @@ export default class Input extends AbstractFormComponent<Props, any> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      value: props.defaultValue || '',
+      value: props.defaultValue || ''
     };
 
     const { name, form } = this.props;

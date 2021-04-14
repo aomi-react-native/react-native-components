@@ -11,8 +11,8 @@ const styles: any = {
     borderWidth: separatorHeight,
     borderColor: Colors.separator,
     borderRadius: 7,
-    backgroundColor: '#FFF',
-  },
+    backgroundColor: '#FFF'
+  }
 };
 
 /**
