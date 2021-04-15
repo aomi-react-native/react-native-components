@@ -3,14 +3,14 @@ import Component from '../AbstractComponent';
 import { View } from 'react-native';
 import { CardProps } from './Props';
 import { separatorHeight } from '../styles/util';
-import { Colors } from '../styles/color';
+import { colors } from '../styles/color';
 
 // noinspection JSSuspiciousNameCombination
 const styles: any = {
   container: {
     flexDirection: 'column',
     borderWidth: separatorHeight,
-    borderColor: Colors.separator,
+    borderColor: colors.separator,
     borderRadius: 7,
     backgroundColor: '#FFF'
   }

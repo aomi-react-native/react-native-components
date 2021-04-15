@@ -2,7 +2,7 @@
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
  */
 import { separatorHeight } from '../styles/util';
-import { Colors } from '../styles/color';
+import { colors } from '../styles/color';
 
 export default {
   button: {
@@ -24,8 +24,8 @@ export default {
     justifyContent: 'center'
   },
   containerDefault: {
-    borderColor: Colors.separator,
-    backgroundColor: Colors.white
+    borderColor: colors.separator,
+    backgroundColor: colors.white
   },
   textDefault: {
     color: '#333'
