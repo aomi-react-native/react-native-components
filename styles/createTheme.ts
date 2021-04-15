@@ -1,6 +1,7 @@
 import { ObjectUtils } from '@aomi/utils/ObjectUtils';
 import { subtitle, title } from '../Title/theme';
 import { Theme, ThemeOptions } from './theme';
+import { colors } from './color';
 
 export function createTheme(options: ThemeOptions = {}, ...args): Theme {
   const { ...other } = options;
@@ -8,7 +9,9 @@ export function createTheme(options: ThemeOptions = {}, ...args): Theme {
   let theme = ObjectUtils.deepmerge(
     {
       title,
-      subtitle
+      subtitle,
+
+      colors
     },
     other
   );

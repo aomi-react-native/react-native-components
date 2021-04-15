@@ -1,11 +1,14 @@
 import { Subtitle, Title } from '../Title/theme';
 import { Components } from './components';
+import { Colors } from './color';
 
 export interface ThemeOptions {
   title?: Title;
   subtitle?: Subtitle;
 
   components?: Components;
+
+  colors?: Colors;
 }
 
 export interface Theme {
@@ -13,6 +16,7 @@ export interface Theme {
   subtitle: Subtitle;
 
   components?: Components;
+  colors: Colors;
 }
 
 export type ThemedProps<Theme, Name extends keyof any> = Theme extends {

@@ -1,14 +1,26 @@
 /**
  * 颜色定义
  */
-export const Colors = {
+export const colors: Colors = {
   separator: '#bbbbbb',
   underlay: '#f5f5f9',
   white: '#FFF',
-  primary: '#337ab7',
-  success: '#5cb85c',
-  info: '#5bc0de',
-  warning: '#f0ad4e',
-  danger: '#d9534f',
-  fontColor: '#1a1a1a'
+  primary: '#3f51b5',
+  secondary: '#f50057',
+  success: '#4caf50',
+  info: '#2196f3',
+  warn: '#ff9800',
+  danger: '#f44336'
 };
+
+export interface Colors {
+  separator: string;
+  underlay: string;
+  white: string;
+  primary: string;
+  secondary: string;
+  success: string;
+  info: string;
+  warn: string;
+  danger: string;
+}
