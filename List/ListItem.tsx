@@ -1,8 +1,21 @@
 import * as React from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  TouchableNativeFeedback,
+  TouchableNativeFeedbackProps,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+  ViewProps
+} from 'react-native';
 import { useThemeProps } from '../styles/useThemeProps';
 
-export interface ListItemProps extends ViewProps {}
+export type ListItemProps<CProps = ViewProps> = CProps & {
+  Component?: React.ElementType<CProps>;
+  button?: boolean;
+} & TouchableOpacityProps &
+  TouchableNativeFeedbackProps;
 
 /**
  * list item
@@ -11,10 +24,23 @@ export const ListItem = React.forwardRef<
   any,
   React.PropsWithChildren<ListItemProps>
 >(function ListItem(inProps, ref) {
-  const { theme, children, style, ...props } = useThemeProps({
-    props: inProps,
-    name: 'AMListItem'
-  });
+  const { theme, children, style, button, Component, ...props } = useThemeProps(
+    {
+      props: inProps,
+      name: 'AMListItem'
+    }
+  );
+
+  let RootComponent = button
+    ? Platform.select<React.ElementType>({
+        ios: TouchableOpacity,
+        android: TouchableNativeFeedback
+      })
+    : View;
+
+  if (Component) {
+    RootComponent = Component;
+  }
 
   const styles = StyleSheet.create({
     container: {
@@ -31,8 +57,8 @@ export const ListItem = React.forwardRef<
   });
 
   return (
-    <View style={[styles.container, style]} ref={ref} {...props}>
+    <RootComponent style={[styles.container, style]} ref={ref} {...props}>
       {children}
-    </View>
+    </RootComponent>
   );
 });
