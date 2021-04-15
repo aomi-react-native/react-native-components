@@ -7,6 +7,7 @@ import {
   ViewStyle
 } from 'react-native';
 import { useThemeProps } from '../styles/useThemeProps';
+import { Divider } from '../Divider';
 
 export interface ListProps<T = any> extends FlatListProps<T> {
   header?: React.ReactNode;
@@ -32,7 +33,12 @@ export const List = React.forwardRef<any, React.PropsWithChildren<ListProps>>(
     return (
       <View style={[containerStyle]}>
         {header}
-        <FlatList keyExtractor={keyExtractor} ref={ref} {...props} />
+        <FlatList
+          keyExtractor={keyExtractor}
+          ref={ref}
+          ItemSeparatorComponent={Divider}
+          {...props}
+        />
         {footer}
       </View>
     );
