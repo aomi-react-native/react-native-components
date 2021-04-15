@@ -10,7 +10,12 @@ function mergeOuterLocalTheme(outerTheme, localTheme) {
 
     if (process.env.NODE_ENV !== 'production') {
       if (!mergedTheme) {
-        console.error(['Material-UI: You should return an object from your theme function, i.e.', '<ThemeProvider theme={() => ({})} />'].join('\n'));
+        console.error(
+          [
+            'AM-UI: You should return an object from your theme function, i.e.',
+            '<ThemeProvider theme={() => ({})} />'
+          ].join('\n')
+        );
       }
     }
 
@@ -32,18 +37,22 @@ export function ThemeProvider({ children, theme: localTheme }) {
     if (outerTheme === null && typeof localTheme === 'function') {
       console.error(
         [
-          'Material-UI: You are providing a theme function prop to the ThemeProvider component:',
+          'AM-UI: You are providing a theme function prop to the ThemeProvider component:',
           '<ThemeProvider theme={outerTheme => outerTheme} />',
           '',
           'However, no outer theme is present.',
-          'Make sure a theme is already injected higher in the React tree ' + 'or provide a theme object.'
+          'Make sure a theme is already injected higher in the React tree ' +
+            'or provide a theme object.'
         ].join('\n')
       );
     }
   }
 
   const theme = React.useMemo(() => {
-    const output = outerTheme === null ? localTheme : mergeOuterLocalTheme(outerTheme, localTheme);
+    const output =
+      outerTheme === null
+        ? localTheme
+        : mergeOuterLocalTheme(outerTheme, localTheme);
 
     if (output != null) {
       output[nested] = outerTheme !== null;
@@ -52,5 +61,7 @@ export function ThemeProvider({ children, theme: localTheme }) {
     return output;
   }, [localTheme, outerTheme]);
 
-  return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+  );
 }

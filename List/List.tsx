@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import * as React from 'react';
 import {
   FlatList,
   FlatListProps,
@@ -9,8 +9,8 @@ import {
 import { useThemeProps } from '../styles/useThemeProps';
 
 export interface ListProps<T = any> extends FlatListProps<T> {
-  header?: ReactNode;
-  footer?: ReactNode;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
 
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -22,17 +22,19 @@ function keyExtractor(item, index) {
 /**
  * list
  */
-export const List = forwardRef<any, ListProps>(function List(inProps, ref) {
-  const { containerStyle, header, footer, ...props } = useThemeProps({
-    props: inProps,
-    name: 'AMList'
-  });
+export const List = React.forwardRef<any, React.PropsWithChildren<ListProps>>(
+  function List(inProps, ref) {
+    const { containerStyle, header, footer, ...props } = useThemeProps({
+      props: inProps,
+      name: 'AMList'
+    });
 
-  return (
-    <View style={[containerStyle]}>
-      {header}
-      <FlatList keyExtractor={keyExtractor} ref={ref} {...props} />
-      {footer}
-    </View>
-  );
-});
+    return (
+      <View style={[containerStyle]}>
+        {header}
+        <FlatList keyExtractor={keyExtractor} ref={ref} {...props} />
+        {footer}
+      </View>
+    );
+  }
+);

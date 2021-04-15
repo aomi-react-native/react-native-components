@@ -210,5 +210,14 @@
 
 import { List, ListProps } from './List';
 import { ListItem, ListItemProps } from './ListItem';
+import { ListItemText, ListItemTextProps } from './ListItemText';
 
-export { List as default, List, ListProps, ListItem, ListItemProps };
+export {
+  List as default,
+  List,
+  ListProps,
+  ListItem,
+  ListItemProps,
+  ListItemText,
+  ListItemTextProps
+};

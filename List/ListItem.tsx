@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import * as React from 'react';
 import { View, ViewProps, StyleSheet } from 'react-native';
 import { useThemeProps } from '../styles/useThemeProps';
 
@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
 /**
  * list item
  */
-export const ListItem = forwardRef<any, ListItemProps>(function ListItem(
-  inProps,
-  ref
-) {
+export const ListItem = React.forwardRef<
+  any,
+  React.PropsWithChildren<ListItemProps>
+>(function ListItem(inProps, ref) {
   const { theme, children, style, ...props } = useThemeProps({
     props: inProps,
     name: 'AMListItem'
