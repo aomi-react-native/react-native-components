@@ -16,10 +16,6 @@ export const ListItem = React.forwardRef<
     name: 'AMListItem'
   });
 
-  const childrenNumber = React.Children.count(children);
-  // 当有多个子对象时 边距设置为6
-  const margin = childrenNumber > 1 ? 6 : 4;
-
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -30,8 +26,6 @@ export const ListItem = React.forwardRef<
       paddingRight: 16,
       paddingTop: 8,
       paddingBottom: 8,
-      marginTop: margin,
-      marginBottom: margin,
       backgroundColor: theme.colors.white
     }
   });
