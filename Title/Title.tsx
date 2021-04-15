@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, TextProps } from 'react-native';
+import { Text, TextProps, StyleSheet } from 'react-native';
 import { useThemeProps } from '../styles/useThemeProps';
 
 export interface TitleProps extends TextProps {}
@@ -13,8 +13,15 @@ export const Title = React.forwardRef<any, React.PropsWithChildren<TitleProps>>(
       props: inProps,
       name: 'AMTitle'
     });
+    const styles = StyleSheet.create({
+      container: {
+        ...theme.title,
+        fontWeight: '400',
+        lineHeight: 22
+      }
+    });
     return (
-      <Text ref={ref} style={[theme.title, style]} {...props}>
+      <Text ref={ref} style={[styles.container, style]} {...props}>
         {children}
       </Text>
     );

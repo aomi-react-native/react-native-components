@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, TextProps } from 'react-native';
+import { StyleSheet, Text, TextProps } from 'react-native';
 import { useThemeProps } from '../styles/useThemeProps';
 
 export interface SubtitleProps extends TextProps {}
@@ -15,8 +15,15 @@ export const Subtitle = React.forwardRef<
     props: inProps,
     name: 'AMSubtitle'
   });
+  const styles = StyleSheet.create({
+    container: {
+      ...theme.subtitle,
+      fontWeight: '400',
+      lineHeight: 18
+    }
+  });
   return (
-    <Text ref={ref} style={[theme.subtitle, style]} {...props}>
+    <Text ref={ref} style={[styles.container, style]} {...props}>
       {children}
     </Text>
   );

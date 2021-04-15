@@ -11,6 +11,6 @@ export const title: Title = {
 export interface Subtitle extends Title {}
 
 export const subtitle: Subtitle = {
-  fontSize: 12,
+  fontSize: 14,
   color: 'rgba(0, 0, 0, 0.54)'
 };
