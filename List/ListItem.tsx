@@ -25,6 +25,7 @@ export const ListItem = React.forwardRef<
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-start',
+      alignItems: 'center',
       paddingLeft: 16,
       paddingRight: 16,
       paddingTop: 8,

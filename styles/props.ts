@@ -1,8 +1,10 @@
-import { TitleProps } from '../Title/Title';
-import { SubtitleProps } from '../Title/Subtitle';
-import { ListProps } from '../List/List';
-import { ListItemProps } from '../List/ListItem';
-import { ListItemTextProps } from '../List/ListItemText';
+import { TitleProps, SubtitleProps } from '../Title';
+import {
+  ListProps,
+  ListItemProps,
+  ListItemTextProps,
+  ListItemAvatarProps
+} from '../List';
 
 export type ComponentsProps = {
   [Name in keyof ComponentsPropsList]?: Partial<ComponentsPropsList[Name]>;
@@ -11,6 +13,7 @@ export type ComponentsProps = {
 export interface ComponentsPropsList {
   AMList: ListProps;
   AMListItem: ListItemProps;
+  AMListItemAvatar: ListItemAvatarProps;
   AMListItemText: ListItemTextProps;
   AMTitle?: TitleProps;
   AMSubtitle?: SubtitleProps;

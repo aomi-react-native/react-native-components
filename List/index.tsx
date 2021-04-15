@@ -210,6 +210,7 @@
 
 import { List, ListProps } from './List';
 import { ListItem, ListItemProps } from './ListItem';
+import { ListItemAvatar, ListItemAvatarProps } from './ListItemAvatar';
 import { ListItemText, ListItemTextProps } from './ListItemText';
 
 export {
@@ -218,6 +219,8 @@ export {
   ListProps,
   ListItem,
   ListItemProps,
+  ListItemAvatar,
+  ListItemAvatarProps,
   ListItemText,
   ListItemTextProps
 };

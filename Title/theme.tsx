@@ -5,12 +5,12 @@ export interface Title {
 
 export const title: Title = {
   fontSize: 16,
-  color: '#333333'
+  color: 'rgba(0, 0, 0, 0.87)'
 };
 
 export interface Subtitle extends Title {}
 
 export const subtitle: Subtitle = {
   fontSize: 12,
-  color: '#7E848E'
+  color: 'rgba(0, 0, 0, 0.54)'
 };
