@@ -1,24 +1,24 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../styles/color';
+import { colors } from '../styles/color';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2018/1/31
  */
 
 export const primary = {
-  borderLeftColor: Colors.primary
+  borderLeftColor: colors.primary
 };
 export const success = {
-  borderLeftColor: Colors.success
+  borderLeftColor: colors.success
 };
 export const info = {
-  borderLeftColor: Colors.info
+  borderLeftColor: colors.info
 };
 export const warn = {
-  borderLeftColor: Colors.warning
+  borderLeftColor: colors.warn
 };
 export const danger = {
-  borderLeftColor: Colors.danger
+  borderLeftColor: colors.danger
 };
 
 export const container = {
@@ -26,7 +26,7 @@ export const container = {
   borderLeftWidth: 4,
   borderRadius: 3,
   borderColor: '#eee',
-  borderLeftColor: Colors.separator,
+  borderLeftColor: colors.separator,
   paddingVertical: 10,
   paddingHorizontal: 15
 };

@@ -11,7 +11,7 @@ import {
 import Props from './Props';
 
 import styles from './styles';
-import { Colors } from '../styles/color';
+import { colors } from '../styles/color';
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
@@ -78,7 +78,7 @@ class Button extends Component<Props> {
       temp.push(styles.containerDefault);
     } else {
       temp.push(styles.button);
-      temp.push({ backgroundColor: Colors[type] });
+      temp.push({ backgroundColor: colors[type] });
     }
 
     temp.push(containerStyle);

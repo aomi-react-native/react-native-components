@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Colors } from '../styles/color';
+import { colors } from '../styles/color';
 
 const styles = StyleSheet.create<any>({
   tags: {
@@ -15,7 +15,7 @@ const styles = StyleSheet.create<any>({
   },
   tag: {
     fontSize: 12,
-    color: Colors.white
+    color: colors.white
   }
 });
 

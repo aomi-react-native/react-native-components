@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Picker as RNPicker, PickerIOS, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Picker as RNPicker,
+  PickerIOS,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { View as AnimatableView } from 'react-native-animatable';
 import AbstractFormComponent from '../Form/AbstractFormComponent';
 import Dialog from '../Dialog/index';
@@ -7,7 +15,7 @@ import Input from '../Input';
 // import { Colors, separatorHeight } from '../styles';
 import Props from './Props';
 import { separatorHeight } from '../styles/util';
-import { Colors } from '../styles/color';
+import { colors, Colors } from '../styles/color';
 
 const styles = StyleSheet.create<any>({
   dialogContainer: {
@@ -24,8 +32,8 @@ const styles = StyleSheet.create<any>({
     height: 40,
     paddingHorizontal: 15,
     borderBottomWidth: separatorHeight,
-    borderColor: Colors.separator,
-    backgroundColor: Colors.underlay
+    borderColor: colors.separator,
+    backgroundColor: colors.underlay
   },
   title: {
     color: '#0977FF',
@@ -144,13 +152,19 @@ class Picker extends AbstractFormComponent<Props, any> {
 
     if (Platform.OS === 'android') {
       return (
-        <RNPicker mode={mode} onValueChange={this.handleValueChange} selectedValue={this.state.selectedValue} style={style}>
+        <RNPicker
+          mode={mode}
+          onValueChange={this.handleValueChange}
+          selectedValue={this.state.selectedValue}
+          style={style}>
           {children}
         </RNPicker>
       );
     }
 
-    const props = this.state.visible ? this.contentShowAnimation : this.contentHideAnimation;
+    const props = this.state.visible
+      ? this.contentShowAnimation
+      : this.contentHideAnimation;
     let label = '   ';
     const childrenArr: Array<any> = React.Children.toArray(children);
     for (let i = 0; i < childrenArr.length; i++) {
@@ -166,10 +180,18 @@ class Picker extends AbstractFormComponent<Props, any> {
         <Input {...other} style={style}>
           {label}
         </Input>
-        <Dialog hideAnimation={hideAnimation} onPress={this.handleCancel} showAnimation={showAnimation} statusBarAutoHidden={false} style={styles.dialogContainer} visible={this.state.visible}>
+        <Dialog
+          hideAnimation={hideAnimation}
+          onPress={this.handleCancel}
+          showAnimation={showAnimation}
+          statusBarAutoHidden={false}
+          style={styles.dialogContainer}
+          visible={this.state.visible}>
           <AnimatableView {...props} style={styles.picker}>
             {this.renderHeader()}
-            <PickerIOS onValueChange={this.handleValueChange} selectedValue={this.state.selectedValue}>
+            <PickerIOS
+              onValueChange={this.handleValueChange}
+              selectedValue={this.state.selectedValue}>
               {children}
             </PickerIOS>
           </AnimatableView>

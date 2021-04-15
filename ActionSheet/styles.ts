@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../styles/color';
+import { colors } from '../styles/color';
 import { separatorHeight } from '../styles/util';
 // import { Colors, separatorHeight } from '../styles';
 
@@ -25,7 +25,7 @@ export default StyleSheet.create<any>({
   title: {
     height,
     justifyContent: 'center',
-    borderColor: Colors.separator,
+    borderColor: colors.separator,
     borderBottomWidth: separatorHeight
   },
   titleText: {
@@ -36,7 +36,7 @@ export default StyleSheet.create<any>({
   button: {
     borderRadius: 0,
     height,
-    borderColor: Colors.separator,
+    borderColor: colors.separator,
     borderBottomWidth: separatorHeight
   },
   cancel: {

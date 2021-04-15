@@ -5,7 +5,7 @@ import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import field from '../Form/field';
 
 import Props from './Props';
-import { Colors } from '../styles/color';
+import { colors } from '../styles/color';
 import { separatorHeight } from '../styles/util';
 import { style } from '../styles/style';
 
@@ -14,8 +14,8 @@ const styles = StyleSheet.create<any>({
   container: {
     flexDirection: 'row',
     borderWidth: separatorHeight,
-    borderColor: Colors.separator,
-    backgroundColor: Colors.white
+    borderColor: colors.separator,
+    backgroundColor: colors.white
   },
   icon: {
     ...style.center,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create<any>({
   },
   textInput: {
     // fontSize,
-    color: Colors.fontColor
+    // color: colors.fontColor
   },
   label: {
     justifyContent: 'center',
