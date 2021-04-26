@@ -18,7 +18,12 @@ export const Divider = React.forwardRef<
   any,
   React.PropsWithChildren<DividerProps>
 >(function Divider(inProps, ref) {
-  const { orientation = 'horizontal', variant, ...props } = useThemeProps({
+  const {
+    theme,
+    orientation = 'horizontal',
+    variant,
+    ...props
+  } = useThemeProps({
     props: inProps,
     name: 'AMDivider'
   });
@@ -34,7 +39,8 @@ export const Divider = React.forwardRef<
 
   const styles = StyleSheet.create({
     separator: {
-      ...separator
+      ...separator,
+      backgroundColor: theme.colors.separator
     }
   });
 
