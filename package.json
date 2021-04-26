@@ -1,6 +1,6 @@
 {
   "name": "@aomi/react-native-components",
-  "version": "1.0.1-Alpha.4",
+  "version": "1.0.1-Alpha.5",
   "description": "React Native Components",
   "main": "index.js",
   "private": false,
@@ -33,15 +33,6 @@
   },
   "homepage": "https://github.com/sitb-software/react-native-components#readme",
   "devDependencies": {
-    "jsdk": "^0.0.14-Alpha",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-native": "^0.64.0",
-    "react-native-animatable": "^1.3.3",
-    "react-native-overlay": "^0.5.0",
-    "react-native-svg": "^12.1.1",
-    "react-native-tab-view": "^3.0.1",
-    "react-native-vector-icons": "^8.1.0",
     "@aomi/utils": "^1.0.1",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/eslint-config": "^2.0.0",
@@ -56,7 +47,16 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-react": "^7.23.2",
     "hoist-non-react-statics": "^3.3.2",
+    "jsdk": "^0.0.14-Alpha",
     "prettier": "^2.2.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-native": "^0.64.0",
+    "react-native-animatable": "^1.3.3",
+    "react-native-overlay": "^0.5.0",
+    "react-native-svg": "^12.1.1",
+    "react-native-tab-view": "^3.0.1",
+    "react-native-vector-icons": "^8.1.0",
     "typescript": "^4.2.4"
   }
 }
