@@ -1,6 +1,6 @@
 {
   "name": "@aomi/react-native-components",
-  "version": "1.0.1-Alpha.3",
+  "version": "1.0.1-Alpha.4",
   "description": "React Native Components",
   "main": "index.js",
   "private": false,
@@ -32,33 +32,30 @@
     "url": "https://github.com/sitb-software/react-native-components/issues"
   },
   "homepage": "https://github.com/sitb-software/react-native-components#readme",
-  "dependencies": {
-    "@aomi/utils": "^1.0.0",
-    "hoist-non-react-statics": "^3.3.2"
-  },
-  "optionalDependencies": {
+  "devDependencies": {
     "jsdk": "^0.0.14-Alpha",
     "prop-types": "^15.7.2",
-    "react": "17.0.2",
-    "react-native": "0.64.0",
+    "react": "^17.0.2",
+    "react-native": "^0.64.0",
     "react-native-animatable": "^1.3.3",
     "react-native-overlay": "^0.5.0",
-    "react-native-svg": "^12.1.0",
+    "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.0.1",
-    "react-native-vector-icons": "^8.1.0"
-  },
-  "devDependencies": {
+    "react-native-vector-icons": "^8.1.0",
+    "@aomi/utils": "^1.0.1",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/eslint-config": "^2.0.0",
     "@react-native-community/eslint-plugin": "^1.1.0",
     "@types/react": "^17.0.3",
-    "@types/react-native": "^0.64.2",
+    "@types/react-native": "^0.64.4",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "babel-eslint": "^10.0.3",
-    "eslint": "^7.24.0",
+    "eslint": "^7.25.0",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-react": "^7.23.2",
+    "hoist-non-react-statics": "^3.3.2",
     "prettier": "^2.2.1",
     "typescript": "^4.2.4"
   }
