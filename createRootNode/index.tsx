@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { AppRegistry, StyleSheet, View } from 'react-native';
+import RootSiblings from 'react-native-root-siblings';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
 
 import RootManager from './RootManager';
@@ -8,11 +9,11 @@ import { StaticContainer } from '../StaticContainer';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative',
+    position: 'relative'
   },
   offStream: {
-    position: 'absolute',
-  },
+    position: 'absolute'
+  }
 });
 
 export const CREATE_EVENT = 'ROOT_ELEMENT_CREATE';
@@ -57,7 +58,7 @@ if (!(emitter instanceof EventEmitter)) {
           } else if (SiblingComponent) {
             siblings.set(id, {
               SiblingComponent,
-              props,
+              props
             });
             updates.add(id);
           }
@@ -112,15 +113,16 @@ export function createRootView(RootView, props): RootManager {
  * @date 16/8/11
  */
 export default function createRootNode<P, S>(RootView) {
-  return class extends React.Component<P, S> {
-    manager: RootManager;
+  return class RootComponentWrapper extends React.Component<P, S> {
+    manager: RootSiblings;
 
-    componentWillMount() {
-      this.manager = new RootManager(RootView, this.props);
+    constructor(props) {
+      super(props);
+      this.manager = new RootSiblings(<RootView {...props} />);
     }
 
-    componentWillUpdate(nextProps) {
-      this.manager.update(nextProps);
+    componentDidUpdate() {
+      this.manager.update(<RootView {...this.props} />);
     }
 
     componentWillUnmount() {

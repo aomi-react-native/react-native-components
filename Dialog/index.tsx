@@ -5,46 +5,61 @@ import {
   StatusBar,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import Component from '../AbstractComponent';
 import { View as AnimatableView } from 'react-native-animatable';
-import createRootNode from '../createRootNode/index';
-import RootManager from '../createRootNode/RootManager';
+import { RootSiblingParent } from 'react-native-root-siblings';
+import { autoBind } from 'jsdk/autoBind';
+
 import Props from './Props';
 
 import styles from './styles';
+import createRootNode from '../createRootNode/index';
 
 function handleAndroidBackPress() {
   return true;
+}
+
+function handleHardwareBackPress(visible) {
+  if (visible) {
+    BackHandler.addEventListener('hardwareBackPress', handleAndroidBackPress);
+  } else {
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      handleAndroidBackPress
+    );
+  }
 }
 
 /**
  * @author 田尘殇Sean(sean.snow@live.com)
  * @date 16/5/24
  */
-export class AbstractDialog extends Component<Props> {
+@autoBind
+export class AbstractDialog extends React.Component<Props> {
   static defaultProps = {
     autoDisableAndroidBackPress: true,
     activeOpacity: 1,
     visible: false,
-    statusBarAutoHidden: true,
+    statusBarAutoHidden: true
   };
+
+  static getDerivedStateFromProps(props, state) {
+    handleHardwareBackPress(state.visible);
+    return null;
+  }
 
   state = {
     animating: false,
-    visible: false,
+    visible: false
   };
 
   mounted = true;
   statusBarHidden = false;
 
-  componentWillMount() {
-    this.handleHardwareBackPress();
-  }
-
-  componentWillReceiveProps() {
-    this.handleHardwareBackPress();
+  constructor(props) {
+    super(props);
+    handleHardwareBackPress(this.state.visible);
   }
 
   shounldComponentUpdate() {
@@ -56,17 +71,6 @@ export class AbstractDialog extends Component<Props> {
       StatusBar.setHidden(false);
     }
     this.mounted = false;
-  }
-
-  handleHardwareBackPress() {
-    if (this.state.visible) {
-      BackHandler.addEventListener('hardwareBackPress', handleAndroidBackPress);
-    } else {
-      BackHandler.removeEventListener(
-        'hardwareBackPress',
-        handleAndroidBackPress
-      );
-    }
   }
 
   handlePress() {
@@ -96,7 +100,7 @@ export class AbstractDialog extends Component<Props> {
 
     this.setState({
       visible,
-      animating: false,
+      animating: false
     });
   }
 
@@ -126,7 +130,7 @@ export class AbstractDialog extends Component<Props> {
       showAnimation,
       hideAnimation,
       loadingDialog,
-      loadingProps,
+      loadingProps
     } = this.props;
 
     if (!visible && !this.state.visible) {
@@ -151,7 +155,7 @@ export class AbstractDialog extends Component<Props> {
         {loadingDialog
           ? this.renderLoading({
               children,
-              loadingProps,
+              loadingProps
             })
           : children}
       </AnimatableView>
@@ -159,4 +163,6 @@ export class AbstractDialog extends Component<Props> {
   }
 }
 
-export default createRootNode<Props, any>(AbstractDialog);
+export const Dialog = createRootNode<Props, any>(AbstractDialog);
+
+export default Dialog;

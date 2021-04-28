@@ -1,10 +1,10 @@
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
  */
-import { ViewProperties } from 'react-native';
+import { ViewProps } from 'react-native';
 import { EmptyFunction } from '../Global';
 
-export default interface Props extends ViewProperties {
+export default interface Props extends ViewProps {
   activeOpacity?: number;
   autoHardwareBackPress?: boolean;
   hideAnimation?: any;

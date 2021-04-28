@@ -31,15 +31,17 @@ export const ListItem = React.forwardRef<
     }
   );
 
-  let RootComponent = button
-    ? Platform.select<React.ElementType>({
-        ios: TouchableOpacity,
-        android: TouchableNativeFeedback
-      })
-    : View;
+  let RootComponent;
 
   if (Component) {
     RootComponent = Component;
+  } else if (button) {
+    RootComponent = Platform.select<React.ElementType>({
+      ios: TouchableOpacity,
+      android: TouchableNativeFeedback
+    });
+  } else {
+    RootComponent = View;
   }
 
   const styles = StyleSheet.create({

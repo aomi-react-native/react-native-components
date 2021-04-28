@@ -1,4 +1,9 @@
-export const style = {
+import { StyleSheet } from 'react-native';
+
+export const style = StyleSheet.create({
+  /**
+   * @deprecated use StyleSheet.absoluteFill
+   */
   fullScreenAbsolute: {
     position: 'absolute',
     top: 0,
@@ -17,5 +22,11 @@ export const style = {
   flexColumn: {
     flex: 1,
     flexDirection: 'column'
+  },
+  textAlignCenter: {
+    textAlign: 'center'
+  },
+  textAlignRight: {
+    textAlign: 'right'
   }
-};
+});

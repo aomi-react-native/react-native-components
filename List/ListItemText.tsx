@@ -42,8 +42,8 @@ export const ListItemText = React.forwardRef<
 
   return (
     <View style={[styles.container, style]} ref={ref} {...props}>
-      <Title {...primaryProps}>{primary}</Title>
-      <Subtitle {...secondaryProps}>{secondary}</Subtitle>
+      {primary && <Title {...primaryProps}>{primary}</Title>}
+      {secondary && <Subtitle {...secondaryProps}>{secondary}</Subtitle>}
       {children}
     </View>
   );

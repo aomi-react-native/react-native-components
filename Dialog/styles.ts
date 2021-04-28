@@ -4,11 +4,8 @@ import { style } from '../styles/style';
 /**
  * @author 田尘殇Sean(sean.snow@live.com) create at 2017/11/4
  */
-
 export default StyleSheet.create<any>({
-  container: {
-    ...style.fullScreenAbsolute
-  },
+  container: StyleSheet.absoluteFill,
   loadingStyle: {
     flex: 1,
     justifyContent: 'center',
