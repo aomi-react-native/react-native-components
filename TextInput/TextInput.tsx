@@ -138,7 +138,7 @@ export const TextInput = React.forwardRef<
     inputInstance = (
       <View style={styles.inputWrapper}>
         {label}
-        <BaseTextInput {...newInputProps} />
+        <BaseTextInput {...newInputProps} ref={ref} />
       </View>
     );
   }

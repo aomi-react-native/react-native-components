@@ -21,5 +21,5 @@ export const BaseTextInput = React.forwardRef<
     }
   });
 
-  return <TextInput {...props} style={[styles.input, style]} />;
+  return <TextInput {...props} style={[styles.input, style]} ref={ref} />;
 });
