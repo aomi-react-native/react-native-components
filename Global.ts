@@ -12,6 +12,9 @@ export interface Size {
   height?: number;
 }
 
+/**
+ * @deprecated
+ */
 export interface BaseProps {
   children?: ReactNode;
 }
