@@ -90,7 +90,8 @@ export const TextInput = React.forwardRef<
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      borderWidth: StyleSheet.hairlineWidth,
+      alignItems: 'center',
+      borderWidth: 1,
       borderColor: theme.colors.primary,
       backgroundColor: theme.colors.white,
       borderRadius: 4,
@@ -147,7 +148,7 @@ export const TextInput = React.forwardRef<
     <View style={[styles.container, style]}>
       {before}
       {inputInstance}
-      {after}
+      <View>{after}</View>
     </View>
   );
 });
